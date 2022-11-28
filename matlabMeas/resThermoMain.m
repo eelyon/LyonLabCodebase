@@ -7,6 +7,7 @@ Matt Schulz
 %}
 
 addpath(genpath(strcat(pwd, '\instrumentUtilities')));
+addpath(genpath(strcat(pwd, '\resThermoHelpers')));
 warning('off','all');
 
 port = 1234;
@@ -19,6 +20,8 @@ DMM = TCPIP_Connect(DMM_Address, port);
 
 AWG_Address = '172.29.117.108';
 AWG = TCPIP_Connect(AWG_Address, port);
+
+freqSweep(SR830, 1e3, 10e3, 10);
 
 fclose(SR830);
 fclose(DMM);
