@@ -1,8 +1,8 @@
 function [output] = freqSweep(lockIn, freq0, freqf, num, avgs)
-    fvec = linspace(freq0, freqf, num);    
+    fvec = linspace(freq0, freqf, num);
     tau = SR830queryTau(lockIn);
-    bigWaitTime = 24 * tau;
-    mesWaitTime = 12 * tau;
+    bigWaitTime = 5;
+    mesWaitTime = 2;
     output = zeros(2 * num, 3);
     invavgs = 1 / avgs;
     ind = 1;
