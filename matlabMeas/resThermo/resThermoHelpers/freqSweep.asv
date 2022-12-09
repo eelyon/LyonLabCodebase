@@ -1,5 +1,5 @@
 function [output] = freqSweep(lockIn, freq0, freqf, num, avgs)
-    fvec = linspace(freq0, freqf, num);
+    fvec = [linspace(freq0, freqf, num), linspace(freqf, freq0, num)];
     tau = SR830queryTau(lockIn);
     bigWaitTime = 5;
     mesWaitTime = 2;
@@ -8,18 +8,6 @@ function [output] = freqSweep(lockIn, freq0, freqf, num, avgs)
     ind = 1;
     
     for f = fvec
-        SR830setFreq(lockIn,f);
-        pause(bigWaitTime);
-        output(ind, 1) = f;
-        for throwaway = 1:1:avgs
-            output(ind, 2) = output(ind, 2) + str2double(SR830queryX(lockIn)) * invavgs;
-            output(ind, 3) = output(ind, 3) + str2double(SR830queryY(lockIn)) * invavgs;
-            pause(mesWaitTime);
-        end
-        ind = ind + 1;
-    end
-
-    for f = flip(fvec)
         SR830setFreq(lockIn,f);
         pause(bigWaitTime);
         output(ind, 1) = f;
