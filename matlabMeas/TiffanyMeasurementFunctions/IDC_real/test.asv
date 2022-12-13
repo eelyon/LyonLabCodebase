@@ -1,0 +1,8 @@
+myFig = uifigure;
+x = [1,2,3];
+y = [3,5,6];
+hi = plot(x,y);
+savefig('test.fig');
+d = uidatepicker(myig);
+date = datetime("today");
+myFig.UserData = struct("Datepicker",d,"Today",date);

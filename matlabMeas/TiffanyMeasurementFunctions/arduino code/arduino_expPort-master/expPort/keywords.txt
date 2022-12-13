@@ -1,0 +1,46 @@
+###########################################
+# Syntax Coloring Map For expPort
+###########################################
+
+###########################################
+# Datatypes (KEYWORD1)
+###########################################
+
+expPort	KEYWORD1
+
+###########################################
+# Methods and Functions (KEYWORD2)
+###########################################
+
+getIODIR	KEYWORD2
+setIODIR	KEYWORD2
+begin	KEYWORD2
+getGPIO	KEYWORD2
+setGPIO	KEYWORD2
+getPin	KEYWORD2
+setPin	KEYWORD2
+setMode	KEYWORD2
+set	KEYWORD2
+in	KEYWORD2
+getPinMode	KEYWORD2
+setPinMode	KEYWORD2
+
+# List of objects created in the example sketches.
+gp	KEYWORD3
+gp0	KEYWORD3
+gp1	KEYWORD3
+gp2	KEYWORD3
+gp3	KEYWORD3
+gp4	KEYWORD3
+gp5	KEYWORD3
+gp6	KEYWORD3
+gp7	KEYWORD3
+gp8	KEYWORD3
+gp9	KEYWORD3
+gp10	KEYWORD3
+gp11	KEYWORD3
+gp12	KEYWORD3
+gp13	KEYWORD3
+gp14	KEYWORD3
+gp15	KEYWORD3
+

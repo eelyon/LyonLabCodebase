@@ -1,0 +1,5 @@
+
+%load(['AP24/AP24_' num2str(Port) '.mat']);
+m =
+vRange = -10:.5:10;
+Value = interp1(vRange,vRange.*m+b,Value);
