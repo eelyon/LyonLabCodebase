@@ -1,0 +1,21 @@
+function [] = CalibrateDAC( AP24,Rtemp,Port )
+% Calibrate DAC voltages using a Multimeter
+
+    vRange = -9.8:.49:9.8;
+    voltArr = zeros(1,numel(vRange));
+    ctr = 1;
+    for i = vRange
+        fprintf(AP24,['CH ' num2str(Port)]);
+        fprintf(AP24,['VOLT ' num2str(i)]);
+        pause(1);
+        voltage = str2double(query(Rtemp, 'READ?'));
+        voltArr(ctr) = voltage ;
+        ctr=ctr+1;
+        pause()
+    end
+    
+    filename = ['CalibrateDac\VoltSweepFiles\CH' num2str(Port) '.mat'];
+    save( filename, 'voltArr' );
+
+end
+
