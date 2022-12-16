@@ -4,6 +4,7 @@ classdef sigDAC
     
     properties
         numChannels {mustBeNumeric}
+        identifier
         comPort  
         channelVoltages 
         client
@@ -16,6 +17,11 @@ classdef sigDAC
             sigDAC.client = serial_Connect(comPort);
 
             sigDAC.numChannels = numChannels;
+            if numChannels <= 16
+                sigDAC.identifier = 'AP16';
+            else
+                sigDAC.identifier = 'AP24';
+            end
             pause(1);
             for i = 1:numChannels
                 sigDAC.channelVoltages(i) = sigDACQueryVoltage(sigDAC,i);
