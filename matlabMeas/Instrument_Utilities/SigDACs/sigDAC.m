@@ -5,7 +5,7 @@ classdef sigDAC
     properties
         numChannels {mustBeNumeric}
         comPort  
-        channelVoltages = []
+        channelVoltages 
         client
     end
     
@@ -16,10 +16,9 @@ classdef sigDAC
             sigDAC.client = serial_Connect(comPort);
 
             sigDAC.numChannels = numChannels;
-            sigDAC.channelVoltages = zeros(1,numChannels+1);
-            sigDAC.channelVoltages(1) = 'sigDAC Channel Voltages (V)';
+            pause(1);
             for i = 1:numChannels
-                sigDAC.channelVoltages(i+1) = sigDACQueryVoltage(sigDAC,i);
+                sigDAC.channelVoltages(i) = sigDACQueryVoltage(sigDAC,i);
             end
 
         end
@@ -36,7 +35,7 @@ classdef sigDAC
 
         function  voltageArr = sigDACGetConfig(sigDAC)
             for channel = 1:sigDAC.numChannels
-                sigDAC.channelVoltages(channel+1) = sigDACQueryVoltage(sigDAC,channel);
+                sigDAC.channelVoltages(channel) = sigDACQueryVoltage(sigDAC,channel);
             end
             voltageArr = sigDAC.channelVoltages;
         end
