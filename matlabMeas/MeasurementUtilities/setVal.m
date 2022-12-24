@@ -1,23 +1,32 @@
-function [errorFlag] = setVal( Device, Port ,Value )
+function [errorFlag] = setVal(Device,Port,Value)
 
   calibrate = 0;
   errorLimit = 1e-3;
   queryLimit = 5;
   
   %% Determine which voltage source is being used
-  name = query(Device,'*IDN?');
+  name = Device.identifier;
   errorFlag = 0;
+  % In reality, we should include a setVal function in each device class.
+  % That way it removes any checks and allows us to change functionality in
+  % a single place instead of calling specific functions here.
+  
+  % What if we want to change frequency or amplitude?? This setVal doesn't
+  % really let us do that because we default to the aux out. Need to think
+  % of a better solution....
+  
   if contains(name,'SR830')
-    SR830setAuxOut(Device,Port,Value);
+    Device.SR830setAuxOut(Port,Value);
   elseif contains(name,'AP24')
-   
+    
     if calibrate
       load(['AP24/AP24_' num2str(Port) '.mat']);
       vRange = -10:.5:10;
       Value = interp1(vRange,vRange.*m+b,Value);
     end
 
-    sigDACSetVoltage(Device,Port,Value)
+    Device.sigDACSetVoltage(Port,Value);
+
   elseif contains(name,'AP16A')
     
     if calibrate
@@ -25,7 +34,8 @@ function [errorFlag] = setVal( Device, Port ,Value )
       vRange = -10:.5:10;
       Value = interp1(vRange,vRange.*m+b,Value);
     end
-    sigDACSetVoltage(Device,Port,Value)
+    Device.sigDACSetVoltage(Port,Value)
+
   elseif contains(name,'SIM9')
       connectSIM900Port(Device,Port);
       setSIM900Voltage(Device,Port,Value);
