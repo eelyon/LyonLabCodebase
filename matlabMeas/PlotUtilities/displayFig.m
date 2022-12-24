@@ -1,8 +1,13 @@
-function [] = displayFigure(date,figName)
+function [] = displayFig(date,figName)
+    % Displays a figure from a certain date in the /Data path.
+    % Inputs:
+    %         date - character string with a MM_DD_YY format.
+    %         figName - name of figure to plot in the date path (without
+    %         the .fig extension).
     dataPath = getDataPath();
     figName = [figName '.fig'];
-    dataPath = catFileAndFolders(dataPath,date);
-    figPath = catFileAndFolders(dataPath,figName);
+    dataPath = fullfile(dataPath,date);
+    figPath = fullfile(dataPath,figName);
     if exist(figPath,"file")
         openfig(figPath);
     else

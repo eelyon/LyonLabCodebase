@@ -1,6 +1,15 @@
-function [xDat yDat] = getXYData(figPath,fieldNum)
-    openfig(figPath,'invisible');
-    h = findobj(gca,'Type','line');
-    xDat = h(fieldNum).XData;
-    yDat = h(fieldNum).YData;
+function [xDat,yDat] = getXYData(figPath,varargin)
+    defaultFieldNum = 1;
+    defaultType = 'line';
+    p = inputParser;
+    addRequired(p,'figPath',@ischar);
+    addParameter(p,'fieldNum',defaultFieldNum,@isnumeric);
+    addParameter(p,'type',defaultType,@ischar);
+    parse(p,figPath,varargin{:});
+    
+    fig = openfig(figPath,'invisible');
+    h = findobj(gca,'Type',p.Results.type);
+    ax = gca;
+    xDat = h(p.Results.fieldNum).XData;
+    yDat = h(p.Results.fieldNum).YData;
 end

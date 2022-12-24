@@ -1,4 +1,13 @@
-function [figMetaData] = displayFigNum(figNum,varargin)
+function [figMetaData,fig] = displayFigNum(figNum,varargin)
+    % Displays a .fig file of the format "figName_Number.fig" in its own
+    % figure and returns the UserData and figure handle associated with 
+    % the figure number. Searches only the /Data folder and displays all
+    % figures with this number.
+    % 
+    % INPUTS: figNum - numeric number for the targeted figure.
+    %         'visibility' - optional numeric parameter that turns the
+    %         visibility on (1 default) or off (0).
+    
     defaultVisibility = 1;
     
     % Parse optional arguments
@@ -12,24 +21,11 @@ function [figMetaData] = displayFigNum(figNum,varargin)
     else
         vis = 'invisible';
     end
-    
-    dataPath = getDataPath();
-    dataFolders = getSubDataFolders(dataPath);
-    for i = 1:length(dataFolders)
-        datePath = catFileAndFolders(dataPath,dataFolders{i});
-        directoryKeyVal = [datePath '/*_' num2str(figNum) '.fig'];
-        figFiles = dir(directoryKeyVal);
-        figNames = {figFiles.name};
-        if ~isempty(figNames)
-            figMetaData = cell(1,length(figNames));
-            for j = 1:length(figNames)
-                currentFilePath = catFileAndFolders(datePath,figNames{j});
-                fig=openfig(currentFilePath,'reuse',vis);
-                figMetaData{j} = fig.UserData;
-            end
-            
-            return
-        end
+    figPaths = findFigNumPath(figNum);
+    figMetaData = {};
+    for i = 1:length(figPaths)
+        fig = openfig(figPaths{i},'reuse',vis );
+        figMetaData{i} = fig.UserData;
     end
-    figMetaData = 0;
+    
 end
