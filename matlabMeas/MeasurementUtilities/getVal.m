@@ -1,25 +1,21 @@
 function [ Value ] = getVal( Device, Port)
   %% Determine which voltage source is being used
-  name = query(Device,'*IDN?');
+  name = Device.identifier;
   if strfind(name,'SR830')
     
-    Value = str2double(query(Device, ['AUXV?' num2str(Port)]));
+    Value = Device.SR830queryAuxOut(Port);
   
   elseif strfind(name,'AP24')
     
-    fprintf(Device,['CH ' num2str(Port)]);
-    Value = str2double(query(Device,'VOLT?'));
+    Value = Device.sigDACQueryVoltage(Port);
     
   elseif strfind(name,'AP16A')
     
-    fprintf(Device,['CH ' num2str(Port)]);
-    Value = str2double(query(Device,'VOLT?'));
- 
+    Value = Device.sigDACQueryVoltage(Port);
+
   elseif strfind(name,'SIM9')
       
-    fprintf(Device,['CONN ' num2str(Port) ',"xyz"']);
-    Value = str2double(query(Device,'VOLT?'));
-    fprintf(Device,'xyz');
+    Value = Device.querySIM900Voltage(Port);
     
   elseif strfind(name,',33220A,')
       
