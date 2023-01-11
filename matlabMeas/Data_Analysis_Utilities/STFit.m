@@ -1,4 +1,4 @@
-function mdl = STFit(dataX,dataY, yScale)
+function mdl = STFit(dataX,dataY)
 % STFit fits the Sommer Tanner data using a normcdf function. It returns a
 % plotable object (via plot()) which is the output of the fitting. To get
 % good fits, ensure that the lower and upper bounds of a,b,mu, and sigma (y
@@ -17,7 +17,7 @@ function mdl = STFit(dataX,dataY, yScale)
     Fopts.Lower = lowerBounds;
     Fopts.Upper = upperBounds;
     Fopts.StartPoint = startPoints;
-    mdl = fit(dataX',dataY',ft,Fopts)
+    mdl = fit(dataX',dataY',ft,Fopts);
 end
 
 

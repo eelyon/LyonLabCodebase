@@ -9,7 +9,7 @@ function [fitData] = fitSommerTanner(figNum,yScale)
    xDat = xDataCell{1};
    yDat = yDataCell{1};
    yDatScaled = yDat./yScale;
-   fitData = STFit(xDat,yDatScaled, yScale);
+   fitData = STFit(xDat,yDatScaled);
    plot(fitData);
    xlabel(xLab);
    ylabel([yLab, ' Scale = ' num2str(yScale)]);
