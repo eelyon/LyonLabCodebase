@@ -12,4 +12,5 @@ function [xDat,yDat] = getXYData(figPath,varargin)
     ax = gca;
     xDat = h(p.Results.fieldNum).XData;
     yDat = h(p.Results.fieldNum).YData;
+    closeFigure(fig);
 end
