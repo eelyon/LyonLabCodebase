@@ -23,7 +23,7 @@ function [] = overlayFigNums(figNumArray)
     [xLabel,yLabel] = getXYLabel(figPathCell{1});
     for i = 1:length(xDats)
         if i == 1
-            figure(800);
+            figure(getNextMATLABFigNum());
             plot(xDats{i},yDats{i});
             xlabel(xLabel);
             ylabel(yLabel);

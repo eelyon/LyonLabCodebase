@@ -1,7 +1,8 @@
 function [xLabel,yLabel] = getXYLabel(figPath)
-    openfig(figPath,'invisible');
+    fig = openfig(figPath,'invisible');
     ax = gca;
     xLabel = ax.XLabel.String;
     yLabel = ax.YLabel.String;
+    closeFig(fig);
 end
 
