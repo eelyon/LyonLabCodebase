@@ -6,6 +6,7 @@ classdef Agilent33220A
         IPAddress
         port         {mustBeNumeric}
         client
+        identifier
     end
 
     methods
@@ -13,6 +14,7 @@ classdef Agilent33220A
             Agilent33220A.IPAddress     = IPAddress;
             Agilent33220A.port          = port;
             Agilent33220A.client        = TCPIP_Connect(IPAddress,port);
+            Agilent33220A.identifier    = '33220A';
         end
 
         function setAgilent33220APresetConfig(experimentType)

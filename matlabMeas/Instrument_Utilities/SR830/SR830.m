@@ -4,6 +4,7 @@ classdef SR830 < handle
 
     properties
         IPAddress
+        identifier
         port         {mustBeNumeric}
         client
         timeConstant {mustBeNumeric}
@@ -23,6 +24,7 @@ classdef SR830 < handle
             SR830.IPAddress     = IPAddress;
             SR830.port          = port;
             SR830.client        = TCPIP_Connect(IPAddress,port);
+            SR830.identifier    = 'SR830';
             SR830.timeConstant  = 0;%SR830queryTimeConstant(SR830.client);
             SR830.sensitivity   = 0;%SR830querySensitivity(SR830.client);
             SR830.freq          = 0;%SR830queryFreq(SR830.client);
