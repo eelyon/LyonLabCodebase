@@ -28,6 +28,10 @@ classdef Agilent33220A
 
         end
 
+        function send33220Trigger(Agilent33220A)
+            fprintf(Agilent33220A.client,'TRIG');
+        end
+        
         function [] = set33220BurstMode(Agilent33220A,burstType)
             validTypes = 'TRIG,GAT';
             if ~contains(validTypes,burstType)
@@ -35,7 +39,7 @@ classdef Agilent33220A
                 fprintf(validTypes);
             else
                 command = ['BURS:MODE ' burstType];
-                sendCommand(Agilent33220A,command);
+                fprintf(Agilent33220A.client,command);
             end
         end
 
@@ -46,7 +50,7 @@ classdef Agilent33220A
                 command = 'BURS:STAT OFF';
             end
 
-            sendCommand(Agilent33220A,command);
+            fprintf(Agilent33220A.client,command);
         end
 
         function [] = set33220FunctionType(Agilent33220A,type)
@@ -57,29 +61,34 @@ classdef Agilent33220A
                 fprintf([validTypes '\n'])
             else
                 command = ['FUNC ', type];
-                sendCommand(Agilent33220A,command);
+                fprintf(Agilent33220A.client,command);
             end
 
         end
 
         function [] = set33220NumBurstCycles(Agilent33220A,numCycles)
             command = ['BURS:NCYC ' num2str(numCycles)];
-            sendCommand(Agilent33220A,command);
+            fprintf(Agilent33220A.client,command);
         end
 
         function [] = set33220Output(Agilent33220A,OnOff)
-            command = ['OUTP ' num2str(OnOff)];
-            sendCommand(Agilent33220A,command);
+            if OnOff
+                cmdStr = 'ON';
+            else
+                cmdStr = 'OFF';
+            end
+            command = ['OUTP ' cmdStr];
+            fprintf(Agilent33220A.client,command);
         end
 
         function [] = set33220PulsePeriod(Agilent33220A,periodInSeconds)
             command = ['PULS:PER ' num2str(periodInSeconds)];
-            sendCommand(Agilent33220A,command);
+            fprintf(Agilent33220A.client,command);
         end
 
         function [] = set33220PulseWidth(Agilent33220A, widthInSeconds)
             command = ['FUNC:PULS:WIDT ', num2str(widthInSeconds)];
-            sendCommand(Agilent33220A,command);
+            fprintf(Agilent33220A.client,command);
         end
 
         function [] = set33220TriggerOutput(Agilent33220A,onOrOff)
@@ -88,7 +97,7 @@ classdef Agilent33220A
             else
                 command = 'OUTP:TRIG OFF';
             end
-            sendCommand(Agilent33220A,command);
+            fprintf(Agilent33220A.client,command);
         end
 
         function [] = set33220TriggerSource(Agilent33220A,sourceType)
@@ -98,59 +107,59 @@ classdef Agilent33220A
                 fprintf([validSourceTypes, '\n']);
             else
                 command = ['TRIG:SOUR ' sourceType];
-                sendCommand(Agilent33220A,command);
+                fprintf(Agilent33220A.client,command);
             end
         end
 
         function [] = set33220VoltageHigh(Agilent33220A,highVoltage)
             command = ['VOLT:HIGH ', num2str(highVoltage)];
-            sendCommand(Agilent33220A,command);
+            fprintf(Agilent33220A.client,command);
         end
 
         function [] = set33220VoltageLow(Agilent33220A, lowVoltage)
             command = ['VOLT:LOW ', num2str(lowVoltage)];
-            sendCommand(Agilent33220A,command);
+            fprintf(Agilent33220A.client,command);
         end
 
         function [] = set33220VoltageOffset(Agilent33220A,voltageOffset)
             command = ['VOLTAGE:OFFS ', num2str(voltageOffset)];
-            sendCommand(Agilent33220A,command);
+            fprintf(Agilent33220A.client,command);
         end
 
         function [functionType] = query33220FunctionType(Agilent33220A)
-            functionType = query(Agilent33220A,'FUNC?');
+            functionType = query(Agilent33220A.client,'FUNC?');
         end
 
         function [isOn] = query33220Output(Agilent33220A)
-            isOn = query(Agilent33220A,'OUTP?');
+            isOn = query(Agilent33220A.client,'OUTP?');
         end
 
         function [period] = query33220PulsePeriod(Agilent33220A)
-            period = query(Agilent33220A,'PULS:PER?');
+            period = query(Agilent33220A.client,'PULS:PER?');
         end
 
         function [pulseWidth] = query33220PulseWidth(Agilent33220A)
-            pulseWidth = query(Agilent33220A,'FUNC:PULS:WIDT?');
+            pulseWidth = query(Agilent33220A.client,'FUNC:PULS:WIDT?');
         end
 
         function [trigOutp] = query33220TriggerOutput(Agilent33220A)
-            trigOutp = query(Agilent33220A,'OUTP:TRIG?');
+            trigOutp = query(Agilent33220A.client,'OUTP:TRIG?');
         end
 
         function [trigType] = query33220TriggerSourceType(Agilent33220A)
-            trigType = query(Agilent33220A,'TRIG:SOUR?');
+            trigType = query(Agilent33220A.client,'TRIG:SOUR?');
         end
 
         function [voltage] = query33220VoltageHigh(Agilent33220A)
-            voltage = query(Agilent33220A,'VOLT:HIGH?');
+            voltage = query(Agilent33220A.client,'VOLT:HIGH?');
         end
 
         function [voltLow] = query33220VoltageLow(Agilent33220A)
-            voltLow = query(Agilent33220A,'VOLT:LOW?');
+            voltLow = query(Agilent33220A.client,'VOLT:LOW?');
         end
 
         function [offset] = query33220VoltageOffset(Agilent33220A)
-            offset = query(Agilent33220A,'VOLT:OFFS?');
+            offset = query(Agilent33220A.client,'VOLT:OFFS?');
         end
 
     end
