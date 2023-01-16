@@ -1,4 +1,4 @@
-[time,voltage,Real,Imag,Mag] = deal(zeros(1,1));
+[time,voltage,Real,Imag,Mag] = deal(inf);
 
 sweepType = 'TM';
 
@@ -17,7 +17,7 @@ magVsTime = plotData(time,Mag,'xLabel',"time",'yLabel',"Mag",'title',"Mag vs Tim
 setDataSources(magVsTime,'time','Mag');
 
 doBackAndForth = 1;
-[vavg1,vavg2,avgxs1,avgxs2,avgys1,avgys2,stdx1,stdx2,stdy1,stdy2,avgmags1,avgmags2,stdm1,stdm2] = deal(zeros(1,1));
+[vavg1,vavg2,avgxs1,avgxs2,avgys1,avgys2,stdx1,stdx2,stdy1,stdy2,avgmags1,avgmags2,stdm1,stdm2] = deal(inf);
 
 voltageAxisName = genSR830Axis(sweepType);
 yLabel = "Current [A]";
