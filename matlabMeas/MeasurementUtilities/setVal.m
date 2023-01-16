@@ -16,7 +16,16 @@ function [errorFlag] = setVal(Device,Port,Value)
   % of a better solution....
   
   if contains(name,'SR830')
-    Device.SR830setAuxOut(Port,Value);
+
+    if contains(Port,'Freq')
+        Device.setSR830Freq(Value);
+    
+    else if contains(Port,'Amp')
+        Device.setSR830Amplitude(Value);
+    
+    else
+        Device.SR830setAuxOut(Port,Value);
+    end
   elseif contains(name,'AP24')
     
     if calibrate
@@ -37,14 +46,13 @@ function [errorFlag] = setVal(Device,Port,Value)
     Device.sigDACSetVoltage(Port,Value)
 
   elseif contains(name,'SIM9')
-      connectSIM900Port(Device,Port);
-      setSIM900Voltage(Device,Port,Value);
-      disconnectSIM900Port(Device);
+      Device.setSIM900Voltage(Port,Value);
+
   elseif contains(name,',33220A,')
      if Port == 1
-        set33220VoltageLow(Device,Value) 
+        Device.set33220VoltageLow(Value) 
     elseif Port == 2
-        set33220VoltageHigh(Device,Value) 
+        Device.set33220VoltageHigh(Value) 
     else 
         fprintf('\nUnknown Port\n')
         errorFlag = -3;

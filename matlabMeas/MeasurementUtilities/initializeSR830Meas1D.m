@@ -1,6 +1,6 @@
 [time,voltage,Real,Imag,Mag] = deal(inf);
 
-sweepType = 'TM';
+sweepType = 'Res';
 
 subplot(2,3,1);
 realVsTime = plotData(time,Real,'xLabel',"time",'yLabel',"Real",'title',"Real vs Time",'subPlot',1);
