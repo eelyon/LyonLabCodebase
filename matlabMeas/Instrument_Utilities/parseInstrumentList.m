@@ -1,6 +1,6 @@
 function [instruments] = parseInstrumentList()
     instrumentPath = getInstUtilitiesPath();
-    instPath = catFileAndFolders(instrumentPath,'instrumentList.txt');
+    instPath = fullfile(instrumentPath,'instrumentList.txt');
     instrumentFile = fopen(instPath,'r+');
     instruments = fgetl(instrumentFile);
     fclose(instrumentFile);

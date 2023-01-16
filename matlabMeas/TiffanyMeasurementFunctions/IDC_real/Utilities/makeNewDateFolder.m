@@ -11,7 +11,7 @@ function [] = makeNewDateFolder(path,format)
         mkdir(path);
         disp(['Created new Data folder under: ' path])
     end
-    fileNumPath = catFileAndFolders(path,'fileNum.txt');
+    fileNumPath = fullfile(path,'fileNum.txt');
     
     if ~exist(fileNumPath,'file')
         fileNum = fopen(fileNumPath,'a+');
@@ -25,7 +25,7 @@ function [] = makeNewDateFolder(path,format)
     if(success == 0)
         error(message,messageID)
     end
-    datePath = catFileAndFolders(path,dateString);
+    datePath = fullfile(path,dateString);
     
 
 end
