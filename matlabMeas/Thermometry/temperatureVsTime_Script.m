@@ -11,7 +11,7 @@ time = [0];
 temperature = [0];
 
 %% Create plot for thermometry and set the data sources for the figure handle below.
-[p,handle] = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"rx");
+p = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"rx");
 p.XDataSource = 'time';
 p.YDataSource = 'temperature';
 

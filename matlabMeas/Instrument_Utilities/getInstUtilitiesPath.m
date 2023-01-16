@@ -1,9 +1,9 @@
 function [utilitiesPath] = getInstUtilitiesPath()
     currentPath = pwd;
-    while(~exist([currentPath '\Instrument_Utilities'],'dir'))
+    while(~exist(fullfile(currentPath,"Instrument_Utilities"),'dir'))
         cd('..')
         currentPath = pwd;
     end
-    utilitiesPath = [currentPath '\Instrument_Utilities'];
+    utilitiesPath = fullfile(currentPath,"Instrument_Utilities");
 end
 

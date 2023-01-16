@@ -1,7 +1,7 @@
 function [] = makeInstrumentTrackingList(instrumentList)
     listPath = getInstUtilitiesPath();
 
-    utilitiesPath = catFileAndFolders(listPath,'instrumentList.txt');
+    utilitiesPath = fullfile(listPath,'instrumentList.txt');
     
     if ~exist(utilitiesPath,'file')
         listFile = fopen(utilitiesPath,'a+');
