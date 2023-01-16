@@ -7,8 +7,7 @@ thermometerType = '939801';
 Thermometer;
 Therm = initializeThermometry(thermometerType);
 %% Initialize workspace arrays. Must be in workspace to update plots properly.
-time = [0];
-temperature = [0];
+[time,temperature] = deal(inf);
 
 %% Create plot for thermometry and set the data sources for the figure handle below.
 p = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"rx");

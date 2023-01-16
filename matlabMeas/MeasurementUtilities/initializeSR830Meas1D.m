@@ -1,22 +1,23 @@
 [time,voltage,Real,Imag,Mag] = deal(inf);
 
-sweepType = 'Res';
+sweepType = 'Freq';
+doBackAndForth = 1;
 
 subplot(2,3,1);
-realVsTime = plotData(time,Real,'xLabel',"time",'yLabel',"Real",'title',"Real vs Time",'subPlot',1);
+realVsTime = plotData(time,Real,'xLabel',"Time [s]",'yLabel',"Real",'title',"Real vs Time",'subPlot',1);
 setDataSources(realVsTime,'time','Real');
 
 
 subplot(2,3,2)
-imagVsTime = plotData(time,Imag,'xLabel',"time",'yLabel',"Imag",'title',"Imag vs Time",'subPlot',1);
+imagVsTime = plotData(time,Imag,'xLabel',"Time [s]",'yLabel',"Imag",'title',"Imag vs Time",'subPlot',1);
 setDataSources(imagVsTime,'time','Imag');
 
 
 subplot(2,3,3)
-magVsTime = plotData(time,Mag,'xLabel',"time",'yLabel',"Mag",'title',"Mag vs Time",'subPlot',1);
+magVsTime = plotData(time,Mag,'xLabel',"Time [s]",'yLabel',"Mag",'title',"Mag vs Time",'subPlot',1);
 setDataSources(magVsTime,'time','Mag');
 
-doBackAndForth = 1;
+
 [vavg1,vavg2,avgxs1,avgxs2,avgys1,avgys2,stdx1,stdx2,stdy1,stdy2,avgmags1,avgmags2,stdm1,stdm2] = deal(inf);
 
 voltageAxisName = genSR830Axis(sweepType);
@@ -88,6 +89,8 @@ function xAxisName = genSR830Axis(targetGate)
             portSet2 = evlin("base",DotPort);
             delta = deviceSet2.sigDACQueryVoltage(portSet2) - deviceSet.sigDACQueryVoltage(portSet);
             xAxisName = ["Top Metal Voltage (DP Bias " num2str(delta) "V) [V]"];
+        case 'Freq'
+            xAxisName = "SR830 Frequency [Hz]";
     end
 end
 

@@ -16,7 +16,6 @@ CIVector = tinv([0.025 0.975], repeat-1);
 
 %% Define a cleanup function that will save data on user interrupt.
 handle = gcf;
-cleanupObj = onCleanup(@()cleanMeUp(handle));
 
 startTime = now();
 %% Main parameter loop.
