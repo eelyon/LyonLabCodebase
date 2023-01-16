@@ -1,5 +1,3 @@
-
-
 %% Frequency of temperature querying in seconds.
 timeBetweenPoints = 60;
 %% Initialize Thermometer type (this is related to your thermometer you have)
@@ -10,9 +8,8 @@ Therm = initializeThermometry(thermometerType);
 [time,temperature] = deal(inf);
 
 %% Create plot for thermometry and set the data sources for the figure handle below.
-p = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"rx");
-p.XDataSource = 'time';
-p.YDataSource = 'temperature';
+thermPlot = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"rx");
+setDataSources(thermPlot,'time','temperature');
 
 temperatureVsTime('time','temperature',Thermometer,timeBetweenPoints,therm);
 

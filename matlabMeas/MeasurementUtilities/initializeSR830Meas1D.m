@@ -1,20 +1,33 @@
+% Generate workspace variables if they don't exist. This initialization
+% script is not meant for changing these variables. Use GUI or external
+% function.
+
+initializeCharVariable('sweepType');
+initializeNumericVariable('doBackAndForth');
+initializeNumericVariable('startV');
+initializeNumericVariable('stopV');
+initializeNumericVariable('deltaV');
+initializeCharVariable('SR830ReadName');
+
+if strcmp(SR830ReadName,'') || strcmp(sweepType,'')
+    disp("Please change the sweepType or SR830ReadName variable to run the SR830 measurement script!");
+    return;
+end
+
 [time,voltage,Real,Imag,Mag] = deal(inf);
-
-sweepType = 'Freq';
-doBackAndForth = 1;
-
+timeLabel = "Time [s]";
 subplot(2,3,1);
-realVsTime = plotData(time,Real,'xLabel',"Time [s]",'yLabel',"Real",'title',"Real vs Time",'subPlot',1);
+realVsTime = plotData(time,Real,'xLabel',timeLabel,'yLabel',"Real",'title',"Real vs Time",'subPlot',1);
 setDataSources(realVsTime,'time','Real');
 
 
 subplot(2,3,2)
-imagVsTime = plotData(time,Imag,'xLabel',"Time [s]",'yLabel',"Imag",'title',"Imag vs Time",'subPlot',1);
+imagVsTime = plotData(time,Imag,'xLabel',timeLabel,'yLabel',"Imag",'title',"Imag vs Time",'subPlot',1);
 setDataSources(imagVsTime,'time','Imag');
 
 
 subplot(2,3,3)
-magVsTime = plotData(time,Mag,'xLabel',"Time [s]",'yLabel',"Mag",'title',"Mag vs Time",'subPlot',1);
+magVsTime = plotData(time,Mag,'xLabel',timeLabel,'yLabel',"Mag",'title',"Mag vs Time",'subPlot',1);
 setDataSources(magVsTime,'time','Mag');
 
 
@@ -71,37 +84,29 @@ ylabel(yLabel);
 title("Mag vs Voltage");
 
 function xAxisName = genSR830Axis(targetGate)
-    switch targetGate
-        case 'STM'
-            xAxisName = "STM Bias [V]";
-        case 'TM'
-            xAxisName = "Top Metal Voltage [V]";
-        case 'Res'
-            xAxisName = "Reservoir Voltage [V]";
-        case 'Door'
-            xAxisName = "Door Voltage [V]";
-        case 'DP'
-            xAxisName = "Dot Potential Voltage [V]";
-        case 'Pair'
-            deviceSet = evalin("base",TMDevice);
-            portSet = evalin("base",TMPort);
-            deviceSet2 = evalin("base",DotDevice);
-            portSet2 = evlin("base",DotPort);
-            delta = deviceSet2.sigDACQueryVoltage(portSet2) - deviceSet.sigDACQueryVoltage(portSet);
-            xAxisName = ["Top Metal Voltage (DP Bias " num2str(delta) "V) [V]"];
-        case 'Freq'
-            xAxisName = "SR830 Frequency [Hz]";
-    end
+switch targetGate
+    case 'STM'
+        xAxisName = "STM Bias [V]";
+    case 'TM'
+        xAxisName = "Top Metal Voltage [V]";
+    case 'Res'
+        xAxisName = "Reservoir Voltage [V]";
+    case 'Door'
+        xAxisName = "Door Voltage [V]";
+    case 'DP'
+        xAxisName = "Dot Potential Voltage [V]";
+    case 'Pair'
+        deviceSet = evalin("base",TMDevice);
+        portSet = evalin("base",TMPort);
+        deviceSet2 = evalin("base",DotDevice);
+        portSet2 = evalin("base",DotPort);
+        delta = deviceSet2.sigDACQueryVoltage(portSet2) - deviceSet.sigDACQueryVoltage(portSet);
+        xAxisName = ["Top Metal Voltage (DP Bias " num2str(delta) "V) [V]"];
+    case 'Freq'
+        xAxisName = "SR830 Frequency [Hz]";
+    case 'Amp'
+        xAxisName = "SR830 Amplitude [V]";
+    otherwise
+        xAxisName = 'unknown';
 end
-
-function setDataSources(handle,xName,yName)
-    handle.XDataSource = xName;
-    handle.YDataSource = yName;
-end
-
-function setDataSourcesErrorBar(handle,xName,yName,yError)
-    handle.XDataSource = xName;
-    handle.YDataSource = yName;
-    handle.YNegativeDeltaSource = yError;
-    handle.YPositiveDeltaSource = yError;
 end

@@ -1,6 +1,15 @@
 initializeSR830Meas1D;
 %% Voltages to probe
+if startV > stopV && deltaV > 0
+    deltaV = -1*deltaV;
+elseif startV < stopV && deltaV < 0
+    deltaV = -1*deltaV;
+end
+
 V = startV:deltaV:stopV;
+
+%% SR830 to read. Note that the name must exist in the base workspace!
+readSR830 = evalin("base",SR830ReadName);
 
 %% Create all arrays for data storage. 
 [vAvgVoltage,avgmags,avgxs,avgys,stdm,stx,sty] = double.deal(empty(0,0));
@@ -128,25 +137,6 @@ function setGateValue(targetGate,voltageToSet)
     end
 
 end
-
-
-function plotName = genSR830PlotName(targetGate)
-    switch targetGate
-        case 'STM'
-            plotName = "Pinchoff";
-        case 'TM'
-            plotName = "TopMetalSweep";
-        case 'Res'
-            plotName = "ReservoirSweep";
-        case 'Door'
-            plotName = "DoorSweep";
-        case 'DP'
-            plotName = "DotPotentialSweep";
-        case 'Pair'
-            plotName = "PairSweep";
-    end
-end
-
 
 
 function [x,y,mag,t,v] = getSR830Data(readSR830,x,y,mag,t,v,currentTimeIndex,startTime,waitTime)
