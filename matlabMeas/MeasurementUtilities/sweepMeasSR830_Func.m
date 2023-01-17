@@ -30,7 +30,7 @@ startTime = now();
 
 %% Main parameter loop.
 for value = paramVector
-    setVal(device,port,value);
+    %setVal(device,port,value);
 
     %DACGUI.updateDACGUI;
     %drawnow;
@@ -94,7 +94,7 @@ function updateSR830AveragePlots(plotHandles,avgParam,avgmags,avgxs,avgys,stdm,s
 
         setErrorBarXYData(plotHandles{5},avgParam(halfway+1:end),avgxs(halfway+1:end),stdx(halfway+1:end));
         setErrorBarXYData(plotHandles{7},avgParam(halfway+1:end),avgys(halfway+1:end),stdy(halfway+1:end));
-        setErrorBarXYData(plotHandles{5},avgParam(halfway+1:end),avgmags(halfway+1:end),stdm(halfway+1:end));
+        setErrorBarXYData(plotHandles{9},avgParam(halfway+1:end),avgmags(halfway+1:end),stdm(halfway+1:end));
     else
         setErrorBarXYData(plotHandles{4},avgParam,avgxs,stdx);
         setErrorBarXYData(plotHandles{5},avgParam,avgys,stdy);
@@ -145,8 +145,8 @@ end
 
 function [x,y,mag,t] = getSR830Data(x,y,mag,t,currentTimeIndex,startTime,waitTime,readSR830)
 
-    x(currentTimeIndex) = readSR830.queryX();
-    y(currentTimeIndex) = readSR830.queryY();
+    x(currentTimeIndex) = currentTimeIndex;%readSR830.queryX();
+    y(currentTimeIndex) = currentTimeIndex;%readSR830.queryY();
     t(currentTimeIndex) = (now()-startTime)*86400;
     mag(currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
 

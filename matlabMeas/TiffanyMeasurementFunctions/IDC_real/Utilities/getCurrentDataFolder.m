@@ -4,6 +4,6 @@ function [currentFolder] = getCurrentDataFolder()
     dateString = datestr(now(),format);
     currentFolder = fullfile(dataPath,dateString);
     if ~exist(currentFolder,'dir')
-        mkdir(path,dateString);
+        mkdir(dataPath,dateString);
     end
 end
