@@ -26,13 +26,9 @@ function [fig] = plotData(xData,yData,varargin)
     % provided. (See above)
     h = findobj('type','figure');
     if p.Results.subPlot
-        myFig = figure(h);
+        myFig = figure(h(1));
     else
-        if isempty(h)
-            newFigNum = 1;
-        else
-            newFigNum = get(gcf,'Number') + 1;
-        end
+        newFigNum = getNextMATLABFigNum();
         myFig = figure(newFigNum);
     end
     

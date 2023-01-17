@@ -1,16 +1,16 @@
 function plotName = genSR830PlotName(targetGate)
     switch targetGate
         case 'STM'
-            plotName = "Pinchoff";
+            plotName = 'Pinchoff';
         case 'TM'
-            plotName = "TopMetalSweep";
+            plotName = 'TopMetalSweep';
         case 'Res'
-            plotName = "ReservoirSweep";
+            plotName = 'ReservoirSweep';
         case 'Door'
-            plotName = "DoorSweep";
+            plotName = 'DoorSweep';
         case 'DP'
-            plotName = "DotPotentialSweep";
+            plotName = 'DotPotentialSweep';
         case 'Pair'
-            plotName = "PairSweep";
+            plotName = 'PairSweep';
     end
 end
