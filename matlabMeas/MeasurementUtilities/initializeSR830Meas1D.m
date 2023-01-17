@@ -83,30 +83,3 @@ xlabel(voltageAxisName);
 ylabel(yLabel);
 title("Mag vs Voltage");
 
-function xAxisName = genSR830Axis(targetGate)
-switch targetGate
-    case 'STM'
-        xAxisName = "STM Bias [V]";
-    case 'TM'
-        xAxisName = "Top Metal Voltage [V]";
-    case 'Res'
-        xAxisName = "Reservoir Voltage [V]";
-    case 'Door'
-        xAxisName = "Door Voltage [V]";
-    case 'DP'
-        xAxisName = "Dot Potential Voltage [V]";
-    case 'Pair'
-        deviceSet = evalin("base",TMDevice);
-        portSet = evalin("base",TMPort);
-        deviceSet2 = evalin("base",DotDevice);
-        portSet2 = evalin("base",DotPort);
-        delta = deviceSet2.sigDACQueryVoltage(portSet2) - deviceSet.sigDACQueryVoltage(portSet);
-        xAxisName = ["Top Metal Voltage (DP Bias " num2str(delta) "V) [V]"];
-    case 'Freq'
-        xAxisName = "SR830 Frequency [Hz]";
-    case 'Amp'
-        xAxisName = "SR830 Amplitude [V]";
-    otherwise
-        xAxisName = 'unknown';
-end
-end

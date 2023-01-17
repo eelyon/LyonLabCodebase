@@ -1,4 +1,4 @@
-function [] = displayFigure(date,figName)
+function [] = displayFig(date,figName)
     dataPath = getDataPath();
     figName = [figName '.fig'];
     dataPath = fullfile(dataPath,date);

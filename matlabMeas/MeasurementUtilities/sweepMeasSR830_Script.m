@@ -141,26 +141,13 @@ end
 
 function [x,y,mag,t,v] = getSR830Data(readSR830,x,y,mag,t,v,currentTimeIndex,startTime,waitTime)
 
-    x(currentIndex) = readSR830.queryX();
-    y(currentIndex) = readSR830.queryY();
-    v(currentIndex) = Vout;
-    t(currentIndex) = (now()-startTime)*86400;
-    mag(currentIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
+    x(currentTimeIndex) = readSR830.queryX();
+    y(currentTimeIndex) = readSR830.queryY();
+    v(currentTimeIndex) = Vout;
+    t(currentTimeIndex) = (now()-startTime)*86400;
+    mag(currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
 
     pause(waitTime)
 
 end
 
-
-function CIErr = calculateConfidenceInterval(CIVector,arr,numRepeats)
-    CIErr = (std(arr)/sqrt(numRepeats).*CIVector)*2;
-end
-
-function [err] = calculateSR830ErrorBar(errorType,CIVector,vector,repeat)
-    if strcmp(errorType,'CI')
-        verr = calculateConfidenceInterval(CIVector,vector,repeat);
-        err = verr(2);
-    else
-        err = std(vector);
-    end
-end
