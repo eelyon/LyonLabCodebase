@@ -1,4 +1,4 @@
-function [] = sweepMeasSR830_Func(subPlotHandle,plotHandles,sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,device,port,doBackAndForth)
+function [] = sweepMeasSR830_Func(plotHandles,sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,device,port,doBackAndForth)
 %initializeSR830Meas1D;
 %% Parameters to probe
 if start > stop && deltaParam > 0
@@ -30,7 +30,7 @@ startTime = now();
 
 %% Main parameter loop.
 for value = paramVector
-    %setVal(device,port,value);
+    setVal(device,port,value);
 
     %DACGUI.updateDACGUI;
     %drawnow;
@@ -44,7 +44,7 @@ for value = paramVector
     for j = 1:repeat
         
         %% Query SR830 for Real/Imag data, calculate Magnitude and place in vectors
-        [Real,Imag,Mag,time] = getSR830Data(Real,Imag,Mag,time,currentTimeIndex,startTime,timeBetweenPoints);
+        [Real,Imag,Mag,time] = getSR830Data(Real,Imag,Mag,time,currentTimeIndex,startTime,timeBetweenPoints,readSR830);
         
         %% Place data in repeat vectors that get averaged and error bars get calculated.
         magVectorRepeat(j)  = Mag(currentTimeIndex);
@@ -143,10 +143,10 @@ function setGateValue(targetGate,voltageToSet)
 end
 
 
-function [x,y,mag,t] = getSR830Data(x,y,mag,t,currentTimeIndex,startTime,waitTime)
+function [x,y,mag,t] = getSR830Data(x,y,mag,t,currentTimeIndex,startTime,waitTime,readSR830)
 
-    x(currentTimeIndex) = currentTimeIndex;%readSR830.queryX();
-    y(currentTimeIndex) = currentTimeIndex;%readSR830.queryY();
+    x(currentTimeIndex) = readSR830.queryX();
+    y(currentTimeIndex) = readSR830.queryY();
     t(currentTimeIndex) = (now()-startTime)*86400;
     mag(currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
 
