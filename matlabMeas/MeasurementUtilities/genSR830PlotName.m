@@ -12,5 +12,7 @@ function plotName = genSR830PlotName(targetGate)
             plotName = 'DotPotentialSweep';
         case 'Pair'
             plotName = 'PairSweep';
+        case 'Freq'
+            plotName = 'FrequencySweep';
     end
 end

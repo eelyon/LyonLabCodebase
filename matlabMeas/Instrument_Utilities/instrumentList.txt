@@ -1,1 +1,1 @@
-Instruments: SR830,DAC
+Instruments: SR830

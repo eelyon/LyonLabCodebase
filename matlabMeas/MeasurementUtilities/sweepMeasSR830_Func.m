@@ -46,7 +46,8 @@ for value = paramVector
         
     end
     
-    evalin("base","DACGUI.updateDACGUI");
+    disp("I commented out evalin('base','DACGUI.updateDACGUI'); If you need it uncomment it.")
+    %evalin("base","DACGUI.updateDACGUI");
     drawnow;
     pause(timeBetweenPoints);
     %% Initialize average vectors that gets reset for the repeating for loop

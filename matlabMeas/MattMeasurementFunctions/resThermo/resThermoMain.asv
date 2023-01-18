@@ -7,15 +7,14 @@ Matt Schulz
 %}
 
 addpath(genpath(strcat(pwd, '\Instrument_Utilities')));
-addpath(genpath(strcat(pwd, '\MeasurementUtilities')));
-addpath(genpath(strcat(pwd, '\PlotUtilities')));
+addpath(genpath(strcat(pwd, '\MnstrumentUtilities')));
 addpath(genpath(strcat(pwd, '\resThermoHelpers')));
 warning('off','all');
 
 port = 1234;
 
 SR830_Address = '172.29.117.103';
-SR830 = SR830(port, SR830_Address);
+SR830 = TCPIP_Connect(SR830_Address, port);
 
 %DMM_Address = '172.29.117.104';
 %DMM = TCPIP_Connect(DMM_Address, port);
@@ -26,3 +25,5 @@ SR830 = SR830(port, SR830_Address);
 %fclose(SR830);
 %fclose(DMM);
 %fclose(AWG);
+
+function [avgmags] = sweepMeasSR830_Func(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth)
