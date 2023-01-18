@@ -1,8 +1,12 @@
 function [obj1] = serial_Connect(COMPort)
+% Creates a serial connection for an instrument.
+% Inputs: 
+%           COMPort: character string of the form COM# which denotes the
+%           COM port to connect to.
 %% Instrument Connection
 
 % Find a serial port object.
-obj1 = instrfind('Type', 'serial', 'Port', 'COM4', 'Tag', '');
+obj1 = instrfind('Type', 'serial', 'Port', COMPort, 'Tag', '');
 
 % Create the serial port object if it does not exist
 % otherwise use the object that was found.

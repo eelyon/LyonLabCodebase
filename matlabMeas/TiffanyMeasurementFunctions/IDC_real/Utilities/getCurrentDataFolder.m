@@ -1,7 +1,9 @@
-function [currentFolder] = getCurrentDataFolder(path,format)
+function [currentFolder] = getCurrentDataFolder()
+    dataPath = getDataPath();
+    format = "mm_dd_yy";
     dateString = datestr(now(),format);
-    currentFolder = catFileAndFolders(path,dateString);
+    currentFolder = fullfile(dataPath,dateString);
     if ~exist(currentFolder,'dir')
-        mkdir(path,dateString);
+        mkdir(dataPath,dateString);
     end
 end

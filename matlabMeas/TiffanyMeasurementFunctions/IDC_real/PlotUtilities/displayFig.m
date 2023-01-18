@@ -1,8 +1,8 @@
-function [] = displayFigure(date,figName)
+function [] = displayFig(date,figName)
     dataPath = getDataPath();
     figName = [figName '.fig'];
-    dataPath = catFileAndFolders(dataPath,date);
-    figPath = catFileAndFolders(dataPath,figName);
+    dataPath = fullfile(dataPath,date);
+    figPath = fullfile(dataPath,figName);
     if exist(figPath,"file")
         openfig(figPath);
     else

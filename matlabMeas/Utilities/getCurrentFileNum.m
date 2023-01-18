@@ -1,6 +1,6 @@
 function [num] = getCurrentFileNum()
     dataPath = getDataPath();
-    fileNumPath = catFileAndFolders(dataPath,'fileNum.txt');
+    fileNumPath = fullfile(dataPath,'fileNum.txt');
     fileNum = fopen(fileNumPath,'r+');
     num = fgetl(fileNum);
     fclose(fileNum);
