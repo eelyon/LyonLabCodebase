@@ -53,10 +53,10 @@ function [fig] = plotData(xData,yData,varargin)
     instrumentList = parseInstrumentList();
 
     for i = 1:length(instrumentList)
-        if contains(instrumentList(i),"SR830")
-            metadata_struct.SR830 = evalin('base',['getSR830State(' instrumentList(i) ';']);
-        elseif contains(instrumentList(i),"sigDAC")
-            metadata_struct.sigDAC = evalin('base',['sigDACGetConfig(' instrumentList(i) ',8);']);
+        if contains(instrumentList{i},"SR830")
+            metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
+        elseif contains(instrumentList{i},"DAC")
+            metadata_struct.sigDAC = evalin('base',['sigDACGetConfig(' instrumentList{i} ');']);
         end
     end
     

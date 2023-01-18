@@ -4,17 +4,18 @@ i=1;
 handle = gcf;
 startTime = now();
 cleanupObj = onCleanup(@()cleanMeUp(handle));
+time = [];
+temperature = [];
 while 1
     resistance = queryHP34401A(Thermometer);
     time(i) = (now()-startTime)*86400/60;
     assignin('base',xName,time);
-    therm.tempFromRes(resistance)
+    temperature(i) = therm.tempFromRes(resistance);
     assignin('base',yName,temperature);
     i = i+1;
-    if ~mod(i,2)
-        refreshdata;
-        drawnow;
-    end
+
+    refreshdata;
+    drawnow;
     pause(timeBetweenPoints)
 end
     function cleanMeUp(handle)

@@ -1,4 +1,4 @@
-function [plotHandles,subPlotFigure] = initializeSR830Meas1D_Func(sweepType,doBackAndForth)
+function [plotHandles] = initializeSR830Meas1D_Func(sweepType,doBackAndForth)
 
 [time,Real,Imag] = deal(inf);
 
@@ -65,11 +65,12 @@ if ~doBackAndForth
 else
     plotHandles = {realVsTime,imagVsTime,magVsTime,realVsVoltageErr,realVsVoltageErr2,imagVsVoltageErr,imagVsVoltageErr2,magVsVoltageErr,magVsVoltageErr2};
 end
+tileFigures(subPlotFigure,1,1,2,[],[0,0,0.5,1]);
 end
 
 function xAxisName = genSR830Axis(targetGate)
 switch targetGate
-    case 'STM'
+    case 'ST'
         xAxisName = "STM Bias [V]";
     case 'TM'
         xAxisName = "Top Metal Voltage [V]";
@@ -80,12 +81,12 @@ switch targetGate
     case 'DP'
         xAxisName = "Dot Potential Voltage [V]";
     case 'Pair'
-        deviceSet = evalin("base",TMDevice);
-        portSet = evalin("base",TMPort);
-        deviceSet2 = evalin("base",DotDevice);
-        portSet2 = evalin("base",DotPort);
+        deviceSet = evalin("base","Top100Device");
+        portSet = evalin("base","Top100Port");
+        deviceSet2 = evalin("base","Dot100Device");
+        portSet2 = evalin("base","Dot100Port");
         delta = deviceSet2.sigDACQueryVoltage(portSet2) - deviceSet.sigDACQueryVoltage(portSet);
-        xAxisName = ["Top Metal Voltage (DP Bias " num2str(delta) "V) [V]"];
+        xAxisName = strcat("Top Metal Voltage (DP Bias ",num2str(delta),"V) [V]");
     case 'Freq'
         xAxisName = "SR830 Frequency [Hz]";
     case 'Amp'
