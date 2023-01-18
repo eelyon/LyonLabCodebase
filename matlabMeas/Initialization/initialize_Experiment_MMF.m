@@ -13,3 +13,6 @@ DAC = sigDAC(sigDACPort,8);
 
 AWG_Address = '172.29.117.108';
 AWG = Agilent33220A(port,AWG_Address);
+
+DACGUI = sigDACGUI;
+SR830GUI = SR830_GUI;
