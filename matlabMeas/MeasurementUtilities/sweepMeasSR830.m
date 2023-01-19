@@ -1,5 +1,5 @@
-function [avgmags] = sweepMeasSR830_Func(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth)
-plotHandles = initializeSR830Meas1D_Func(sweepType,doBackAndForth);
+function [avgmags] = sweepMeasSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth)
+plotHandles = initializeSR830Meas1D(sweepType,doBackAndForth);
 %% Parameters to probe
 if start > stop && deltaParam > 0
     deltaParam = -1*deltaParam;
