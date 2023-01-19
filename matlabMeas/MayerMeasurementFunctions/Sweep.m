@@ -1,5 +1,5 @@
 %% Parameters
-scanType = 'ST';
+scanType = 'PR';
 background = 1.2025186292635e-8;
 folder = ['Cooldowns/' datestr(now(),'mm_dd_yy')];
 if ~exist(folder,'dir')
@@ -45,10 +45,11 @@ if scanType == 'SW'
 elseif scanType == 'ST'
     
     Vstart = 0;%getVal(STM100Device,STM100Port);
-    Vend = Vstart - .3;
-    Vstep = -.001;
+    Vend = Vstart - .5;
+    Vstep = -.01;
     
     V = Vstart:Vstep:Vend ;
+    Vgain = 1;
     tau = .05;
     Igain = 1;
     waittime = tau;
@@ -69,7 +70,7 @@ elseif scanType == 'PR'
     dotV = getVal(Dot100Device,Dot100Port);
     dotDelta = dotV - topV;
     xLab = ['Top Bias [V] (DP Bias ' num2str(dotDelta) ' V)'];
-    V = topV:-0.1:-2;
+    V = topV:0.1:-0.5;
     tau = .06;
     Igain = 1;
     waittime = tau;
@@ -81,7 +82,7 @@ elseif scanType == 'PR'
     DeviceSet2 = Dot100Device;
     PortSet = Top100Port;
     PortSet2 = Dot100Port;
-    ReturnSweep = 1;
+    ReturnSweep = 0;
     Extra = 'PairSweep';
     titles = {'Real vs time','Imag vs time','Mag vs time','Real vs Bias','Imag vs Bias','Mag vs Bias'};
     ylabels = {'Current [A]'};

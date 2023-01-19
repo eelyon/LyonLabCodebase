@@ -22,8 +22,7 @@ input('\nFlash\n')
 %AWG.send33220Trigger();
 pause(1);
 
-%
-% sweepGate(Dot100Device,Dot100Port,BackingPlateVoltage+TMDelta,BackingPlateVoltage+TMDelta+DPBias,.01,.03);
+%sweepGate(Dot100Device,Dot100Port,BackingPlateVoltage+TMDelta,BackingPlateVoltage+TMDelta+DPBias,.01,.03);
 %pause(10);
 sweepGatePairs(Top100Device,Dot100Device,Top100Port,Dot100Port,1,1+DPBias,50,.03);
 sweepGatePairs(Door100Device,Res100Device,Door100Port,Res100Port,BackingPlateVoltage+1,BackingPlateVoltage,numVoltages,waitTime);

@@ -17,13 +17,13 @@ errorFlag = 0;
 
 if contains(name,'SR830')
     if contains(Port,'Freq')
-        Device.setSR830Freq(Value);
+        Device.SR830setFreq(Value);
 
     else if contains(Port,'Amp')
-            Device.setSR830Amplitude(Value);
+            Device.setSR830Amplitude(Value); %might need to change this, lookre at setters
 
     else
-        Device.SR830setAuxOut(Port,Value);
+        Device.SR830setAuxOut(Port,Value); %might need to change this, lookre at setters
     end
 
     end
