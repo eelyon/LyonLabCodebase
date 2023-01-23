@@ -1,6 +1,31 @@
-function [avgmags] = sweepMeasSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth)
-plotHandles = initializeSR830Meas1D(sweepType,doBackAndForth);
+function [avgmags] = sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth)
+% Function sweeps the device and ports from the start to stop parameter
+% with a given delta. 
+% Parameters:
+%           sweepType: character string defining the type of sweep.
+%           start: numeric defining the starting value of the swept parameter
+%           stop: numeric defining the stoping value of the swept parameter
+%           deltaParam: numeric defining the step size of the parameter
+%           being swept
+%           timeBetweenPoints: the wait time between setting points and
+%           collecting data. This should be on the order of the rise time
+%           of the lines.
+%           repeat: integer number of points to take for averaging. Reduces
+%           noise by 1/sqrt(repeat)
+%           readSR830: cell array with SR830 objects.
+%           device: device object - target device to be swept (DAC,AWG,etc..)
+%           ports: cell array defining the ports to be swept. See setval to
+%           determine what inputs are acceptable for the object in
+%           question.
+%           doBackAndForth - 0 (False) or 1 (True). Boolean to determine
+%           whether or not to sweep the parameter back to its original
+%           value.
+
+for srIndex = 1:length(readSR830)
+    plotHandles{srIndex} = initializeSR830Meas1D(sweepType,doBackAndForth);
+end
 %% Parameters to probe
+
 if start > stop && deltaParam > 0
     deltaParam = -1*deltaParam;
 elseif start < stop && deltaParam < 0
@@ -17,8 +42,10 @@ if strcmp(sweepType,'Pair')
     deltaGateParam = getVal(device,ports{2}) - getVal(device,ports{1});
 end
 
+numSR830s = length(readSR830);
+
 %% Create all arrays for data storage. 
-[Real,Imag,Mag,time,avgParam,avgmags,avgxs,avgys,stdm,stdx,stdy] = deal(inf);
+[Real,Imag,Mag,time,avgParam,avgmags,avgxs,avgys,stdm,stdx,stdy] = deal([]);
 
 %% Halfway point in case back and forth is done.
 halfway = length(paramVector)/2;
@@ -46,8 +73,11 @@ for value = paramVector
         
     end
     
+    % Update the DAC gui - this is sort of hard coded in maybe I need to
+    % make an update function that updates all GUIs present.
     evalin("base","DACGUI.updateDACGUI");
     drawnow;
+    
     pause(timeBetweenPoints);
     %% Initialize average vectors that gets reset for the repeating for loop
     magVectorRepeat = [];
@@ -61,22 +91,24 @@ for value = paramVector
         [Real,Imag,Mag,time] = getSR830Data(Real,Imag,Mag,time,currentTimeIndex,startTime,readSR830);
         
         %% Place data in repeat vectors that get averaged and error bars get calculated.
-        magVectorRepeat(j)  = Mag(currentTimeIndex);
-        xVectorRepeat(j)    = Real(currentTimeIndex);
-        yVectorRepeat(j)    = Imag(currentTimeIndex);
-
-        %% Place time data in time array.
+        for srIndex = 1:numSR830s
+            magVectorRepeat(srIndex,j)  = Mag(srIndex,currentTimeIndex);
+            xVectorRepeat(srIndex,j)    = Real(srIndex,currentTimeIndex);
+            yVectorRepeat(srIndex,j)    = Imag(srIndex,currentTimeIndex);
+        end
+        %% Increase timeIndex by 1.
         currentTimeIndex = currentTimeIndex + 1;
         
     end
     updateSR830TimePlots(plotHandles,Real,Imag,Mag,time);
 
     %% Average all data and place in average arrays.
-    avgParam(currentAvgIndex)   = value;
-    avgmags(currentAvgIndex)    = mean(magVectorRepeat);
-    avgxs(currentAvgIndex)      = mean(xVectorRepeat);
-    avgys(currentAvgIndex)      = mean(yVectorRepeat);
-    
+    for srIndex = 1:numSR830s
+        avgParam(srIndex,currentAvgIndex)   = value;
+        avgmags(srIndex,currentAvgIndex)    = mean(magVectorRepeat);
+        avgxs(srIndex,currentAvgIndex)      = mean(xVectorRepeat);
+        avgys(srIndex,currentAvgIndex)      = mean(yVectorRepeat);
+    end
     %% Calculate error bars for each point using the repeat vectors.
     stdm(currentAvgIndex)   = calculateErrorBar(errorType,CIVector,magVectorRepeat,repeat);
     stdx(currentAvgIndex)   = calculateErrorBar(errorType,CIVector,xVectorRepeat,repeat);
@@ -90,11 +122,15 @@ saveData(gcf,genSR830PlotName(sweepType))
 end
 
 
-function updateSR830TimePlots(plotHandles,Real,Imag,Mag,time)
-    setPlotXYData(plotHandles{1},time,Real);
-    setPlotXYData(plotHandles{2},time,Imag);
-    setPlotXYData(plotHandles{3},time,Mag);
+function updateSR830TimePlots(plotHandles,Real,Imag,Mag,time,numSR830s)
+for srIndex = 1:numSR830s
+    currentHandleSet = plotHandles{srIndex};
+    setPlotXYData(currentHandleSet{1},time,Real);
+    setPlotXYData(currentHandleSet{2},time,Imag);
+    setPlotXYData(currentHandleSet{3},time,Mag);
     axis tight;
+end
+    
 end
 
 function setPlotXYData(plotHandle,xDat,yDat)
@@ -132,12 +168,17 @@ end
 
 
 function [x,y,mag,t] = getSR830Data(x,y,mag,t,currentTimeIndex,startTime,readSR830)
-
-    x(currentTimeIndex) = readSR830.SR830queryX();
-    y(currentTimeIndex) = readSR830.SR830queryY();
-    t(currentTimeIndex) = (now()-startTime)*86400;
-    mag(currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
-    pause(.001);
+% Function pulls the x,y,magnitude, and time data for each point from the
+% targetSR830. IMPORTANT: readSR830 needs to be a cell array of SR830
+% objects!!!.
+for i = 1:length(readSR830)
+    currentSR830 = readSR830{i};
+    x(i,currentTimeIndex) = currentSR830.SR830queryX();
+    y(i,currentTimeIndex) = currentSR830.SR830queryY();
+    t(i,currentTimeIndex) = (now()-startTime)*86400;
+    mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
+    pause(.005);
+end
 end
 
 
