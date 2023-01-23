@@ -42,6 +42,28 @@ classdef sigDAC
             voltageArr = sigDAC.channelVoltages;
         end
 
+        function sigDACRampVoltage(sigDAC,channels,voltages,numSteps)
+            numChans = length(channels);
+            str = [numSteps numChans channels voltages];
+            convertArray = sprintf('%d ', str);  % num2str pads the array with space, use sprintf instead!
+            fprintf(sigDAC.client,['RAMP ' convertArray]);
+        end
+
+        function sigDACInit(sigDAC)
+                fprintf(sigDAC.client,'INIT');
+        end
+
+        function sigDACDoor(sigDAC, vPort, TauE, TauC)
+            DCMap;
+            fprintf(sigDAC.client,['DOOR ' num2str([2,DoorEPort,DoorCPort, ...
+                             4,vPort,2,0,0,TauE,TauC])]);
+        end
+
+        function sigDAC = disconnect_sigDAC(comPort)
+            sigDAC.comPort = comPort;
+            sigDAC.client = serial_Disconnect(comPort);
+        end
+
     end
 end
 
