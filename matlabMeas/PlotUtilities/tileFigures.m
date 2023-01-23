@@ -1,4 +1,4 @@
-function [varargout] = tileFigures(figs, Nrows, Ncols, monitor_id, spacer ,box)
+ function [varargout] = tileFigures(figs, Nrows, Ncols, monitor_id, spacer ,box)
 % TileFigures()
 % TileFigures(figs, Nrows, Ncols, monitor_id, spacer ,box)
 % TileFigures([], [], [], [], [], [])
