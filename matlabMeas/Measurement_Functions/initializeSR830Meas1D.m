@@ -1,4 +1,4 @@
-function [plotHandles] = initializeSR830Meas1D(sweepType,doBackAndForth)
+function [plotHandles,subPlotFigure] = initializeSR830Meas1D(sweepType,doBackAndForth)
 
 [time,Real,Imag] = deal(inf);
 

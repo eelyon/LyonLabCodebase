@@ -2,7 +2,7 @@ function [avgmags] = sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetwee
 % Function sweeps the device and ports from the start to stop parameter
 % with a given delta. 
 % Parameters:
-%           sweepType: cell of character string defining the type of sweep.
+%           sweepType: character string defining the type of sweep.
 %           start: numeric defining the starting value of the swept parameter
 %           stop: numeric defining the stoping value of the swept parameter
 %           deltaParam: numeric defining the step size of the parameter
@@ -22,7 +22,7 @@ function [avgmags] = sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetwee
 %           value.
 
 for srIndex = 1:length(readSR830)
-    [plotHandles{srIndex},subPlotFigureHandles{srIndex}] = initializeSR830Meas1D(sweepType{srIndex},doBackAndForth);
+    plotHandles{srIndex} = initializeSR830Meas1D(sweepType,doBackAndForth);
 end
 %% Parameters to probe
 
@@ -38,7 +38,7 @@ if doBackAndForth
     paramVector = [paramVector flippedParam];
 end
 
-if strcmp(sweepType{1},'Pair')
+if strcmp(sweepType,'Pair')
     deltaGateParam = getVal(device,ports{2}) - getVal(device,ports{1});
 end
 
@@ -125,10 +125,8 @@ for value = paramVector
     updateSR830AveragePlots(plotHandles,avgParam,avgmags,avgxs,avgys,stdm,stdx,stdy,doBackAndForth,currentAvgIndex,halfway,numSR830s);
     currentAvgIndex = currentAvgIndex + 1;
 end
+saveData(gcf,genSR830PlotName(sweepType))
 
-for i = 1:numSR830s
-    saveData(subPlotFigureHandles{i},genSR830PlotName(sweepType{i}))
-end
 end
 
 
