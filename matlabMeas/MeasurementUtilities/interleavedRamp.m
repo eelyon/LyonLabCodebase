@@ -1,6 +1,6 @@
-function [] = interleavedRamp(devices,ports,stop,numSteps)
+function [] = interleavedRamp(devices,ports,stop,numSteps,waitTime)
 % Function interleaves sweeps of parameters. Devices, ports, and stop must
-% be an array of identical size.
+% be an array of identical size. WaitTime is in seconds.
 starts = [];
 voltages = {};
 
@@ -13,7 +13,8 @@ end
 
 for vParam = 1:length(voltages{1})
     for portParam = 1:length(ports)
-        setVal(devices(portParam),ports(portParam),voltages{portParam}(vParam))
+        setVal(devices(portParam),ports(portParam),voltages{portParam}(vParam));
+        pause(waitTime);
     end
 end
 
