@@ -128,7 +128,7 @@ function updateSR830AveragePlots(plotHandles,avgParam,avgmags,doBackAndForth,cur
         setErrorBarXYData(plotHandles{5},avgParam(halfway+1:end),avgxs(halfway+1:end),stdx(halfway+1:end));
         setErrorBarXYData(plotHandles{7},avgParam(halfway+1:end),avgys(halfway+1:end),stdy(halfway+1:end));
         setErrorBarXYData(plotHandles{9},avgParam(halfway+1:end),avgmags(halfway+1:end),stdm(halfway+1:end));
-    else if doBackAndForth && currentIndex < halfway
+    elseif doBackAndForth && currentIndex < halfway
         setErrorBarXYData(plotHandles{4},avgParam,avgxs,stdx);
         setErrorBarXYData(plotHandles{6},avgParam,avgys,stdy);
         setErrorBarXYData(plotHandles{8},avgParam,avgmags,stdm);
@@ -136,7 +136,6 @@ function updateSR830AveragePlots(plotHandles,avgParam,avgmags,doBackAndForth,cur
         setErrorBarXYData(plotHandles{4},avgParam,avgxs,stdx);
         setErrorBarXYData(plotHandles{5},avgParam,avgys,stdy);
         setErrorBarXYData(plotHandles{6},avgParam,avgmags,stdm);
-    end
     end
 end
 

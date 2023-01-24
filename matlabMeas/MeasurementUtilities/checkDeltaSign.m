@@ -1,7 +1,7 @@
 function [deltaVal] = checkDeltaSign(startVal,stopVal,deltaVal)
     if startVal > stopVal && deltaVal > 0
         deltaVal = -1*deltaVal;
-    else if startVal < stopVal && deltaVal < 0
+    elseif startVal < stopVal && deltaVal < 0
         deltaVal = -1*deltaVal;
     end
 end

@@ -159,7 +159,7 @@ for srIndex = 1:numSR830s
         setErrorBarXYData(currentHandleSet{5},avgParam(srIndex,halfway+1:end),avgxs(srIndex,halfway+1:end),stdx(srIndex,halfway+1:end));
         setErrorBarXYData(currentHandleSet{7},avgParam(srIndex,halfway+1:end),avgys(srIndex,halfway+1:end),stdy(srIndex,halfway+1:end));
         setErrorBarXYData(currentHandleSet{9},avgParam(srIndex,halfway+1:end),avgmags(srIndex,halfway+1:end),stdm(srIndex,halfway+1:end));
-    else if doBackAndForth && currentIndex <= halfway
+    elseif doBackAndForth && currentIndex <= halfway
             setErrorBarXYData(currentHandleSet{4},avgParam(srIndex,:),avgxs(srIndex,:),stdx(srIndex,:));
             setErrorBarXYData(currentHandleSet{6},avgParam(srIndex,:),avgys(srIndex,:),stdy(srIndex,:));
             setErrorBarXYData(currentHandleSet{8},avgParam(srIndex,:),avgmags(srIndex,:),stdm(srIndex,:));
@@ -167,7 +167,6 @@ for srIndex = 1:numSR830s
         setErrorBarXYData(currentHandleSet{4},avgParam(srIndex,:),avgxs(srIndex,:),stdx(srIndex,:));
         setErrorBarXYData(currentHandleSet{5},avgParam(srIndex,:),avgys(srIndex,:),stdy(srIndex,:));
         setErrorBarXYData(currentHandleSet{6},avgParam(srIndex,:),avgmags(srIndex,:),stdm(srIndex,:));
-    end
     end
 end
 end
