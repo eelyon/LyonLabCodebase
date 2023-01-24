@@ -26,11 +26,7 @@ for srIndex = 1:length(readSR830)
 end
 %% Parameters to probe
 
-if start > stop && deltaParam > 0
-    deltaParam = -1*deltaParam;
-elseif start < stop && deltaParam < 0
-    deltaParam = -1*deltaParam;
-end
+deltaParam = checkDeltaSign(start,stop,deltaParam);
 
 paramVector = start:deltaParam:stop;
 if doBackAndForth
