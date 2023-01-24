@@ -46,7 +46,7 @@ function [xDataCell,yDataCell,xLab,yLab,titleName] = pullSR830Data(figNum,plotNa
         [xDat2,yDat2,xLab,yLab,titleName] = getXYDataSubPlots(figPath,'plotNum',plotNum,'fieldNum',2,'type',type);
         xDataCell = {xDat,xDat2};
         yDataCell = {yDat,yDat2};
-    else if plotNum < 4 && ~pullForwardAndBack
+    elseif plotNum < 4 && ~pullForwardAndBack
             % forward graph!
             [xDat,yDat,xLab,yLab,titleName] = getXYDataSubPlots(figPath,'plotNum',plotNum,'fieldNum',2,'type',type);
             xDataCell = {xDat};
