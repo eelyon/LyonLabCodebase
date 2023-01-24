@@ -1,11 +1,11 @@
-%% Voltage parameters for filament emission
+%% Voltage initialization parameters
 BackingPlateVoltage = -2;
 TMBias= 3;
 channelBias = 0;
-channelVoltages = BackingPlateVoltage + channelBias;
 
-%% Final voltage configuration
+channelVoltages = BackingPlateVoltage + channelBias;
 dotBiasFromTop = 0;
+
 finalTopMetalVoltage = 1;
 finalDotVoltage = finalTopMetalVoltage + TMBias + dotBiasFromTop;
 finalDoorVoltage = -2;
@@ -42,7 +42,6 @@ input('\nFlash\n')
 
 pause(1);
 
-%% Ramp all gates to their final voltages
 disp(["Ramping Top and Dots to " num2str(finalTopMetalVoltage) " and " num2str(finalDotVoltage) " Volts."]);
 sweepGatePairs(Top100Device,Dot100Device,Top100Port,Dot100Port,finalTopMetalVoltage,finalDotVoltage,50,.03);
 
