@@ -1,5 +1,9 @@
 function [avgmags] = sweep2DMeasSR830_Func(sweepTypes, starts, stops, deltaParams, devices, portss, timeBetweenPoints,repeat,readSR830)
-plotHandle = initializeSR830Meas2D_Func(sweepTypes, starts, stops, deltas);
+
+%% Test command
+% sweep2DMeasSR830_Func({'Freq', 'ST'}, {1000, 0}, {10000, 1}, {1000, 0.01}, {'SR830','SR830'}, {{'Freq'},{'Aux1'}})
+
+plotHandle = initializeSR830Meas2D_Func(sweepTypes, starts, stops, deltaParams);
 
 %% Read in Sweep types
 % Each argument unpacked here needs braces to function correctly (i.e. sweepTypes = {'Freq', 'STM'})
@@ -35,14 +39,11 @@ end
 
 paramVector2 = start2:deltaParam2:stop2;
 
-flippedParam2 = fliplr(paramVector2);
-
 if strcmp(sweepType2,'Pair')
     deltaGateParam2 = getVal(device2,ports2{2}) - getVal(device,ports2{1});
 end
 
 %% Index for time axis.
-currentTimeIndex = 1;
 currentAvgIndex = 1;
 
 %% Define a cleanup function that will save data on user interrupt.
@@ -51,7 +52,8 @@ startTime = now();
 %% Main parameter loop.
 currentMainLoopIter = 1;
 
-for value1 = paramVector1 %loops through 1 first
+for valueIndex1 = 1:length(paramVector1) %loops through 1 first
+    value1 = paramVector1(valueIndex1);
 
     for pIndex1 = 1:length(ports1)
         port1 = ports1{pIndex1};
@@ -66,16 +68,17 @@ for value1 = paramVector1 %loops through 1 first
     evalin("base","DACGUI.updateDACGUI");
     drawnow;
     pause(timeBetweenPoints);
-    
+
     if mod(currentMainLoopIter, 2) == 1
-        paramVector2Actual = paramVector2;
+        valueIndexVector2 = 1:length(paramVector2);
     else
         if mod(currentMainLoopIter, 2) == 0
-            paramVector2Actual = flippedParam2;
+            valueIndexVector2 = fliplr(1:length(paramVector2));
         end
     end
 
-    for value2 = paramVector2Actual %loops through 1 first
+    for valueIndex2 = valueIndexVector2 %loops through 1 first
+        value2 = paramVector2(valueIndex2);
         for pIndex2 = 1:length(ports2)
             port2 = ports2{pIndex2};
             if pIndex2 == 1
@@ -97,20 +100,14 @@ for value1 = paramVector1 %loops through 1 first
             %% Query SR830 for Real/Imag data, calculate Magnitude and place in vectors
             Mag = getSR830MagData(readSR830);
             
-            %% Place data in repeat vectors that get averaged and error bars get calculated.
+            %% Place data in repeat vectors that get averaged
             magVectorRepeat(j)  = Mag;
         end
+
+        plotHandle.CData((length(paramVector1) * (valueIndex1)) + valueIndex2) = mean(magVectorRepeat);
     end
-
-    %% Average all data and place in average arrays.
-    avgParam(currentAvgIndex)   = value;
-    avgmags(currentAvgIndex)    = mean(magVectorRepeat);
-
-    %% Assign all the data properly depending on doing a back and forth scan.
-    %updateSR830AveragePlots(plotHandle,avgParam,avgmags,doBackAndForth,currentAvgIndex,halfway);
-    currentAvgIndex = currentAvgIndex + 1;
 end
-%saveData(gcf,genSR830PlotName([sweepType1, sweepType2]))
+saveData(gcf,genSR830PlotName([sweepType1, '_over_', sweepType2]))
 end
 
 function mag = getSR830MagData(readSR830)

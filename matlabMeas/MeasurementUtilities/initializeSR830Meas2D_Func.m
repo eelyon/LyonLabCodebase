@@ -9,7 +9,7 @@ xData = [start2, stop2];
 lenX = length(start2:(2 * (start2 < stop2) - 1) * deltaParam2:stop2);
 yData = [start1, stop1];
 lenY = length(start1:(2 * (start1 < stop1) - 1) *deltaParam1:stop1);
-zData = ones(lenX, lenY);
+zData = NaN(lenX, lenY);
 
 xAxisName = genSR830Axis(sweepType2);
 yAxisName = genSR830Axis(sweepType1);
