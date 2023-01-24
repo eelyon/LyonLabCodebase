@@ -1,5 +1,7 @@
 function [plotHandle] = initializeSR830Meas2D_Func(sweepTypes, starts, stops, deltas)
 
+% initializeSR830Meas2D_Func({'Freq', 'ST'}, {1000, 0}, {10000, 1}, {1000, 0.01})
+
 [sweepType1, sweepType2] = sweepTypes{:};
 [start1, start2] = starts{:};
 [stop1, stop2] = stops{:};
@@ -9,10 +11,10 @@ xData = [start2, stop2];
 lenX = length(start2:(2 * (start2 < stop2) - 1) * deltaParam2:stop2);
 yData = [start1, stop1];
 lenY = length(start1:(2 * (start1 < stop1) - 1) *deltaParam1:stop1);
-zData = NaN(lenX, lenY);
+zData = NaN(lenY, lenX);
 
-xAxisName = genSR830Axis(sweepType2);
 yAxisName = genSR830Axis(sweepType1);
+xAxisName = genSR830Axis(sweepType2);
 
 myFig = figure(getNextMATLABFigNum());
 
@@ -53,7 +55,7 @@ end
 myFig.UserData = metadata_struct;
 
 plotHandle = fig;
-%tileFigures(myFig,1,1,2,[],[0,0,0.5,1]);
+tileFigures(myFig,1,1,2,[],[0,0,0.5,1]);
 
 function xAxisName = genSR830Axis(targetGate)
 switch targetGate

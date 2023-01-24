@@ -1,9 +1,11 @@
 function [avgmags] = sweep2DMeasSR830_Func(sweepTypes, starts, stops, deltaParams, devices, portss, timeBetweenPoints,repeat,readSR830)
 
 %% Test command
-% sweep2DMeasSR830_Func({'Freq', 'ST'}, {1000, 0}, {10000, 1}, {1000, 0.01}, {'SR830','SR830'}, {{'Freq'},{'Aux1'}})
+% sweep2DMeasSR830_Func({'Freq', 'ST'}, {1000, 0}, {10000, 1}, {1000, 0.1}, {SR830,SR830}, {{'Freq'},{'1'}}, 0.5, 5, SR830)
 
 plotHandle = initializeSR830Meas2D_Func(sweepTypes, starts, stops, deltaParams);
+
+haveDAC = 0;
 
 %% Read in Sweep types
 % Each argument unpacked here needs braces to function correctly (i.e. sweepTypes = {'Freq', 'STM'})
@@ -65,14 +67,16 @@ for valueIndex1 = 1:length(paramVector1) %loops through 1 first
         
     end
     
-    evalin("base","DACGUI.updateDACGUI");
-    drawnow;
+    if haveDAC
+        evalin("base","DACGUI.updateDACGUI");
+        drawnow;
+    end
     pause(timeBetweenPoints);
 
-    if mod(currentMainLoopIter, 2) == 1
+    if mod(valueIndex1, 2) == 1
         valueIndexVector2 = 1:length(paramVector2);
     else
-        if mod(currentMainLoopIter, 2) == 0
+        if mod(valueIndex1, 2) == 0
             valueIndexVector2 = fliplr(1:length(paramVector2));
         end
     end
@@ -89,8 +93,10 @@ for valueIndex1 = 1:length(paramVector1) %loops through 1 first
             
         end
         
-        evalin("base","DACGUI.updateDACGUI");
-        drawnow;
+        if haveDAC
+            evalin("base","DACGUI.updateDACGUI");
+            drawnow;
+        end
         pause(timeBetweenPoints);
         %% Initialize average vectors that gets reset for the repeating for loop
         magVectorRepeat = [];
@@ -104,10 +110,10 @@ for valueIndex1 = 1:length(paramVector1) %loops through 1 first
             magVectorRepeat(j)  = Mag;
         end
 
-        plotHandle.CData((length(paramVector1) * (valueIndex1)) + valueIndex2) = mean(magVectorRepeat);
+        plotHandle.CData(valueIndex1, valueIndex2) = mean(magVectorRepeat);
     end
 end
-saveData(gcf,genSR830PlotName([sweepType1, '_over_', sweepType2]))
+saveData(gcf,[genSR830PlotName(sweepType1), '-over-', genSR830PlotName(sweepType2)])
 end
 
 function mag = getSR830MagData(readSR830)

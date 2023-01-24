@@ -23,6 +23,7 @@ if contains(name,'SR830')
             Device.setSR830Amplitude(Value); %might need to change this, lookre at setters
 
     else
+        Port = str2num(Port);
         Device.SR830setAuxOut(Port,Value); %might need to change this, lookre at setters
     end
 
