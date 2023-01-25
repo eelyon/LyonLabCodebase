@@ -19,17 +19,16 @@ if contains(name,'SR830')
     if contains(Port,'Freq')
         Device.SR830setFreq(Value);
 
-    else if contains(Port,'Amp')
+    elseif contains(Port,'Amp')
             Device.setSR830Amplitude(Value); %might need to change this, lookre at setters
 
     else
         Port = str2num(Port);
         Device.SR830setAuxOut(Port,Value); %might need to change this, lookre at setters
-    end
 
     end
 
-else if contains(name,'AP24')
+elseif contains(name,'AP24')
 
         if calibrate
             load(['AP24/AP24_' num2str(Port) '.mat']);
@@ -63,7 +62,6 @@ elseif contains(name,',33220A,')
 else
     fprintf('\nUnknown Device\n')
     errorFlag = -2;
-end
 end
 end
 

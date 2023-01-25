@@ -16,3 +16,9 @@ AWG = Agilent33220A(port,AWG_Address);
 
 DACGUI = sigDACGUI;
 SR830GUI = SR830_GUI;
+SR830SWEEPGUI = sweepSR830GUI;
+
+SR830SWEEPGUI.SR830ReadEditField.Value = 'SR830';
+SR830SWEEPGUI.SweepDeviceEditField.Value = 'DAC';
+SR830SWEEPGUI.numRepeatsEditField.Value = 10;
+DCMap;

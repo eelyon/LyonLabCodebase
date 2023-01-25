@@ -1,5 +1,5 @@
 function [ZL,ZU] = getZCoefficients(thermometerType)
-    if strcmp(thermometerType,'939801')
+    if strcmp(thermometerType,'X117656')
             ZL = 2.68491328511;
             ZU = 3.88972245339;
     else
