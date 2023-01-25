@@ -1,71 +1,72 @@
-function [plotHandle] = initializeSR830Meas2D_Func(sweepType1, sweepType1,doBackAndForth)
+function [plotHandle] = initializeSR830Meas2D_Func(sweepTypes, starts, stops, deltas)
 
-[time,Real,Imag] = deal(inf);
+%% Test command (FOR TESTING PURPOSES ONLY, NOT INDICATIVE OF ANY OTHER FUNCTIONALITY)
+% initializeSR830Meas2D_Func({'Freq', 'ST'}, {1000, 0}, {10000, 1}, {1000, 0.01})
 
-timeLabel = "Time [s]";
-voltageAxisName = genSR830Axis(sweepType);
-yLabel = "Current [A]";
+%% Read in and up pack variables to use in preparation functions
+[sweepType1, sweepType2] = sweepTypes{:};
+dataToPlot = generate2DPlotData(starts, stops, deltas);
 
-subPlotFigure = figure(getNextMATLABFigNum());
-subplot(2,3,1);
-realVsTime = plotData(time,Real,'xLabel',timeLabel,'yLabel',"Real",'title',"Real vs Time",'subPlot',1);
+yAxisName = genSR830Axis(sweepType1);
+xAxisName = genSR830Axis(sweepType2);
 
-subplot(2,3,2)
-imagVsTime = plotData(time,Real,'xLabel',timeLabel,'yLabel',"Imag",'title',"Imag vs Time",'subPlot',1);
+%% Plot data
+plotHandle = plot2DData(dataToPlot{1},dataToPlot{2},dataToPlot{3},'xLabel',xAxisName,'yLabel', yAxisName);
+axisDirectionCorrector(starts{1}, starts{2}, stops{1}, stops{2});
 
-subplot(2,3,3)
-magVsTime = plotData(time,Real,'xLabel',timeLabel,'yLabel',"Mag",'title',"Mag vs Time",'subPlot',1);
+tileFigures(myFig,1,1,2,[],[0,0,0.5,1]);
 
+function [] = axisDirectionCorrector(start1, start2, stop1, stop2)
+    %% axisDirectionCorrector
+    % This function changes the orientation of the axes in the final plot 
+    % to match the sweeping direction implied by the relative magnitudes of
+    % the starting and stopping points.
+    %
+    % This reversal is useful due to how data is updated in the plot (from
+    % the bottom left corner up. Naturally, this can be changed to plot in
+    % any way desired, but this is the easiest solution, especially since
+    % the data can be affected afterwords to be plotted in any direction
+    % desired once captured.
+    %
+    % For example, if the start of a voltage sweep is at 1 V and ends at
+    % 0 V, the sweep will start at 1 V. The axis then, due to this
+    % function, will flip such that the left-most axis label is 1 V and the
+    % right most axis label is 0 V.
+    %
+    % The need for 2 starts and stops is born from the 2 axes of any matlab
+    % image plot.
 
-
-%[vavg1,vavg2,avgxs1,avgxs2,avgys1,avgys2,stdx1,stdx2,stdy1,stdy2,avgmags1,avgmags2,stdm1,stdm2] = deal(inf);
-
-
-subplot(2,3,4)
-if ~doBackAndForth
-    realVsVoltageErr = errorbar(time,Real,Imag,'Bx');
-else
-    realVsVoltageErr = errorbar(time,Real,Imag,'Bx');
-    hold on
-    realVsVoltageErr2 = errorbar(time,Real,Imag,'C*');
-    hold off
+    if start2 < stop2
+        set(gca,'XDir','normal');
+    else
+        set(gca,'XDir','reverse');
+    end
+    
+    if start1 < stop1
+        set(gca,'YDir','normal');
+    else
+        set(gca,'YDir','reverse');
+    end
 end
-xlabel(voltageAxisName);
-ylabel(yLabel);
-title("Real vs Voltage");
 
-subplot(2,3,5)
-if ~doBackAndForth
-    imagVsVoltageErr = errorbar(time,Real,Imag,'RX');
-else
-    imagVsVoltageErr = errorbar(time,Real,Imag,'RX');
-    hold on
-    imagVsVoltageErr2 = errorbar(time,Real,Imag,'M*');
-    hold off
-end
-xlabel(voltageAxisName);
-ylabel(yLabel);
-title("Imag vs Voltage");
+function outData = generate2DPlotData(starts, stops, deltas)
+    %% generate2DPlotData
+    % Generates the data used in initializing an image plot in matlab using
+    % the input data (such as starting points, stopping points, and the
+    % distances between variables in sweeps). This is done to prep the plot
+    % for data to be changed in it later.
 
-subplot(2,3,6)
-if ~doBackAndForth
-    magVsVoltageErr = errorbar(time,Real,Imag,'Kd');
-else
-    magVsVoltageErr = errorbar(time,Real,Imag,'Kd');
-    hold on
-    magVsVoltageErr2 = errorbar(time,Real,Imag,'GO');
-    hold off
-end
-xlabel(voltageAxisName);
-ylabel(yLabel);
-title("Mag vs Voltage");
+    [start1, start2] = starts{:};
+    [stop1, stop2] = stops{:};
+    [deltaParam1, deltaParam2] = deltas{:};
+    
+    xData = [start2, stop2];
+    lenX = length(start2:(2 * (start2 < stop2) - 1) * abs(deltaParam2):stop2);
+    yData = [start1, stop1];
+    lenY = length(start1:(2 * (start1 < stop1) - 1) * abs(deltaParam1):stop1);
+    zData = NaN(lenY, lenX);
 
-if ~doBackAndForth
-    plotHandles = {realVsTime,imagVsTime,magVsTime,realVsVoltageErr,imagVsVoltageErr,magVsVoltageErr};
-else
-    plotHandles = {realVsTime,imagVsTime,magVsTime,realVsVoltageErr,realVsVoltageErr2,imagVsVoltageErr,imagVsVoltageErr2,magVsVoltageErr,magVsVoltageErr2};
-end
-tileFigures(subPlotFigure,1,1,2,[],[0,0,0.5,1]);
+    outData = {xData, yData, zData};
 end
 
 function xAxisName = genSR830Axis(targetGate)
@@ -95,4 +96,4 @@ switch targetGate
         xAxisName = 'unknown';
 end
 end
-
+end
