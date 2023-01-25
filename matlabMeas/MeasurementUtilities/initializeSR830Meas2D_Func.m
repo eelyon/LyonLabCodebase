@@ -1,61 +1,73 @@
 function [plotHandle] = initializeSR830Meas2D_Func(sweepTypes, starts, stops, deltas)
 
+%% Test command (FOR TESTING PURPOSES ONLY, NOT INDICATIVE OF ANY OTHER FUNCTIONALITY)
 % initializeSR830Meas2D_Func({'Freq', 'ST'}, {1000, 0}, {10000, 1}, {1000, 0.01})
 
+%% Read in and up pack variables to use in preparation functions
 [sweepType1, sweepType2] = sweepTypes{:};
-[start1, start2] = starts{:};
-[stop1, stop2] = stops{:};
-[deltaParam1, deltaParam2] = deltas{:};
-
-xData = [start2, stop2];
-lenX = length(start2:(2 * (start2 < stop2) - 1) * deltaParam2:stop2);
-yData = [start1, stop1];
-lenY = length(start1:(2 * (start1 < stop1) - 1) *deltaParam1:stop1);
-zData = NaN(lenY, lenX);
+dataToPlot = generate2DPlotData(starts, stops, deltas);
 
 yAxisName = genSR830Axis(sweepType1);
 xAxisName = genSR830Axis(sweepType2);
 
-myFig = figure(getNextMATLABFigNum());
+%% Plot data
+plotHandle = plot2DData(dataToPlot{1},dataToPlot{2},dataToPlot{3},'xLabel',xAxisName,'yLabel', yAxisName);
+axisDirectionCorrector(starts{1}, starts{2}, stops{1}, stops{2});
 
-fig = image(xData, yData, zData, 'CDataMapping', 'scaled');
+tileFigures(myFig,1,1,2,[],[0,0,0.5,1]);
 
-if start2 < stop2
-    set(gca,'XDir','normal');
-else
-    set(gca,'XDir','reverse');
-end
+function [] = axisDirectionCorrector(start1, start2, stop1, stop2)
+    %% axisDirectionCorrector
+    % This function changes the orientation of the axes in the final plot 
+    % to match the sweeping direction implied by the relative magnitudes of
+    % the starting and stopping points.
+    %
+    % This reversal is useful due to how data is updated in the plot (from
+    % the bottom left corner up. Naturally, this can be changed to plot in
+    % any way desired, but this is the easiest solution, especially since
+    % the data can be affected afterwords to be plotted in any direction
+    % desired once captured.
+    %
+    % For example, if the start of a voltage sweep is at 1 V and ends at
+    % 0 V, the sweep will start at 1 V. The axis then, due to this
+    % function, will flip such that the left-most axis label is 1 V and the
+    % right most axis label is 0 V.
+    %
+    % The need for 2 starts and stops is born from the 2 axes of any matlab
+    % image plot.
 
-if start1 < stop1
-    set(gca,'YDir','normal');
-else
-    set(gca,'YDir','reverse');
-end
-
-colorbar;
-
-xlabel(xAxisName);
-ylabel(yAxisName);
-
-% Compile Metadata
-figDateFormat = 'mm_dd_yy HH:MM:SS';
-metadata_struct.time= datestr(now(),figDateFormat);
-instrumentList = parseInstrumentList();
-
-for i = 1:length(instrumentList)
-    if contains(instrumentList{i},"SR830")
-        metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
-    elseif contains(instrumentList{i},"DAC")
-        metadata_struct.sigDAC = evalin('base',['sigDACGetConfig(' instrumentList{i} ');']);
+    if start2 < stop2
+        set(gca,'XDir','normal');
+    else
+        set(gca,'XDir','reverse');
+    end
+    
+    if start1 < stop1
+        set(gca,'YDir','normal');
+    else
+        set(gca,'YDir','reverse');
     end
 end
 
-% Insert metadata structure into figure and save in data.
+function outData = generate2DPlotData(starts, stops, deltas)
+    %% generate2DPlotData
+    % Generates the data used in initializing an image plot in matlab using
+    % the input data (such as starting points, stopping points, and the
+    % distances between variables in sweeps). This is done to prep the plot
+    % for data to be changed in it later.
 
-myFig.UserData = metadata_struct;
+    [start1, start2] = starts{:};
+    [stop1, stop2] = stops{:};
+    [deltaParam1, deltaParam2] = deltas{:};
+    
+    xData = [start2, stop2];
+    lenX = length(start2:(2 * (start2 < stop2) - 1) * abs(deltaParam2):stop2);
+    yData = [start1, stop1];
+    lenY = length(start1:(2 * (start1 < stop1) - 1) * abs(deltaParam1):stop1);
+    zData = NaN(lenY, lenX);
 
-plotHandle = fig;
-tileFigures(myFig,1,1,2,[],[0,0,0.5,1]);
+    outData = {xData, yData, zData};
+end
 
 function xAxisName = genSR830Axis(targetGate)
 switch targetGate

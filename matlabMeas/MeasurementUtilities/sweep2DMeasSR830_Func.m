@@ -1,11 +1,19 @@
 function [avgmags] = sweep2DMeasSR830_Func(sweepTypes, starts, stops, deltaParams, devices, portss, timeBetweenPoints,repeat,readSR830)
 
-%% Test command
+%% Test command (FOR TESTING PURPOSES ONLY, NOT INDICATIVE OF ANY OTHER FUNCTIONALITY)
 % sweep2DMeasSR830_Func({'Freq', 'ST'}, {1000, 0}, {10000, 1}, {1000, 0.1}, {SR830,SR830}, {{'Freq'},{'1'}}, 0.5, 5, SR830)
 
 plotHandle = initializeSR830Meas2D_Func(sweepTypes, starts, stops, deltaParams);
 
+
+instrumentList = parseInstrumentList();
+
 haveDAC = 0;
+for i = 1:length(instrumentList)
+    if contains(instrumentList{i},"DAC")
+        haveDAC = 1;
+    end
+end
 
 %% Read in Sweep types
 % Each argument unpacked here needs braces to function correctly (i.e. sweepTypes = {'Freq', 'STM'})
@@ -26,8 +34,6 @@ end
 
 paramVector1 = start1:deltaParam1:stop1;
 
-%flippedParam1 = fliplr(paramVector1);
-
 if strcmp(sweepType1,'Pair')
     deltaGateParam1 = getVal(device1,ports1{2}) - getVal(device1,ports1{1});
 end
@@ -45,14 +51,8 @@ if strcmp(sweepType2,'Pair')
     deltaGateParam2 = getVal(device2,ports2{2}) - getVal(device,ports2{1});
 end
 
-%% Index for time axis.
-currentAvgIndex = 1;
-
 %% Define a cleanup function that will save data on user interrupt.
 startTime = now();
-
-%% Main parameter loop.
-currentMainLoopIter = 1;
 
 for valueIndex1 = 1:length(paramVector1) %loops through 1 first
     value1 = paramVector1(valueIndex1);
@@ -72,13 +72,10 @@ for valueIndex1 = 1:length(paramVector1) %loops through 1 first
         drawnow;
     end
     pause(timeBetweenPoints);
-
-    if mod(valueIndex1, 2) == 1
-        valueIndexVector2 = 1:length(paramVector2);
-    else
-        if mod(valueIndex1, 2) == 0
-            valueIndexVector2 = fliplr(1:length(paramVector2));
-        end
+    
+    valueIndexVector2 = 1:length(paramVector2);
+    if mod(valueIndex1, 2) == 0
+        valueIndexVector2 = fliplr(1:length(paramVector2));
     end
 
     for valueIndex2 = valueIndexVector2 %loops through 1 first

@@ -1,0 +1,61 @@
+function [fig] = plot2DData(xData,yData,cData,varargin)
+    defaultXLabel = "x axis (arb)";
+    defaultYLabel = "y axis (arb)";
+    defaultSubPlot = 0;
+    defaultTurnHoldOn = 0;
+    defaultType = 'plot';
+    defaultTitle = '';
+
+    % Parse optional arguments
+    p = inputParser;
+    addRequired(p,'xData',@isnumeric);
+    addRequired(p,'yData',@isnumeric);
+    addRequired(p,'cData');
+    addParameter(p,'xLabel',defaultXLabel,@isstring);
+    addParameter(p,'yLabel',defaultYLabel,@isstring);
+    addParameter(p,'subPlot',defaultSubPlot,@isnumeric);
+    addParameter(p,'holdOn',defaultTurnHoldOn,@isnumeric);
+    addParameter(p,'type',defaultType,@isstring);
+    addParameter(p,'title',defaultTitle,@isstring);
+    parse(p,xData,yData, cData,varargin{:});
+    
+    % Plot figure with optional arguments, defaults if arguments are not 
+    % provided. (See above)
+    h = findobj('type','figure');
+    if p.Results.subPlot
+        myFig = figure(h(1));
+    else
+        newFigNum = getNextMATLABFigNum();
+        myFig = figure(newFigNum);
+    end
+
+    fig = image(xData, yData, cData, 'CDataMapping', 'scaled');
+
+    if p.Results.holdOn
+        hold on;
+    else
+        hold off;
+    end
+    
+    xlabel(p.Results.xLabel);
+    ylabel(p.Results.yLabel);
+    title(p.Results.title);
+    colorbar;
+
+    % Compile Metadata
+    figDateFormat = 'mm_dd_yy HH:MM:SS';
+    metadata_struct.time= datestr(now(),figDateFormat);
+    instrumentList = parseInstrumentList();
+
+    for i = 1:length(instrumentList)
+        if contains(instrumentList{i},"SR830")
+            metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
+        elseif contains(instrumentList{i},"DAC")
+            metadata_struct.sigDAC = evalin('base',['sigDACGetConfig(' instrumentList{i} ');']);
+        end
+    end
+    
+    % Insert metadata structure into figure and save in data.
+
+    myFig.UserData = metadata_struct;
+end
