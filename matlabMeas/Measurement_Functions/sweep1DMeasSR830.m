@@ -96,7 +96,7 @@ for value = paramVector
         currentTimeIndex = currentTimeIndex + 1;
         
     end
-    updateSR830TimePlots(plotHandles,Real,Imag,Mag,time);
+    updateSR830TimePlots(plotHandles,Real,Imag,Mag,time,numSR830s);
     
     %% Average all data and place in average arrays.
     magVectorMeans = mean(magVectorRepeat,2);
