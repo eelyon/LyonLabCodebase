@@ -1,17 +1,25 @@
+DotLoadingProtocolParameters;
 %% Ramp Backing Plate to Backing Plate Voltage
-disp(["Ramping Backing Plate to " num2str(BackingPlateVoltage) " Volts."]);
+disp(strcat("Ramping Backing Plate to ", num2str(BackingPlateVoltage), " Volts."));
 rampVal(BackingMetalDevice,BackingMetalPort,getVal(BackingMetalDevice,BackingMetalPort),BackingPlateVoltage,-0.1,waitTime);
+DACGUI.updateDACGUI;
+drawnow;
 
 %% Sweep the Door and Reservoir to the backing plate voltage
-disp(["Ramping Res and Door to " num2str(BackingPlateVoltage) " Volts."]);
+disp(strcat("Ramping Res and Door to ", num2str(channelVoltages), " Volts."));
 interleavedRamp([Door100Device,Res100Device],[Door100Port,Res100Port],[channelVoltages,channelVoltages],numVoltages,waitTime);
 %sweepGatePairs(Door100Device,Res100Device,Door100Port,Res100Port,channelVoltages,channelVoltages,numVoltages,waitTime);
-disp(["Ramping Sommer Tanner Gates to " num2str(BackingPlateVoltage) " Volts."]);
+DACGUI.updateDACGUI;
+drawnow;
+
+disp(strcat("Ramping Sommer Tanner Gates to ", num2str(channelVoltages), " Volts."));
 interleavedRamp([Bias100Device,STM100Device],[Bias100Port,STM100Port],[channelVoltages,channelVoltages],numVoltages,waitTime);
 %sweepGatePairs(Bias100Device,STM100Device,Bias100Port,STM100Port,channelVoltages,channelVoltages,numVoltages,waitTime);
+DACGUI.updateDACGUI;
+drawnow;
 
 %% Sweep Top Metal and Dot Potential to an attractive bias relative to the backing plate.
-disp(["Ramping Top and Dots to " num2str(BackingPlateVoltage+TMDelta) " Volts."]);
+disp(strcat("Ramping Top and Dots to ", num2str(TMVoltage), " Volts."));
 interleavedRamp([Top100Device,Dot100Device],[Top100Port,Dot100Port],[TMVoltage,TMVoltage],numVoltages,waitTime);
 %sweepGatePairs(Top100Device,Dot100Device,Top100Port,Dot100Port,TMVoltage,TMVoltage,numVoltages,waitTime);
 
@@ -19,22 +27,24 @@ interleavedRamp([Top100Device,Dot100Device],[Top100Port,Dot100Port],[TMVoltage,T
 DACGUI.updateDACGUI;
 drawnow;
 
-input('\nFlash\n')
+pause(5);
 
-%disp('Flashing Filament');
-%AWG.send33220Trigger();
+% input('\nFlash\n')
+% 
+disp('Flashing Filament');
+AWG.send33220Trigger();
 
 pause(1);
 
 %% Ramp all gates to their final voltages
-disp(["Ramping Top and Dots to " num2str(finalTopMetalVoltage) " and " num2str(finalDotVoltage) " Volts."]);
+disp(strcat("Ramping Top and Dots to ", num2str(finalTopMetalVoltage), " and ", num2str(finalDotVoltage), " Volts."));
 %sweepGatePairs(Top100Device,Dot100Device,Top100Port,Dot100Port,finalTopMetalVoltage,finalDotVoltage,50,.03);
 interleavedRamp([Top100Device,Dot100Device],[Top100Port,Dot100Port],[finalTopMetalVoltage,finalDotVoltage],numVoltages,waitTime);
-disp(["Ramping Door and Res to " num2str(finalResVoltage) " and " num2str(finalDoorVoltage) " Volts."]);
+disp(strcat("Ramping Door and Res to ", num2str(finalResVoltage), " and ", num2str(finalDoorVoltage), " Volts."));
 %sweepGatePairs(Door100Device,Res100Device,Door100Port,Res100Port,finalDoorVoltage,finalResVoltage,numVoltages,waitTime);
 interleavedRamp([Door100Device,Res100Device],[Door100Port,Res100Port],[finalDoorVoltage,finalResVoltage],numVoltages,waitTime);
-disp(["Ramping STL/R and STM to " num2str(finalSTVoltage) " and " num2str(finalSTVoltage) " Volts."]);
+disp(strcat("Ramping STL/R and STM to ", num2str(finalSTVoltage), " and ", num2str(finalSTVoltage), " Volts."));
 %sweepGatePairs(Bias100Device,STM100Device,Bias100Port,STM100Port,0,0,numVoltages,waitTime);
-interleavedRamp([Bias100Device,STM100Device],[Bias100Port,STM100Port],[Bias100Port,STM100Port],numVoltages,waitTime);
+interleavedRamp([Bias100Device,STM100Device],[Bias100Port,STM100Port],[finalSTVoltage,finalSTVoltage],numVoltages,waitTime);
 DACGUI.updateDACGUI;
 drawnow;

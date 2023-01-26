@@ -1,14 +1,14 @@
 %% Voltage parameters for filament emission
-BackingPlateVoltage = -2;
-TMBias= 3;
+BackingPlateVoltage = -7;
+TMBias= 1;
 TMVoltage = BackingPlateVoltage + TMBias;
-channelBias = 0;
+channelBias = 5;
 channelVoltages = BackingPlateVoltage + channelBias;
 
 %% Final voltage configuration
 dotBiasFromTop = 0;
 finalTopMetalVoltage = 1;
-finalDotVoltage = finalTopMetalVoltage + TMBias + dotBiasFromTop;
+finalDotVoltage = finalTopMetalVoltage + dotBiasFromTop;
 finalDoorVoltage = -2;
 finalResVoltage = -3;
 
@@ -16,4 +16,4 @@ finalSTVoltage = 0;
 
 %% Ramping parameters
 numVoltages = 10;
-waitTime = 0.03;
+waitTime = 0.3;
