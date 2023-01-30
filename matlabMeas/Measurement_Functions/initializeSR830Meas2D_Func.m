@@ -10,6 +10,8 @@ dataToPlot = generate2DPlotData(starts, stops, deltas);
 yAxisName = genSR830Axis(sweepType1);
 xAxisName = genSR830Axis(sweepType2);
 
+myFig = figure(getNextMATLABFigNum());
+
 %% Plot data
 plotHandle = plot2DData(dataToPlot{1},dataToPlot{2},dataToPlot{3},'xLabel',xAxisName,'yLabel', yAxisName);
 axisDirectionCorrector(starts{1}, starts{2}, stops{1}, stops{2});

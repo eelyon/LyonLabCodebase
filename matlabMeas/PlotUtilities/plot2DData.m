@@ -13,7 +13,6 @@ function [fig] = plot2DData(xData,yData,cData,varargin)
     addRequired(p,'cData');
     addParameter(p,'xLabel',defaultXLabel,@isstring);
     addParameter(p,'yLabel',defaultYLabel,@isstring);
-    addParameter(p,'subPlot',defaultSubPlot,@isnumeric);
     addParameter(p,'holdOn',defaultTurnHoldOn,@isnumeric);
     addParameter(p,'type',defaultType,@isstring);
     addParameter(p,'title',defaultTitle,@isstring);
@@ -22,12 +21,7 @@ function [fig] = plot2DData(xData,yData,cData,varargin)
     % Plot figure with optional arguments, defaults if arguments are not 
     % provided. (See above)
     h = findobj('type','figure');
-    if p.Results.subPlot
-        myFig = figure(h(1));
-    else
-        newFigNum = getNextMATLABFigNum();
-        myFig = figure(newFigNum);
-    end
+    myFig = figure(h(1));
 
     fig = image(xData, yData, cData, 'CDataMapping', 'scaled');
 
