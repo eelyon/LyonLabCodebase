@@ -1,8 +1,8 @@
 %% This function is meant for sweeping voltage
 
-sweepType = {'ST'};
+sweepType = {'TM'};
 
-start = 0.1;
+start = 0;
 stop = -0.5;
 deltaParam = 0.05;
 timeBetweenPoints = 0.3;
