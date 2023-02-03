@@ -19,3 +19,4 @@ AWG = Agilent33220A(port,AWG_Address);
 
 DACGUI = sigDACGUI;
 SR830GUI = SR830_GUI;
+DCMap;
