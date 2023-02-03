@@ -24,7 +24,7 @@ for TauE = 200
             if needToClean
                 vPort0 = DCConfigDAC(AP24,'TransferBack', 10);
                 pause(Fullwait)
-                doorAP24(AP24,vPort0,500,500);
+                sigDACdoor(sigDAC,vPort0,500,500);
                 pause(Fullwait)
     
                 DCConfigDAC(AP24,'Emitting', 10);
@@ -65,7 +65,7 @@ for TauE = 200
 
             vPort1 = DCConfigDAC(AP24,'TransferBack',20);
             pause(Fullwait)
-            doorAP24(AP24,vPort1,5000,5000);
+            sigDACdoor(sigDACdoor,vPort1,5000,5000);
             Extra = 'AfterTransferBack';
             V          = [0:-0.02:-.2 -.3:-.2:-1.5];
             DoubleSweep

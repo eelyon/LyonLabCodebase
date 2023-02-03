@@ -139,11 +139,6 @@ end
     
 end
 
-function setPlotXYData(plotHandle,xDat,yDat)
-    plotHandle.XData = xDat;
-    plotHandle.YData = yDat;
-end
-
 function updateSR830AveragePlots(plotHandles,avgParam,avgmags,avgxs,avgys,stdm,stdx,stdy,doBackAndForth,currentIndex,halfway,numSR830s)
 for srIndex = 1:numSR830s
     currentHandleSet = plotHandles{srIndex};
