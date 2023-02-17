@@ -1,7 +1,7 @@
 %% Function to bulk set voltages on the DAC
 
-volts = [1,...  %DAC 1
-        1,...   %DAC 2
+volts = [5,...  %DAC 1
+        0,...   %DAC 2
         1,...   %DAC 3
         -0.5,...   %DAC 4
         0.5,...   %DAC 5

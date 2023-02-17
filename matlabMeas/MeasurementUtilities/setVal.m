@@ -38,7 +38,7 @@ elseif contains(name,'AP24')
 
         Device.sigDACSetVoltage(Port,Value);
 
-elseif contains(name,'AP16A')
+elseif contains(name,'AP16')
 
     if calibrate
         load(['AP16A/AP16A_' num2str(Port) '.mat']);
