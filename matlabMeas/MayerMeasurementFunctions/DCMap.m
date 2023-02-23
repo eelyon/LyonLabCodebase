@@ -12,11 +12,11 @@ Res100Port = 3;
 Res100Device = DAC;
 
 
-Top100Port = 4;
+Top100Port = 5;
 Top100Device = DAC;
 
 % Top Metal Port refers to the backing plate of the filament.
-BackingMetalPort   = 5;
+BackingMetalPort   = 4;
 BackingMetalDevice = DAC;
 
 Bias100Port = 6;

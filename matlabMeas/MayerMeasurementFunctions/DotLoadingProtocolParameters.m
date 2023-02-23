@@ -1,8 +1,8 @@
 %% Voltage parameters for filament emission
-BackingPlateVoltage = -7;
-TMBias= 1;
+BackingPlateVoltage = -5;
+TMBias= 5;
 TMVoltage = BackingPlateVoltage + TMBias;
-channelBias = 5;
+channelBias = 0;
 channelVoltages = BackingPlateVoltage + channelBias;
 
 %% Final voltage configuration
