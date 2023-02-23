@@ -28,13 +28,13 @@ DACGUI.updateDACGUI;
 drawnow;
 
 pause(5);
-
-% input('\nFlash\n')
+set
+input('\nFlash\n')
 % 
-disp('Flashing Filament');
-AWG.send33220Trigger();
-
-pause(1);
+% disp('Flashing Filament');
+% AWG.send33220Trigger();
+% 
+% pause(1);
 
 %% Ramp all gates to their final voltages
 disp(strcat("Ramping Top and Dots to ", num2str(finalTopMetalVoltage), " and ", num2str(finalDotVoltage), " Volts."));
