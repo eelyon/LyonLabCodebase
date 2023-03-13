@@ -1,7 +1,7 @@
 %% Frequency of temperature querying in seconds.
 timeBetweenPoints = 60;
 %% Initialize Thermometer type (this is related to your thermometer you have)
-thermometerType = 'X117656';
+thermometerType = 'X189328';
 Thermometer;
 Therm = initializeThermometry(thermometerType);
 %% Initialize workspace arrays. Must be in workspace to update plots properly.
