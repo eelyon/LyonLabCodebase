@@ -70,6 +70,8 @@ end
 
 function xAxisName = genSR830Axis(targetGate)
 switch targetGate
+    case 'GND'
+        xAxisName = "Plane Bias [V]";
     case 'ST'
         xAxisName = "STM Bias [V]";
     case 'TM'
