@@ -1,5 +1,5 @@
 %% Frequency of temperature querying in seconds.
-timeBetweenPoints = 60;
+timeBetweenPoints = 3;
 %% Initialize Thermometer type (this is related to your thermometer you have)
 thermometerType = 'X189328';
 Thermometer;
