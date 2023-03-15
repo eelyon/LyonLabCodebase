@@ -48,3 +48,7 @@ IdcPFDevice     = DAC;
 TopMetalPort   = 5;
 TopMetalDevice = DAC;
 
+EPort = 10;
+EDevice = DAC;
+
+
