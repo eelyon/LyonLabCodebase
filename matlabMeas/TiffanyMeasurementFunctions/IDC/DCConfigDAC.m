@@ -1,116 +1,175 @@
-function [ vPort ] = DCConfigDAC( DAC, Command, numSteps )
+function [ voltList ] = DCConfigDAC( AP24, Command, numSteps )
 %   ramps all the device ports to a voltage given a command
 
 DCMap;
-identifiers = {'doorE Open','doorE Close','doorC Open','doorC Close'};
+TopVoltage = -0.7;
 
 if strcmp(Command,'Emitting')
 
     %% Emitter    
-    TopE       = -2;
-    StmE       =  0;
-    DoorE      = -2;
-    DoorEOpen  = 0;
-    %% Collector    
-    BiasC      = 0-9;
-    TopC       = BiasC-1;
-    StmC       = BiasC;
-    DoorC      = BiasC;
-    DoorCOpen  = 7;
-    %% Thin Film
-    TfC        = -5;
-    TfE        = -5;
-    %% IDC
-    IdcNF      = -5;
-    IdcPF      = -5;
-    %% Top Metal
-    TopMetal   = -5;
-    vPort = [DoorEOpen,DoorE,DoorCOpen,DoorC];
-    identifiers(2,:) = num2cell(vPort);
-    fprintf('%10s %d\n',identifiers{:});
-
-elseif strcmp(Command,'Clean')
-    %% Emitter    
-    TopE       = -5;
+    TopE       = TopVoltage;
     StmE       = 0;
-    DoorE      = -5;
-    DoorEOpen  = 0;
+    STOBiasE   = 0;
+    STIBiasE   = 0;
+    DoorEClose = -4;
+    DoorEOpen  = -3;
     %% Collector    
-    BiasC      = -5 ;
-    TopC       = BiasC-2;
-    StmC       = BiasC;
-    DoorC      = -5;
-    DoorCOpen  = BiasC;
+    STOBiasC   = -3;
+    STIBiasC   = -3;
+    TopC       = STIBiasC-1;
+    StmC       = STIBiasC;
+    DoorCClose = -5;
+    DoorCOpen  = STIBiasC;
     %% Thin Film
-    TfC        = -5;
-    TfE        = -5;
+    TfC        = -2.75;
+    TfE        = -2.75;
     %% IDC
-    IdcNF      = -5;
-    IdcPF      = -5;
-    %% Top Metal
-    TopMetal   = 5;
-    vPort = [DoorEOpen,DoorE,DoorCOpen,DoorC];
-    identifiers(2,:) = num2cell(vPort);
-    fprintf('%10s %d\n',identifiers{:});
+    IdcNF      = -2.75;
+    IdcPF      = -2.75;
+
+elseif strcmp(Command,'Transferring')
+    %% Emitter    
+    TopE       = TopVoltage;
+    StmE       = 0;
+    STOBiasE   = 0;
+    STIBiasE   = 0;
+    DoorEClose = -5;
+    DoorEOpen  = -4;
+    %% Collector   
+    STOBiasC   = 0.75;
+    STIBiasC   = 0.75;
+    TopC       = -0.03;
+    StmC       = STIBiasC;
+    DoorCClose = -5;
+    DoorCOpen  = -4;
+    %% Thin Film
+    TfC        = -2.75;
+    TfE        = -2.75;
+    %% IDC
+    IdcNF      = -2.75;
+    IdcPF      = -2.75;
 
 elseif strcmp(Command,'Transfer')
     %% Emitter    
-    TopE       = -2;
+    TopE       = TopVoltage;
     StmE       = 0;
-    DoorE      = -5;
-    DoorEOpen  = 0;
-    %% Collector    
-    BiasC      = 3 ;
-    TopC       = BiasC-2;
-    StmC       = BiasC;
-    DoorC      = -5;
-    DoorCOpen  = BiasC;
+    STOBiasE   = 0;
+    STIBiasE   = 0;
+    DoorEClose = -5;
+    DoorEOpen  = 0.5;
+    %% Collector   
+    STOBiasC   = 0.75;
+    STIBiasC   = 0.75;
+    TopC       = 0.04;
+    StmC       = STIBiasC;
+    DoorCClose = -5;
+    DoorCOpen  = STIBiasC+0.1;
     %% Thin Film
-    TfC        = 2;
-    TfE        = 1;
+    TfC        = 0.5;
+    TfE        = 0.2;
     %% IDC
-    IdcNF      = -1;
-    IdcPF      = 0;
-    %% Top Metal
-    TopMetal   = -5;
-    vPort = [DoorEOpen,DoorE,DoorCOpen,DoorC];
-    identifiers(2,:) = num2cell(vPort);
-    fprintf('%10s %d\n',identifiers{:});
+    IdcNF      = -0.75;
+    IdcPF      = -0.75;
+
+elseif strcmp(Command,'TransferringBack')
+    %% Emitter    
+    TopE       = TopVoltage;
+    StmE       = 0;
+    STOBiasE   = 0;
+    STIBiasE   = 0;
+    DoorEClose = -5;
+    DoorEOpen  = 0.1;
+    %% Collector    
+    STOBiasC   = -1.5;
+    STIBiasC   = -1.5;
+    TopC       = -2.3;
+    StmC       = STIBiasC;
+    DoorCClose = -5;
+    DoorCOpen  = -0.1;
+    %% Thin Film
+    TfC        = -3;
+    TfE        = -3;
+    %% IDC
+    IdcNF      = -3.75;
+    IdcPF      = -3.75;
+
 
 elseif strcmp(Command,'TransferBack')
     %% Emitter    
-    TopE       = -1;
+    TopE       = TopVoltage;
     StmE       = 0;
-    DoorE      = -8;
-    DoorEOpen  = -1;
+    STOBiasE   = 0;
+    STIBiasE   = 0;
+    DoorEClose = -5;
+    DoorEOpen  = 0.1;
     %% Collector    
-    BiasC      = -5;
-    TopC       = BiasC-2;
-    StmC       = BiasC;
-    DoorC      = -7;
-    DoorCOpen  = BiasC;
+    STOBiasC   = -1.5;
+    STIBiasC   = -1.5;
+    TopC       = -2.3;
+    StmC       = STIBiasC;
+    DoorCClose = -5;
+    DoorCOpen  = -0.5;
     %% Thin Film
-    TfC        = -3;
-    TfE        = -2;
+    TfC        = -0.2;
+    TfE        = 0.2;
+    %% IDC
+    IdcNF      = -0.75;
+    IdcPF      = -0.75;
+
+ elseif strcmp(Command,'Zero')
+    %% Emitter    
+    TopE       = 0;
+    StmE       = 0;
+    STOBiasE   = 0;
+    STIBiasE   = 0;
+    DoorEClose = 0;
+    DoorEOpen  = 0;
+    %% Collector    
+    STOBiasC   = 0;
+    STIBiasC   = 0;
+    TopC       = 0;
+    StmC       = 0;
+    DoorCClose = 0;
+    DoorCOpen  = 0;
+    %% Thin Film
+    TfC        = 0;
+    TfE        = 0;
+    %% IDC
+    IdcNF      = 0;
+    IdcPF      = 0;
+
+ elseif strcmp(Command,'Clean')
+    %% Emitter    
+    TopE       = 2;
+    StmE       = -5;
+    STOBiasE   = -5;
+    STIBiasE   = -5;
+    DoorEClose = -5;
+    DoorEOpen  = -5;
+    %% Collector    
+    STOBiasC   = -5;
+    STIBiasC   = -5;
+    TopC       = 2;
+    StmC       = -5;
+    DoorCClose = -5;
+    DoorCOpen  = -5;
+    %% Thin Film
+    TfC        = -5;
+    TfE        = -5;
     %% IDC
     IdcNF      = -5;
-    IdcPF      = -6;
-    %% Top Metal
-    TopMetal   = -8;
-    vPort = [DoorEOpen,DoorE,DoorCOpen,DoorC];
-    identifiers(2,:) = num2cell(vPort);
-    fprintf('%10s %d\n',identifiers{:});
+    IdcPF      = -5;
 
-elseif strcmp(Command,'Zero')
-    query(DAC, 'ZERO');
 end
 
 % RAMP
-chanList = [TopEPort, StmEPort, DoorEPort, BiasCPort, TopCPort, StmCPort, ...
-            DoorCPort, TfCPort, TfEPort, IdcNFPort, IdcPFPort, TopMetalPort];
-voltList = [TopE, StmE, DoorE, BiasC, TopC, StmC, DoorC, TfC, TfE, ...
-            IdcNF, IdcPF, TopMetal]; 
+chanList = [TopEPort StmEPort STOBiasEPort STIBiasEPort DoorEClosePort DoorEOpenPort STOBiasCPort STIBiasCPort TopCPort StmCPort... 
+    DoorCClosePort DoorCOpenPort TfCPort TfEPort IdcNFPort IdcPFPort];
 
-sigDACRampVoltage(DAC,chanList,voltList,numSteps);
+voltList = [TopE StmE STOBiasE STIBiasE DoorEClose DoorEOpen STOBiasC STIBiasC TopC StmC DoorCClose DoorCOpen TfC TfE... 
+    IdcNF IdcPF]; 
+
+sigDACRampVoltage(AP24,chanList,voltList,numSteps);
+
 end 
 
