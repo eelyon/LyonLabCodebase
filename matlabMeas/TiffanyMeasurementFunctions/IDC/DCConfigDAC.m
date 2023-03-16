@@ -170,4 +170,3 @@ voltList = [TopE StmE STOBiasE STIBiasE DoorEClose DoorEOpen STOBiasC STIBiasC T
 sigDACRampVoltage(sigDAC,chanList,voltList,numSteps);
 
 end 
-
