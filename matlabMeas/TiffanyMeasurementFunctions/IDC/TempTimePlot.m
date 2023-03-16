@@ -23,4 +23,4 @@ STEPlot   = plotData(time,current,'xLabel',"Time (minutes)",'yLabel',"Current (n
 
 tempPlotCell = {thermPlot,STEPlot,IDCPlot};
 SR830Cell = {VmeasC,VmeasE};
-currentTempVsTime(tempPlotCell,subPlotFigure,SR830Cell,timeBetweenPoints,Thermometer,Therm);
+plotTempVsTime(tempPlotCell,subPlotFigure,SR830Cell,timeBetweenPoints,Thermometer,Therm);
