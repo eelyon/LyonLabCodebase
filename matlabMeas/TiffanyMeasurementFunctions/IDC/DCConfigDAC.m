@@ -158,17 +158,15 @@ elseif strcmp(Command,'TransferBack')
     %% IDC
     IdcNF      = -5;
     IdcPF      = -5;
-
+    
 end
 
 % RAMP
 chanList = [TopEPort StmEPort STOBiasEPort STIBiasEPort DoorEClosePort DoorEOpenPort STOBiasCPort STIBiasCPort TopCPort StmCPort... 
     DoorCClosePort DoorCOpenPort TfCPort TfEPort IdcNFPort IdcPFPort];
-
 voltList = [TopE StmE STOBiasE STIBiasE DoorEClose DoorEOpen STOBiasC STIBiasC TopC StmC DoorCClose DoorCOpen TfC TfE... 
     IdcNF IdcPF]; 
 
 sigDACRampVoltage(sigDAC,chanList,voltList,numSteps);
 
 end 
-
