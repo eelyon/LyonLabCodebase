@@ -1,4 +1,4 @@
-function [ voltList ] = DCConfigDAC( AP24, Command, numSteps )
+function [ voltList ] = DCConfigDAC( sigDAC, Command, numSteps )
 %   ramps all the device ports to a voltage given a command
 
 DCMap;
@@ -93,7 +93,6 @@ elseif strcmp(Command,'TransferringBack')
     IdcNF      = -3.75;
     IdcPF      = -3.75;
 
-
 elseif strcmp(Command,'TransferBack')
     %% Emitter    
     TopE       = TopVoltage;
@@ -169,7 +168,7 @@ chanList = [TopEPort StmEPort STOBiasEPort STIBiasEPort DoorEClosePort DoorEOpen
 voltList = [TopE StmE STOBiasE STIBiasE DoorEClose DoorEOpen STOBiasC STIBiasC TopC StmC DoorCClose DoorCOpen TfC TfE... 
     IdcNF IdcPF]; 
 
-sigDACRampVoltage(AP24,chanList,voltList,numSteps);
+sigDACRampVoltage(sigDAC,chanList,voltList,numSteps);
 
 end 
 
