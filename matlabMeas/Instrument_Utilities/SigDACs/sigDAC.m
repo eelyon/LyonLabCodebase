@@ -50,7 +50,7 @@ classdef sigDAC
             numVolts = length(voltages);
     
             if calibrate
-                Folder = 'TiffanyMeasurementFucntions\IDC\CalibrateDac\AP24\';
+                Folder = 'TiffanyMeasurementFunctions\IDC\CalibrateDac\AP24\';
                 calvoltList = zeros(1,numel(voltages));
                 ctr = 1;
             

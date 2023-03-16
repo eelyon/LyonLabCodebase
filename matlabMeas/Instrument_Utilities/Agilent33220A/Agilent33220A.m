@@ -93,6 +93,22 @@ classdef Agilent33220A
             fprintf(Agilent33220A.client,command);
         end
 
+        function [] = set33220OutputLoad(Agilent33220A, Ohms)
+            command = ['OUT:LOAD ', num2str(Ohms)];
+            fprintf(Agilent33220A.client,command);
+        end
+        
+        function [] = set33220TrigSlope(Agilent33220A,slope)
+            validSourceTypes = 'POS,NEG';
+            if ~contains(validSourceTypes,slope)
+                fprintf([sourceType ' is not a valid trigger slope type. Valid types are:\n'])
+                fprintf([validSourceTypes, '\n']);
+            else
+                command = ['TRIG:SLOP ' slope];
+                fprintf(Agilent33220A.client,command);
+            end
+        end
+
         function [] = set33220TriggerOutput(Agilent33220A,onOrOff)
             if onOrOff
                 command = 'OUTP:TRIG ON';
