@@ -45,10 +45,36 @@ classdef sigDAC
         end
 
         function sigDACRampVoltage(sigDAC,channels,voltages,numSteps)
+            calibrate = 1;
             numChans = length(channels);
-            str = [numSteps numChans channels voltages];
-            convertArray = sprintf('%d ', str);  % num2str pads the array with space, use sprintf instead!
-            fprintf(sigDAC.client,['RAMP ' convertArray]);
+            numVolts = length(voltages);
+    
+            if calibrate
+                Folder = 'TiffanyMeasurementFucntions\IDC\CalibrateDac\AP24\';
+                calvoltList = zeros(1,numel(voltages));
+                ctr = 1;
+            
+                for i=1:length(voltages)
+                    channel = channels(i);
+                    load([Folder 'CH' num2str(channel) '.mat']);
+                    value = voltages(i);
+                    vRange = -9.8:0.7:9.8;
+                    new = interp1(vRange, vRange*m+b, value);
+                    newVolt = (value-new)+value;
+                    convert = num2str(newVolt,'%.3f');
+                    convertback = str2double(convert);
+                    calvoltList(ctr) = convertback;
+                    ctr = ctr+1;
+                end
+        
+                str = [numSteps numChans channels calvoltList];
+                convertArray = sprintf('%d ', str);
+                fprintf(sigDAC,['RAMP ' convertArray]);
+           else
+                str = [numSteps numChans channels voltages];
+                convertArray = sprintf('%d ', str);  % num2str pads the array with space, use sprintf instead!
+                fprintf(sigDAC,['RAMP ' convertArray]);
+           end
         end
 
         function sigDACInit(sigDAC)

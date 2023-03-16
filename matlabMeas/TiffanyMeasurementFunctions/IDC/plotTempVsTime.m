@@ -1,4 +1,4 @@
-function [] = currentTempVsTime(plotHandleCell,subPlotFigure,SR830,timeBetweenPoints,Thermometer,therm)
+function [] = plotTempVsTime(plotHandleCell,subPlotFigure,SR830,timeBetweenPoints,Thermometer,therm)
 % plotHandleCell - cell containing all plot handles to update. Format:
 % Temperature, current, capacitance?
 % SR830 - cell containing SR830 objects to measure.
