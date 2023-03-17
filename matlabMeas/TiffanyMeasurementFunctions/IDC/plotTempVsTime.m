@@ -1,7 +1,8 @@
 function [] = plotTempVsTime(plotHandleCell,subPlotFigure,SR830,timeBetweenPoints,Thermometer,therm)
 % plotHandleCell - cell containing all plot handles to update. Format:
-% Temperature, current, capacitance?
+% Temperature, current, capacitance
 % SR830 - cell containing SR830 objects to measure.
+
 i=1;
 startTime = now();
 cleanupObj = onCleanup(@()cleanMeUp(subPlotFigure));
