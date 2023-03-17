@@ -13,17 +13,17 @@ for doorVolt = doorEOpen
     % ST measurement after opening doors
     sweepType = {'ST'};
     
-    start = sigDACQueryVoltage(sigDAC,16);
+    start = sigDACQueryVoltage(DAC,16);
     deltaParam = -0.05;
     stop = -0.5;
 
     timeBetweenPoints = 0.5;
     repeat = 5;
-    readSR830 = {VmeasE};
+    readSR830 = {VmeasC,VmeasE};
     device = DAC;
-    ports = {16};
+    ports = {StmCPort,StmEPort};
     doBackAndForth = 1;
 
-    sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
+    Tiff_sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
     pause(0.1)
 end
