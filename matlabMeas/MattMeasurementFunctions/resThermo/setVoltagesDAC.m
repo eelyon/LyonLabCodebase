@@ -9,7 +9,7 @@ voltsEmitt = [-4,...  %DAC 1
         0,...   %DAC 4
         0,...   %DAC 5
         0,...   %DAC 6
-        -0.75,...   %DAC 7
+        -1,...   %DAC 7
         0];     %DAC 8
 
 voltsGnd = [0,...  %DAC 1

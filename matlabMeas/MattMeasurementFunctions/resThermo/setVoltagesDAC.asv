@@ -4,7 +4,7 @@ channels = [1, 2, 3, 4, 5, 6, 7, 8];
 numSteps = 100;
 
 voltsEmitt = [-4,...  %DAC 1
-        -0.36,...   %DAC 2
+        -0.3,...   %DAC 2
         0,...   %DAC 3
         0,...   %DAC 4
         0,...   %DAC 5
