@@ -1,0 +1,19 @@
+function [ret] = unpack2Dfig(figName)
+    fig = open(figName);
+
+    % Get the handle of the first subplot
+    subplotHandleReal = subplot(2,3,4);
+    subplotHandleImag = subplot(2,3,5);
+    subplotHandleMag = subplot(2,3,6);
+    
+    % Get the handle of the plot in the first subplot
+    lineHandleReal = findobj(subplotHandleReal, 'Type', 'errorbar');
+    lineHandleImag = findobj(subplotHandleImag, 'Type', 'errorbar');
+    lineHandleMag = findobj(subplotHandleMag, 'Type', 'errorbar');
+    
+    % Get the x and y data of the plot
+    realXData = get(lineHandleReal, 'XData');
+    realYData = get(lineHandleReal, 'YData');
+
+    ret = yData;
+end
