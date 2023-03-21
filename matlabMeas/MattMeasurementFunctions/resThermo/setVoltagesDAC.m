@@ -4,12 +4,12 @@ channels = [1, 2, 3, 4, 5, 6, 7, 8];
 numSteps = 100;
 
 voltsEmitt = [-4,...  %DAC 1
-        -0.3,...   %DAC 2
+        -0.4,...   %DAC 2
         0,...   %DAC 3
-        -0.5,...   %DAC 4
-        -0.5,...   %DAC 5
+        -2,...   %DAC 4
+        -2,...   %DAC 5
         0,...   %DAC 6
-        -1,...   %DAC 7
+        -3,...   %DAC 7
         0];     %DAC 8
 
 voltsGnd = [0,...  %DAC 1
@@ -36,9 +36,9 @@ voltsEmittTest = [0,...  %DAC 1
 
 %sigDACRampVoltage(DAC,channels,voltsGnd,numSteps);
 
-voltUse = voltsEmitt;
+%voltUse = voltsEmitt;
 %voltUse = voltsEmittTest;
-%voltUse = voltsGnd;
+voltUse = voltsGnd;
 
 %%{
 for i = 1:length(voltUse)
