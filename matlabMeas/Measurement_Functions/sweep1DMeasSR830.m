@@ -84,8 +84,13 @@ for value = paramVector
     for j = 1:repeat
         
         %% Query SR830 for Real/Imag data, calculate Magnitude and place in vectors
-        [Real,Imag,Mag,time] = getSR830Data(Real,Imag,Mag,time,currentTimeIndex,startTime,readSR830);
-        
+        if strcmp(sweepType,'IDC')
+            [Real,Imag,Mag,time] = getSR830DataCapacitance(Real,Imag,Mag,time,currentTimeIndex,startTime,readSR830);
+        else
+            [Real,Imag,Mag,time] = getSR830Data(Real,Imag,Mag,time,currentTimeIndex,startTime,readSR830);
+        end
+
+
         %% Place data in repeat vectors that get averaged and error bars get calculated.
         for srIndex = 1:numSR830s
             magVectorRepeat(srIndex,j)  = Mag(srIndex,currentTimeIndex);
@@ -178,6 +183,21 @@ for i = 1:length(readSR830)
     currentSR830 = readSR830{i};
     x(i,currentTimeIndex) = currentSR830.SR830queryX();
     y(i,currentTimeIndex) = currentSR830.SR830queryY();
+    t(i,currentTimeIndex) = (now()-startTime)*86400;
+    mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
+    pause(.005);
+end
+end
+
+function [x,y,mag,t] = getSR830DataCapacitance(x,y,mag,t,currentTimeIndex,startTime,readSR830)
+% Function pulls the x,y,magnitude, and time data for each point from the
+% targetSR830. IMPORTANT: readSR830 needs to be a cell array of SR830
+% objects!!!.
+for i = 1:length(readSR830)
+    currentSR830 = readSR830{i};
+    Igain = 1e12.*-1/(2*pi*str2double(SR830queryAmplitude(readSR830))*str2double(SR830queryFreq(readSR830)));
+    x(i,currentTimeIndex) = currentSR830.SR830queryX()*Igain;
+    y(i,currentTimeIndex) = currentSR830.SR830queryY()*Igain;
     t(i,currentTimeIndex) = (now()-startTime)*86400;
     mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
     pause(.005);

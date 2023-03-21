@@ -1,0 +1,40 @@
+%% This script sweeps the voltage of the IDCs
+
+
+sweepType = {'TE'};
+    
+start = 0;
+deltaParam = 5;
+stop = 30;
+
+timeBetweenPoints = 50;
+repeat = 10;
+readSR830 = {VmeasE};
+device = DAC;
+ports = {14};
+doBackAndForth = 1;
+
+sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
+
+elseif scanType == 'IE'
+    % IDC Sweep 0 to 40V
+    
+    % V = 0:10:40;
+    V = 0:2.45:9.8;
+    tau = 5;
+    DeviceRead = VmeasE;
+    Igain = 1e12.*-1/(2*pi*str2double(query(DeviceRead,'SLVL?'))*str2double(query(DeviceRead,'FREQ?')));
+    Vgain  = 1;
+    waittime = tau;
+    settletime = 10*tau;
+    repeat = 10;
+    fitBool = 0;
+    Device1 = AP24;
+    Device2 = AP24;
+    Port1 = 12;   % IDC pos
+    Port2 = 8;  % IDC neg 
+    ReturnSweep = 1;
+    Extra = 'IDCScan';
+    titles = {'Real vs time','Imag vs time','Mag vs time','Real vs Bias','Imag vs Bias','Mag vs Bias'};
+    ylabels = {'Capacitance [pF]'};
+    xlabels = {'time [s]','Bias [V]'};

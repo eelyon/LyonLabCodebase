@@ -97,6 +97,8 @@ switch targetGate
         xAxisName = "SR830 Frequency [Hz]";
     case 'Amp'
         xAxisName = "SR830 Amplitude [V]";
+    case 'IDC'
+        xAxisName = "IDC Voltage [V]";
     otherwise
         xAxisName = 'unknown';
 end
