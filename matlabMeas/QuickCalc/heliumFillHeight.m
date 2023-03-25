@@ -3,7 +3,7 @@ function [ h ] = heliumFillHeight( Pkpa )
  % INPUTs: Pkpa = pressure of stick after filling with He (read directly
  % from gauge)
  
- littleglassdewar = 1;
+ littleglassdewar = 0;
  
  if littleglassdewar   
      Vpanel = 18.4;     % in^3

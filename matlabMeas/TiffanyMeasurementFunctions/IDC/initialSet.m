@@ -5,11 +5,10 @@ sigDACSetVoltage(DAC,EPort,0);
 sigDACSetVoltage(DAC,TopMetalPort,-2);
 
 if contains(value,'start')
-    
-    fprintf(VmeasE, 'AUXV 1,5');
-    fprintf(VmeasE, 'AUXV 2,5');
-    fprintf(VmeasE, 'AUXV 3,-5');
-    fprintf(VmeasE, 'AUXV 4,-5');
+    SR830setAuxOut(VmeasE,1,5);
+    SR830setAuxOut(VmeasE,2,5);
+    SR830setAuxOut(VmeasE,3,-5);
+    SR830setAuxOut(VmeasE,4,-5);
     
     % initialize Agilent
     amp_high = 2.5;
@@ -29,10 +28,10 @@ if contains(value,'start')
     set33220Output(dev1,'ON');
 
 else
-    fprintf(VmeasE, 'AUXV 1,0');
-    fprintf(VmeasE, 'AUXV 2,0');
-    fprintf(VmeasE, 'AUXV 3,0');
-    fprintf(VmeasE, 'AUXV 4,0');
+    SR830setAuxOut(VmeasE,1,0);
+    SR830setAuxOut(VmeasE,2,0);
+    SR830setAuxOut(VmeasE,3,0);
+    SR830setAuxOut(VmeasE,4,0);
 
 end
 end

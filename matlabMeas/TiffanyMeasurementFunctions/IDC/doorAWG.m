@@ -32,21 +32,21 @@ set33220PulsePeriod(dev2,TauE*2)
 set33220PulseWidth(dev2, TauE)
 
 % initialize Siglent
-set5122Output(Siglent5122,'OFF');               % turn outputs off 
-set5122OutputLoad(Siglent5122,'50');
-set5122FunctionType(Siglent5122,'PULSE');
-set5122Rise(Siglent5122,6e-9);                  % rise time to 6ns
+set5122Output(dev1,'OFF');               % turn outputs off 
+set5122OutputLoad(dev1,'50');
+set5122FunctionType(dev1,'PULSE');
+set5122Rise(dev1,6e-9);                  % rise time to 6ns
 set5122VoltageHigh(dev1, amp_high);             % sets high level of C1
 set5122VoltageLow(dev1,amp_low);                % sets low level of C1
 
 % set Siglent
-set5122Period(Siglent5122,TauC*2);
-set5122PulseWidth(Siglent5122,TauC);
-set5122NumBurstCycles(Siglent5122, 1);          % set num of cycles to burst
-set5122BurstTriggerSource(Siglent5122,'EXT');
-set5122BurstStateOn(Siglent5122,'ON');          % enable burst, needs to go here or else will pulse
-set5122Delay(Siglent5122,delay);
-set5122Output(Siglent5122,'ON');                % turn outputs on 
+set5122Period(dev1,TauC*2);
+set5122PulseWidth(dev1,TauC);
+set5122NumBurstCycles(dev1, 1);          % set num of cycles to burst
+set5122BurstTriggerSource(dev1,'EXT');
+set5122BurstStateOn(dev1,'ON');          % enable burst, needs to go here or else will pulse
+set5122Delay(dev1,delay);
+set5122Output(dev1,'ON');                % turn outputs on 
 
 % trigger other agilent to trigger siglent
 %fprintf(dev2, 'TRIG:SOUR BUS; *TRG');  % to open the doors

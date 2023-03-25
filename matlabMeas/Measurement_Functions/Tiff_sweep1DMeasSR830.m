@@ -33,7 +33,7 @@ end
 numSR830s = length(readSR830);
 
 %% Create all arrays for data storage. 
-[RealC,ImagC,RealE,ImagE,time,avgParamC,avgmagsC,avgxsC,avgysC,stdxC,stdyC,avgParamE,avgmagsE,avgxsE,avgysE,stdxE,stdyE] = deal([]);
+[Real,Imag,Mag,RealC,ImagC,MagC,RealE,ImagE,MagE,time,avgParamC,avgmagsC,avgxsC,avgysC,stdxC,stdyC,avgParamE,avgmagsE,avgxsE,avgysE,stdxE,stdyE] = deal([]);
 
 %% Halfway point in case back and forth is done.
 halfway = length(paramVector)/2;
@@ -53,7 +53,7 @@ for valueE = paramVector
     
     if length(ports) > 1
         setVal(device,ports{2},valueE);
-        valueC = sigDACQueryVoltage(DAC,ports{1});
+        valueC = sigDACQueryVoltage(device,ports{1});
         setVal(device,ports{1},valueC+valueE);
     else
         setVal(device,ports{1},valueE);
@@ -74,25 +74,21 @@ for valueE = paramVector
     for j = 1:repeat
         
         %% Query SR830 for Real/Imag data, calculate Magnitude and place in vectors
-        [RealC,ImagC,MagC,time] = getSR830Data(Real,Imag,Mag,time,currentTimeIndex,startTime,readSR830{1});
-        [RealE,ImagE,MagE,time] = getSR830Data(Real,Imag,Mag,time,currentTimeIndex,startTime,readSR830{2});
-        
+        [RealC,ImagC,MagC,time] = getSR830Data(RealC,ImagC,MagC,time,currentTimeIndex,startTime,readSR830{1});
+        [RealE,ImagE,MagE,time] = getSR830Data(RealE,ImagE,MagE,time,currentTimeIndex,startTime,readSR830{2});
+
         %% Place data in repeat vectors that get averaged and error bars get calculated.
-        for srIndex = 1:numSR830s
-            if srIndex == 1
-                magVectorRepeat(srIndex,j)  = MagC(srIndex,currentTimeIndex);
-                xVectorRepeat(srIndex,j)    = RealC(srIndex,currentTimeIndex);
-                yVectorRepeat(srIndex,j)    = ImagC(srIndex,currentTimeIndex);
-            else 
-                magVectorRepeat(srIndex,j)  = MagE(srIndex,currentTimeIndex);
-                xVectorRepeat(srIndex,j)    = RealE(srIndex,currentTimeIndex);
-                yVectorRepeat(srIndex,j)    = ImagE(srIndex,currentTimeIndex);
-            end
-        end
+        magVectorRepeat(1,j)  = MagC(1,currentTimeIndex);
+        xVectorRepeat(1,j)    = RealC(1,currentTimeIndex);
+        yVectorRepeat(1,j)    = ImagC(1,currentTimeIndex);
+        magVectorRepeat(2,j)  = MagE(1,currentTimeIndex);
+        xVectorRepeat(2,j)    = RealE(1,currentTimeIndex);
+        yVectorRepeat(2,j)    = ImagE(1,currentTimeIndex);   
+
         %% Increase timeIndex by 1.
         currentTimeIndex = currentTimeIndex + 1;
         
-    end
+    
     updateSR830TimePlots(plotHandles,RealC,ImagC,RealE,ImagE,time);
     
     %% Average all data and place in average arrays.
@@ -106,10 +102,10 @@ for valueE = paramVector
             avgxsC(srIndex,currentAvgIndex)      = xVectorMeans(srIndex);
             avgysC(srIndex,currentAvgIndex)      = yVectorMeans(srIndex);
         else
-            avgParamE(srIndex,currentAvgIndex)   = valueE;
-            avgmagsE(srIndex,currentAvgIndex)    = magVectorMeans(srIndex);
-            avgxsE(srIndex,currentAvgIndex)      = xVectorMeans(srIndex);
-            avgysE(srIndex,currentAvgIndex)      = yVectorMeans(srIndex);
+            avgParamE(1,currentAvgIndex)   = valueE;
+            avgmagsE(1,currentAvgIndex)    = magVectorMeans(srIndex);
+            avgxsE(1,currentAvgIndex)      = xVectorMeans(srIndex);
+            avgysE(1,currentAvgIndex)      = yVectorMeans(srIndex);
         end
     end
 
@@ -120,9 +116,9 @@ for valueE = paramVector
             stdxC(srIndex,currentAvgIndex)   = calculateErrorBar(errorType,CIVector,xVectorRepeat(srIndex,:),repeat);
             stdyC(srIndex,currentAvgIndex)   = calculateErrorBar(errorType,CIVector,yVectorRepeat(srIndex,:),repeat);
         else
-            stdmE(srIndex,currentAvgIndex)   = calculateErrorBar(errorType,CIVector,magVectorRepeat(srIndex,:),repeat);
-            stdxE(srIndex,currentAvgIndex)   = calculateErrorBar(errorType,CIVector,xVectorRepeat(srIndex,:),repeat);
-            stdyE(srIndex,currentAvgIndex)   = calculateErrorBar(errorType,CIVector,yVectorRepeat(srIndex,:),repeat);
+            stdmE(1,currentAvgIndex)   = calculateErrorBar(errorType,CIVector,magVectorRepeat(srIndex,:),repeat);
+            stdxE(1,currentAvgIndex)   = calculateErrorBar(errorType,CIVector,xVectorRepeat(srIndex,:),repeat);
+            stdyE(1,currentAvgIndex)   = calculateErrorBar(errorType,CIVector,yVectorRepeat(srIndex,:),repeat);
         end
     end
 
@@ -138,7 +134,7 @@ end
 
 function updateSR830TimePlots(plotHandles,RealC,ImagC,RealE,ImagE,time)
 srIndex=1;
-currentHandleSet = plotHandles{srIndex};
+currentHandleSet = plotHandles;
 setPlotXYData(currentHandleSet{1},time,RealC);
 setPlotXYData(currentHandleSet{2},time,ImagC);
 setPlotXYData(currentHandleSet{4},time,RealE);
@@ -159,6 +155,7 @@ for srIndex = 1:numSR830s
             setErrorBarXYData(currentHandleSet{5},avgParamC(srIndex,:),avgysC(srIndex,:),stdyC(srIndex,:));
         end
     else
+        srIndex = 1;
         if doBackAndForth && currentIndex > halfway
             setErrorBarXYData(currentHandleSet{7},avgParamE(srIndex,1:halfway),avgxyE(srIndex,1:halfway),stdyE(srIndex,1:halfway));
             setErrorBarXYData(currentHandleSet{8},avgParamE(srIndex,halfway+1:end),avgysE(srIndex,halfway+1:end),stdyE(srIndex,halfway+1:end));
@@ -183,14 +180,15 @@ function [x,y,mag,t] = getSR830Data(x,y,mag,t,currentTimeIndex,startTime,readSR8
 % Function pulls the x,y,magnitude, and time data for each point from the
 % targetSR830. IMPORTANT: readSR830 needs to be a cell array of SR830
 % objects!!!.
-for i = 1:length(readSR830)
-    currentSR830 = readSR830{i};
+    i = 1;
+    currentSR830 = readSR830;
     x(i,currentTimeIndex) = currentSR830.SR830queryX();
     y(i,currentTimeIndex) = currentSR830.SR830queryY();
     t(i,currentTimeIndex) = (now()-startTime)*86400;
     mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
     pause(.005);
 end
+
 end
 
 

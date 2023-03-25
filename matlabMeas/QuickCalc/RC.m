@@ -1,7 +1,7 @@
 function [] = RC( Device )    
     
-    R = (-str2num(query(Device,'OUTP?1'))/str2num(query(Device,'SLVL?')))^-1;
-    C = (-str2num(query(Device,'OUTP?2'))/str2num(query(Device,'SLVL?'))/2/pi/str2num(query(Device,'FREQ?')));
+    R = (-SR830queryX(Device)/SR830queryAmplitude(Device))^-1;
+    C = (-SR830queryY(Device)/SR830queryAmplitude(Device)/2/pi/SR830queryFreq(Device));
     fprintf('R = %2.3e \nC = %2.3e \n',R,C)
 
 end

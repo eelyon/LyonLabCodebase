@@ -1,8 +1,8 @@
-function [ voltList ] = DCConfigDAC( sigDAC, Command, numSteps )
+function [ ] = DCConfigDAC( DAC, Command, numSteps )
 %   ramps all the device ports to a voltage given a command
 
+TopVoltage = 0;
 DCMap;
-TopVoltage = -0.7;
 
 if strcmp(Command,'Emitting')
 
@@ -12,14 +12,14 @@ if strcmp(Command,'Emitting')
     STOBiasE   = 0;
     STIBiasE   = 0;
     DoorEClose = -4;
-    DoorEOpen  = -3;
+    DoorEOpen  = -4;
     %% Collector    
-    STOBiasC   = -3;
-    STIBiasC   = -3;
+    STOBiasC   = -4;
+    STIBiasC   = -4;
     TopC       = STIBiasC-1;
     StmC       = STIBiasC;
     DoorCClose = -5;
-    DoorCOpen  = STIBiasC;
+    DoorCOpen  = -5;
     %% Thin Film
     TfC        = -2.75;
     TfE        = -2.75;
@@ -167,6 +167,6 @@ chanList = [TopEPort StmEPort STOBiasEPort STIBiasEPort DoorEClosePort DoorEOpen
 voltList = [TopE StmE STOBiasE STIBiasE DoorEClose DoorEOpen STOBiasC STIBiasC TopC StmC DoorCClose DoorCOpen TfC TfE... 
     IdcNF IdcPF]; 
 
-sigDACRampVoltage(sigDAC,chanList,voltList,numSteps);
+sigDACRampVoltage(DAC,chanList,voltList,numSteps);
 
 end 

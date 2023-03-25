@@ -15,7 +15,7 @@ errorFlag = 0;
 % really let us do that because we default to the aux out. Need to think
 % of a better solution....
 
-if contains(name,'SR830')
+if contains(name,'SR830') || contains(name,'VmeasC') || contains(name,'VmeasE')
     if contains(Port,'Freq')
         Device.SR830setFreq(Value);
 
@@ -28,7 +28,7 @@ if contains(name,'SR830')
 
     end
 
-elseif contains(name,'AP24')
+elseif contains(name,'AP24') || contains(name,'DAC')
 
         if calibrate
             load(['AP24/AP24_' num2str(Port) '.mat']);
