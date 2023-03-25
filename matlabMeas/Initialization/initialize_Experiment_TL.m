@@ -1,7 +1,7 @@
-%% Script used to initialize an experiment.
+% Script used to initialize an experiment.
 
 port = 1234;
-small_glass_dewar = 1;
+small_glass_dewar = 0;
 
 if small_glass_dewar
     % Anthony's 24 channel DAC
@@ -25,17 +25,17 @@ if small_glass_dewar
     
 else
     % Anthony's 24 channel DAC
-    sigDACPort = 'COM8';
+    sigDACPort = 'COM4';
 
     % SR830s
     VmeasC_Address = '172.29.117.102';    
-    VmeasE_Address = '172.29.117.103';
+    VmeasE_Address = '172.29.117.106';
     
     % Keysight DMM
-    DMM_Address = '172.29.117.104';
+    DMM_Address = '172.29.117.107';
     
     % Agilent for Filament
-    Fil_Address = '172.29.117.105';
+    Fil_Address = '172.29.117.108';
     
     % Agilent for emitter door
     VpulsAgi_Address = '172.29.117.109';

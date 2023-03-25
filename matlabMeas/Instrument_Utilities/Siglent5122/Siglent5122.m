@@ -78,7 +78,7 @@ classdef Siglent5122
                 fprintf('Invalid burst trigger source, valid types are:\n');
                 fprintf(validTypes);
             else
-                command = ['C1:BTWV TRSR, ' burstType];
+                command = ['C1:BTWV TRSR, ' burstTrigger];
                 fprintf(Siglent5122.client,command);
             end
         end

@@ -1,7 +1,7 @@
 tStart = tic;
 wait = 15;
 
-sweepType = {'ST'};
+sweepType = 'ST';
 timeBetweenPoints = 0.5;
 repeat = 5;
 readSR830 = {VmeasC,VmeasE};

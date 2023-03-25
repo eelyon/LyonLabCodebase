@@ -1,10 +1,10 @@
-function [] = SweepTopMetal(sigDAC,VmeasE,VmeasC,scanType)
+function [] = SweepTopMetal(DAC,VmeasE,VmeasC,scanType)
 %% This function is meant for sweeping top metal voltage
 
 if scanType == 'TC'
     sweepType = {'TC'};
     
-    start = sigDACQueryVoltage(sigDAC,18);
+    start = sigDACQueryVoltage(DAC,18);
     deltaParam = 0.1;
     stop = 0.2;
 
@@ -18,7 +18,7 @@ if scanType == 'TC'
 elseif scanType == 'TE'
     sweepType = {'TE'};
     
-    start = sigDACQueryVoltage(sigDAC,14);
+    start = sigDACQueryVoltage(DAC,14);
     deltaParam = -0.1;
     stop = -1;
     

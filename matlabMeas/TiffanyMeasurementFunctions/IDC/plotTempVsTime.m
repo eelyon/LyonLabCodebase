@@ -14,9 +14,9 @@ while 1
     time(i) = (now()-startTime)*86400/60;
     for SR830obj = 1:numSR830s
         if SR830obj == 1
-            current(i) = SR830{SR830obj}.SR830queryY();
+            current(i) = -SR830{SR830obj}.SR830queryY();
         else
-            capacitance(i) = SR830{SR830obj}.SR830queryY()/(2*pi*frequency*amplitude);
+            capacitance(i) = -SR830{SR830obj}.SR830queryY()/(2*pi*frequency*amplitude);
         end
     end
     resistance = queryHP34401A(Thermometer);

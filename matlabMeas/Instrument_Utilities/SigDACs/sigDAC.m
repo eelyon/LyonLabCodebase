@@ -45,7 +45,7 @@ classdef sigDAC
         end
 
         function sigDACRampVoltage(sigDAC,channels,voltages,numSteps)
-            calibrate = 1;
+            calibrate = 0;
             numChans = length(channels);
             numVolts = length(voltages);
     
@@ -69,11 +69,11 @@ classdef sigDAC
         
                 str = [numSteps numChans channels calvoltList];
                 convertArray = sprintf('%d ', str);
-                fprintf(sigDAC,['RAMP ' convertArray]);
+                fprintf(sigDAC.client,['RAMP ' convertArray]);
            else
                 str = [numSteps numChans channels voltages];
                 convertArray = sprintf('%d ', str);  % num2str pads the array with space, use sprintf instead!
-                fprintf(sigDAC,['RAMP ' convertArray]);
+                fprintf(sigDAC.client,['RAMP ' convertArray]);
            end
         end
 
