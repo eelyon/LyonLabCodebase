@@ -47,24 +47,26 @@ function [fig] = plotData(xData,yData,varargin)
     if ~strcmp(p.Results.legend,'')
         legend(p.Results.legend,'Location','northeast');
     end
+
     % Compile Metadata
     figDateFormat = 'mm_dd_yy HH:MM:SS';
     metadata_struct.time= datestr(now(),figDateFormat);
     instrumentList = parseInstrumentList();
-
-    for i = 1:length(instrumentList)
-        if contains(instrumentList{i},"SR830")
-            metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
-        elseif contains(instrumentList{i},"DAC")
-            metadata_struct.sigDAC = evalin('base',['sigDACGetConfig(' instrumentList{i} ');']);
-        elseif contains(instrumentList{i},"VmeasC")
-            metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
-        elseif contains(instrumentList{i},"VmeasE")
-            metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
+    if length(instrumentList) > 1
+        for i = 1:length(instrumentList)
+            if contains(instrumentList{i},"SR830")
+                metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
+            elseif contains(instrumentList{i},"DAC")
+                metadata_struct.sigDAC = evalin('base',['sigDACGetConfig(' instrumentList{i} ');']);
+            elseif contains(instrumentList{i},"VmeasC")
+                metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
+            elseif contains(instrumentList{i},"VmeasE")
+                metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
+            end
         end
-    end
+        % Insert metadata structure into figure and save in data.
+        myFig.UserData = metadata_struct;
+    else
+    end 
     
-    % Insert metadata structure into figure and save in data.
-
-    myFig.UserData = metadata_struct;
 end

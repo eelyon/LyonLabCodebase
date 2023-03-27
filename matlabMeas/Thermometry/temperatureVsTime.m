@@ -9,9 +9,10 @@ while 1
     resistance = queryHP34401A(Thermometer);
     time(i) = (now()-startTime)*86400/60;
     temperature(i) = therm.tempFromRes(resistance);
-    i = i+1;
     pHandle.YData = temperature;
     pHandle.XData = time;
+    title(['Temperature=' num2str(temperature(i)) 'K']);
+    i = i+1;
     refreshdata;
     drawnow;
     pause(timeBetweenPoints)

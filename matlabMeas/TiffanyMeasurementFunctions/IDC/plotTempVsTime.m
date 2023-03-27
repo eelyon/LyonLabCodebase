@@ -1,4 +1,4 @@
-function [] = plotTempVsTime(plotHandleCell,subPlotFigure,SR830,timeBetweenPoints,Thermometer,therm)
+function [] = plotTempVsTime(plotHandleCell,subPlotFigure,SR830,timeBetweenPoints,Thermometer,therm,axesCell)
 % plotHandleCell - cell containing all plot handles to update. Format:
 % Temperature, current, capacitance
 % SR830 - cell containing SR830 objects to measure.
@@ -22,11 +22,13 @@ while 1
     resistance = queryHP34401A(Thermometer);
     temperature(i) = therm.tempFromRes(resistance);
 
-    i = i+1;
     setPlotXYData(plotHandleCell{1},time,temperature);
     setPlotXYData(plotHandleCell{2},time,current);
     setPlotXYData(plotHandleCell{3},time,capacitance);
-
+    setPlotTitle(axesCell{1},'T',temperature(i));
+    setPlotTitle(axesCell{3},'C',capacitance(i));
+    
+    i = i+1;
     pause(timeBetweenPoints)
 end
     function cleanMeUp(subPlotFigure)

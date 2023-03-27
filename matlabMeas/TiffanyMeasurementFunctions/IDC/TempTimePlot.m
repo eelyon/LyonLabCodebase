@@ -12,15 +12,16 @@ Therm = initializeThermometry(thermometerType);
 %% Create plot for thermometry,IDCs,Emitter and set the data sources for the figure handle below.
 subPlotFigure = figure(getNextMATLABFigNum());
 
-subplot(2,2,1);
+STEHandle = subplot(2,2,1);
 STEPlot   = plotData(time,current,'xLabel',"Time (minutes)",'yLabel',"Current (nA)",'color',"kx",'subPlot',1);
 
-subplot(2,2,2);
+IDCHandle = subplot(2,2,2);
 IDCPlot   = plotData(time,capacitance,'xLabel',"Time (minutes)",'yLabel',"Capacitance (pF)",'color',"rx",'subPlot',1);
 
-subplot(2,2,3:4);
+thermHandle = subplot(2,2,3:4);
 thermPlot = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"bx",'subPlot',1);
 
+axesCell = {thermHandle,STEHandle,IDCHandle};
 tempPlotCell = {thermPlot,STEPlot,IDCPlot};
 SR830Cell = {VmeasC,VmeasE};
-plotTempVsTime(tempPlotCell,subPlotFigure,SR830Cell,timeBetweenPoints,Thermometer,Therm);
+plotTempVsTime(tempPlotCell,subPlotFigure,SR830Cell,timeBetweenPoints,Thermometer,Therm,axesCell);

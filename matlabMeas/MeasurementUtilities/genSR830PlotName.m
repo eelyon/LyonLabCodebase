@@ -6,6 +6,10 @@ function plotName = genSR830PlotName(targetGate)
             plotName = 'Pinchoff';
         case 'TM'
             plotName = 'TopMetalSweep';
+        case 'TC'
+            plotName = 'TopCSweep';
+        case 'TE'
+            plotName = 'TopESweep';
         case 'Res'
             plotName = 'ReservoirSweep';
         case 'Door'
@@ -16,5 +20,7 @@ function plotName = genSR830PlotName(targetGate)
             plotName = 'PairSweep';
         case 'Freq'
             plotName = 'FrequencySweep';
+        case 'IDC'
+            plotName = 'IDCSweep';
     end
 end
