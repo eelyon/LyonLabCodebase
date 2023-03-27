@@ -1,5 +1,4 @@
-function [plotHandles,subPlotFigure] = Tiff_initializeSR830Meas1D(sweepType,doBackAndForth)
-
+function [plotHandles,subPlotFigure] = initializeDUALSR830Meas1D(sweepType,doBackAndForth)
 [time,Real,Imag] = deal(inf);
 
 timeLabel = "Time [s]";
@@ -18,8 +17,6 @@ realVsTimeE = plotData(time,Real,'xLabel',timeLabel,'yLabel',"Real Current [A]",
 
 subplot(2,3,5)
 imagVsTimeE = plotData(time,Real,'xLabel',timeLabel,'yLabel',"Imag Current [A]",'title',"Imag vs Time",'subPlot',1);
-
-%[vavg1,vavg2,avgxs1,avgxs2,avgys1,avgys2,stdx1,stdx2,stdy1,stdy2,avgmags1,avgmags2,stdm1,stdm2] = deal(inf);
 
 subplot(2,3,3)
 if ~doBackAndForth
