@@ -90,7 +90,6 @@ for value = paramVector
             [Real,Imag,Mag,time] = getSR830Data(Real,Imag,Mag,time,currentTimeIndex,startTime,readSR830);
         end
 
-
         %% Place data in repeat vectors that get averaged and error bars get calculated.
         for srIndex = 1:numSR830s
             magVectorRepeat(srIndex,j)  = Mag(srIndex,currentTimeIndex);
@@ -195,7 +194,7 @@ function [x,y,mag,t] = getSR830DataCapacitance(x,y,mag,t,currentTimeIndex,startT
 % objects!!!.
 for i = 1:length(readSR830)
     currentSR830 = readSR830{i};
-    Igain = 1e12.*-1/(2*pi*str2double(SR830queryAmplitude(readSR830))*str2double(SR830queryFreq(readSR830)));
+    Igain = 1e12.*-1/(2*pi*SR830queryAmplitude(currentSR830)*SR830queryFreq(currentSR830));
     x(i,currentTimeIndex) = currentSR830.SR830queryX()*Igain;
     y(i,currentTimeIndex) = currentSR830.SR830queryY()*Igain;
     t(i,currentTimeIndex) = (now()-startTime)*86400;

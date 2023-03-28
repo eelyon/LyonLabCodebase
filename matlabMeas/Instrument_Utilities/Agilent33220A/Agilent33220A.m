@@ -129,6 +129,17 @@ classdef Agilent33220A
             end
         end
 
+        function [] = set33220Trigger(Agilent33220A,sourceType)
+            validSourceTypes = 'IMM,EXT,BUS';
+            if ~contains(validSourceTypes,sourceType)
+                fprintf([sourceType ' is not a valid trigger source type. Valid types are:\n'])
+                fprintf([validSourceTypes, '\n']);
+            else
+                command = ['TRIG:SOUR ' sourceType '; *TRG'];
+                fprintf(Agilent33220A.client,command);
+            end
+        end
+
         function [] = set33220VoltageHigh(Agilent33220A,highVoltage)
             command = ['VOLT:HIGH ', num2str(highVoltage)];
             fprintf(Agilent33220A.client,command);
