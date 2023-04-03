@@ -1,5 +1,6 @@
 tStart = tic;
 wait = 15;
+numTrig = 3;
 
 sweepType = 'ST';
 timeBetweenPoints = 0.5;
@@ -24,7 +25,8 @@ pause(wait);
 start = sigDACQueryVoltage(DAC,16);
 deltaParam = -0.05;
 stop = -0.5;
-sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
+configName = 'beforeTauE';
+sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
 
 % open door
 doorAWG(VpulsSig,VpulsAgi,1,5,0,'ms')
@@ -37,7 +39,8 @@ fprintf(VpulsAgi, 'TRIG:SOUR BUS; *TRG');  % to open the doors
 %% AFTER TAUE
 deltaParam = -0.025;
 stop = -0.4;
-sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
+configName = 'AfterTauE';
+sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
 
 % Transferring Back electrons to emitter
 DCConfigDAC_ST(DAC,'TransferringBack',10000);
@@ -47,27 +50,27 @@ pause(wait)
 
 doorAWG(VpulsSig,VpulsAgi,5,1,0,'ms')
 pause(5)
-fprintf(VpulsAgi, 'TRIG:SOUR BUS; *TRG');  % to open the doors
-pause(1)
-fprintf(VpulsAgi, 'TRIG:SOUR BUS; *TRG');  % to open the doors
-pause(1)
-fprintf(VpulsAgi, 'TRIG:SOUR BUS; *TRG');  % to open the doors
+
+for i = 1:numTrig
+    set33220Trigger(VpulsAgi,'BUS');  % to open the doors
+    pause(1)
+end
 
 sigDACRampVoltage(DAC,18,-1.7,10000);
 pause(wait)
 
 % open door to transfer back electrons to emitter 
-fprintf(VpulsAgi, 'TRIG:SOUR BUS; *TRG');  % to open the doors
-pause(1)
-fprintf(VpulsAgi, 'TRIG:SOUR BUS; *TRG');  % to open the doors
-pause(1)
-fprintf(VpulsAgi, 'TRIG:SOUR BUS; *TRG');  % to open the doors
+for i = 1:numTrig
+    set33220Trigger(VpulsAgi,'BUS');  % to open the doors
+    pause(1)
+end
 
 % STM scan, pinch off
 %% AfterTransferBack
 deltaParam = -0.05;
 stop = -0.5;
-sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
+configName = 'AfterTransferBack';
+sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
 
 % Transferring electrons
 DCConfigDAC_ST(DAC,'Transferring',10000);
@@ -79,7 +82,8 @@ pause(wait);
 %% AfterTransferring
 deltaParam = -0.025;
 stop = -0.4;
-sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
+configName = 'AfterTransferring';
+sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
 
 tEnd = toc(tStart);
 fprintf('%d minutes and %f seconds\n', floor(tEnd/60), rem(tEnd,60));

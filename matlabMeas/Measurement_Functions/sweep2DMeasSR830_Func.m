@@ -1,10 +1,9 @@
-function [avgmags] = sweep2DMeasSR830_Func(sweepTypes, starts, stops, deltaParams, devices, portss, timeBetweenPoints,repeat,readSR830)
+function [avgmags] = sweep2DMeasSR830_Func(sweepTypes, starts, stops, deltaParams, devices, ports, timeBetweenPoints,repeat,readSR830,extraPorts)
 
 %% Test command (FOR TESTING PURPOSES ONLY, NOT INDICATIVE OF ANY OTHER FUNCTIONALITY)
 % sweep2DMeasSR830_Func({'Freq', 'ST'}, {1000, 0}, {10000, 1}, {1000, 0.1}, {SR830,SR830}, {{'Freq'},{'1'}}, 0.5, 5, SR830)
 
 plotHandle = initializeSR830Meas2D_Func(sweepTypes, starts, stops, deltaParams);
-
 
 instrumentList = parseInstrumentList();
 
@@ -22,8 +21,11 @@ end
 [stop1, stop2] = stops{:};
 [deltaParam1, deltaParam2] = deltaParams{:};
 [device1, device2] = devices{:};
-[ports1, ports2] = portss{:};
-
+[ports1, ports2] = ports{:};
+if exist('extraPorts','var')
+    [ports3, ports4, BiasCPort] = extraPorts{:};
+    centerV = sigDACQueryVoltage(device2,BiasCPort)/2;
+end
 
 %% First set of parameters to probe
 if start1 > stop1 && deltaParam1 > 0
@@ -59,12 +61,18 @@ for valueIndex1 = 1:length(paramVector1) %loops through 1 first
 
     for pIndex1 = 1:length(ports1)
         port1 = ports1{pIndex1};
+        if exist('extraPorts','var')
+            port3 = ports3{pIndex1};
+        end
+
         if pIndex1 == 1
             setVal(device1,port1,value1);
+            if exist('extraPorts','var')
+                setVal(device1,port3,value1);
+            end
         else
             setVal(device1,port1,value1+deltaGateParam1);
         end
-        
     end
     
     if haveDAC
@@ -82,12 +90,21 @@ for valueIndex1 = 1:length(paramVector1) %loops through 1 first
         value2 = paramVector2(valueIndex2);
         for pIndex2 = 1:length(ports2)
             port2 = ports2{pIndex2};
+            if exist('extraPorts','var')
+                port4 = ports4{pIndex2};
+            end
+
             if pIndex2 == 1
-                setVal(device2,port2,value2);
+                if ~exist('extraPorts','var')
+                    setVal(device2,port2,value2);
+                else
+                    delta = value2/2;
+                    setVal(device2,port2,centerV+delta);
+                    setVal(device2,port4,centerV-delta);
+                end
             else
                 setVal(device2,port2,value2+deltaGateParam2);
             end
-            
         end
         
         if haveDAC

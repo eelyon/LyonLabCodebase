@@ -92,6 +92,8 @@ switch targetGate
         portSet2 = evalin("base","Dot100Port");
         delta = deviceSet2.sigDACQueryVoltage(portSet2) - deviceSet.sigDACQueryVoltage(portSet);
         xAxisName = strcat("Top Metal Voltage (DP Bias ",num2str(delta),"V) [V]");
+    case 'CT'
+        xAxisName = "Center Voltage (TF delta) [V]";
     case 'Freq'
         xAxisName = "SR830 Frequency [Hz]";
     case 'Amp'

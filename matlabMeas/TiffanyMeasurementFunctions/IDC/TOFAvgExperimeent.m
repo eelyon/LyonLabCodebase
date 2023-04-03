@@ -30,7 +30,8 @@ for index = 1:numRepeated
         %% AfterTauE
         deltaParam = -0.025;
         stop = -0.4;
-        sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
+        configName = 'AfterTauE';
+        sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
         pause(wait);
     
         % Transferring Back electrons to emitter
@@ -43,7 +44,8 @@ for index = 1:numRepeated
         %% AfterTransferBack
         deltaParam = -0.05;
         stop = -0.5;
-        sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
+        configName = 'AFterTransferBack';
+        sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
         
         % Transferring electrons
         DCConfigDAC_ST(DAC,'Transferring',10000);
@@ -55,7 +57,8 @@ for index = 1:numRepeated
         %% AfterTransferring
         deltaParam = -0.025;
         stop = -0.4;
-        sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
+        configName = 'AfterTransferring';
+        sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
         pause(wait);
     end
 end
