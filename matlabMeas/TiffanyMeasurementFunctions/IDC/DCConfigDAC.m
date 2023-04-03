@@ -1,7 +1,8 @@
 function [ ] = DCConfigDAC( DAC, Command, numSteps )
 %   ramps all the device ports to a voltage given a command
 
-TopVoltage = 0;
+turnOnHelium = 0;
+TopVoltage = -0.7;
 DCMap;
 
 if strcmp(Command,'Emitting')
@@ -168,5 +169,17 @@ voltList = [TopE StmE STOBiasE STIBiasE DoorEClose DoorEOpen STOBiasC STIBiasC T
     IdcNF IdcPF]; 
 
 sigDACRampVoltage(DAC,chanList,voltList,numSteps);
+
+if turnOnHelium
+   negIDC = 20;
+   posIDC = -20;
+   devices = {SIM900,SIM900};
+   ports = {IdcNFPort,IdcPFPort};
+   stop = [negIDC,posIDC];
+   numSteps = 100;
+   waitTime = 5;
+
+   interleavedRamp(devices,ports,stop,numSteps,waitTime)
+end
 
 end 

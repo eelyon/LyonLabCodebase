@@ -1,4 +1,4 @@
-function [ ] = sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth)
+function [ ] = sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName)
 % Function sweeps the device and ports from the start to stop parameter
 % with a given delta. 
 % Parameters:
@@ -128,7 +128,11 @@ for valueE = paramVector
     currentAvgIndex = currentAvgIndex + 1;
 end
 
-saveData(subPlotFigureHandles,genSR830PlotName(sweepType))
+if ~exist('configName','var')
+    saveData(subPlotFigureHandles,[genSR830PlotName(sweepType)])
+else
+    saveData(subPlotFigureHandles,[genSR830PlotName(sweepType) '_' configName])
+end
 
 function updateSR830TimePlots(plotHandles,RealC,ImagC,RealE,ImagE,time)
 srIndex=1;

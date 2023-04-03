@@ -28,12 +28,14 @@ if doorE
         device = DAC;
         ports = {StmCPort,StmEPort};
         doBackAndForth = 1;
-    
-        sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
+        configName = 'doorESweep';
+        sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
         pause(0.1)
     end
+
 % Characterize collector door opening to accept from emitter
 else
+    numTrig = 3;
     % Transferring Back electrons to emitter
     DCConfigDAC_ST(DAC,'TransferringBack',10000);
     pause(wait)
@@ -42,27 +44,27 @@ else
     
     doorAWG(VpulsSig,VpulsAgi,5,1,0,'ms')
     pause(5)
-    set33220Trigger(VpulsAgi,'BUS');  % to open the doors
-    pause(1)
-    set33220Trigger(VpulsAgi,'BUS');  % to open the doors
-    pause(1)
-    set33220Trigger(VpulsAgi,'BUS');  % to open the doors
+    
+    for i = 1:numTrig
+        set33220Trigger(VpulsAgi,'BUS');  % to open the doors
+        pause(1)
+    end
     
     sigDACRampVoltage(DAC,18,-1.7,10000);
     pause(wait)
     
     % open door to transfer back electrons to emitter 
-    set33220Trigger(VpulsAgi,'BUS');  % to open the doors
-    pause(1)
-    set33220Trigger(VpulsAgi,'BUS');  % to open the doors
-    pause(1)
-    set33220Trigger(VpulsAgi,'BUS');  % to open the doors
+    for i = 1:numTrig
+        set33220Trigger(VpulsAgi,'BUS');  % to open the doors
+        pause(1)
+    end
     
     % STM scan, pinch off
     %% AfterTransferBack
     deltaParam = -0.05;
     stop = -0.5;
-    sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
+    configName = 'AfterTransferBack';
+    sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
     
     % Transferring electrons
     DCConfigDAC_ST(DAC,'Transferring',10000);
@@ -74,7 +76,8 @@ else
     %% AfterTransferring
     deltaParam = -0.025;
     stop = -0.4;
-    sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
+    configName = 'AfterTransferring';
+    sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
 
     doorCOpen = [-5 -3 -1 -0.5 0 0.1 0.2];
     doorAWG(VpulsSig,VpulsAgi,500,100,0,'ms') 
@@ -99,8 +102,8 @@ else
         device = DAC;
         ports = {StmCPort,StmEPort};
         doBackAndForth = 1;
-    
-        sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
+        configName = 'doorCSweep';
+        sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
         pause(0.1)
     end
 end
