@@ -1,9 +1,9 @@
 function [ h ] = heliumFillHeight( Pkpa )
- % calculates the height of He in the cell based on fill volume 
+ % calculates the height of He in the cell based on fill volume in mm
  % INPUTs: Pkpa = pressure of stick after filling with He (read directly
  % from gauge)
  
- littleglassdewar = 0;
+ littleglassdewar = 1;
  
  if littleglassdewar   
      Vpanel = 18.4;     % in^3

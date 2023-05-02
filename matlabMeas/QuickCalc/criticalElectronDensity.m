@@ -1,9 +1,9 @@
 function [density] = criticalElectronDensity( thickness, varargin )
   % calculates the critical density of electrons per cm^2
-  % INPUTS: thickness = string, 
-      % if 'thick', no other parameter
-      % if 'thin', input He film thickness in meters
-      % if 'fraction', input kmin in meters
+  %% INPUTS: thickness = string, 
+  %%    if 'thick', no other parameter
+  %%    if 'thin', input He film thickness in meters
+  %%    if 'fraction', input kmin in meters
 
   e = 1.609*10^-19;
   rho = 145;       % kg/m^3
