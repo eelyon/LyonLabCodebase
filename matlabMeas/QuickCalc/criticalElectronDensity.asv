@@ -5,12 +5,12 @@ function [density] = criticalElectronDensity( thickness, varargin )
   %%    if 'thin', input He film thickness in meters
   %%    if 'fraction', input kmin in meters
 
-  e   = 1.609*10^-19;
-  rho = 145;           % kg/m^3
-  sig = 3.34e-4;       % N/m 
-  g   = 9.8;           % m/s
+  e = 1.609*10^-19;
+  rho = 145;       % kg/m^3
+  sig = 3.34e-4;   % N/m 
+  g = 9.8;         % m/s
   ehe = 1.057;
-  e0  = 8.85e-12;      % m 
+  e0 = 8.85e-12;   % m 
   cm2 = 1e-4;
 
   if strcmp(thickness,'thick')        % for thick film
@@ -23,7 +23,7 @@ function [density] = criticalElectronDensity( thickness, varargin )
   
   elseif strcmp(thickness,'fraction') % for fractionated He films
     kmin = varargin{1};
-    density = cm2*sqrt((sig*kmin)/(e^2/(2*e0*ehe)));     
+    density = cm*sqrt((sig*kmin)/(e^2/(2*e0*ehe)));     
   end    
 
 end
