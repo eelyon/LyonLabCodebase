@@ -2,17 +2,17 @@
 
 port = 1234;
 
- SR830_Address = '172.29.117.102';
- SR830 = SR830(port,SR830_Address);
+%  SR830_Address = '172.29.117.103';
+%  SR830 = SR830(port,SR830_Address);
+% % 
+%  DMM_Address = '172.29.117.104';
+%  Thermometer = TCPIP_Connect(DMM_Address,port);
 % 
- DMM_Address = '172.29.117.104';
- Thermometer = TCPIP_Connect(DMM_Address,port);
-% 
- sigDACPort = 'COM8';
- DAC = sigDAC(sigDACPort,12);
+ sigDACPort = 'COM4';
+ DAC = sigDAC(sigDACPort,16);
 %
- AWG_Address = '172.29.117.108';
- AWG = Agilent33220A(port,AWG_Address);
+%  AWG_Address = '172.29.117.108';
+%  AWG = Agilent33220A(port,AWG_Address);
 
  DACGUI = sigDACGUI;
 % SR830GUI = SR830_GUI;
