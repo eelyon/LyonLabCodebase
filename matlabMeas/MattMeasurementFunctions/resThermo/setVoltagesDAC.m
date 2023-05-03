@@ -42,6 +42,6 @@ voltUse = voltsGnd;
 
 %%{
 for i = 1:length(voltUse)
-    setVal(DAC,i,voltUse(i));
+    setVal(DAC,i,voltUse(i)  - (-0.029));
 end
 %}
