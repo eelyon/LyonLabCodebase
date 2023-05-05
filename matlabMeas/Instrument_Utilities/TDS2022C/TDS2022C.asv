@@ -1,0 +1,16 @@
+classdef TDS2022C
+
+    properties
+        acquisitionMode
+        ch1Position
+        ch1Scale
+        ch2Position
+        ch2Scale
+        numAvgs
+    end
+
+    methods
+
+    end
+
+end
