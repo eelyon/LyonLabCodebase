@@ -2,7 +2,7 @@ function [ ] = DCConfigDAC( DAC, Command, numSteps )
 %   ramps all the device ports to a voltage given a command
 
 turnOnHelium = 0;
-TopVoltage = -0.7;
+TopVoltage   = -2.5;
 DCMap;
 
 if strcmp(Command,'Emitting')
@@ -12,21 +12,21 @@ if strcmp(Command,'Emitting')
     StmE       = 0;
     STOBiasE   = 0;
     STIBiasE   = 0;
-    DoorEClose = -4;
-    DoorEOpen  = -4;
+    DoorEClose = -2;
+    DoorEOpen  = -0.5;
     %% Collector    
-    STOBiasC   = -4;
-    STIBiasC   = -4;
+    STOBiasC   = -3;
+    STIBiasC   = -3;
     TopC       = STIBiasC-1;
     StmC       = STIBiasC;
-    DoorCClose = -5;
-    DoorCOpen  = -5;
+    DoorCClose = -4;
+    DoorCOpen  = -4;
     %% Thin Film
-    TfC        = -2.75;
-    TfE        = -2.75;
+    TfC        = -2;
+    TfE        = -2;
     %% IDC
-    IdcNF      = -2.75;
-    IdcPF      = -2.75;
+    IdcNF      = -3;
+    IdcPF      = -3;
 
 elseif strcmp(Command,'Transferring')
     %% Emitter    
@@ -56,7 +56,7 @@ elseif strcmp(Command,'Transfer')
     StmE       = 0;
     STOBiasE   = 0;
     STIBiasE   = 0;
-    DoorEClose = -5;
+    DoorEClose = -4;
     DoorEOpen  = 0.5;
     %% Collector   
     STOBiasC   = 0.75;

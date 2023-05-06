@@ -23,7 +23,7 @@ pause(wait);
 % STM scan, pinch off
 %% BEFORE TAUE     
 start = sigDACQueryVoltage(DAC,16);
-deltaParam = -0.05;
+deltaParam = -0.1;
 stop = -0.5;
 configName = 'beforeTauE';
 sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);

@@ -1,1 +1,1 @@
-Instruments: SR830, DMM
+Instruments: VmeasE, VmeasC, DAC
