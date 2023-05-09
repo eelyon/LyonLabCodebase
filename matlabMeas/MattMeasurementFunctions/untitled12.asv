@@ -1,13 +1,16 @@
 Oscilloscope = TDS;
 triggerChannel = 'CH1';
 VOff = -1.5;
-VBias = -2;
-VBack = -1; setVal(DAC,1,VBack);
-VGu = 0; setVal(DAC,2,VGu);
-VRes = -0.2; setVal(DAC,4,VRes); setVal(DAC,5,VRes);
-VGND = -0.8; setVal(DAC,3,VGND);
+VBias = -1.5;
 
-%primeTDS2022ForAcquisition(TDS);
+setTDS2022TriggerLevel(TDS, VOff + (VBias / 2));
+
+VBack = 0; setVal(DAC,1,VBack);
+VGu = -4; setVal(DAC,2,VGu);
+VRes = -4; setVal(DAC,4,VRes); setVal(DAC,5,VRes); setVal(DAC,6,VRes);
+VGND = -4; setVal(DAC,3,VGND);
+
+primeTDS2022ForAcquisition(TDS);
 pause(1);
 send33220Trigger(AWG);
 
