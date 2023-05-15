@@ -1,7 +1,7 @@
 Oscilloscope = TDS;
 triggerChannel = 'CH1';
-VOff = -1.5;
-VBias = -1.5;
+VOff = -1;
+VBias = -1;
 
 setTDS2022TriggerLevel(TDS, VOff + (VBias / 2));
 
