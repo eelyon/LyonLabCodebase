@@ -7,8 +7,8 @@ function [] = filterPSDIQSignals(folderPath,figName,cutoffFreq)
     
     originalPath = fullfile(folderPath,figName);
 
-    [QxDat,QyDat] = getXYData(originalPath,'fieldNum',1);
-    [IxDat,IyDat] = getXYData(originalPath,'fieldNum',2);
+    [QxDat,QyDat] = getXYData(originalPath,'fieldNum',7);
+    [IxDat,IyDat] = getXYData(originalPath,'fieldNum',8);
 
     filterQ = filter_signal(QxDat,QyDat,cutoffFreq);
     filterI = filter_signal(IxDat,IyDat,cutoffFreq);
@@ -22,5 +22,5 @@ function [] = filterPSDIQSignals(folderPath,figName,cutoffFreq)
     ylabel('ESR Signal (a.u)');
     legend({'Filtered Q','Filtered I'},'Location','NorthWest');
     title(['Filtered Hahn Echo, ' num2str(cutoffFreq) ' Hz LPF']);
-    saveas(filteredDat,fullfile(filterFolder,[figName(1:length(figName)-4) '_filtered.fig']),'fig');
+    saveas(filteredDat,fullfile(filterFolder,[figName(1:length(figName)-4) '_filtered_' num2str(cutoffFreq) '_Hz.fig']),'fig');
 end
