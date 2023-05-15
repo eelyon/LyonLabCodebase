@@ -9,7 +9,6 @@ dataToPlot = generate2DPlotData(starts, stops, deltas);
 
 yAxisName = genSR830Axis(sweepType1);
 xAxisName = genSR830Axis(sweepType2);
-
 myFig = figure(getNextMATLABFigNum());
 
 %% Plot data
@@ -71,35 +70,39 @@ function outData = generate2DPlotData(starts, stops, deltas)
     outData = {xData, yData, zData};
 end
 
-function xAxisName = genSR830Axis(targetGate)
+function axisName = genSR830Axis(targetGate)
 switch targetGate
     case 'GND'
-        xAxisName = "Plane Bias [V]";
+        axisName = "Plane Bias [V]";
     case 'ST'
-        xAxisName = "STM Bias [V]";
+        axisName = "STM Bias [V]";
     case 'TM'
-        xAxisName = "Top Metal Voltage [V]";
+        axisName = "Top Metal Voltage [V]";
     case 'Res'
-        xAxisName = "Reservoir Voltage [V]";
+        axisName = "Reservoir Voltage [V]";
     case 'Door'
-        xAxisName = "Door Voltage [V]";
+        axisName = "Door Voltage [V]";
     case 'DP'
-        xAxisName = "Dot Potential Voltage [V]";
+        axisName = "Dot Potential Voltage [V]";
     case 'Pair'
         deviceSet = evalin("base","Top100Device");
         portSet = evalin("base","Top100Port");
         deviceSet2 = evalin("base","Dot100Device");
         portSet2 = evalin("base","Dot100Port");
         delta = deviceSet2.sigDACQueryVoltage(portSet2) - deviceSet.sigDACQueryVoltage(portSet);
-        xAxisName = strcat("Top Metal Voltage (DP Bias ",num2str(delta),"V) [V]");
+        axisName = strcat("Top Metal Voltage (DP Bias ",num2str(delta),"V) [V]");
     case 'CT'
-        xAxisName = "Center Voltage (TF delta) [V]";
+        axisName = "Center Voltage (TF delta) [V]";
     case 'Freq'
-        xAxisName = "SR830 Frequency [Hz]";
+        axisName = "SR830 Frequency [Hz]";
     case 'Amp'
-        xAxisName = "SR830 Amplitude [V]";
+        axisName = "SR830 Amplitude [V]";
+    case 'ESRCenter'
+        axisName = "Center [\mus]";
+    case 'IntegrationWidth'
+        axisName = "Integration Width [\mus]";
     otherwise
-        xAxisName = 'unknown';
+        axisName = 'unknown';
 end
 end
 end

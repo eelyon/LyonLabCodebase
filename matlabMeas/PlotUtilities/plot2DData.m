@@ -1,6 +1,7 @@
 function [fig] = plot2DData(xData,yData,cData,varargin)
     defaultXLabel = "x axis (arb)";
     defaultYLabel = "y axis (arb)";
+    defaultCLabel = "color axis (arb)";
     defaultSubPlot = 0;
     defaultTurnHoldOn = 0;
     defaultType = 'plot';
@@ -13,6 +14,7 @@ function [fig] = plot2DData(xData,yData,cData,varargin)
     addRequired(p,'cData');
     addParameter(p,'xLabel',defaultXLabel,@isstring);
     addParameter(p,'yLabel',defaultYLabel,@isstring);
+    addParameter(p,'cLabel',defaultCLabel,@isstring);
     addParameter(p,'holdOn',defaultTurnHoldOn,@isnumeric);
     addParameter(p,'type',defaultType,@isstring);
     addParameter(p,'title',defaultTitle,@isstring);
@@ -34,7 +36,11 @@ function [fig] = plot2DData(xData,yData,cData,varargin)
     xlabel(p.Results.xLabel);
     ylabel(p.Results.yLabel);
     title(p.Results.title);
-    colorbar;
+    c = colorbar;
+    c.Label.String = p.Results.cLabel;
+    c.Label.Rotation = 270;
+    c.Label.FontSize = 12;
+    c.Label.Position = [2.5,7];
 
     % Compile Metadata
     figDateFormat = 'mm_dd_yy HH:MM:SS';
