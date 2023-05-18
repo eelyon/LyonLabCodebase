@@ -34,4 +34,9 @@ else
     SR830setAuxOut(VmeasE,4,0);
 
 end
+
+% get temperature
+% resistance = queryHP34401A(Thermometer);
+% temperature = Therm.tempFromRes(resistance)
+
 end

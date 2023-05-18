@@ -169,6 +169,26 @@ classdef SR830 < handle
                 SR830.timeConstant = tc;
             end
         end
+
+        function xDat = SR830queryXFast(SR830,numPoints)
+            startPoint = 16383 - numPoints;
+            command = ['TRCA? 1, ' num2str(startPoint) ',' num2str(numPoints)];
+            xDat = query(SR830.client,command);
+            xDat = split(xDat,',');
+            xDat = xDat(1:numPoints);
+            xDat = str2double(xDat);
+            xDat = xDat';
+        end
+
+        function yDat = SR830queryYFast(SR830,numPoints)
+            startPoint = 16383 - numPoints;
+            command = ['TRCA? 2, ' num2str(startPoint) ',' num2str(numPoints)];
+            yDat = query(SR830.client,command);
+            yDat = split(yDat,',');
+            yDat = yDat(1:numPoints);
+            yDat = str2double(yDat);
+            yDat = yDat';
+        end
     end
 end
 

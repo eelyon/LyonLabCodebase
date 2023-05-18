@@ -22,5 +22,9 @@ function plotName = genSR830PlotName(targetGate)
             plotName = 'FrequencySweep';
         case 'IDC'
             plotName = 'IDCSweep';
+        case 'TFE'
+            plotName = 'ThinFilmEmitterSweep';
+        case 'TFC'
+            plotName = 'ThinFilmCollectorSweep';
     end
 end

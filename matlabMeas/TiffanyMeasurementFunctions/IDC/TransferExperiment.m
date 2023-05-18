@@ -3,7 +3,7 @@ wait = 15;
 numTrig = 3;
 
 sweepType = 'ST';
-timeBetweenPoints = 0.5;
+timeBetweenPoints = 0.05;
 repeat = 5;
 readSR830 = {VmeasC,VmeasE};
 device = DAC;
@@ -23,22 +23,22 @@ pause(wait);
 % STM scan, pinch off
 %% BEFORE TAUE     
 start = sigDACQueryVoltage(DAC,16);
-deltaParam = -0.1;
-stop = -0.5;
-configName = 'beforeTauE';
+deltaParam = -0.05;
+stop = -0.4;
+configName = 'afterEmission';
 sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
 
 % open door
-doorAWG(VpulsSig,VpulsAgi,1,5,0,'ms')
+doorAWG(VpulsSig,VpulsAgi,15,15,0,'ms')
 pause(5)
-fprintf(VpulsAgi, 'TRIG:SOUR BUS; *TRG');  % to open the doors
+send33220Trigger(VpulsAgi)
 pause(1)
-fprintf(VpulsAgi, 'TRIG:SOUR BUS; *TRG');  % to open the doors
+send33220Trigger(VpulsAgi)
 
 % STM scan, pinch off
 %% AFTER TAUE
-deltaParam = -0.025;
-stop = -0.4;
+deltaParam = -0.02;
+stop = -0.3;
 configName = 'AfterTauE';
 sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
 
