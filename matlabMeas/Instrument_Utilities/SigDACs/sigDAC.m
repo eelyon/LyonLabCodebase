@@ -45,7 +45,7 @@ classdef sigDAC
         end
 
         function sigDACRampVoltage(sigDAC,channels,voltages,numSteps)
-            calibrate = 0;
+            calibrate = 1;
             numChans = length(channels);
             numVolts = length(voltages);
     

@@ -99,6 +99,10 @@ switch targetGate
         xAxisName = "SR830 Amplitude [V]";
     case 'IDC'
         xAxisName = "IDC Voltage [V]";
+    case 'TFE'
+        xAxisName = "Thin Film Emitter [V]";
+    case 'TFC'
+        xAxisName = "Thin Film Collector [V]";
     otherwise
         xAxisName = 'unknown';
 end

@@ -5,14 +5,15 @@ doorC = 0;
 
 % Characterize emitter door opening to collector
 if doorE
-    doorEOpen = [-5 -1.5 -0.5 -0.1 0 0.1:0.1:0.3];
-    doorAWG(VpulsSig,VpulsAgi,100,500,0,'ms') 
+    doorEOpen = [-4 -2 -0.5 -0.1 0 0.1:0.1:0.3];
+    doorAWG(VpulsSig,VpulsAgi,1,5,0,'ms'); 
     pause(1)
     
     for doorVolt = doorEOpen
         sigDACRampVoltage(DAC,DoorEOpenPort,doorVolt,10000);
         pause(10);
-        set33220Trigger(VpulsAgi,'BUS');
+        %set33220Trigger(VpulsAgi,'BUS');
+        send33220Trigger(VpulsAgi);
         pause(3);
     
         % ST measurement after opening doors
@@ -20,9 +21,9 @@ if doorE
         
         start = sigDACQueryVoltage(DAC,16);
         deltaParam = -0.05;
-        stop = -0.5;
+        stop = -0.3;
     
-        timeBetweenPoints = 0.5;
+        timeBetweenPoints = 0.05;
         repeat = 5;
         readSR830 = {VmeasC,VmeasE};
         device = DAC;

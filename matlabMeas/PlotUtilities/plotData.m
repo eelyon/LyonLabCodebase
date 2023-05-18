@@ -52,7 +52,8 @@ function [fig] = plotData(xData,yData,varargin)
     figDateFormat = 'mm_dd_yy HH:MM:SS';
     metadata_struct.time= datestr(now(),figDateFormat);
     instrumentList = parseInstrumentList();
-    if length(instrumentList) > 1
+    save = 0;
+    if length(instrumentList) > 1 && save
         for i = 1:length(instrumentList)
             if contains(instrumentList{i},"SR830")
                 metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));

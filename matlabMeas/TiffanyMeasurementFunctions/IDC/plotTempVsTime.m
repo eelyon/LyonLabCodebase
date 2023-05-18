@@ -19,7 +19,7 @@ while 1
             capacitance(i) = -SR830{SR830obj}.SR830queryY()/(2*pi*frequency*amplitude);
         end
     end
-    resistance = -queryHP34401A(Thermometer);
+    resistance = queryHP34401A(Thermometer);
     temperature(i) = therm.tempFromRes(resistance);
 
     setPlotXYData(plotHandleCell{1},time,temperature);
