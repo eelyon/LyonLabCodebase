@@ -125,7 +125,6 @@ for value = paramVector
     updateSR830AveragePlots(plotHandles,avgParam,avgmags,avgxs,avgys,stdm,stdx,stdy,doBackAndForth,currentAvgIndex,halfway,numSR830s);
     currentAvgIndex = currentAvgIndex + 1;
 end
-
 for i = 1:numSR830s
     saveData(subPlotFigureHandles{i},genSR830PlotName(sweepType{i}))
 end

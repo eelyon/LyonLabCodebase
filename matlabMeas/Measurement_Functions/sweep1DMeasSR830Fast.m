@@ -20,7 +20,6 @@ function [avgmags] = sweep1DMeasSR830Fast(sweepType,start,stop,deltaParam,timeBe
 %           doBackAndForth - 0 (False) or 1 (True). Boolean to determine
 %           whether or not to sweep the parameter back to its original
 %           value.
-
 for srIndex = 1:length(readSR830)
     [plotHandles{srIndex},subPlotFigureHandles{srIndex}] = initializeSR830Meas1D(sweepType{srIndex},doBackAndForth);
 end
@@ -58,7 +57,7 @@ startTime = now();
 
 %% Main parameter loop.
 for value = paramVector
-
+    
     for pIndex = 1:length(ports)
         port = ports{pIndex};
         if pIndex == 1
@@ -69,32 +68,33 @@ for value = paramVector
         
     end
     
+    
     % Update the DAC gui - this is sort of hard coded in maybe I need to
     % make an update function that updates all GUIs present.
-    evalin("base","DACGUI.updateDACGUI");
+    %evalin("base","DACGUI.updateDACGUI");
     drawnow;
     
-    pause(timeBetweenPoints);
-    %% Initialize average vectors that gets reset for the repeating for loop
-    magVectorRepeat = [];
-    xVectorRepeat = [];
-    yVectorRepeat = [];
+    delay(timeBetweenPoints);
+%     %% Initialize average vectors that gets reset for the repeating for loop
+%     magVectorRepeat = [];
+%     xVectorRepeat = [];
+%     yVectorRepeat = [];
     %% Repeating for loop - changing repeat increases the number of averages to perform per point.
 
     %% Query SR830 for Real/Imag data, calculate Magnitude and place in vectors
-    [Real,Imag,Mag,time] = getSR830Data(Real,Imag,Mag,time,startTime,readSR830,repeat)
-
+    
+    [Real,Imag,Mag,time] = getSR830Data(Real,Imag,time,startTime,readSR830,repeat);
+    
     %% Place data in repeat vectors that get averaged and error bars get calculated.
     for srIndex = 1:numSR830s
-        arrLength = length(Mag)
-        Mag
-        magVectorRepeat(srIndex)  = Mag(arrLength-repeat+1:arrLength);
-        xVectorRepeat(srIndex)    = Real(arrLength-repeat+1:arrLength);
-        yVectorRepeat(srIndex)    = Imag(arrLength-repeat+1:arrLength);
+        arrLength = length(Mag);
+        magVectorRepeat  = Mag(arrLength-repeat+1:arrLength);
+        xVectorRepeat   = Real(arrLength-repeat+1:arrLength);
+        yVectorRepeat    = Imag(arrLength-repeat+1:arrLength);
     end
     %% Increase timeIndex by 1.
+    
     currentTimeIndex = currentTimeIndex + 1;
-
     updateSR830TimePlots(plotHandles,Real,Imag,Mag,time,numSR830s);
     
     %% Average all data and place in average arrays.
@@ -117,8 +117,10 @@ for value = paramVector
 
 
     %% Assign all the data properly depending on doing a back and forth scan.
+    
     updateSR830AveragePlots(plotHandles,avgParam,avgmags,avgxs,avgys,stdm,stdx,stdy,doBackAndForth,currentAvgIndex,halfway,numSR830s);
     currentAvgIndex = currentAvgIndex + 1;
+    
 end
 
 for i = 1:numSR830s
@@ -169,20 +171,15 @@ function setErrorBarXYData(plotHandle,xDat,yDat,yErr)
 end
 
 
-function [x,y,mag,t] = getSR830Data(x,y,mag,t,startTime,readSR830,numPointsToRead)
+function [x,y,mag,t] = getSR830Data(x,y,t,startTime,readSR830,numPointsToRead)
 % Function pulls the x,y,magnitude, and time data for each point from the
 % targetSR830. IMPORTANT: readSR830 needs to be a cell array of SR830
 % objects!!!.
     currentSR830 = readSR830{1};
-    x = currentSR830.SR830queryXFast(numPointsToRead);
-    y = currentSR830.SR830queryYFast(numPointsToRead);
-    t = (now() - startTime)*86400 - linspace(0,numPointsToRead/512);
-    mag = [mag,sqrt(x.^2 + y.^2)];
-%     x(i,currentTimeIndex) = currentSR830.SR830queryX();
-%     y(i,currentTimeIndex) = currentSR830.SR830queryY();
-%     t(i,currentTimeIndex) = (now()-startTime)*86400;
-%     mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
-    pause(.005);
+    x = [x,currentSR830.SR830queryXFast(numPointsToRead)];
+    y = [y,currentSR830.SR830queryYFast(numPointsToRead)];
+    t = [t,(now() - startTime)*86400 - linspace(0,numPointsToRead/512,numPointsToRead)];
+    mag = sqrt(x.^2 + y.^2);
 end
 
 function [x,y,mag,t] = getSR830DataCapacitance(x,y,mag,t,currentTimeIndex,startTime,readSR830)
@@ -196,7 +193,7 @@ for i = 1:length(readSR830)
     y(i,currentTimeIndex) = currentSR830.SR830queryY()*Igain;
     t(i,currentTimeIndex) = (now()-startTime)*86400;
     mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
-    pause(.005);
+    delay(.005);
 end
 end
 
