@@ -57,7 +57,7 @@ startTime = now();
 
 %% Main parameter loop.
 for value = paramVector
-    
+    tic
     for pIndex = 1:length(ports)
         port = ports{pIndex};
         if pIndex == 1
@@ -67,7 +67,7 @@ for value = paramVector
         end
         
     end
-    
+    toc
     
     % Update the DAC gui - this is sort of hard coded in maybe I need to
     % make an update function that updates all GUIs present.
@@ -76,15 +76,15 @@ for value = paramVector
     
     delay(timeBetweenPoints);
 %     %% Initialize average vectors that gets reset for the repeating for loop
-%     magVectorRepeat = [];
-%     xVectorRepeat = [];
-%     yVectorRepeat = [];
+    magVectorRepeat = [];
+    xVectorRepeat = [];
+    yVectorRepeat = [];
     %% Repeating for loop - changing repeat increases the number of averages to perform per point.
 
     %% Query SR830 for Real/Imag data, calculate Magnitude and place in vectors
-    
+    tic
     [Real,Imag,Mag,time] = getSR830Data(Real,Imag,time,startTime,readSR830,repeat);
-    
+    toc
     %% Place data in repeat vectors that get averaged and error bars get calculated.
     for srIndex = 1:numSR830s
         arrLength = length(Mag);
@@ -93,10 +93,10 @@ for value = paramVector
         yVectorRepeat    = Imag(arrLength-repeat+1:arrLength);
     end
     %% Increase timeIndex by 1.
-    
+    tic
     currentTimeIndex = currentTimeIndex + 1;
     updateSR830TimePlots(plotHandles,Real,Imag,Mag,time,numSR830s);
-    
+    toc
     %% Average all data and place in average arrays.
     magVectorMeans = mean(magVectorRepeat,2);
     xVectorMeans = mean(xVectorRepeat,2);

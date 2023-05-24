@@ -71,8 +71,8 @@ for value = paramVector
     
     % Update the DAC gui - this is sort of hard coded in maybe I need to
     % make an update function that updates all GUIs present.
-    evalin("base","DACGUI.updateDACGUI");
-    drawnow;
+    %evalin("base","DACGUI.updateDACGUI");
+    %drawnow;
     
     pause(timeBetweenPoints);
     %% Initialize average vectors that gets reset for the repeating for loop
