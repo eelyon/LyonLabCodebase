@@ -2,9 +2,10 @@ function [] = initialSet(value, DAC, VmeasE, VpulsAgi)
 
 DCMap;
 sigDACSetVoltage(DAC,EPort,0);
-sigDACSetVoltage(DAC,TopMetalPort,-2);
+
 
 if contains(value,'start')
+    sigDACSetVoltage(DAC,TopMetalPort,-2);
     SR830setAuxOut(VmeasE,1,5);
     SR830setAuxOut(VmeasE,2,5);
     SR830setAuxOut(VmeasE,3,-5);

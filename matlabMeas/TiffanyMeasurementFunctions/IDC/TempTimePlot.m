@@ -23,5 +23,5 @@ thermPlot = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temper
 
 axesCell = {thermHandle,STEHandle,IDCHandle};
 tempPlotCell = {thermPlot,STEPlot,IDCPlot};
-SR830Cell = {VmeasC,VmeasE};
+SR830Cell = {VmeasE,VmeasE};
 plotTempVsTime(tempPlotCell,subPlotFigure,SR830Cell,timeBetweenPoints,Thermometer,Therm,axesCell);
