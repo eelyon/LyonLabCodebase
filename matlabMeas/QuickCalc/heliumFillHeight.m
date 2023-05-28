@@ -25,7 +25,7 @@ function [ h ] = heliumFillHeight( Pkpa )
      Vpanel = 18.44;     % in^3
      Vstick = 24.26;   % in^3 
      Acell = pi*0.80^2; % in^2
-     Patm = 0.5; %(30-Pkpa)*0.0334211; % atm
-     h = Patm * (Vpanel+0*Vstick)*25.4/(757*Acell); % [mm]
+     Patm = 1.5; %(30-Pkpa)*0.0334211; % atm
+     h = Patm * (Vpanel+Vstick)*25.4/(757*Acell); % [mm]
  end
 end
