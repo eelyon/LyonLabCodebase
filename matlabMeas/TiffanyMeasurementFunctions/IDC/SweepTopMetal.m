@@ -5,8 +5,8 @@ if scanType == 'TC'
     sweepType = {'TC'};
     
     start = sigDACQueryVoltage(DAC,18);
-    deltaParam = 0.1;
-    stop = -3;
+    deltaParam = -0.05;
+    stop = 0.7;
 
     timeBetweenPoints = 0.05;
     repeat = 5;

@@ -16,11 +16,11 @@ if strcmp(Command,'Emitting')
     DoorEOpen  = -0.5;
     %% Collector    
     STOBiasC   = -4;
-    STIBiasC   = -4;
-    TopC       = -4.5;
-    StmC       = -4;
-    DoorCClose = -4;
-    DoorCOpen  = -4;
+    STIBiasC   = STOBiasC;
+    TopC       = STOBiasC;
+    StmC       = STOBiasC;
+    DoorCClose = STOBiasC;
+    DoorCOpen  = STOBiasC;
     %% Thin Film
     TfC        = -3;
     TfE        = -3;
@@ -28,7 +28,7 @@ if strcmp(Command,'Emitting')
     IdcNF      = -3;
     IdcPF      = -3;
 
-elseif strcmp(Command,'Transferring')
+elseif strcmp(Command,'Transferring1')
     %% Emitter    
     TopE       = TopVoltage;
     StmE       = 0;
@@ -37,18 +37,40 @@ elseif strcmp(Command,'Transferring')
     DoorEClose = -1;
     DoorEOpen  = 0.1;
     %% Collector   
-    STOBiasC   = 1;
-    STIBiasC   = 1;
-    TopC       = 0.5;
-    StmC       = STIBiasC;
-    DoorCClose = -3;
-    DoorCOpen  = 1;
+    STOBiasC   = -4;
+    STIBiasC   = STOBiasC;
+    TopC       = STOBiasC;
+    StmC       = STOBiasC;
+    DoorCClose = STOBiasC;
+    DoorCOpen  = STOBiasC;
     %% Thin Film
-    TfC        = -3;
-    TfE        = -3;
+    TfC        = -4;
+    TfE        = -4;
     %% IDC
-    IdcNF      = -3;
-    IdcPF      = -3;
+    IdcNF      = -4;
+    IdcPF      = -4;
+
+elseif strcmp(Command,'Transferring2')
+    %% Emitter    
+    TopE       = TopVoltage;
+    StmE       = 0;
+    STOBiasE   = 0;
+    STIBiasE   = 0;
+    DoorEClose = -1;
+    DoorEOpen  = 0.1;
+    %% Collector   
+    STOBiasC   = 1.5;
+    STIBiasC   = STOBiasC;
+    TopC       = STOBiasC-0.7;
+    StmC       = STOBiasC;
+    DoorCClose = -0.05;
+    DoorCOpen  = TopC-0.2;
+    %% Thin Film
+    TfC        = -4;
+    TfE        = -4;
+    %% IDC
+    IdcNF      = -4;
+    IdcPF      = -4;
 
 elseif strcmp(Command,'Transfer')
     %% Emitter    
@@ -59,18 +81,18 @@ elseif strcmp(Command,'Transfer')
     DoorEClose = -1;
     DoorEOpen  = 0.1;
     %% Collector   
-    STOBiasC   = 1;
+    STOBiasC   = 1.5;
     STIBiasC   = STOBiasC;
-    TopC       = -0.1;
+    TopC       = STOBiasC-0.7;
     StmC       = STOBiasC;
-    DoorCClose = -1;
-    DoorCOpen  = 1.5;
+    DoorCClose = -0.05;
+    DoorCOpen  = TopC-0.2;
     %% Thin Film
-    TfC        = -0.1;
-    TfE        = 0.4;
+    TfC        = 0.6;
+    TfE        = 0.2;
     %% IDC
-    IdcNF      = -2;
-    IdcPF      = -2;
+    IdcNF      = -1;
+    IdcPF      = -1;
 
 elseif strcmp(Command,'TransferringBack')
     %% Emitter    
@@ -78,112 +100,66 @@ elseif strcmp(Command,'TransferringBack')
     StmE       = 0;
     STOBiasE   = 0;
     STIBiasE   = 0;
-    DoorEClose = 0.2;
+    DoorEClose = -1;
     DoorEOpen  = -1;
     %% Collector    
-    STOBiasC   = -1.5;
-    STIBiasC   = -1.5;
-    TopC       = -2;
-    StmC       = STIBiasC;
-    DoorCClose = -5;
-    DoorCOpen  = -5;
+    STOBiasC   = 1.6;
+    STIBiasC   = STOBiasC;
+    TopC       = STOBiasC-0.7;
+    StmC       = STOBiasC;
+    DoorCClose = -0.05;
+    DoorCOpen  = TopC-0.2;
     %% Thin Film
-    TfC        = -3;
-    TfE        = -3;
+    TfC        = -4;
+    TfE        = -4;
     %% IDC
-    IdcNF      = -3.75;
-    IdcPF      = -3.75;
+    IdcNF      = -4;
+    IdcPF      = -4;
 
-elseif strcmp(Command,'TransferBack')
+elseif strcmp(Command,'TransferBack1')
     %% Emitter    
     TopE       = TopVoltage;
     StmE       = 0;
     STOBiasE   = 0;
     STIBiasE   = 0;
-    DoorEClose = 0.2;
+    DoorEClose = -1;
     DoorEOpen  = 0.1;
     %% Collector    
-    STOBiasC   = -4;
-    STIBiasC   = -4;
-    TopC       = -4.5;
+    STOBiasC   = -1.5;
+    STIBiasC   = -1.5;
+    TopC       = -2;
     StmC       = STIBiasC;
     DoorCClose = -3;
-    DoorCOpen  = -0.5;
+    DoorCOpen  = -1.2;
     %% Thin Film
-    TfC        = -1;
-    TfE        = 0.3;
+    TfC        = -4;
+    TfE        = -4;
     %% IDC
-    IdcNF      = -2;
-    IdcPF      = -2;
+    IdcNF      = -4;
+    IdcPF      = -4;
 
- elseif strcmp(Command,'Flip')
-
+elseif strcmp(Command,'TransferBack2')
     %% Emitter    
-    TopE       = -4;
-    StmE       = -3;
-    STOBiasE   = -3;
-    STIBiasE   = -3;
-    DoorEClose = -5;
-    DoorEOpen  = -0.5;
+    TopE       = TopVoltage;
+    StmE       = 0;
+    STOBiasE   = 0;
+    STIBiasE   = 0;
+    DoorEClose = 0.1;
+    DoorEOpen  = 0.1;
     %% Collector    
-    STOBiasC   = 0;
-    STIBiasC   = 0;
-    TopC       = TopVoltage;
-    StmC       = 0;
-    DoorCClose = -2;
-    DoorCOpen  = -2;
+    STOBiasC   = -1.5;
+    STIBiasC   = -1.5;
+    TopC       = -2;
+    StmC       = STIBiasC;
+    DoorCClose = -3;
+    DoorCOpen  = -1.2;
     %% Thin Film
-    TfC        = -3;
-    TfE        = -3;
+    TfC        = -0.6;
+    TfE        = 0.1;
     %% IDC
-    IdcNF      = -3;
-    IdcPF      = -3;
+    IdcNF      = -1.2;
+    IdcPF      = -1.2;
 
-elseif strcmp(Command,'FlipTransfer')
-
-    %% Emitter    
-    TopE       = 1.5;
-    StmE       = 3;
-    STOBiasE   = 3;
-    STIBiasE   = 3;
-    DoorEClose = -5;
-    DoorEOpen  = 1.5;
-    %% Collector    
-    STOBiasC   = 0;
-    STIBiasC   = 0;
-    TopC       = TopVoltage;
-    StmC       = 0;
-    DoorCClose = -4;
-    DoorCOpen  = 0.1;
-    %% Thin Film
-    TfC        = 0.5;
-    TfE        = 0.9;
-    %% IDC
-    IdcNF      = 0;
-    IdcPF      = 0;
-
-elseif strcmp(Command,'FlipTransfering')
-
-    %% Emitter    
-    TopE       = 0;
-    StmE       = 3;
-    STOBiasE   = 3;
-    STIBiasE   = 3;
-    DoorEClose = -5;
-    DoorEOpen  = 0.8;
-    %% Collector    
-    STOBiasC   = 0;
-    STIBiasC   = 0;
-    TopC       = TopVoltage;
-    StmC       = 0;
-    DoorCClose = -4;
-    DoorCOpen  = 0.1;
-    %% Thin Film
-    TfC        = -3;
-    TfE        = -3;
-    %% IDC
-    IdcNF      = -3;
-    IdcPF      = -3;
  elseif strcmp(Command,'Zero')
     %% Emitter    
     TopE       = 0;

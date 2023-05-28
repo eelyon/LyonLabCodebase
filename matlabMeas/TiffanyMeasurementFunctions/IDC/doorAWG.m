@@ -43,8 +43,8 @@ set5122VoltageLow(dev1,amp_low);                % sets low level of C1
 set5122Period(dev1,TauC*2);
 set5122PulseWidth(dev1,TauC);
 set5122NumBurstCycles(dev1, 1);          % set num of cycles to burst
-set5122BurstTriggerSource(dev1,'EXT');
 set5122BurstStateOn(dev1,'ON');          % enable burst, needs to go here or else will pulse
+set5122BurstTriggerSource(dev1,'EXT');
 set5122Delay(dev1,delay);
 set5122Output(dev1,'ON');                % turn outputs on 
 
