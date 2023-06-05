@@ -14,9 +14,9 @@ DACGUI = sigDACGUI;
 
 AWG_Address = '172.29.117.105';
 AWG = Agilent33220A(port,AWG_Address);
-
-TDS_Address = 'USB0::0x0699::0x03A5::C011465::INSTR';
-TDS = TDS2022C(TDS_Address);
+% 
+% TDS_Address = 'USB0::0x0699::0x03A5::C011465::INSTR';
+% TDS = TDS2022C(TDS_Address);
 
 % SR830GUI = SR830_GUI;
 % SR830SWEEPGUI = sweepSR830GUI;

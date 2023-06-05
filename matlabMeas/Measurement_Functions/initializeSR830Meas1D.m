@@ -5,6 +5,9 @@ function [plotHandles,subPlotFigure] = initializeSR830Meas1D(sweepType,doBackAnd
 timeLabel = "Time [s]";
 voltageAxisName = genSR830Axis(sweepType);
 yLabel = "Current [A]";
+if contains(sweepType, 'TMHeat')
+        yLabel = "Voltage [V]";
+end
 
 subPlotFigure = figure(getNextMATLABFigNum());
 subplot(2,3,1);
@@ -75,6 +78,8 @@ switch targetGate
     case 'ST'
         xAxisName = "STM Bias [V]";
     case 'TM'
+        xAxisName = "Top Metal Voltage [V]";
+    case 'TMHeat'
         xAxisName = "Top Metal Voltage [V]";
     case 'TC'
         xAxisName = "Top Metal Voltage Collector [V]";

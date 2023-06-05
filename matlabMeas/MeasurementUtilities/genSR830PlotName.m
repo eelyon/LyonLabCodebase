@@ -6,6 +6,8 @@ function plotName = genSR830PlotName(targetGate)
             plotName = 'Pinchoff';
         case 'TM'
             plotName = 'TopMetalSweep';
+        case 'TMHeat'
+            plotName = 'TopMetalHeatingSweep';
         case 'TC'
             plotName = 'TopCSweep';
         case 'TE'
