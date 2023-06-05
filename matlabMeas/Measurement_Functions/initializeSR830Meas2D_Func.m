@@ -78,6 +78,8 @@ switch targetGate
         axisName = "STM Bias [V]";
     case 'TM'
         axisName = "Top Metal Voltage [V]";
+    case 'TMHeat'
+        axisName = "Top Metal Voltage [V]";
     case 'Res'
         axisName = "Reservoir Voltage [V]";
     case 'Door'
