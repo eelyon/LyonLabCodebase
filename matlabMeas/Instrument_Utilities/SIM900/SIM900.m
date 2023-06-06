@@ -1,6 +1,6 @@
 classdef SIM900
     properties
-        COMPort
+        comPort
         client
         identifier
         ch1 {mustBeNumeric}
@@ -14,10 +14,11 @@ classdef SIM900
     end
     
     methods
-        function SIM900 = SIM900(COMPort)
-            SIM900.COMPort = COMPort;
+        function SIM900 = SIM900(comPort)
+            SIM900.client = serial_Connect(comPort);
+            pause(1)
+            SIM900.comPort = comPort;
             SIM900.identifier = 'SIM900';
-            SIM900 = serial_Connect(COMPort);
             SIM900.ch1 = 0;
             SIM900.ch2 = 0;
             SIM900.ch3 = 0;
@@ -30,32 +31,36 @@ classdef SIM900
 
        function [] = setSIM900Voltage(SIM900,port,voltage)
            voltageResolution = .001;
-           currentVoltage = querySIM900Voltage(SIM900.client,port);
-
-           if abs(voltage - currentVoltage) > voltageResolution
-               fprintf('Voltage step is too small for SIM900');
-              
+           %currentVoltage = querySIM900Voltage(SIM900);
+           
+           q=0; 
+           
+           if q %abs(voltage - currentVoltage) > voltageResolution
+               fprintf('Voltage step is too small for SIM900');              
            else
-               connectSIM900Port(SIM900,Port);
+               connectSIM900Port(SIM900,port);
+               pause(1)
                command = ['VOLT ' num2str(voltage)];
-               sendCommand(SIM900.client,command);
+               fprintf(SIM900.client,command);
                setSIM900PortVoltage(SIM900,port,voltage);
-               disconnectSIM900Port(Device);
+               disconnectSIM900Port(SIM900);
            end
        end
 
        function [voltage] = querySIM900Voltage(SIM900,port)
-           command = ['VOLT? ' num2str(port)];
+           disconnectSIM900Port(SIM900);
+           connectSIM900Port(SIM900,port);
+           command = 'VOLT?';
            voltage = query(SIM900.client,command);
        end
 
        function [] = connectSIM900Port(SIM900,port)
-           command = ['CONN ' num2str(port) ',"xyz"'];
-           sendCommand(SIM900.client,command);
+           command = ['CONN ' num2str(port) ',"XYZ"'];
+           fprintf(SIM900.client,command);
        end
 
        function [] = disconnectSIM900Port(SIM900)
-           command = 'xyz';
+           command = 'XYZ';
            sendCommand(SIM900.client,command);
        end
 
