@@ -84,7 +84,8 @@ deltaParam = -0.025;
 stop = -0.4;
 configName = 'AfterTransferring';
 sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
-
+tStart = tic;
+sigDACRampVoltage(DAC,1,-2,20000)
 tEnd = toc(tStart);
 fprintf('%d minutes and %f seconds\n', floor(tEnd/60), rem(tEnd,60));
 

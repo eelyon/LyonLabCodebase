@@ -6,10 +6,10 @@ if scanType == 'TC'
     
     start = sigDACQueryVoltage(DAC,18);
     deltaParam = -0.05;
-    stop = 0.7;
+    stop = 0;
 
     timeBetweenPoints = 0.05;
-    repeat = 5;
+    repeat = 10;
     readSR830 = {VmeasC};
     device = DAC;
     ports = {18};
@@ -18,13 +18,13 @@ if scanType == 'TC'
 elseif scanType == 'TE'
     sweepType = {'TE'};
     
-    % start = sigDACQueryVoltage(DAC,14);
-    start = -1;
-    deltaParam = -0.1;
-    stop = -2;
+    start = sigDACQueryVoltage(DAC,14);
+    % start = -0.5;
+    deltaParam = 0.1;
+    stop = -0.2;
     
     timeBetweenPoints = 0.01;
-    repeat = 5;
+    repeat = 10;
     readSR830 = {VmeasE};
     device = DAC;
     ports = {14};

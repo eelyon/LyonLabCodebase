@@ -1,5 +1,5 @@
 %% Frequency of temperature querying in seconds.
-timeBetweenPoints = 5;
+timeBetweenPoints = 1;
 
 %% Initialize Thermometer type (this is related to your thermometer you have)
 thermometerType = 'X117656';
@@ -23,5 +23,5 @@ thermPlot = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temper
 
 axesCell = {thermHandle,STEHandle,IDCHandle};
 tempPlotCell = {thermPlot,STEPlot,IDCPlot};
-SR830Cell = {VmeasE,VmeasE};
+SR830Cell = {VmeasC,VmeasE};
 plotTempVsTime(tempPlotCell,subPlotFigure,SR830Cell,timeBetweenPoints,Thermometer,Therm,axesCell);
