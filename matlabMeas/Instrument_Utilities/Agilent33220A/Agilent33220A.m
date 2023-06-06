@@ -10,10 +10,15 @@ classdef Agilent33220A
     end
 
     methods
-        function Agilent33220A = Agilent33220A(port,IPAddress)
+        function Agilent33220A = Agilent33220A(port,IPAddress,opt)
             Agilent33220A.IPAddress     = IPAddress;
             Agilent33220A.port          = port;
-            Agilent33220A.client        = TCPIP_Connect(IPAddress,port);
+            
+            if exist('opt','var') 
+                Agilent33220A.client    = USB_Connect(IPAddress);                
+            else
+                Agilent33220A.client    = TCPIP_Connect(IPAddress,port);
+            end
             Agilent33220A.identifier    = '33220A';
         end
 
