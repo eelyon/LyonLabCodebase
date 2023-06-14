@@ -17,7 +17,7 @@ voltsEmittMeas = [-0.0,...  %DAC 1
         -1.5,...   %DAC 3
         -1.0,...   %DAC 4
         -1.5,...   %DAC 5
-        -1.5,...   %DAC 6
+        -1.,...   %DAC 6
         0,...   %DAC 7
         0];     %DAC 8
 
@@ -59,9 +59,9 @@ voltsSucc = [3,...  %DAC 1
 
 %voltUse = voltsEmitt;
 %voltUse = voltsEmittMeas;
-%voltUse = voltsEmittTest;
+voltUse = voltsEmittTest;
 %voltUse = voltsSucc;
-voltUse = voltsGnd;
+%voltUse = voltsGnd;
 %voltUse = voltsEmittST;
 
 %%{
