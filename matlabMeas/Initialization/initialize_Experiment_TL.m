@@ -25,10 +25,10 @@ if small_glass_dewar
     
 else
     % Anthony's 24 channel DAC
-    sigDACPort = 'COM4';
+    sigDACPort = 'COM8';
 
     % SR830s
-    VmeasC_Address = '172.29.117.102';    
+    VmeasC_Address = '172.29.117.103';    
     VmeasE_Address = '172.29.117.106';
     
     % Keysight DMM
