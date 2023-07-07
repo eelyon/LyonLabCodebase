@@ -108,6 +108,8 @@ switch targetGate
         xAxisName = "Thin Film Emitter [V]";
     case 'TFC'
         xAxisName = "Thin Film Collector [V]";
+    case 'TWD'
+        xAxisName = "Twiddle Amplitude [V]";
     otherwise
         xAxisName = 'unknown';
 end

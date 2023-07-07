@@ -4,7 +4,7 @@
 TopEPort       = 14;
 TopEDevice     = DAC; 
 
-StmEPort       = 16;
+StmEPort       = 19;
 StmEDevice     = DAC;
 
 DoorEClosePort      = 23;
@@ -16,8 +16,18 @@ DoorEOpenDevice    = DAC;
 STOBiasEPort      = 24;
 STOBiasEDevice    = DAC;
 
-STIBiasEPort      = 11;
+STIBiasEPort      = 4;
 STIBiasEDevice    = DAC;
+
+TwiddleEPort      = 17;
+TwiddleEDevice    = DAC;
+
+SenseEPort      = 16;
+SenseEDevice    = DAC;
+
+DoorEInPort      = 9;
+DoorEInDevice    = DAC;
+
 
 %% Collector
 TopCPort       = 18;
@@ -38,6 +48,15 @@ STOBiasCDevice    = DAC;
 STIBiasCPort      = 2;
 STIBiasCDevice    = DAC;
 
+TwiddleCPort      = 7;
+TwiddleCDevice    = DAC;
+
+SenseCPort      = 11;
+SenseCDevice    = DAC;
+
+DoorCInPort      = 10;
+DoorCInDevice    = DAC;
+
 %% Thin Film
 
 TfCPort        = 3;
@@ -50,13 +69,13 @@ TfEDevice      = DAC;
 % IdcNGPort       = 9;
 % IdcNGDevice     = DAC;
 
-IdcNFPort       = 12;
+IdcNFPort       = 8;
 IdcNFDevice     = DAC;
 
 % IdcPGPort       = 10;
 % IdcPGDevice     = DAC;
 
-IdcPFPort       = 8;
+IdcPFPort       = 12;
 IdcPFDevice     = DAC;
 
 %% Top Metal

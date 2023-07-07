@@ -62,7 +62,12 @@ for value = paramVector
     for pIndex = 1:length(ports)
         port = ports{pIndex};
         if pIndex == 1
-            setVal(device,port,value);
+            if strcmp(sweepType{1},'TWD')
+                setVal(device,port,value);
+                setVal(VmeasC,port,value);
+            else
+                setVal(device,port,value);
+            end
         else
             setVal(device,port,value+deltaGateParam);
         end

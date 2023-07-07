@@ -2,7 +2,7 @@ function [ ] = DCConfigDAC( DAC, Command, numSteps )
 %   ramps all the device ports to a voltage given a command
 
 turnOnHelium = 0;
-TopVoltage   = -0.5;
+TopVoltage   = -0.7;
 DCMap;
 
 if strcmp(Command,'Emitting')
@@ -82,11 +82,11 @@ elseif strcmp(Command,'Transfer')
     DoorEOpen  = 0.2;
     %% Collector
     STMC = 1.1;
-    STOBiasC   = STMC-0.017;
-    STIBiasC   = STMC-0.025;
-    TopC       = STOBiasC-0.5-0.02;
+    STOBiasC   = STMC;
+    STIBiasC   = STMC;
+    TopC       = STOBiasC-0.5;
     StmC       = STMC;
-    DoorCClose = 0.7-0.025;
+    DoorCClose = 0.7;
     DoorCOpen  = 0.7; %TopC-0.2;
     %% Thin Film
     TfC        = 0.6;
@@ -141,11 +141,11 @@ elseif strcmp(Command,'TransferBack1')
 
 elseif strcmp(Command,'TransferBack2')
     %% Emitter    
-    TopE       = -0.6;
+    TopE       = -0.7;
     StmE       = 0;
     STOBiasE   = 0;
     STIBiasE   = 0;
-    DoorEClose = -0.3;
+    DoorEClose = 0;
     DoorEOpen  = -0.3;
     %% Collector    
     STOBiasC   = -1.4;
@@ -204,6 +204,12 @@ elseif strcmp(Command,'Transferv2')
     %% IDC
     IdcNF      = 0;
     IdcPF      = 0;
+    zeroVolt = 0;
+    calVoltE = calibratedAP24Volt([DoorEInPort,TwiddleEPort,SenseEPort],[zeroVolt,zeroVolt,zeroVolt]);
+    calVoltC = calibratedAP24Volt([DoorCInPort,TwiddleCPort,SenseCPort],[zeroVolt,zeroVolt,zeroVolt]);
+    sigDACRampVoltage(DAC,[DoorEInPort,TwiddleEPort,SenseEPort],calVoltE,10000);
+    pause(1)
+    sigDACRampVoltage(DAC,[DoorCInPort,TwiddleCPort,SenseCPort],calVoltC,10000);
  
  elseif strcmp(Command,'Negative')
     %% Emitter    

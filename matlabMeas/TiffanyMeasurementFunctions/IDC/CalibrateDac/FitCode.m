@@ -1,4 +1,5 @@
-% Linear fit for DAC calibration
+%% Linear fit for DAC calibration
+%% generates m,b value to AP24 folder, use to calibrate any voltage
 
 Folder = 'CalibrateDac\VoltSweepFiles';
 
@@ -16,6 +17,7 @@ for i = 1:num
     P = polyfit(vRange,voltArr,1);
     m = P(1);
     b = P(2);
-    filename = ['CalibrateDac\AP24\CH' num2str(i) '.mat'];
+    Folder2 = 'TiffanyMeasurementFunctions\IDC\CalibrateDac\AP24\';
+    filename = [Folder2 'CH' num2str(i) '.mat'];
     save( filename, 'm','b' );
 end
