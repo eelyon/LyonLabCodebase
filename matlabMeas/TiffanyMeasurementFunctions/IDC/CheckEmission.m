@@ -14,7 +14,7 @@ sweep1DMeasDUALSR830('ST',start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC
    
 start = sigDACQueryVoltage(DAC,20);
 deltaParam = -0.02;
-stop = -1.4-0.2;
+stop = 1.1-0.2;
 sweep1DMeasSR830({'ST'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},DAC,{20},1);
 
 start = sigDACQueryVoltage(DAC,16);
@@ -26,24 +26,24 @@ sweep1DMeasSR830({'ST'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},
 %% single VmeasE
 %start = sigDACQueryVoltage(DAC,16);
 start = 0;
-deltaParam = -0.02;
-stop = -0.3;
-sweep1DMeasSR830({'ST'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasE},DAC,{16},1);
+deltaParam = -0.01;
+stop = -0.25;
+sweep1DMeasSR830({'ST'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},DAC,{19},1);
 
 
 %% DoorE Sweep
 start = sigDACQueryVoltage(DAC,23);
 %start = 0;
 deltaParam = 0.02;
-stop = 0.8;
-sweep1DMeasSR830({'Door'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasE},DAC,{23},0);
+stop = 0.5;
+sweep1DMeasSR830({'Door'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasE},DAC,{15},0);
 
 %% DoorC Sweep
-start = sigDACQueryVoltage(DAC,21);
+start = sigDACQueryVoltage(DAC,9);
 %start = 0;
 deltaParam = 0.02;
-stop = 1.4;
-sweep1DMeasSR830({'Door'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},DAC,{21},0);
+stop = 0.1;
+sweep1DMeasSR830({'Door'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},DAC,{9},0);
 
 
 %% TFE Sweep

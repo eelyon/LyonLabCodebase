@@ -20,8 +20,7 @@ if contains(name,'SR830') || contains(name,'VmeasC') || contains(name,'VmeasE')
         Device.SR830setFreq(Value);
         %delay(0.3);
     elseif contains(Port,'Amp')
-            Device.setSR830Amplitude(Value); %might need to change this, lookre at setters
-
+            Device.SR830setAmplitude(Value); %might need to change this, lookre at setters
     else
         Port = str2num(Port);
         Device.SR830setAuxOut(Port,Value); %might need to change this, lookre at setters

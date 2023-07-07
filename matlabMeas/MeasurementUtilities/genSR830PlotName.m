@@ -28,5 +28,8 @@ function plotName = genSR830PlotName(targetGate)
             plotName = 'ThinFilmEmitterSweep';
         case 'TFC'
             plotName = 'ThinFilmCollectorSweep';
+        case 'TWD'
+            plotName = 'TwiddleAmplitudeSweep';
+
     end
 end
