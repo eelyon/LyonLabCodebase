@@ -55,7 +55,6 @@ else
 end
 
 % get temperature
-% resistance = queryHP34401A(Thermometer);
-% temperature = Therm.tempFromRes(resistance)
+% temperature = Therm.tempFromRes(queryHP34401A(Thermometer))
 
 end
