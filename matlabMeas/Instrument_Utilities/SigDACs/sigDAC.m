@@ -89,11 +89,6 @@ classdef sigDAC
                              4,vPort,2,0,0,TauE,TauC])]);
         end
 
-        function sigDAC = disconnect_sigDAC(comPort)
-            sigDAC.comPort = comPort;
-            sigDAC.client = serial_Disconnect(comPort);
-        end
-
     end
 end
 

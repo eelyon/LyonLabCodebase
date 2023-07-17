@@ -6,8 +6,8 @@ start = 0;
 deltaParam = 5;  
 stop = 20;  % gets doubled to 40, hard coded in sweep1D to apply to 4,5 ports 
 
-timeBetweenPoints = 5;
-repeat = 5;
+timeBetweenPoints = 20;
+repeat = 10;
 readSR830 = {VmeasE};
 device = IDC;
 ports = {4};  
