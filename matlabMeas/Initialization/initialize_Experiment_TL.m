@@ -32,7 +32,7 @@ else
     VmeasE_Address = '172.29.117.106';
     
     % Keysight DMM
-    DMM_Address = '172.29.117.107';
+    % DMM_Address = '172.29.117.107';
     
     % Agilent for Filament
     Fil_Address = '172.29.117.108';
@@ -54,7 +54,7 @@ end
 DAC = sigDAC(sigDACPort,24);
 VmeasC = SR830(port,VmeasC_Address);
 VmeasE = SR830(port,VmeasE_Address);
-Thermometer = TCPIP_Connect(DMM_Address,port);
+% Thermometer = TCPIP_Connect(DMM_Address,port);
 Filament = Agilent33220A(port,Fil_Address);
 VpulsAgi = Agilent33220A(port,VpulsAgi_Address);
 VpulsAgi2 = Agilent33220A(port,VpulsAgi2_Address,1);

@@ -1,10 +1,10 @@
-function [plotHandles,subPlotFigure] = initializeSR830Meas1D(sweepType,doBackAndForth)
+function [plotHandles,subPlotFigure] = initializeTwiddleSense(sweepType,doBackAndForth)
 
 [time,Real,Imag] = deal(inf);
 
 timeLabel = "Time [s]";
 voltageAxisName = genSR830Axis(sweepType);
-yLabel = "Current [A]";
+yLabel = "Voltage [V]";
 if contains(sweepType, 'TMHeat')
         yLabel = "Voltage [V]";
 end

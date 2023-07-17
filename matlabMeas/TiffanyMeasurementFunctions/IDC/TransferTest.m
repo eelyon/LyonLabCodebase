@@ -23,7 +23,7 @@ sigDACRampVoltage(DAC,[DoorCInPort,TwiddleCPort,SenseCPort],[calVoltC,calVoltC,c
 
 
 % sweep doorE close open
-start = sigDACQueryVoltage(DAC,DoorEClosePort);
+start = sigDACQueryVoltage(DAC,SenseEPort);
 deltaParam = 0.02;
 stop = 0.3;
-sweep1DMeasSR830({'Door'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasE},DAC,{DoorEClosePort},0);
+sweep1DMeasSR830({'Door'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasE},DAC,{SenseEPort},0);

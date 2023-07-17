@@ -1,5 +1,8 @@
+DMM_Address = '172.29.117.107';
+Thermometer = TCPIP_Connect(DMM_Address,1234);
+
 %% Frequency of temperature querying in seconds.
-timeBetweenPoints = 3;
+timeBetweenPoints = 1;
 %% Initialize Thermometer type (this is related to your thermometer you have)
 thermometerType = 'X117656';
 Thermometer;
