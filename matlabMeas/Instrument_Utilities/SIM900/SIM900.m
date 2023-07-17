@@ -30,11 +30,9 @@ classdef SIM900
         end
 
        function [] = setSIM900Voltage(SIM900,port,voltage)
-           voltageResolution = .001;
-           %currentVoltage = querySIM900Voltage(SIM900);
-           
-           q=0; 
-           
+           % voltageResolution = .001;
+           % currentVoltage = querySIM900Voltage(SIM900); 
+           q=0;
            if q %abs(voltage - currentVoltage) > voltageResolution
                fprintf('Voltage step is too small for SIM900');              
            else

@@ -49,10 +49,6 @@ elseif contains(name,'AP16')
 elseif contains(name,'SIM9') 
     Device.setSIM900Voltage(Port,Value); 
 
-elseif contains(name,'IDC')
-    Device.setSIM900Voltage(Port,Value); 
-    Device.setSIM900Voltage(Port+1,Value);
-
 elseif contains(name,',33220A,')
     if Port == 1
         Device.set33220VoltageLow(Value)

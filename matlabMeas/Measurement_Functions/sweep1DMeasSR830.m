@@ -62,9 +62,9 @@ for value = paramVector
     for pIndex = 1:length(ports)
         port = ports{pIndex};
         if pIndex == 1
-            if strcmp(sweepType{1},'TWD')
+            if strcmp(sweepType{1},'IDC')
                 setVal(device,port,value);
-                setVal(VmeasC,port,value);
+                setVal(device,port+1,value);
             else
                 setVal(device,port,value);
             end
