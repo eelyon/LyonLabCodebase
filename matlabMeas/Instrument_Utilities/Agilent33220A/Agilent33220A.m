@@ -177,9 +177,11 @@ classdef Agilent33220A
                 fprintf([voltType ' is not a valid voltage source type. Valid types are:\n'])
                 fprintf([validVoltTypes, '\n']);
             else 
-                command = ['VOLT ', num2str(amplitude), voltType];
+                command = ['VOLT:UNIT', ' ', voltType];
+                command2 = ['VOLT ', num2str(amplitude), ' ', voltType];
             end
             fprintf(Agilent33220A.client,command);
+            fprintf(Agilent33220A.client,command2);
         end
 
         function [] = set33220VoltageHigh(Agilent33220A,highVoltage)

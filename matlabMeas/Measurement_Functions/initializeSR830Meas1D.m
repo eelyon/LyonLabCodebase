@@ -5,8 +5,13 @@ function [plotHandles,subPlotFigure] = initializeSR830Meas1D(sweepType,doBackAnd
 timeLabel = "Time [s]";
 voltageAxisName = genSR830Axis(sweepType);
 yLabel = "Current [A]";
-if contains(sweepType, 'TMHeat')
+
+if contains(sweepType, 'TMHeat') || contains(sweepType, 'Amp')
         yLabel = "Voltage [V]";
+end
+
+if contains(sweepType, 'IDC')
+        yLabel = "Capacitance [pF]";
 end
 
 subPlotFigure = figure(getNextMATLABFigNum());

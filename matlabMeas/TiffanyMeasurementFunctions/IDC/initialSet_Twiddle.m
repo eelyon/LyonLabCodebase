@@ -1,4 +1,4 @@
-function [] = initialSet_Twiddle(value, DAC, VmeasE, VmeasC, VpulsAgi, VpulsAgi2)
+function [] = initialSet_Twiddle(value, DAC, VmeasE, VmeasC, VtwiddleE, VdoorModE)
 
 DCMap;
 sigDACSetVoltage(DAC,EPort,0);
@@ -20,9 +20,9 @@ if contains(value,'start')
     frequency = 101.9e3;
 
     if exist('VpulsAgi2','var')
-        devices  = [VpulsAgi VpulsAgi2];
+        devices  = [VtwiddleE VdoorModE];
     else 
-        devices = VpulsAgi;
+        devices = VtwiddleE;
     end
 
     for i = 1:length(devices)
@@ -43,7 +43,6 @@ if contains(value,'start')
         set33220TrigSlope(devices(i),'POS');
         set33220BurstStateOn(devices(i),'ON');
         set33220Output(devices(i),'ON');
-        
     end 
 else
     instrList = [VmeasE,VmeasC];

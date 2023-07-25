@@ -1,12 +1,12 @@
 %% Test Twiddle Sense
 
-start = 100e-3;
-stop = 500e-3;
-deltaParam = 100e-3;
+start = 10e-3;
+stop = 50e-3;
+deltaParam = 10e-3;
 timeBetweenPoints = 5;
 repeat = 30;
 
-sweepTwiddleSense({'Amp'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},{VpulsAgi,VpulsAgi2,VmeasC},{1},1)
+sweep1DMeasSR830({'Amp'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},{VtwiddleE,VdoorModE,VmeasC},{1},1)
 
 %% Begin emitting electrons
 DCConfigDAC(DAC,'Emitting',1000)
@@ -47,7 +47,7 @@ deltaParam = 100e-3;
 timeBetweenPoints = 5;
 repeat = 30;
 
-sweepTwiddleSense({'Amp'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},{VpulsAgi,VpulsAgi2,VmeasC},{1},1)
+sweepTwiddleSense({'Amp'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},{VtwiddleE,VdoorModE,VmeasC},{1},1)
 
 %% lower door 
 start = -2;
@@ -69,7 +69,7 @@ deltaParam = 100e-3;
 timeBetweenPoints = 5;
 repeat = 30;
 
-sweepTwiddleSense({'Amp'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},{VpulsAgi,VpulsAgi2,VmeasC},{1},1)
+sweepTwiddleSense({'Amp'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},{VtwiddleE,VdoorModE,VmeasC},{1},1)
 
 %% get zero measurement again for sanity check: look at ST to see current change hopefully
 start = -1;
