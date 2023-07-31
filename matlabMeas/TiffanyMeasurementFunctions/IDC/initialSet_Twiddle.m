@@ -17,9 +17,9 @@ if contains(value,'start')
     % initialize Agilent
     amplitude = 100e-3;
     voltType = 'VRMS';
-    frequency = 101.9e3;
+    frequency = 10.235e3; %101.9e3;
 
-    if exist('VpulsAgi2','var')
+    if exist('VdoorModE','var')
         devices  = [VtwiddleE VdoorModE];
     else 
         devices = VtwiddleE;
@@ -36,7 +36,7 @@ if contains(value,'start')
             set33220BurstPhase(devices(i),225);
         end
 
-        set33220OutputLoad(devices(i), 50);
+        set33220OutputLoad(devices(i), 'INF');
         set33220BurstMode(devices(i),'TRIG');
         set33220NumBurstCycles(devices(i),'INF')
         set33220TriggerSource(devices(i),'BUS');

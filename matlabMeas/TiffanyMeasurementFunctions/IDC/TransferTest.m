@@ -1,7 +1,7 @@
 %% Transfer Test
 
-closedVoltE = -1;
-closeVoltC = -4;
+closedVoltE = -2;
+closedVoltC = -4;
 calVoltE = calibratedAP24Volt([DoorEInPort,TwiddleEPort,SenseEPort],[closedVoltE,closedVoltE,closedVoltE]);
 calVoltC = calibratedAP24Volt([DoorCInPort,TwiddleCPort,SenseCPort],[closedVoltC,closedVoltC,closedVoltC]);
 
@@ -23,7 +23,7 @@ sigDACRampVoltage(DAC,[DoorCInPort,TwiddleCPort,SenseCPort],[calVoltC,calVoltC,c
 
 
 % sweep doorE close open
-start = sigDACQueryVoltage(DAC,SenseEPort);
+start = sigDACQueryVoltage(DAC,DoorEClosePort);
 deltaParam = 0.02;
-stop = 0.3;
-sweep1DMeasSR830({'Door'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasE},DAC,{SenseEPort},0);
+stop = 0;
+sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{DoorEClosePort},0);

@@ -37,8 +37,8 @@ sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.05,repeat,{VmeasE},DAC,{9},0);
 
 %% DoorE Sweep
 start = sigDACQueryVoltage(DAC,23);
-deltaParam = 0.02;
-stop = 0.4;
+deltaParam = -1;
+stop = 0.2;
 sweep1DMeasSR830({'Door'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasE},DAC,{23},0);
 
 %% DoorC Sweep

@@ -15,7 +15,7 @@ classdef Agilent33220A
             Agilent33220A.port          = port;
             
             if exist('opt','var') 
-                Agilent33220A.client    = USB_Connect(IPAddress);                
+                Agilent33220A.client    = TCPIP_VISA_Connect(IPAddress);                
             else
                 Agilent33220A.client    = TCPIP_Connect(IPAddress,port);
             end
@@ -59,7 +59,11 @@ classdef Agilent33220A
         end
 
         function [] = set33220OutputLoad(Agilent33220A, Ohms)
-            command = ['OUT:LOAD ', num2str(Ohms)];
+            if isletter(Ohms) == 1
+                command = ['OUTP:LOAD ', Ohms];
+            else
+                command = ['OUTP:LOAD ', num2str(Ohms)];
+            end
             fprintf(Agilent33220A.client,command);
         end
 
