@@ -1,7 +1,7 @@
 %% Twiddle Sense Measurement
 
-closedVoltE = -2;
-closedVoltC = -4;
+closedVoltE = 0;
+closedVoltC = -0.7;
 calVoltE = calibratedAP24Volt([DoorEInPort,TwiddleEPort,SenseEPort],[closedVoltE,closedVoltE,closedVoltE]);
 calVoltC = calibratedAP24Volt([DoorCInPort,TwiddleCPort,SenseCPort],[closedVoltC,closedVoltC,closedVoltC]);
 

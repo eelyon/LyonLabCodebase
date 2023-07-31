@@ -89,11 +89,11 @@ elseif strcmp(Command,'Transfer')
     DoorCClose = 0.7;
     DoorCOpen  = 0.3; %TopC-0.2;
     %% Thin Film
-    TfC        = 0.7;
-    TfE        = 0.4;
+    TfC        = 0.6;
+    TfE        = 0.3;
     %% IDC
-    IdcNF      = -0.1;
-    IdcPF      = -0.1;
+    IdcNF      = -4;
+    IdcPF      = -4;
 
 elseif strcmp(Command,'TransferringBack')
     %% Emitter    
@@ -152,7 +152,7 @@ elseif strcmp(Command,'TransferBack2')
     STIBiasC   = STOBiasC;
     TopC       = -1.9;
     StmC       = STOBiasC;
-    DoorCClose = -2.5;
+    DoorCClose = -0.7;
     DoorCOpen  = -0.7;
     %% Thin Film
     TfC        = -0.6;
