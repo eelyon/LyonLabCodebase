@@ -10,9 +10,9 @@ if contains(value,'start')
     SR830setAuxOut(VmeasE,3,-5);
     SR830setAuxOut(VmeasE,4,-5);
 
-    SR830setAuxOut(VmeasC,1,4.5);
-    SR830setAuxOut(VmeasC,2,-1.5);
-    SR830setAuxOut(VmeasC,3,1.5);
+%     SR830setAuxOut(VmeasC,1,4.5);
+%     SR830setAuxOut(VmeasC,2,-1.5);
+%     SR830setAuxOut(VmeasC,3,1.5);
     
     % initialize Agilent
     amp_high = 2.5;

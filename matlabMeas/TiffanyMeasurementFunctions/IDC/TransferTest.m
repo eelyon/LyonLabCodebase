@@ -27,3 +27,8 @@ start = sigDACQueryVoltage(DAC,DoorEClosePort);
 deltaParam = 0.02;
 stop = 0;
 sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{DoorEClosePort},0);
+
+
+openVoltC = 0.7;
+calVoltC = calibratedAP24Volt([DoorCInPort,TwiddleCPort,SenseCPort],[openVoltC,openVoltC,openVoltC]);
+sigDACRampVoltage(DAC,[DoorCInPort,TwiddleCPort,SenseCPort],[calVoltC,calVoltC,calVoltC],10000);

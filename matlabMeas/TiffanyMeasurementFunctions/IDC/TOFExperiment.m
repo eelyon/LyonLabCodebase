@@ -22,7 +22,7 @@ for TauC = 2000:1000:4000
     % open door
     doorAWG(VpulsSig,VpulsAgi,TauE,TauC,0,'us')
     pause(5)
-    set33220Trigger(VpulsAgi,'BUS');  % to open the doors
+    set33220Trigger(VtwiddleE,'BUS');  % to open the doors
     pause(1)
 
     % STM scan, pinch off
