@@ -16,12 +16,10 @@ pause(11)
 %% EMIT
 % check emission
 start = 0;
-deltaParam = -0.05;
-stop = -0.5;
+deltaParam = -0.02;
+stop = -0.2;
 sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{19},1);
-
-
-sweep1DMeasSR830Fast({'ST'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{19},1)
+% sweep1DMeasSR830Fast({'ST'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{19},1)
 
 
 % lower twiddle and sense back to 0

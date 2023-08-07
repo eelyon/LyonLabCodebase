@@ -10,14 +10,14 @@ if contains(value,'start')
     SR830setAuxOut(VmeasE,3,-5);
     SR830setAuxOut(VmeasE,4,-5);
 
-    SR830setAuxOut(VmeasC,1,4.5);
-    SR830setAuxOut(VmeasC,2,-1.5);
-    SR830setAuxOut(VmeasC,3,1.5);
+    %SR830setAuxOut(VmeasC,1,4.5);
+    %SR830setAuxOut(VmeasC,2,-1.5);
+    %SR830setAuxOut(VmeasC,3,1.5);
     
     % initialize Agilent
-    amplitude = 100e-3;
+    amplitude = 150e-3;
     voltType = 'VRMS';
-    frequency = 10.235e3; %101.9e3;
+    frequency = 101.2e3;
 
     if exist('VdoorModE','var')
         devices  = [VtwiddleE VdoorModE];
@@ -33,7 +33,7 @@ if contains(value,'start')
         if i == 1
             set33220BurstPhase(devices(i),0);
         else
-            set33220BurstPhase(devices(i),225);
+            set33220BurstPhase(devices(i),250);
         end
 
         set33220OutputLoad(devices(i), 'INF');
@@ -42,7 +42,7 @@ if contains(value,'start')
         set33220TriggerSource(devices(i),'BUS');
         set33220TrigSlope(devices(i),'POS');
         set33220BurstStateOn(devices(i),'ON');
-        set33220Output(devices(i),'ON');
+        set33220Output(devices(i),0);  % start with output OFF
     end 
 else
     instrList = [VmeasE,VmeasC];

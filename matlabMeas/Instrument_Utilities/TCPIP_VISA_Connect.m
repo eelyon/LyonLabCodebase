@@ -15,7 +15,7 @@ obj1 =  instrfind('Type', 'visa-tcpip', 'RsrcName', 'TCPIP0::172.29.117.123::ins
 % Create the visa-tcpip object if it does not exist
 % otherwise use the object that was found.
 if isempty(obj1)
-    obj1 = visadev('NI', ['TCPIP0::' ,num2str(IP_Address), '::inst0::INSTR']);
+    obj1 = visa('NI', ['TCPIP0::' ,num2str(IP_Address), '::inst0::INSTR']);
 else
     fclose(obj1);
     obj1 = obj1(1);
