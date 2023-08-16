@@ -1,5 +1,5 @@
 %% Parameters
-scanType = 'PR';
+scanType = 'ST';
 background = 1.2025186292635e-8;
 folder = ['Cooldowns/' datestr(now(),'mm_dd_yy')];
 if ~exist(folder,'dir')
@@ -44,9 +44,9 @@ if scanType == 'SW'
     
 elseif scanType == 'ST'
     
-    Vstart = 0;%getVal(STM100Device,STM100Port);
+    Vstart = getVal(STM100Device,STM100Port);
     Vend = Vstart - .5;
-    Vstep = -.01;
+    Vstep = -.05;
     
     V = Vstart:Vstep:Vend ;
     Vgain = 1;
@@ -203,7 +203,7 @@ for Vout = V
     end
     DACGUI.updateDACGUI;
     drawnow;
-    pause(settletime)
+    %pause(settletime)
     
     avgmag = 0;
     avgx   = 0;
@@ -224,7 +224,7 @@ for Vout = V
         mag(i) = sqrt(x(i)^2 + y(i)^2);
         
         
-        pause(waittime)
+        %pause(waittime)
         
         subplot(2,3,1)
         plot(t,x,'BX')

@@ -1,16 +1,16 @@
-function plotHandle = maximizeSNR(figureNum,startCenter,stopCenter,deltaCenter,startWidth,stopWidth,deltaWidth)
-    dataPathCell = {'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\04_11_23\filteredData\MMF_He_3_Cryo_IQ_748_filtered_100000_Hz.fig'};%findFigNumPath(figureNum);
-    [QxDat,QyDat] = getXYData(dataPathCell{1},'fieldNum',1);
-    [IxDat,IyDat] = getXYData(dataPathCell{1},'fieldNum',2);
+function [plotHandle,maxMag] = maximizeSNR(figureNum,startCenter,stopCenter,deltaCenter,startWidth,stopWidth,deltaWidth)
+    dataPathCell = findFigNumPath(figureNum);%{'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\04_11_23\filteredData\MMF_He_3_Cryo_IQ_748_filtered_100000_Hz.fig'};%findFigNumPath(figureNum);
+    [QxDat,QyDat] = getXYData(dataPathCell{1},'fieldNum',7);
+    [IxDat,IyDat] = getXYData(dataPathCell{1},'fieldNum',8);
     plotHandle = initializeSR830Meas2D_Func({'IntegrationWidth', 'ESRCenter'}, {startWidth, startCenter}, {stopWidth,stopCenter}, {deltaWidth, deltaCenter});
-    %plotHandle.Label.Position(1) = 3;
+    maxMag = 0;
     sampleRate = 250*1e6;
     centerArr = [];
     numCenters = (stopCenter - startCenter)/deltaCenter + 1;
     for cIndex = 1:numCenters
         currentCenter = startCenter + deltaCenter*(cIndex-1);
         centerArr(cIndex) = currentCenter;
-        [widthArr,magArr] = echoIntegrationForSingleCenter(IyDat,QyDat,currentCenter,startWidth,stopWidth,deltaWidth,sampleRate);
+        [widthArr,magArr,maxMag] = echoIntegrationForSingleCenter(IyDat,QyDat,currentCenter,startWidth,stopWidth,deltaWidth,sampleRate,maxMag);
         distributeSNR2DData(cIndex,widthArr,magArr,plotHandle);
     end
 end
@@ -32,7 +32,7 @@ function distributeSNR2DData(cIndex,widthArr,magArr,plotHandle)
     end
 end
 
-function [widthArr,magArr] = echoIntegrationForSingleCenter(IyDat,QyDat,centerInUs,startWidth,stopWidth,deltaWidth,sampleRate)
+function [widthArr,magArr,maxMag] = echoIntegrationForSingleCenter(IyDat,QyDat,centerInUs,startWidth,stopWidth,deltaWidth,sampleRate,maxMag)
     centerSampleLocation = convertTimeToSample(centerInUs,sampleRate);
     widthArr = [];
     magArr = [];
@@ -43,7 +43,11 @@ function [widthArr,magArr] = echoIntegrationForSingleCenter(IyDat,QyDat,centerIn
         widthInSamples = convertTimeToSample(currentWidthInUs,sampleRate);
         [ISumSquared,QSumSquared] = integrateEcho(IyDat,QyDat,centerSampleLocation,widthInSamples);
         noiseMagnitude = calculateMagnitudeNoise(IyDat,QyDat,currentWidthInUs,sampleRate);
-        magArr(wIndex) = sqrt(ISumSquared+QSumSquared)/noiseMagnitude;
+        mag = sqrt(ISumSquared+QSumSquared)/noiseMagnitude;
+        if maxMag < mag
+            maxMag = mag;
+        end
+        magArr(wIndex) = mag;
     end
 end
 

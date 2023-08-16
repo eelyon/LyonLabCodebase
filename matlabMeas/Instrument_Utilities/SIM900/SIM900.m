@@ -18,7 +18,7 @@ classdef SIM900
            currentVoltage = str2double(querySIM900Voltage(SIM900, port));
            
            if abs(voltage - currentVoltage) < voltageResolution
-               fprintf('Voltage step is too small for SIM900\n');              
+               fprintf('Voltage step is too small for SIM900\n');
            else
                connectSIM900Port(SIM900,port);
                %pause(0.1)

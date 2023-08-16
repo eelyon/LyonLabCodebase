@@ -24,8 +24,8 @@ function [ h ] = heliumFillHeight( Pkpa )
  else  % big glass dewar (RF) 
      Vpanel = 18.44;     % in^3
      Vstick = 24.26;   % in^3 
-     Acell = pi*0.80^2; % in^2
-     Patm = 2; %(30-Pkpa)*0.0334211; % atm
+     Acell = pi*0.75^2; % in^2
+     Patm = (30-Pkpa)*0.0334211; % atm
      h = Patm * (Vpanel+Vstick)*25.4/(757*Acell); % [mm]
  end
 end

@@ -5,8 +5,13 @@ function [plotHandles,subPlotFigure] = initializeSR830Meas1D(sweepType,doBackAnd
 timeLabel = "Time [s]";
 voltageAxisName = genSR830Axis(sweepType);
 yLabel = "Current [A]";
-if contains(sweepType, 'TMHeat')
+
+if contains(sweepType, 'TMHeat') || contains(sweepType, 'Amp')
         yLabel = "Voltage [V]";
+end
+
+if contains(sweepType, 'IDC')
+        yLabel = "Capacitance [pF]";
 end
 
 subPlotFigure = figure(getNextMATLABFigNum());
@@ -108,6 +113,10 @@ switch targetGate
         xAxisName = "Thin Film Emitter [V]";
     case 'TFC'
         xAxisName = "Thin Film Collector [V]";
+    case 'TWW'
+        xAxisName = "Twiddle [V]";
+    case 'SEN'
+        xAxisName = "Sense [V]";
     otherwise
         xAxisName = 'unknown';
 end

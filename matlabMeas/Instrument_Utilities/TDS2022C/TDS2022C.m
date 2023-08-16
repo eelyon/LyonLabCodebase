@@ -130,6 +130,17 @@ classdef TDS2022C
             fprintf(Oscilloscope.client,['TRIG:MAI:TYP ' type]);
           end
         end
+      
+        function [voltFigure] = get1ChannelTDS2022Data(Oscilloscope,chNum)
+            [xDat1,yDat1] = getTDS2022YData(Oscilloscope,chNum);
+            legCell = {['CH' num2str(chNum)]};
+            voltFigure = figure(getNextMATLABFigNum());
+            plot(xDat1,yDat1);
+            legend(legCell,'Location','northwest');
+            xlabel('Time (s)');
+            ylabel('Voltage (V)');
+            colororder([0 0 1])
+        end
 
         function [trigType] = queryTDS2022TriggerType(Oscilloscope)
           trigType = query(Oscilloscope.client,'TRIG:MAI:TYP?');
