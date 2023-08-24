@@ -8,7 +8,7 @@ for i = n
     sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{19},1);
     
     %% Transfer
-%     %%% open Emitter door scan
+    %%% open Emitter door scan
     start = sigDACQueryVoltage(DAC,23);
     deltaParam = -0.1;
     stop = 1;
