@@ -1,4 +1,4 @@
-function [] = initialSet(value, DAC, VmeasE, VpulsAgi, VpulsAgi2)
+function [] = initialSet(value, DAC, VmeasE, VmeasC, VpulsAgi, VpulsAgi2)
 
 DCMap;
 sigDACSetVoltage(DAC,EPort,0);
@@ -9,6 +9,10 @@ if contains(value,'start')
     SR830setAuxOut(VmeasE,2,5);
     SR830setAuxOut(VmeasE,3,-5);
     SR830setAuxOut(VmeasE,4,-5);
+
+%     SR830setAuxOut(VmeasC,1,4.5);
+%     SR830setAuxOut(VmeasC,2,-1.5);
+%     SR830setAuxOut(VmeasC,3,1.5);
     
     % initialize Agilent
     amp_high = 2.5;
@@ -43,11 +47,14 @@ else
     SR830setAuxOut(VmeasE,2,0);
     SR830setAuxOut(VmeasE,3,0);
     SR830setAuxOut(VmeasE,4,0);
+    SR830setAuxOut(VmeasC,1,0);
+    SR830setAuxOut(VmeasC,2,0);
+    SR830setAuxOut(VmeasC,3,0);
+    SR830setAuxOut(VmeasC,4,0);
 
 end
 
 % get temperature
-% resistance = queryHP34401A(Thermometer);
-% temperature = Therm.tempFromRes(resistance)
+% temperature = Therm.tempFromRes(queryHP34401A(Thermometer))
 
 end

@@ -31,10 +31,12 @@ classdef sigDAC
                 voltage = str2double(query(sigDAC.client,'VOLT?'));
         end
 
-        function sigDACSetVoltage(sigDAC,channel,voltage)
-                fprintf(sigDAC.client,['CH ' num2str(channel)])
-                pause(.1);
-                fprintf(sigDAC.client,['VOLT ' num2str(voltage)])
+        function sigDACSetVoltage(sigDAC,channels,voltages)
+                for i=1:length(channels)
+                    fprintf(sigDAC.client,['CH ' num2str(channels(i))])
+                    pause(.1);
+                    fprintf(sigDAC.client,['VOLT ' num2str(voltages(i))])
+                end
         end
 
         function  voltageArr = sigDACGetConfig(sigDAC)
@@ -85,11 +87,6 @@ classdef sigDAC
             DCMap;
             fprintf(sigDAC.client,['DOOR ' num2str([2,DoorEPort,DoorCPort, ...
                              4,vPort,2,0,0,TauE,TauC])]);
-        end
-
-        function sigDAC = disconnect_sigDAC(comPort)
-            sigDAC.comPort = comPort;
-            sigDAC.client = serial_Disconnect(comPort);
         end
 
     end

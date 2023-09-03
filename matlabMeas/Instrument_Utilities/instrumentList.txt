@@ -1,1 +1,1 @@
-Instruments: 
+Instruments: VmeasE,VmeasC,DAC

@@ -15,7 +15,7 @@ classdef Agilent33220A
             Agilent33220A.port          = port;
             
             if exist('opt','var') 
-                Agilent33220A.client    = USB_Connect(IPAddress);                
+                Agilent33220A.client    = TCPIP_VISA_Connect(IPAddress);                
             else
                 Agilent33220A.client    = TCPIP_Connect(IPAddress,port);
             end
@@ -35,31 +35,6 @@ classdef Agilent33220A
 
         end
 
-        function send33220Trigger(Agilent33220A)
-            fprintf(Agilent33220A.client,'TRIG');
-        end
-        
-        function [] = set33220BurstMode(Agilent33220A,burstType)
-            validTypes = 'TRIG,GAT';
-            if ~contains(validTypes,burstType)
-                fprintf('Invalid burst type, valid types are:\n');
-                fprintf(validTypes);
-            else
-                command = ['BURS:MODE ' burstType];
-                fprintf(Agilent33220A.client,command);
-            end
-        end
-
-        function [] = set33220BurstStateOn(Agilent33220A,onOrOff)
-            if onOrOff
-                command = 'BURS:STAT ON';
-            else
-                command = 'BURS:STAT OFF';
-            end
-
-            fprintf(Agilent33220A.client,command);
-        end
-
         function [] = set33220FunctionType(Agilent33220A,type)
 
             validTypes = 'SIN,SQU,RAMP,PULS,NOIS,DC,USER';
@@ -73,11 +48,6 @@ classdef Agilent33220A
 
         end
 
-        function [] = set33220NumBurstCycles(Agilent33220A,numCycles)
-            command = ['BURS:NCYC ' num2str(numCycles)];
-            fprintf(Agilent33220A.client,command);
-        end
-
         function [] = set33220Output(Agilent33220A,OnOff)
             if OnOff
                 cmdStr = 'ON';
@@ -85,6 +55,21 @@ classdef Agilent33220A
                 cmdStr = 'OFF';
             end
             command = ['OUTP ' cmdStr];
+            fprintf(Agilent33220A.client,command);
+        end
+
+        function [] = set33220OutputLoad(Agilent33220A, Ohms)
+            if isletter(Ohms) == 1
+                command = ['OUTP:LOAD ', Ohms];
+            else
+                command = ['OUTP:LOAD ', num2str(Ohms)];
+            end
+            fprintf(Agilent33220A.client,command);
+        end
+
+        %% SET FREQUENCY/PERIOD %%
+        function [] = set33220Frequency(Agilent33220A,frequencyInHz)
+            command = ['FREQ ' num2str(frequencyInHz)];
             fprintf(Agilent33220A.client,command);
         end
 
@@ -98,11 +83,22 @@ classdef Agilent33220A
             fprintf(Agilent33220A.client,command);
         end
 
-        function [] = set33220OutputLoad(Agilent33220A, Ohms)
-            command = ['OUT:LOAD ', num2str(Ohms)];
+        function [] = set33220PulseDutyCycle(Agilent33220A,dutyCycle)
+            command = ['PULS:DCYC ' num2str(dutyCycle)];
+            fprintf(Agilent33220A.client,command);
+        end
+
+        function [] = set33220PulseRiseTime(Agilent33220A,riseTime)
+            command = ['PULS:TRAN ' num2str(riseTime)];
             fprintf(Agilent33220A.client,command);
         end
         
+        %% SET TRIGGER %%
+        
+        function send33220Trigger(Agilent33220A)
+            fprintf(Agilent33220A.client,'TRIG');
+        end
+
         function [] = set33220TrigSlope(Agilent33220A,slope)
             validSourceTypes = 'POS,NEG';
             if ~contains(validSourceTypes,slope)
@@ -145,6 +141,53 @@ classdef Agilent33220A
             end
         end
 
+        %% SET BURST %%
+
+        function [] = set33220BurstMode(Agilent33220A,burstType)
+            validTypes = 'TRIG,GAT';
+            if ~contains(validTypes,burstType)
+                fprintf('Invalid burst type, valid types are:\n');
+                fprintf(validTypes);
+            else
+                command = ['BURS:MODE ' burstType];
+                fprintf(Agilent33220A.client,command);
+            end
+        end
+
+        function [] = set33220NumBurstCycles(Agilent33220A,numCycles)
+            command = ['BURS:NCYC ' num2str(numCycles)];
+            fprintf(Agilent33220A.client,command);
+        end
+
+        function [] = set33220BurstStateOn(Agilent33220A,onOrOff)
+            if onOrOff
+                command = 'BURS:STAT ON';
+            else
+                command = 'BURS:STAT OFF';
+            end
+
+            fprintf(Agilent33220A.client,command);
+        end
+
+        function [] = set33220BurstPhase(Agilent33220A,phaseInDegrees)
+            command = ['BURS:PHAS ' num2str(phaseInDegrees)];
+            fprintf(Agilent33220A.client,command);
+        end
+        
+        %% SET VOLTAGES %%
+        function [] = set33220Amplitude(Agilent33220A,amplitude,voltType)
+            validVoltTypes = 'VPP,VRMS,DBM';
+            if ~contains(validVoltTypes,voltType)
+                fprintf([voltType ' is not a valid voltage source type. Valid types are:\n'])
+                fprintf([validVoltTypes, '\n']);
+            else 
+                command = ['VOLT:UNIT', ' ', voltType];
+                command2 = ['VOLT ', num2str(amplitude), ' ', voltType];
+            end
+            fprintf(Agilent33220A.client,command);
+            fprintf(Agilent33220A.client,command2);
+        end
+
         function [] = set33220VoltageHigh(Agilent33220A,highVoltage)
             command = ['VOLT:HIGH ', num2str(highVoltage)];
             fprintf(Agilent33220A.client,command);
@@ -159,6 +202,9 @@ classdef Agilent33220A
             command = ['VOLTAGE:OFFS ', num2str(voltageOffset)];
             fprintf(Agilent33220A.client,command);
         end
+
+        
+        %% QUERYING %%
 
         function [functionType] = query33220FunctionType(Agilent33220A)
             functionType = query(Agilent33220A.client,'FUNC?');

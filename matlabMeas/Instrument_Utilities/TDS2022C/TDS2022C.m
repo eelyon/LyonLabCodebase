@@ -130,7 +130,7 @@ classdef TDS2022C
             fprintf(Oscilloscope.client,['TRIG:MAI:TYP ' type]);
           end
         end
-        
+      
         function [voltFigure] = get1ChannelTDS2022Data(Oscilloscope,chNum)
             [xDat1,yDat1] = getTDS2022YData(Oscilloscope,chNum);
             legCell = {['CH' num2str(chNum)]};

@@ -62,7 +62,17 @@ for value = paramVector
     for pIndex = 1:length(ports)
         port = ports{pIndex};
         if pIndex == 1
-            setVal(device,port,value);
+            if strcmp(sweepType{1},'IDC')
+                setVal(device,port,value);
+                setVal(device,port+1,value);
+            elseif strcmp(sweepType{1},'Amp')
+                twiddleAmp = value;
+                set33220Amplitude(device{1},twiddleAmp,'VRMS');
+                set33220Amplitude(device{2},twiddleAmp,'VRMS');
+                SR830setAmplitude(device{3},twiddleAmp);
+            else
+                setVal(device,port,value);
+            end
         else
             setVal(device,port,value+deltaGateParam);
         end

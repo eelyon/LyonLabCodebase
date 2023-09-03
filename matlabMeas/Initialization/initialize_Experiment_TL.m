@@ -38,14 +38,17 @@ else
     Fil_Address = '172.29.117.108';
     
     % Agilent for emitter door
-    VpulsAgi_Address = '172.29.117.109';
+    VtwiddleE_Address = '172.29.117.109';
     
     % Siglent or 2nd Agilent for collector door
     Sig_Address = 'USB0::0xF4ED::0xEE3A::SDG050D1150018::0::INSTR';
-    VpulsAgi2_Address = 'USB0::0x0957::0x0407::MY44008425::0::INSTR';
-
+    VdoorModE_Address = '172.29.117.123';
+    
     % SIM900 
-    % IDCPort = 'COM6';
+    IDCPort = 'COM6';
+
+    % Oscilloscope
+    oscope_Address = 'USB0::0x0699::0x0374::C011644::0';
 end
 
 DAC = sigDAC(sigDACPort,24);
@@ -53,10 +56,13 @@ VmeasC = SR830(port,VmeasC_Address);
 VmeasE = SR830(port,VmeasE_Address);
 % Thermometer = TCPIP_Connect(DMM_Address,port);
 Filament = Agilent33220A(port,Fil_Address);
-VpulsAgi = Agilent33220A(port,VpulsAgi_Address);
-VpulsAgi2 = Agilent33220A(port,VpulsAgi2_Address,1);
+VtwiddleE = Agilent33220A(port,VtwiddleE_Address);
+VdoorModE = Agilent33220A(port,VdoorModE_Address,1);
+% VtwiddleC = Agilent33220A(port,VtwiddleC_Address);
+% VdoorModC = Agilent33220A(port,VdoorModC_Address,1);
 % VpulsSig = Siglent5122(Sig_Address);
-% IDC = SIM900(IDCPort);
+IDC = SIM900(IDCPort);
+Oscope = TDS2022C(oscope_Address);
 
 DACGUI = sigDACGUI;
 SR830GUI = SR830_GUI;
