@@ -129,6 +129,7 @@ classdef SR830 < handle
             if auxOut > 4 || auxOut < 1
                 fprintf('auxOut must be between 1-4\n');
             else
+                %SR830queryAuxOut(SR830,auxOut)
                 command = ['AUXV ' num2str(auxOut) ', ' num2str(voltage)];
                 fprintf(SR830.client,command);
                 if auxOut == 1
@@ -141,6 +142,42 @@ classdef SR830 < handle
                     SR830.Aux4 = voltage;
                 end
             end
+        end
+
+        function SR830setBulkAuxOut(SR830,auxOuts,voltages)
+            for k = 1:numel(auxOuts)
+               SR830setAuxOut(SR830,auxOuts(k),voltages(k))
+           end
+        end
+
+        function [] = SR830rampAuxOut(SR830,auxOut,voltage,pauser,delta)
+            if auxOut > 4 || auxOut < 1
+                fprintf('auxOut must be between 1-4\n');
+            else
+                currentVoltage = SR830queryAuxOut(SR830,auxOut);
+
+                for volts = currentVoltage:sign(voltage - currentVoltage)*delta:voltage
+                   command = ['AUXV ' num2str(auxOut) ', ' num2str(volts)];
+                   fprintf(SR830.client,command);
+                   pause(0.001+pauser);
+               end
+
+                if auxOut == 1
+                    SR830.Aux1 = voltage;
+                elseif auxOut == 2
+                    SR830.Aux2 = voltage;
+                elseif auxOut == 3
+                    SR830.Aux3 = voltage;
+                else
+                    SR830.Aux4 = voltage;
+                end
+            end
+        end
+
+        function SR830rampBulkAuxOut(SR830,auxOuts,voltages)
+            for k = 1:numel(auxOuts)
+               SR830rampAuxOut(SR830,auxOuts(k),voltages(k),0.001,0.001)
+           end
         end
         
         function SR830setSensitivity(SR830,sensitivity)
