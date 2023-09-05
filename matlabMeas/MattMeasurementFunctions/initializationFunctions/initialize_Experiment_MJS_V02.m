@@ -12,4 +12,6 @@ AWG_Address = '172.29.117.105';
 AWG = Agilent33220A(port,AWG_Address);
 
 SIM928Port = 'COM5';
-SIM928Rack = SIM900(SIM928Port);
+SIM900 = SIM900(SIM928Port);
+
+%SR830GUI = SR830_GUI;
