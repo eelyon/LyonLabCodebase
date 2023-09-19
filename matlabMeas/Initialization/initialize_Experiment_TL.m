@@ -64,7 +64,7 @@ VdoorModE = Agilent33220A(port,VdoorModE_Address,1);
 IDC = SIM900(IDCPort);
 Oscope = TDS2022C(oscope_Address);
 
-DACGUI = sigDACGUI;
+DACGUI = sigDACGUI_Tiff;
 SR830GUI = SR830_GUI;
 SR830GUI = SR830_GUI;
 DCMap;

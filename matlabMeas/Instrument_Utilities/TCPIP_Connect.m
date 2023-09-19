@@ -16,7 +16,7 @@ obj1 = instrfind('Type', 'tcpip', 'RemoteHost', IP_Address, 'RemotePort', port, 
 % Create the tcpip object if it does not exist
 % otherwise use the object that was found.
 if isempty(obj1)
-    obj1 = tcpip(IP_Address, 1234);
+    obj1 = tcpip(IP_Address, port);
 else
     fclose(obj1);
     obj1 = obj1(1);
