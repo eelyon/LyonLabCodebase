@@ -4,7 +4,7 @@ for i = n
     %%% STM Emitter Scan after transfer config
     start = 0;
     deltaParam = -0.025;
-    stop = -0.4;
+    stop = -0.5;
     sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{19},1);
     
     %% Transfer
@@ -19,14 +19,14 @@ for i = n
 
     %%% STMC Scan
     start = sigDACQueryVoltage(DAC,20);
-    deltaParam = -0.02;
-    stop = start-0.15;
-    sweep1DMeasSR830({'ST'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},DAC,{20},1);
+    deltaParam = -0.025;
+    stop = start-0.5;
+    sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.5,5,{VmeasC},DAC,{20},1);
 
     %%% STME Scan after transfer
     start = 0;
     deltaParam = -0.02;
-    stop = -0.4;
+    stop = -0.3;
     sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{19},1);
     
     %% Transfer Back
@@ -56,9 +56,9 @@ for i = n
     
     %%% STM Collector Scan
     start = sigDACQueryVoltage(DAC,20);
-    deltaParam = -0.02;
-    stop = start-0.15;
-    sweep1DMeasSR830({'ST'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},DAC,{20},1);
+    deltaParam = -0.05;
+    stop = start-0.7;
+    sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.7,5,{VmeasC},DAC,{20},1);
     
     sigDACRampVoltage(DAC,21,-1.2,10000);  % open doorC close before cleaning!!
     sigDACRampVoltage(DAC,23,0,10000);  % open doorE close before cleaning!!
@@ -77,8 +77,8 @@ for i = n
     %%% STM Collector Scan
     start = sigDACQueryVoltage(DAC,20);
     deltaParam = -0.02;
-    stop = start-0.1;
-    sweep1DMeasSR830({'ST'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},DAC,{20},1);
+    stop = start-0.4;
+    sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.5,repeat,{VmeasC},DAC,{20},1);
 
     %%% Close door E back 
     sigDACRampVoltage(DAC,23,-1,10000);
@@ -86,8 +86,8 @@ for i = n
     
     %%% final STM E scan
     start = 0;
-    deltaParam = -0.025;
-    stop = -0.4;
+    deltaParam = -0.03;
+    stop = -0.5;
     sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{19},1);
     
     pause(2)

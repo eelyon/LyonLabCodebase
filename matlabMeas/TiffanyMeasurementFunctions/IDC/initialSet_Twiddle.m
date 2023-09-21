@@ -17,6 +17,7 @@ if contains(value,'start')
     % initialize Agilent
     amplitude = 150e-3;
     voltType = 'VRMS';
+    voltageOffset = 0;
     frequency = 101.2e3;
 
     if exist('VdoorModE','var')
@@ -28,6 +29,7 @@ if contains(value,'start')
     for i = 1:length(devices)
         set33220FunctionType(devices(i),'SIN');
         set33220Amplitude(devices(i),amplitude,voltType);
+        set33220VoltageOffset(devices(i),voltageOffset)
         set33220Frequency(devices(i),frequency);
         set33220BurstMode(devices(i),'TRIG')
         if i == 1

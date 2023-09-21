@@ -10,7 +10,8 @@ timeBetweenPoints = 20;
 repeat = 10;
 readSR830 = {VmeasE};
 device = IDC;
-ports = {4};  
+ports = {3};  
 doBackAndForth = 1;
 
 sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth);
+
