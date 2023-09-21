@@ -28,7 +28,7 @@ if strcmp(Command,'Emitting')
     IdcNF      = -3;
     IdcPF      = -3;
 
-    closedVoltC = -4;
+    closedVoltC = 0;
     calVoltC = calibratedAP24Volt([DoorCInPort,TwiddleCPort,SenseCPort],[closedVoltC,closedVoltC,closedVoltC]);
     sigDACRampVoltage(DAC,[DoorCInPort,TwiddleCPort,SenseCPort],calVoltC,10000);
 

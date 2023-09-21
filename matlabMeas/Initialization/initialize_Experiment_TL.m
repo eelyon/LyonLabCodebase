@@ -45,7 +45,7 @@ else
     VdoorModE_Address = '172.29.117.123';
     
     % SIM900 
-    IDCPort = 'COM6';
+    IDCPort = 'COM4';
 
     % Oscilloscope
     oscope_Address = 'USB0::0x0699::0x0374::C011644::0';
@@ -62,7 +62,7 @@ VdoorModE = Agilent33220A(port,VdoorModE_Address,1);
 % VdoorModC = Agilent33220A(port,VdoorModC_Address,1);
 % VpulsSig = Siglent5122(Sig_Address);
 IDC = SIM900(IDCPort);
-Oscope = TDS2022C(oscope_Address);
+% Oscope = TDS2022C(oscope_Address);
 
 DACGUI = sigDACGUI_Tiff;
 SR830GUI = SR830_GUI;
