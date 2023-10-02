@@ -20,8 +20,8 @@ function [freqData, yData] = E5071GetData(ENA,tag)
   % primary format, so we will parse this data accordingly.
   rawYData = str2num(query(ENA,':CALC1:DATA:FDAT?\n'));
   yData = parseE5071Data(rawYData);
-  [freqScan, freqScanHandle] = plotData(freqData,yData,'xLabel','Frequency (GHz)','yLabel','Power (dBm)','color','r.','Title',[tag '']);
-  saveData(freqScanHandle,tag);
+  %[freqScan, freqScanHandle] = plotData(freqData,yData,'xLabel','Frequency (GHz)','yLabel','Power (dBm)','color','r.','Title',[tag '']);
+  %saveData(freqScanHandle,tag);
 end
 
 
