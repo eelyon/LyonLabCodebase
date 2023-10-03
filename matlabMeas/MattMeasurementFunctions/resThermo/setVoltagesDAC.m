@@ -58,10 +58,10 @@ voltsSucc = [3,...  %DAC 1
         0];     %DAC 8
 
 %voltUse = voltsEmitt;
-voltUse = voltsEmittMeas;
+%voltUse = voltsEmittMeas;
 %voltUse = voltsEmittTest;
 %voltUse = voltsSucc;
-%voltUse = voltsGnd;
+voltUse = voltsGnd;
 %voltUse = voltsEmittST;
 
 %%{
