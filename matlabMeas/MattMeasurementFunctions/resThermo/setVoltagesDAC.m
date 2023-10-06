@@ -12,7 +12,7 @@ voltsEmitt = [-0.3,...  %DAC 1
         0,...   %DAC 7
         0];     %DAC 8
 
-voltsEmittMeas = [-0.0,...  %DAC 1
+voltsEmittMeas = [-0.3,...  %DAC 1
         -0.3,...   %DAC 2
         -1.5,...   %DAC 3
         -0.0,...   %DAC 4

@@ -2,7 +2,7 @@
 
 port = 1234;
 
-SR830_Address = '172.29.117.103';
+SR830_Address = '172.29.117.102';
 SR830 = SR830(port,SR830_Address);
 
 DMM_Address = '172.29.117.104';
