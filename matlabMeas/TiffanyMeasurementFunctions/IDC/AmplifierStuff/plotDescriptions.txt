@@ -1,0 +1,35 @@
+1/2: Bias1/2 connected to DAC at 0V (RT)
+
+3/4: Bias1/2 connected to DAC but grounded (RT)
+
+5/6: Bias1/2 connected to Agilent 0.5V Square output with voltage divider (RT)
+
+7: Bias1 connected to Agilent 0.5V Square output with voltage divider, grounded (RT)
+8: Bias1 connected to Agilent 0.5V Square output with voltage divider, ungrounded (RT) (forgot to save QQ)
+
+-----------
+9/10: Bias1/2 connected to DAC at 0V (1.8K)
+
+11/12: Bias1/2 connected to DAC but grounded (1.8K)
+
+13/14: Bias1/2 connected to Agilent 0.5V Square output with voltage divider (1.8K)
+
+15: Bias1 connected to Agilent 10mV square output without voltage divider, AC (1.8K)
+16: Bias1 connected to Agilent 10mV square output without voltage divider, DC (1.8K)
+
+-------------------------------------------------
+17: volt = 0
+18: volt = 1.3
+19: volt = 1.6
+20: volt = -1.3
+21: volt = -1.6
+-------------------------
+Start experiment
+
+22: twiddle/door in hooked up, 0 deg phase (bias2)
+23: twiddle/door in hooked up, 180 deg phase (bias2)
+26: twiddle (100mVrms)/door in (35mVrms) hooked up, 0 deg phase (bias2)
+
+24: background signal (bias2)
+25: background signal (bias1)
+

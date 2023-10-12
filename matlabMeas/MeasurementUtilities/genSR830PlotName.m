@@ -34,5 +34,9 @@ function plotName = genSR830PlotName(targetGate)
             plotName = 'SenseAmplitudeSweep';
         case 'Amp'
             plotName = 'TwiddleSenseSweep';
+        case 'PHAS'
+            plotName = 'Ag33220PhaseSweep';
+        case 'Vrms'
+            plotName = 'Ag33220VrmsAmpSweep';
     end
 end

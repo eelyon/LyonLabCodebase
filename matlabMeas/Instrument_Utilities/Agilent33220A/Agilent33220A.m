@@ -84,7 +84,7 @@ classdef Agilent33220A
         end
 
         function [] = set33220PulseDutyCycle(Agilent33220A,dutyCycle)
-            command = ['PULS:DCYC ' num2str(dutyCycle)];
+            command = ['FUNC:PULS:DCYC ' num2str(dutyCycle)];
             fprintf(Agilent33220A.client,command);
         end
 
@@ -169,11 +169,27 @@ classdef Agilent33220A
             fprintf(Agilent33220A.client,command);
         end
 
+        function [] = set33220OutputOnOff(Agilent33220A,onOrOff)
+            if onOrOff
+                command = 'OUTP ON';
+            else
+                command = 'OUTP OFF';
+            end
+
+            fprintf(Agilent33220A.client,command);
+        end
+
         function [] = set33220BurstPhase(Agilent33220A,phaseInDegrees)
             command = ['BURS:PHAS ' num2str(phaseInDegrees)];
             fprintf(Agilent33220A.client,command);
         end
-        
+
+        function [] = set33220Phase(Agilent33220A,phaseInDegrees)
+            command = ['PHAS ' num2str(phaseInDegrees)];
+            fprintf(Agilent33220A.client,command);
+        end
+
+
         %% SET VOLTAGES %%
         function [] = set33220Amplitude(Agilent33220A,amplitude,voltType)
             validVoltTypes = 'VPP,VRMS,DBM';
@@ -238,10 +254,26 @@ classdef Agilent33220A
             voltLow = query(Agilent33220A.client,'VOLT:LOW?');
         end
 
-        function [offset] = query33220VoltageOffset(Agilent33220A)
-            offset = query(Agilent33220A.client,'VOLT:OFFS?');
+        function [amplitude] = query33220Amplitude(Agilent33220A)
+            amplitude = str2double(query(Agilent33220A.client,'VOLT?'));
         end
 
+        function [offset] = query33220VoltageOffset(Agilent33220A)
+            offset = str2double(query(Agilent33220A.client,'VOLT:OFFS?'));
+        end
+        
+        function [phase] = query33220Phase(Agilent33220A)
+            phase = str2double(query(Agilent33220A.client,'PHAS?'));
+        end
+
+        function [phase] = query33220Frequency(Agilent33220A)
+            phase = str2double(query(Agilent33220A.client,'FREQ?'));
+        end
+
+        function [output] = query33220OutputOnOff(Agilent33220A)
+            output = str2double(query(Agilent33220A.client,'OUTP?'));
+        end
+        
     end
 end
 

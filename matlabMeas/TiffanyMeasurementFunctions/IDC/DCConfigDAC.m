@@ -28,10 +28,6 @@ if strcmp(Command,'Emitting')
     IdcNF      = -3;
     IdcPF      = -3;
 
-    closedVoltC = 0;
-    calVoltC = calibratedAP24Volt([DoorCInPort,TwiddleCPort,SenseCPort],[closedVoltC,closedVoltC,closedVoltC]);
-    sigDACRampVoltage(DAC,[DoorCInPort,TwiddleCPort,SenseCPort],calVoltC,10000);
-
 elseif strcmp(Command,'Transferring1')
     %% Emitter    
     TopE       = TopVoltage;
@@ -104,6 +100,29 @@ elseif strcmp(Command,'Transfer')
     %% Thin Film
     TfC        = 0.6;
     TfE        = 0.3;
+    %% IDC
+    IdcNF      = -0.1;
+    IdcPF      = -0.1;
+
+elseif strcmp(Command,'Transfer_smaller')
+    %% Emitter    
+    TopE       = TopVoltage;
+    StmE       = 0;
+    STOBiasE   = 0;
+    STIBiasE   = 0;
+    DoorEClose = -1;
+    DoorEOpen  = -0.1;
+    %% Collector
+    STMC = 0.5;
+    STOBiasC   = STMC;
+    STIBiasC   = STMC;
+    TopC       = STOBiasC-0.5;
+    StmC       = STMC;
+    DoorCClose = -0.4;
+    DoorCOpen  = 0.2; %TopC-0.2;
+    %% Thin Film
+    TfC        = 0.3;
+    TfE        = 0.1;
     %% IDC
     IdcNF      = -0.1;
     IdcPF      = -0.1;

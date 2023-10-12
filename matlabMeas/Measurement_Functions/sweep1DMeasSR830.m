@@ -1,4 +1,4 @@
-function [avgmags] = sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth)
+function [avgmags] = sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,opt)
 % Function sweeps the device and ports from the start to stop parameter
 % with a given delta. 
 % Parameters:
@@ -22,7 +22,11 @@ function [avgmags] = sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetwee
 %           value.
 
 for srIndex = 1:length(readSR830)
-    [plotHandles{srIndex},subPlotFigureHandles{srIndex}] = initializeSR830Meas1D(sweepType{srIndex},doBackAndForth);
+    if exist('opt','var') 
+        [plotHandles{srIndex},subPlotFigureHandles{srIndex}] = initializeSR830Meas1D(sweepType{srIndex},doBackAndForth,opt);
+    else
+        [plotHandles{srIndex},subPlotFigureHandles{srIndex}] = initializeSR830Meas1D(sweepType{srIndex},doBackAndForth);
+    end
 end
 %% Parameters to probe
 
@@ -65,11 +69,6 @@ for value = paramVector
             if strcmp(sweepType{1},'IDC')
                 setVal(device,port,value);
                 setVal(device,port+1,value);
-            elseif strcmp(sweepType{1},'Amp')
-                twiddleAmp = value;
-                set33220Amplitude(device{1},twiddleAmp,'VRMS');
-                set33220Amplitude(device{2},twiddleAmp,'VRMS');
-                SR830setAmplitude(device{3},twiddleAmp);
             else
                 setVal(device,port,value);
             end
@@ -190,7 +189,7 @@ function [x,y,mag,t] = getSR830Data(x,y,mag,t,currentTimeIndex,startTime,readSR8
 for i = 1:length(readSR830)
     currentSR830 = readSR830{i};
     x(i,currentTimeIndex) = currentSR830.SR830queryX();
-    y(i,currentTimeIndex) = currentSR830.SR830queryY();
+    y(i,currentTimeIndex) = currentSR830.SR830queryY(); %currentSR830.SR830queryTheta(); 
     t(i,currentTimeIndex) = (now()-startTime)*86400;
     mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
     pause(.005);

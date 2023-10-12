@@ -4,10 +4,10 @@ repeat = 5;
 
 % STM scan, pinch off
 %% After Emission     
-start = sigDACQueryVoltage(DAC,16);  % Emitter STM at 0
+start = sigDACQueryVoltage(DAC,19);  % Emitter STM at 0
 deltaParam = -0.05;
 stop = -0.5;
-configName = 'afterTransfer';
+configName = 'afterEmit';
 sweep1DMeasDUALSR830('ST',start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC,VmeasE},DAC,{StmCPort,StmEPort},1,configName);
 
 %% single VmeasC
@@ -27,7 +27,7 @@ sweep1DMeasSR830({'ST'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},
 start = 0;
 deltaParam = 0.05;
 stop = -0.5;
-sweep1DMeasSR830({'ST'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasE},DAC,{19},0);
+sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{19},1);
 
 start = -1.5;
 deltaParam = -0.05;
@@ -93,3 +93,12 @@ stop = -0.5;
 timeBetweenPoints = 0.1;
 repeat = 5;
 sweep1DMeasSR830({'TE'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},DAC,{24},0); 
+
+
+
+start = 0;
+deltaParam = 0.025;
+stop = -0.4;
+timeBetweenPoints = 0.05;
+repeat = 5;
+sweep1DMeasSR830({'TWW'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasE},DAC,{17},1); 

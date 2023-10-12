@@ -1,4 +1,4 @@
-n = [-1 -1.3 -1.5];
+n = [-1 -1.3 -1.5 -2 -1 -2 -1.3];
 for i = n
     %% Transfer Config
     %%% STM Emitter Scan after transfer config
@@ -14,8 +14,8 @@ for i = n
     stop = 1;
     sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{23},0);
 
-    doorAgi(VtwiddleE,VdoorModE,10,1000,'ms');
-    set33220Trigger(VtwiddleE,'BUS');  % to open the doors
+    %doorAgi(VtwiddleE,VdoorModE,10,1000,'ms');
+    %set33220Trigger(VtwiddleE,'BUS');  % to open the doors
 
     %%% STMC Scan
     start = sigDACQueryVoltage(DAC,20);

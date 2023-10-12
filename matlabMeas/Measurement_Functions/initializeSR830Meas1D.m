@@ -1,10 +1,15 @@
-function [plotHandles,subPlotFigure] = initializeSR830Meas1D(sweepType,doBackAndForth)
+function [plotHandles,subPlotFigure] = initializeSR830Meas1D(sweepType,doBackAndForth,opt)
 
 [time,Real,Imag] = deal(inf);
 
 timeLabel = "Time [s]";
 voltageAxisName = genSR830Axis(sweepType);
-yLabel = "Current [A]";
+
+if exist('opt','var') 
+    yLabel = "Voltage [V]";
+else
+    yLabel = "Current [A]";
+end
 
 if contains(sweepType, 'TMHeat') || contains(sweepType, 'Amp')
         yLabel = "Voltage [V]";
@@ -117,6 +122,10 @@ switch targetGate
         xAxisName = "Twiddle [V]";
     case 'SEN'
         xAxisName = "Sense [V]";
+    case 'PHAS'
+        xAxisName = 'Phase [Degrees]';
+    case 'Vrms'
+        xAxisName = 'Agilent Amplitude [Vrms]';
     otherwise
         xAxisName = 'unknown';
 end

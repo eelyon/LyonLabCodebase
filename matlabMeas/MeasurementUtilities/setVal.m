@@ -46,14 +46,21 @@ elseif contains(name,'AP16')
     end
     Device.sigDACSetVoltage(Port,Value)
 
-elseif contains(name,'SIM9') 
+
+elseif contains(name,'SIM9') || contains(name,'IDC')
     Device.setSIM900Voltage(Port,Value); 
 
-elseif contains(name,',33220A,')
+elseif contains(name,'33220A')
     if Port == 1
         Device.set33220VoltageLow(Value)
     elseif Port == 2
         Device.set33220VoltageHigh(Value)
+    elseif Port == 3
+        Device.set33220Phase(Value);
+    elseif Port == 4
+        Device.set33220Amplitude(Value,'VRMS')
+    elseif Port == 5
+        Device.set33220VoltageOffset(Value)
     else
         fprintf('\nUnknown Port\n')
         errorFlag = -3;

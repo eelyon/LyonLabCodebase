@@ -52,6 +52,10 @@ function [fig] = plot2DData(xData,yData,cData,varargin)
             metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
         elseif contains(instrumentList{i},"DAC")
             metadata_struct.sigDAC = evalin('base',['sigDACGetConfig(' instrumentList{i} ');']);
+        elseif contains(instrumentList{i},"VmeasC")
+                metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
+        elseif contains(instrumentList{i},"VmeasE")
+            metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
         end
     end
     
