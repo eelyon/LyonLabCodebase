@@ -4,46 +4,36 @@ DCMap;
 sigDACSetVoltage(DAC,EPort,0);
 
 if contains(value,'start')
-    sigDACSetVoltage(DAC,TopMetalPort,-2);
+    sigDACSetVoltage(DAC,TopMetalPort,-1.5);
     SR830setAuxOut(VmeasE,1,5);
     SR830setAuxOut(VmeasE,2,5);
     SR830setAuxOut(VmeasE,3,-5);
     SR830setAuxOut(VmeasE,4,-5);
-
-    %SR830setAuxOut(VmeasC,1,4.5);
-    %SR830setAuxOut(VmeasC,2,-1.5);
-    %SR830setAuxOut(VmeasC,3,1.5);
     
     % initialize Agilent
-    amplitude = 150e-3;
+    amplitude = 200e-3;
     voltType = 'VRMS';
-    voltageOffset = 0;
-    frequency = 101.2e3;
+    voltageOffset = -1;
+    frequency1 = 100.125e3;
+    frequency2 = 89.5e3;
 
-    if exist('VdoorModE','var')
-        devices  = [VtwiddleE VdoorModE];
-    else 
-        devices = VtwiddleE;
-    end
+    devices  = [VtwiddleE VdoorModE];
+
 
     for i = 1:length(devices)
         set33220FunctionType(devices(i),'SIN');
-        set33220Amplitude(devices(i),amplitude,voltType);
         set33220VoltageOffset(devices(i),voltageOffset)
-        set33220Frequency(devices(i),frequency);
-        set33220BurstMode(devices(i),'TRIG')
-        if i == 1
-            set33220BurstPhase(devices(i),0);
-        else
-            set33220BurstPhase(devices(i),250);
-        end
 
+        if i == 1
+            set33220Phase(devices(i),0);
+            set33220Amplitude(devices(i),amplitude,voltType);
+            set33220Frequency(devices(i),frequency1);
+        else
+            set33220Phase(devices(i),120);
+            set33220Amplitude(devices(i),76e-3,voltType);
+            set33220Frequency(devices(i),frequency2);
+        end
         set33220OutputLoad(devices(i), 'INF');
-        set33220BurstMode(devices(i),'TRIG');
-        set33220NumBurstCycles(devices(i),'INF')
-        set33220TriggerSource(devices(i),'BUS');
-        set33220TrigSlope(devices(i),'POS');
-        set33220BurstStateOn(devices(i),'ON');
         set33220Output(devices(i),0);  % start with output OFF
     end 
 else

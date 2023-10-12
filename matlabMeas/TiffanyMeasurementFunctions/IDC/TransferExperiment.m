@@ -24,7 +24,7 @@ pause(wait);
 %% BEFORE TAUE     
 start = sigDACQueryVoltage(DAC,16);
 deltaParam = -0.05;
-stop = -0.25;
+stop = -0.3;
 configName = 'afterEmission';
 sweep1DMeasDUALSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,configName);
 

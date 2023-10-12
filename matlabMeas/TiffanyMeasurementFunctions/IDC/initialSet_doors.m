@@ -1,22 +1,21 @@
-function [] = initialSet(value, DAC, VmeasE, VmeasC, VpulsAgi, VpulsAgi2)
+function [] = initialSet_doors(value, DAC, VmeasE, VmeasC, VpulsAgi, VpulsAgi2)
+
+%% this function sets up the 
 
 DCMap;
 sigDACSetVoltage(DAC,EPort,0);
 
 if contains(value,'start')
-    sigDACSetVoltage(DAC,TopMetalPort,-2);
+    sigDACSetVoltage(DAC,TopMetalPort,-1.5);
     SR830setAuxOut(VmeasE,1,5);
     SR830setAuxOut(VmeasE,2,5);
     SR830setAuxOut(VmeasE,3,-5);
     SR830setAuxOut(VmeasE,4,-5);
 
-%     SR830setAuxOut(VmeasC,1,4.5);
-%     SR830setAuxOut(VmeasC,2,-1.5);
-%     SR830setAuxOut(VmeasC,3,1.5);
-    
     % initialize Agilent
     amp_high = 2.5;
     amp_low = 0;
+    
     if exist('VpulsAgi2','var')
         devices  = [VpulsAgi VpulsAgi2];
     else 

@@ -103,6 +103,10 @@ switch targetGate
         axisName = "Center [\mus]";
     case 'IntegrationWidth'
         axisName = "Integration Width [\mus]";
+    case 'PHAS'
+        axisName = "Phase [Degrees]";
+    case 'Vrms'
+        axisName = "Agilent Amplitude [Vrms]";
     otherwise
         axisName = 'unknown';
 end

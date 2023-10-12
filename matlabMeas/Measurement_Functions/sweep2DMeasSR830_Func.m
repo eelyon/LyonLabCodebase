@@ -2,7 +2,7 @@ function [avgmags] = sweep2DMeasSR830_Func(sweepTypes, starts, stops, deltaParam
 
 %% Test command (FOR TESTING PURPOSES ONLY, NOT INDICATIVE OF ANY OTHER FUNCTIONALITY)
 % sweep2DMeasSR830_Func({'Freq', 'ST'}, {1000, 0}, {10000, 1}, {1000, 0.1}, {SR830,SR830}, {{'Freq'},{'1'}}, 0.5, 5, SR830)
-%sweep2DMeasSR830_Func({'ST','TM'}, {0,-2}, {-.75,-.75}, {-.05,.25},{DAC,DAC},{1,4},.03,10,{SR830},extraPorts)
+% sweep2DMeasSR830_Func({'ST','TM'}, {0,-2}, {-.75,-.75}, {-.05,.25},{DAC,DAC},{1,4},.03,10,{SR830},extraPorts)
 plotHandle = initializeSR830Meas2D_Func(sweepTypes, starts, stops, deltaParams);
 
 instrumentList = parseInstrumentList();
@@ -116,10 +116,9 @@ for valueIndex1 = 1:length(paramVector1) %loops through 1 first
         magVectorRepeat = [];
         %% Repeating for loop - changing repeat increases the number of averages to perform per point.
         for j = 1:repeat
-            
             %% Query SR830 for Real/Imag data, calculate Magnitude and place in vectors
             Mag = getSR830MagData(readSR830);
-            
+        
             %% Place data in repeat vectors that get averaged
             magVectorRepeat(j)  = Mag;
         end
