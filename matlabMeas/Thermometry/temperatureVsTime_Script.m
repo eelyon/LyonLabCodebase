@@ -8,7 +8,7 @@ Therm = initializeThermometry(thermometerType);
 [time,temperature] = deal(inf);
 
 %% Create plot for thermometry and set the data sources for the figure handle below.
-%thermPlot = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"rx");
+thermPlot = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"rx");
 
-%temperatureVsTime(Thermometer,timeBetweenPoints,Therm,thermPlot);
+temperatureVsTime(Thermometer,timeBetweenPoints,Therm,thermPlot);
 
