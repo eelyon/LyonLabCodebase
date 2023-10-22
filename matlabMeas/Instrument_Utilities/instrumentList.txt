@@ -1,1 +1,1 @@
-Instruments: VmeasE,VmeasC,DAC
+Instruments: DAC,SR830

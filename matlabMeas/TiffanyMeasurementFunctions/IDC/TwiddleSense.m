@@ -1,108 +1,37 @@
-DCConfigDAC(DAC,'Emitting',1000)
-set33220VoltageOffset(VdoorModE,-1);
-set33220VoltageOffset(VtwiddleE,-1);
+function [] = twiddleSense(instr, DAC, twiddlePort,sensePort, doorPort, twiddleDevice, doorDevice, start, stop)
+    % start = -1;
+    % stop = 0;
+    DCMap;
 
-start = 0;
-deltaParam = -0.05;
-stop = -1;
-sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.1,10,{VmeasC},DAC,{9},0);
+    % bring sense and twiddle to base (-1,0,0,-1)
+%     sweep1DMeasSR830({'SEN'},start,stop,-0.05,0.5,5,{instr},DAC,{sensePort},0,1);
+%     sweep1DMeasSR830({'TWW'},start,stop,-0.05,0.5,5,{instr},DAC,{twiddlePort},0,1);
+%     
+%     TuneAmplifier(instr,twiddleDevice,doorDevice,0.2,100.125e3)
 
-start = -1;
-deltaParam = -0.05;
-stop = 0;
-sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.1,10,{VmeasC},VdoorModE,{5},0);
-
-start = 0;
-deltaParam = -0.05;
-stop = -1;
-sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.1,10,{VmeasC},VdoorModE,{5},0);
-
-start = 0;
-deltaParam = -0.02;
-stop = -0.4;
-sweep1DMeasSR830({'TWW'},start,stop,deltaParam,0.1,10,{VmeasC},VtwiddleE,{5},1);
-
-start = 0;
-deltaParam = -0.02;
-stop = -0.4;
-sweep1DMeasSR830({'TWW'},start,stop,deltaParam,0.1,20,{VmeasC},DAC,{17},1);
-
-start = 0;
-deltaParam = -0.02;
-stop = 0.4;
-sweep1DMeasSR830({'TWW'},start,stop,deltaParam,0.1,10,{VmeasC},VtwiddleE,{5},1);
-
-
-start = 0.1;
-deltaParam = -0.02;
-stop = 0;
-sweep1DMeasSR830({'TWW'},start,stop,deltaParam,0.1,10,{VmeasC},VtwiddleE,{5},0);
-
-
-
-start = 0;
-deltaParam = -0.05;
-stop = -1;
-sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.1,10,{VmeasC},DAC,{23},0);
-
-
-
-
-
-
-
-start = -1;
-deltaParam = -0.02;
-stop = 0;
-sweep1DMeasSR830({'TWW'},start,stop,deltaParam,0.1,10,{VmeasC},VtwiddleE,{5},0);
-
-start = -0.95;
-deltaParam = -0.05;
-stop = 0;
-sweep1DMeasSR830({'TWW'},start,stop,deltaParam,0.1,10,{VmeasC},VtwiddleC,{5},1);
-
-start = -1;
-deltaParam = -0.05;
-stop = 0;
-sweep1DMeasSR830({'SEN'},start,stop,deltaParam,0.1,10,{VmeasC},DAC,{16},0);
-
-
-start = -0.3;
-deltaParam = -0.025;
-stop = 0;
-sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.1,20,{VmeasC},VdoorModE,{5},0);
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-start = 0;
-deltaParam = -0.025;
-stop = -0.3;
-sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.1,10,{VmeasC},DAC,{4},0);
-
-
-doorV = [-1:0.1:-0.1 -0.1:-0.1:-1];
-
-for i =1:length(doorV)
-    start = doorV(i);
-    deltaParam = -0.05;
-    stop = doorV(i+1);
-    sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.1,10,{VmeasC},VdoorModE,{5},0);
-    
+    sweep1DMeasSR830({'Door'},start,stop,-0.05,0.1,10,{instr},DAC,{doorPort},0,1); % lower door to let electrons in
+    if strcmp(sensePort,'SenseEPort')
+        sigDACRampVoltage(DAC,twiddlePort,0.4,1000);
+        sigDACRampVoltage(DAC,STIBiasEPort,-0.1,1000);
+    else
+        sigDACRampVoltage(DAC,twiddlePort,0.4,1000);
+        sigDACRampVoltage(DAC,STIBiasCPort,-0.3,1000);
+    end    
     pause(5)
-
-    start = 0;
-    deltaParam = -0.02;
-    stop = 0.4;
-    sweep1DMeasSR830({'TWW'},start,stop,deltaParam,0.1,10,{VmeasC},VtwiddleE,{5},1);
+    sweep1DMeasSR830({'Door'},stop,start,-0.05,0.1,10,{instr},DAC,{doorPort},0,1); % raise to close door
     
-    pause(5)
-
-    start = 0;
-    deltaParam = -0.02;
-    stop = 0.4;
-    sweep1DMeasSR830({'TWW'},start,stop,deltaParam,0.1,10,{VmeasC},VtwiddleE,{5},1);
+    if strcmp(sensePort,'SenseEPort')
+        sigDACRampVoltage(DAC,twiddlePort,0,1000);
+        sigDACRampVoltage(DAC,STIBiasEPort,0,1000);
+        pause(10)
+        % twiddle measurement
+        sweep1DMeasSR830({'TWW'},stop,-1+0.6,-0.02,0.1,10,{instr},DAC,{twiddlePort},1,1);
+    else
+        sigDACRampVoltage(DAC,twiddlePort,0,1000);
+        sigDACRampVoltage(DAC,STIBiasCPort,0,1000);
+        pause(10)
+        % twiddle measurement
+        sweep1DMeasSR830({'TWW'},stop,0-0.4,-0.02,0.1,10,{instr},DAC,{twiddlePort},1,1);
+    end 
+    
 end
-
-
-

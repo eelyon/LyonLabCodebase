@@ -1,28 +1,24 @@
 %% Script used to initialize an experiment.
 
-% port = 1234;
-% 
-SR830_Address = '172.29.117.102';
-SRHe3 = SR830(port,SR830_Address);
+port = 1234;
+ 
+SR830_Address = '172.29.117.106';
+SR830 = SR830(port,SR830_Address);
 
-% tic
-% for i = 1:10
-%     SR830.SR830queryY();
-% end
-% DMM_Address = '172.29.117.107';
-% Thermometer = TCPIP_Connect(DMM_Address,port);
+DMM_Address = '172.29.117.107';
+Thermometer = TCPIP_Connect(DMM_Address,port);
 
-% sigDACPort = 'COM6';
-% DAC = sigDAC(sigDACPort,16);
+sigDACPort = 'COM8';
+DAC = sigDAC(sigDACPort,16);
 
-% AWG_Address = '172.29.117.108';
-% AWG = Agilent33220A(port,AWG_Address);
+AWG_Address = '172.29.117.126';
+AWG = Agilent33220A(port,AWG_Address);
 % 
-% DACGUI = sigDACGUI;
-% SR830GUI = SR830_GUI;
-% SR830SWEEPGUI = sweepSR830GUI;
+DACGUI = sigDACGUI;
+SR830GUI = SR830_GUI;
+SR830SWEEPGUI = sweepSR830GUI;
 % 
-% SR830SWEEPGUI.SR830ReadEditField.Value = 'SR830';
-% SR830SWEEPGUI.SweepDeviceEditField.Value = 'DAC';
-% SR830SWEEPGUI.numRepeatsEditField.Value = 10;
-% DCMap;
+SR830SWEEPGUI.SR830ReadEditField.Value = 'SR830';
+SR830SWEEPGUI.SweepDeviceEditField.Value = 'DAC';
+SR830SWEEPGUI.numRepeatsEditField.Value = 10;
+DCMap;

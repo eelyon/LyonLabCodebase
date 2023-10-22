@@ -13,7 +13,8 @@ if contains(value,'start')
     % initialize Agilent
     amplitude = 200e-3;
     voltType = 'VRMS';
-    voltageOffset = -1;
+    voltageOffset1 = -1;
+    voltageOffset2 = -4;
     frequency1 = 100.125e3;
     frequency2 = 89.5e3;
 
@@ -22,16 +23,18 @@ if contains(value,'start')
 
     for i = 1:length(devices)
         set33220FunctionType(devices(i),'SIN');
-        set33220VoltageOffset(devices(i),voltageOffset)
-
         if i == 1
             set33220Phase(devices(i),0);
             set33220Amplitude(devices(i),amplitude,voltType);
             set33220Frequency(devices(i),frequency1);
+            set33220VoltageOffset(devices(i),voltageOffset1)
+
         else
             set33220Phase(devices(i),120);
             set33220Amplitude(devices(i),76e-3,voltType);
             set33220Frequency(devices(i),frequency2);
+            set33220VoltageOffset(devices(i),voltageOffset2)
+
         end
         set33220OutputLoad(devices(i), 'INF');
         set33220Output(devices(i),0);  % start with output OFF

@@ -39,8 +39,9 @@ if doBackAndForth
 end
 
 if strcmp(sweepType{1},'Pair')
-    deltaGateParam = getVal(device,ports{2}) - getVal(device,ports{1});
+    deltaGateParam = getVal(device,ports{2}) - getVal(device,ports{1}+.06);
 end
+
 
 numSR830s = length(readSR830);
 
@@ -72,8 +73,10 @@ for value = paramVector
             else
                 setVal(device,port,value);
             end
-        else
+        elseif strcmp(sweepType{1},'Pair')
             setVal(device,port,value+deltaGateParam);
+        else
+            setVal(device,port,value);
         end
         
     end

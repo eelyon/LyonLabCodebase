@@ -19,6 +19,11 @@ classdef sigDAC
             sigDAC.numChannels = numChannels;
             sigDAC.identifier = query(sigDAC.client,"*IDN?");
             pause(1);
+            restarted = input('Did you restart the DAC? (y/n)',"s");
+            if strcmp(restarted,'y')
+                sigDACInit(sigDAC);
+                
+            end
             for i = 1:numChannels
                 sigDAC.channelVoltages(i) = sigDACQueryVoltage(sigDAC,i);
             end
