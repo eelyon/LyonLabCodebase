@@ -26,10 +26,10 @@ else
     % initialize Agilent
     amplitude = 200e-3;
     voltType = 'VRMS';
-    voltageOffset = -4;
+    voltageOffset = 0;
     frequency = 89.5e3;
     
-    devices  = [VtwiddleC VdoorModC];
+    devices  = device;
     
     for i = 1:length(devices)
             set33220FunctionType(devices(i),'SIN');

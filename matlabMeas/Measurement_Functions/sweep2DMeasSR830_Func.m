@@ -65,7 +65,7 @@ for valueIndex1 = 1:length(paramVector1) %loops through 1 first
             port3 = ports3{pIndex1};
         end
 
-        if pIndex1 == 1
+        if pIndex1 == 1'
             setVal(device1,port1,value1);
             if exist('extraPorts','var')
                 setVal(device1,port3,value1);
@@ -107,10 +107,10 @@ for valueIndex1 = 1:length(paramVector1) %loops through 1 first
             end
         end
         
-        if haveDAC
-            evalin("base","DACGUI.updateDACGUI");
-            drawnow;
-        end
+%         if haveDAC
+%             evalin("base","DACGUI.updateDACGUI");
+%             drawnow;
+%         end
         pause(timeBetweenPoints);
         %% Initialize average vectors that gets reset for the repeating for loop
         magVectorRepeat = [];

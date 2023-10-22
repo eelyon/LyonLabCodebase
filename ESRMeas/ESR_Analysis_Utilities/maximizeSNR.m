@@ -1,7 +1,7 @@
 function plotHandle = maximizeSNR(figureNum,startCenter,stopCenter,deltaCenter,startWidth,stopWidth,deltaWidth)
-    dataPathCell = findFigNumPath(figureNum);
-    [QxDat,QyDat] = getXYData(dataPathCell{1},'fieldNum',7);
-    [IxDat,IyDat] = getXYData(dataPathCell{1},'fieldNum',8);
+    dataPathCell = {'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\04_11_23\MMF_Field_Sweep_IQ_Filtered_684.fig'}'%findFigNumPath(figureNum);
+    [QxDat,QyDat] = getXYData(dataPathCell{1},'fieldNum',1);
+    [IxDat,IyDat] = getXYData(dataPathCell{1},'fieldNum',2);
     plotHandle = initializeSR830Meas2D_Func({'IntegrationWidth', 'ESRCenter'}, {startWidth, startCenter}, {stopWidth,stopCenter}, {deltaWidth, deltaCenter});
     %plotHandle.Label.Position(1) = 3;
     sampleRate = 250*1e6;

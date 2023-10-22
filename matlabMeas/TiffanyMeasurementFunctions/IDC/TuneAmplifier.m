@@ -24,7 +24,11 @@ doorDevice.set33220Phase(phases(end));
 SR830setSensitivity(device,24)               % set sensitivity to 0.2V
 
 start = 0.01;
-stop = 0.1;
+if twiddleAmp > 0.2
+    stop = 0.2;
+else
+    stop = 0.1;
+end
 stepSize_amps = [0.01 0.001 0.0001];         % note:lowest rms voltage is 7.1mVrms
 amplitudes = sweepOptimize(device, doorDevice, stepSize_amps, start, stop, 'Amp');
 
@@ -82,12 +86,12 @@ SR830setSensitivity(device,16)  % set sensitivity to 500uV
 
             xlist = start:delta:stop;
             minimumValue = xlist(find(mags==min(mags)));
-            if minimumValue > 350 || minimumValue < -350
+            if minimumValue > 350 || minimumValue < -350  % hard to search in this region, so exclude it
                 nextMin = min(setdiff(mags,min(mags)));
                 minimumValue = xlist(find(mags==nextMin));
             else
             end
-            start = minimumValue(1) - stepSize(i);
+            start = minimumValue(1) - stepSize(i);    % minimumValue(1) so more than one minima isn't an issue
             stop = minimumValue(1) + stepSize(i);
             phases(i) = minimumValue(1);
         end
