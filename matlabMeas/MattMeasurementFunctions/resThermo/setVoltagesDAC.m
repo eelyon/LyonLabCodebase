@@ -12,8 +12,8 @@ voltsEmitt = [-0.3,...  %DAC 1
         0,...   %DAC 7
         0];     %DAC 8
 
-voltsEmittMeas = [0.4,...  %DAC 1
-        -0.2,...   %DAC 2
+voltsEmittMeas = [0.1,...  %DAC 1
+        -0.15,...   %DAC 2
         -1.5,...   %DAC 3
         -0.0,...   %DAC 4
         -1.5,...   %DAC 5
