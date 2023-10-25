@@ -21,7 +21,7 @@ sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{StmEPort},1);
 
 start = 0;
 deltaParam = 0.01;
-stop = -0.1;
+stop = -0.15;
 sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{StmEPort},1);  % ST measurement
 
 % twiddle and sense measurement

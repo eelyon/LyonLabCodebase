@@ -24,11 +24,25 @@ else
 end
 
 % set Agilent doorE width
-set33220PulsePeriod(dev1,TauE*2)
-set33220PulseWidth(dev1, TauE)
+
+currentPeriodE = str2double(query33220PulsePeriod(dev1));
+if currentPeriodE >= TauE*2
+    set33220PulseWidth(dev1,TauE)
+    set33220PulsePeriod(dev1,TauE*2)
+else
+    set33220PulsePeriod(dev1,TauE*2)
+    set33220PulseWidth(dev1,TauE)
+end
 
 % set Agilent doorE width
-set33220PulsePeriod(dev2,TauC*2)
-set33220PulseWidth(dev2, TauC)
+
+currentPeriodC = str2double(query33220PulsePeriod(dev2));
+if currentPeriodC >= TauC*2
+    set33220PulseWidth(dev2,TauC)
+    set33220PulsePeriod(dev2,TauC*2)
+else
+    set33220PulsePeriod(dev2,TauC*2)
+    set33220PulseWidth(dev2,TauC)
+end
 
 end

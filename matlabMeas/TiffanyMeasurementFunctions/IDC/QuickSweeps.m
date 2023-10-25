@@ -185,7 +185,7 @@ sweep1DMeasSR830({'TWW'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{SenseEPort},
 start = sigDACQueryVoltage(DAC,DoorCClosePort);
 %start = 0;
 deltaParam = 0.05;
-stop = -2.5;
+stop = 0;
 sweep1DMeasSR830({'Door'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},DAC,{DoorCClosePort},0);
 
 
