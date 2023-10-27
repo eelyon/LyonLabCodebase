@@ -19,7 +19,7 @@ function [freqData, yData] = E5071GetData(ENA,tag)
   % Y Data has 2 values, the primary and secondary, to accomodate for Smith
   % and Polar data formats. Most of the time, one only cares about the
   % primary format, so we will parse this data accordingly.
-  rawYData = str2num(query(ENA,':CALC1:DATA:FDAT?\n'));
+  rawYData = str2num(query(ENA,':CALC1:DATA:FDAT?'));
   yData = parseE5071Data(rawYData);
   %[freqScan, freqScanHandle] = plotData(freqData,yData,'xLabel','Frequency (GHz)','yLabel','Power (dBm)','color','r.','Title',[tag '']);
   %saveData(freqScanHandle,tag);
