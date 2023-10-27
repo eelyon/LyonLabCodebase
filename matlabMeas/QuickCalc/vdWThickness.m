@@ -1,7 +1,7 @@
 function [ vdW ] = vdWThickness( H )
  % calculates the van der Waals film thickness
  % INPUTs: H = height of device above bulk in cm 
-  thin = 0;
+  thin = 1;
 
   if thin % l<600A
       kv = 2.88*10^-6; % [cm^(4/3)] for metal substrates  
