@@ -5,8 +5,8 @@ function [ h ] = heliumFillHeight( Pkpa )
  
  littleglassdewar = 0;
  bigglass = 0;
- bigglassRF = 0;
- bigglassGordian = 1;
+ bigglassRF = 1;
+ bigglassGordian = 0;
  
  if littleglassdewar   
      Vpanel = 18.4;     % in^3
@@ -27,10 +27,10 @@ function [ h ] = heliumFillHeight( Pkpa )
      Vpanel = 18.44;     % in^3
      Vstick = 24.26;   % in^3 
      Acell = pi*0.75^2; % in^2
-     Patm = (30-Pkpa)*0.0334211; % atm
+     Patm = (30-Pkpa)*0.0334211; % converts inHg to atm
      h = Patm * (Vpanel+Vstick)*25.4/(757*Acell); % [mm]
 
- else  bigglassGordian % big glass dewar Gordian Cell (RF) 
+ else  bigglassGordian   % big glass dewar Gordian Cell (RF) 
      Vpanel = 18.44;     % in^3
      Vstick = 26.19;     % in^3 
      Acell = pi*0.75^2;  % in^2
