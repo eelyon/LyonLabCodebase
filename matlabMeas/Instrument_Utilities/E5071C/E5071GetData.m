@@ -13,6 +13,7 @@ function [freqData, yData] = E5071GetData(ENA,tag)
      fopen(ENA);
   end
   
+  %Query freq. data (in GHz)
   freqData = str2num(query(ENA,':SENS1:FREQ:DATA?'))/1e9;
   
   % Y Data has 2 values, the primary and secondary, to accomodate for Smith

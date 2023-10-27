@@ -18,4 +18,3 @@ cmd = [':CALC', num2str(traceNum), ':PAR', num2str(traceNum), ':DEF ', measType,
 fprintf(ENA,cmd);
 
 end
-
