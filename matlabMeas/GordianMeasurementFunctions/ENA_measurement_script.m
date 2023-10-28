@@ -16,6 +16,6 @@ E5071SetStartFreq(ENA,2000); % in MHz
 E5071SetStopFreq(ENA,2200); % in MHz
 
 %% Get mag (log) and phase (deg) data
-[xdata, ydata] = E5071GetData(ENA,'test');
+[xdata,ydata] = E5071GetData(ENA,'test');
 plotData(xdata,ydata,'xLabel','Frequency (GHz)','yLabel','Power (dBm)','color','r.','Title',[tag '']);
 % saveData(freqSweepHandle,tag);

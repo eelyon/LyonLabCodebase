@@ -25,7 +25,6 @@ function [freqData, yData] = E5071GetData(ENA,tag)
   %saveData(freqScanHandle,tag);
 end
 
-
 function [parsedData] = parseE5071Data(inputDataArr)
   for i = 1:2:length(inputDataArr)
     parsedData(floor(i/2) + 1) = inputDataArr(i);
