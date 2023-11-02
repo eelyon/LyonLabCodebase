@@ -21,7 +21,7 @@ classdef SDG5122
             else
                 cmdStr = 'OFF';
             end
-            command = ['C',num2str(chann),':OUTP ' cmdStr];
+            command = ['C',num2str(chann),':OUTP ', cmdStr];
             fprintf(SDG5122.client,command);
         end
 
@@ -233,7 +233,7 @@ classdef SDG5122
             else
                 cmdStr = 'OFF';
             end
-            command = ['C',num2str(chann),':MDWV STATE, ' cmdStr];
+            command = ['C',num2str(chann),':MDWV STATE,', cmdStr];
             fprintf(SDG5122.client,command);
         end
 
@@ -244,7 +244,7 @@ classdef SDG5122
         end
 
        function [] = set5122AMSource(SDG5122,type, chann) 
-            validTypes = 'INT, EXT,CH1,CH2';
+            validTypes = 'INT,EXT,CH1,CH2';
             if ~contains(validTypes,type)
                 fprintf('Valid function types for the 5122 are:\n');
                 fprintf([validTypes '\n'])

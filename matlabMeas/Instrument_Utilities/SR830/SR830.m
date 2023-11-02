@@ -97,6 +97,14 @@ classdef SR830 < handle
             SR830.sensitivity = sensitivity;
         end
 
+        function sensVal = SR830querySensitivityArrNum(SR830)
+
+            sensArr = [2e-9, 5e-9, 1e-8, 2e-8, 5e-8, 1e-7, 2e-7,5e-7, 1e-6,2e-6,5e-6,1e-5,2e-5, 5e-5,1e-4,2e-4,5e-4,1e-3,2e-3,5e-3,.01,.02,.05,.1,.2,.5,1];
+            sensVal = str2double(query(SR830.client, 'SENS ?'));
+            sensitivity = sensArr(sensVal+1);
+            SR830.sensitivity = sensitivity;
+        end
+
         function [tc] = SR830queryTimeConstant(SR830)
             tcArr = [1e-5,3e-5,1e-4,3e-4,1e-3,3e-3,1e-2,3e-2,.1,.3,1,3,10,30];
             tc = tcArr(str2double(query(SR830.client, 'OFLT ?'))+1);
