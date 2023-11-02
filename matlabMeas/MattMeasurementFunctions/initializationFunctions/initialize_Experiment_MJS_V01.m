@@ -2,8 +2,8 @@
 
 port = 1234;
 
-% SR830_Address = '172.29.117.102';
-% SR830 = SR830(port,SR830_Address);
+SR830_Address = '172.29.117.102';
+SR830 = SR830(port,SR830_Address);
 % 
 % DMM_Address = '172.29.117.104';
 % Thermometer = TCPIP_Connect(DMM_Address,port);
@@ -13,7 +13,7 @@ port = 1234;
 % DACGUI = sigDACGUI;
 
 USBAddress = 'USB0::0xF4ED::0xEE3A::SDG050D1150018::INSTR';
-Siglent5122 = Siglent5122(USBAddress);
+SDG5122 = SDG5122(USBAddress);
 
 % 
 % AWG_Address = '172.29.117.105';

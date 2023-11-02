@@ -1,0 +1,21 @@
+function [] = resThermoSweep(SDG5122, SR830, amp, freqi, freqo, deltafreq)
+    set5122ModAmp(SDG5122, amp, 1);
+    set5122ModAmp(SDG5122, amp, 2);
+
+    basilSens = SR830querySensitivityArrNum(SR830);
+    maxSense = 26;
+
+    freqs = freqi:freqo:deltafreq;
+    for freq = freqs
+        SR830setSensitivity(SR830,26)
+        set5122Output(SDG5122, 0, 1);
+        set5122Output(SDG5122, 0, 2);
+
+        set5122ModFreq(SDG5122, freq, 1);
+        set5122ModFreq(SDG5122, freq, 2);
+
+        set5122Output(SDG5122, 1, 1);
+        set5122Output(SDG5122, 1, 2);
+        pause(2);
+    end
+end
