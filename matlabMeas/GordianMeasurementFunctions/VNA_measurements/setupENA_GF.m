@@ -1,8 +1,8 @@
 %% Initialise ENA
-port = 5025;
-ipAddress = '172.29.117.72';
-ENA = TCPIP_Connect(ipAddress,port); % tcpclient is new version
-ENA.InputBufferSize = 32000;
+%port = 5025;
+%ipAddress = '172.29.117.72';
+%ENA = TCPIP_Connect(ipAddress,port); % tcpclient is new version
+%ENA.InputBufferSize = 32000;
 
 %% Set up ENA
 % fprintf(ENA,':SYST:KLOC:KBD OFF'); % Lock front panel and keyboard
