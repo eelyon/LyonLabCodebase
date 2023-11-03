@@ -11,9 +11,13 @@ query(ENA,'*OPC?')
 [fdata,mag,phase] = E5071GetData(ENA,'test');
 
 % Plot mag and phase data
-closeAllFigures;
-plotData(fdata,mag);
-plotData(fdata,phase);
+%closeAllFigures;
+subPlotFigure = figure(getNextMATLABFigNum());
+
+subplot(1,2,1);
+freqvsmag = plotData(fdata,mag,'xLabel','Frequency (GHz)','yLabel','S_{21} (dB)','color','blue','subplot',1);
+subplot(1,2,2);
+freqvsphase = plotData(fdata,phase,'xLabel','Frequency (GHz)','yLabel','\phi (^{\circ})','color','red','subplot',1);
 
 % Save mag and phase data
 % saveData(freqSweepHandle,tag);
