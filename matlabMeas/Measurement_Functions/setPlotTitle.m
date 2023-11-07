@@ -7,6 +7,8 @@ function setPlotTitle(plotHandle,targetValue, value)
             set(t,'String',strcat(['Cap= ', num2str(value*1e12) 'pF']));
         case 'I'
             set(t,'String',strcat(['Current= ', num2str(value*1e9) 'nA']));
+        case 'F'
+            set(t,'String',strcat(['resFreq= ', num2str( ) 'GHz']));
     end
 end
 
