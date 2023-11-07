@@ -8,6 +8,8 @@ function [] = resVsTime(ENA,timeBetweenPoints,pHandle)
     while 1
         time(i) = (now()-startTime)*86400/60;
 
+        
+        
         % Function that sets VNA measurement and plots data
         E5071SetPower(ENA,5); % in dBm
         E5071SetStartFreq(ENA,2120); % in MHz

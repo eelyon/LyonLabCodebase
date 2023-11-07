@@ -1,11 +1,5 @@
 timeBetweenPoints = 10;
 
-%% ENA parameters
-powerIndBm = 5;   % in dBm
-startFreq  = 2120; % in MHz
-stopFreq   = 2140;  % in MHz
-tag        = 'freqSweep';
-
 %% Initialize Thermometer type (this is related to your thermometer you have)
 thermometerType = 'X117656';
 Thermometer;
@@ -24,6 +18,5 @@ thermPlot = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temper
 
 axesCell = {freqResHandle,thermHandle};
 tempPlotCell = {thermPlot,freqResPlot};
-
-ENACell = {powerIndBm,startFreq,stopFreq,tag};
-plotResVsTime(tempPlotCell,subPlotFigure,ENA,timeBetweenPoints,Thermometer,Therm,axesCell,ENACell);
+device = ENA;
+plotResVsTime(tempPlotCell,subPlotFigure,device,timeBetweenPoints,Thermometer,Therm,axesCell);
