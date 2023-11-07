@@ -16,11 +16,11 @@ Therm = initializeThermometry(thermometerType);
 %% Create plot for thermometry,IDCs,Emitter and set the data sources for the figure handle below.
 subPlotFigure = figure(getNextMATLABFigNum());
 
-freqResHandle = subplot(2,2,1);
-freqResPlot = plotData(time,frequency,'xLabel',"Time (minutes)",'yLabel',"Frequency (GHz)",'color',"r-x");
+freqResHandle = subplot(1,2,1);
+freqResPlot = plotData(time,frequency,'xLabel',"Time (minutes)",'yLabel',"Frequency (GHz)",'color',"r-x",'subPlot',1);
 
-thermHandle = subplot(2,2,2);
-thermPlot = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"bx");
+thermHandle = subplot(1,2,2);
+thermPlot = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"bx",'subPlot',1);
 
 axesCell = {freqResHandle,thermHandle};
 tempPlotCell = {thermPlot,freqResPlot};
