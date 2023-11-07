@@ -302,7 +302,7 @@ F = p(1)./((x-p(2)).^2+p(3));
 end % LFUN3
 
 function F = lfun3c(p,x)
-F = p(1)./((x-p(2)).^2+p(3)) + p(4);
+F = -p(1)./((x-p(2)).^2+p(3)) + p(4);
 end % LFUN3C
 
 function varargout = inputcheck(A,varargin)

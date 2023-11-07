@@ -11,7 +11,7 @@ query(ENA,'*OPC?'); % Execute *OPC? command and wait until command return 1
 % Get mag (log) and phase (deg) data
 tag = 'freqSweep';
 [fdata,mag,phase] = E5071GetData(ENA,tag);
-fres = fdata(find(mag==min(mag)));
+fres = fdata(find(mag==min(mag))); % (very) rough estimate of the resonance frequency
 
 %% Plot data
 measType = num2str(query(ENA,':CALC:PAR:DEF?')); % S21, S12, S22, or S11
@@ -30,7 +30,7 @@ temperature = Therm.tempFromRes(resistance);
 metadata_struct.numShots = ['Shot Number ' num2str(numShots)];
 metadata_struct.temperature = ['Temperature: ' num2str(temperature) ' Kelvin'];
 myFig.UserData = metadata_struct;
-numShots = numShots + 1;
+numShots = numShots + 1; % Can reset number of shots in command line
 
 % plotHandles = {freqvsmag,freqvsphase};
 saveData(subPlotFigure,tag); % Save mag and phase data
