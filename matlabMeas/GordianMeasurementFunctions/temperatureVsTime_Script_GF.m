@@ -1,10 +1,10 @@
 %% Initialise thermometer
-port = 1234; % for the big glass dewar??
-DMM_Address = '172.29.117.107';
-Thermometer = TCPIP_Connect(DMM_Address,port);
+% port = 1234; % for the big glass dewar??
+% DMM_Address = '172.29.117.107';
+% Thermometer = TCPIP_Connect(DMM_Address,port);
 
 %% Frequency of temperature querying in seconds.
-timeBetweenPoints = 60;
+timeBetweenPoints = 3;
 
 %% Initialize Thermometer type (this is related to your thermometer you have)
 thermometerType = 'X117656';
