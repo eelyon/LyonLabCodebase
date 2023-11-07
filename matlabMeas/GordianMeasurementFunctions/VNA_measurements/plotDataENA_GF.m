@@ -1,7 +1,7 @@
 %% Set single frequency sweep
 E5071SetPower(ENA,5); % in dBm
-E5071SetStartFreq(ENA,2121); % in MHz
-E5071SetStopFreq(ENA,2126); % in MHz
+E5071SetStartFreq(ENA,2120); % in MHz
+E5071SetStopFreq(ENA,2140); % in MHz
 
 fprintf(ENA,':INIT1'); % Set trigger value - for continuous set: ':INIT:CONT ON'
 fprintf(ENA,':TRIG:SOUR BUS'); % Set trigger source to "Bus Trigger"

@@ -8,8 +8,7 @@ function [xDat,yDat] = getXYData(figPath,varargin)
     parse(p,figPath,varargin{:});
     
     fig = openfig(figPath,'invisible');
-    h = findobj(gca,'Type',p.Results.type);
-    ax = gca;
+    h = findall(gcf,'Type',p.Results.type);
     xDat = h(p.Results.fieldNum).XData;
     yDat = h(p.Results.fieldNum).YData;
     closeFigure(fig);
