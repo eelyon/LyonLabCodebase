@@ -17,6 +17,7 @@ while 1
     drawnow;
     pause(timeBetweenPoints)
 end
+
     function cleanMeUp(handle)
         disp('Operation Terminated, saving data');
         saveData(handle,'tVsTime');

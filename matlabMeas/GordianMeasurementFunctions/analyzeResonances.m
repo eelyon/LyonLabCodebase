@@ -1,5 +1,5 @@
-startNum = 5511;
-stopNum = 5642;
+startNum = 5776;
+stopNum = 5838;
 
 numFigs = stopNum-startNum;
 %fig = figure(801);
@@ -10,8 +10,10 @@ for i = 1:numFigs
     [currentFigMetaData,figHandle] = displayFigNum(currentFigNum,'visibility',0);
     closeFigure(figHandle);
     delay(.25);
+
     shotNumArr = split(currentFigMetaData{1}.numShots,' ');
-    currentNumShots = str2num(shotNumArr{3});
+    currentNumShots = str2num(shotNumArr{1});
+
     figPathCell = findFigNumPath(currentFigNum);
     figPath = figPathCell{1};
     [xDat,yDat] = getXYData(figPath,'Type','line','FieldNum',2);
@@ -23,7 +25,7 @@ for i = 1:numFigs
         if oldNumShots ~= currentNumShots
         plot(xDat,yDat);
         oldNumShots = currentNumShots;
-        display(['Shot Number ' num2str(currentNumShots)]);
+        % display(['Shot Number ' num2str(currentNumShots)]);
         end
     end
 end

@@ -1,4 +1,4 @@
-figPathCell = findFigNumPath(5506);
+figPathCell = findFigNumPath(5757);
 figPath = figPathCell{1};
 [xDat,yDat] = getXYData(figPath,'Type','line','FieldNum',2);
 
