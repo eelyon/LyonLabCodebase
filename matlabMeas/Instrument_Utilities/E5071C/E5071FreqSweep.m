@@ -13,7 +13,7 @@ function [fres,subPlotFigure,tag,myFig] = E5071FreqSweep(ENA,powerIndBm,startFre
     [fdata,mag,phase] = E5071GetData(ENA,tag);
     fres = fdata(find(mag==min(mag))); % min point
     
-    if ~exist('opt','var') 
+    if ~exist('opt','var') % defaults to plotting data
         %% Plot data
         measType = num2str(query(ENA,':CALC:PAR:DEF?')); % S21, S12, S22, or S11
         subPlotFigure = figure(getNextMATLABFigNum());
@@ -23,6 +23,15 @@ function [fres,subPlotFigure,tag,myFig] = E5071FreqSweep(ENA,powerIndBm,startFre
         subplot(1,2,2);
         [freqvsphase,myFig] = plotData(fdata,phase,'xLabel',"Frequency (GHz)",'yLabel',"\phi (^{\circ})",'color',"r.",'subPlot',1);
         sgtitle([sprintf('f_{res}= %.6f', fres),'GHz']);
+
+        %% Set up meta data and save plot
+        resistance = queryHP34401A(Thermometer);
+        temperature = Therm.tempFromRes(resistance);
+        
+        metadata_struct.temperature = [num2str(temperature)]; % add temperature to metadata
+        myFig.UserData = metadata_struct;
+        
+        saveData(subPlotFigure,tag); % Save mag and phase data
     else
     end
 end
