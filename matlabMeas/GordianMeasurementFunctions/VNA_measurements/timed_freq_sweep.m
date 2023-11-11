@@ -1,8 +1,8 @@
 % This script sets up a frequency sweep on the vna every given time between
 % points
 powerIndBm = 5; % dBm
-startFreq = 2121; % MHz
-stopFreq = 2127; % MHz
+startFreq = 2125; % MHz
+stopFreq = 2140; % MHz
 tag = 'freqSweepVsTemp';
 
 thermometerType = 'X117656';
