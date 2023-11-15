@@ -23,7 +23,7 @@ subplot(1,2,2);
 [freqvsphase,myFig] = plotData(fdata,phase,'xLabel',"Frequency (GHz)",'yLabel',"\phi (^{\circ})",'color',"r.",'subPlot',1);
 sgtitle([sprintf('f_{res}= %.6f', fres),'GHz']);
 
-%% Set up meta data and save plot
+%% Set up meta data (save important params as str) and save plot
 resistance = queryHP34401A(Thermometer);
 temperature = Therm.tempFromRes(resistance);
 % Patm = Patm + inHgToAtm(10);
