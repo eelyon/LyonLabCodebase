@@ -110,6 +110,8 @@ switch targetGate
         xAxisName = strcat("Top Metal Voltage (DP Bias ",num2str(delta),"V) [V]");
     case 'Freq'
         xAxisName = "SR830 Frequency [Hz]";
+    case 'ThermoFreq'
+        xAxisName = "Heating Frequency [Hz]";
     case 'Amp'
         xAxisName = "SR830 Amplitude [V]";
     case 'IDC'

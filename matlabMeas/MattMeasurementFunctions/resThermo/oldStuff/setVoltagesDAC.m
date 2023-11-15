@@ -67,8 +67,8 @@ voltUse = voltsGnd;
 
 %%{
 for i = 1:length(voltUse)
-    rampVal(DAC,i, sigDACQueryVoltage(DAC, i), voltUse(i), 0.05, 0.03);
-    %setVal(DAC,i,voltUse(i));
+    %rampVal(DAC,i, sigDACQueryVoltage(DAC, i), voltUse(i), 0.05, 0.03);
+    setVal(DAC,i,voltUse(i));
     %pause(0.3);
 end
 %}
