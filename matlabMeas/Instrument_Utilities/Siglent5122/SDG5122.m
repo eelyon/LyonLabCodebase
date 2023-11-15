@@ -12,7 +12,7 @@ classdef SDG5122
         function SDG5122 = SDG5122(USBAddress)
             SDG5122.USBAddress    = USBAddress;
             SDG5122.client        = visadev(USBAddress);
-            SDG5122.identifier    = '5122';
+            SDG5122.identifier    = 'SDG5122';
         end
 
         function [] = set5122Output(SDG5122,OnOff, chann)
