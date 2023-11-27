@@ -49,6 +49,6 @@ set5122Delay(dev1,delay);
 set5122Output(dev1,'ON');                % turn outputs on 
 
 % trigger other agilent to trigger siglent
-%set33220Trigger(VpulsAgi,'BUS');  % to open the doors
+% set33220Trigger(VpulsAgi,'BUS');  % to open the doors
 
 end

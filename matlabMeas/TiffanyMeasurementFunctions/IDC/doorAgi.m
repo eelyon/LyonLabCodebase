@@ -23,8 +23,7 @@ else
     disp('your unit does not exist!')
 end
 
-% set Agilent doorE width
-
+% automatically adjusts Agilent doorE width/period based on what was set before so no error gets thrown
 currentPeriodE = str2double(query33220PulsePeriod(dev1));
 if currentPeriodE >= TauE*2
     set33220PulseWidth(dev1,TauE)
@@ -35,7 +34,6 @@ else
 end
 
 % set Agilent doorE width
-
 currentPeriodC = str2double(query33220PulsePeriod(dev2));
 if currentPeriodC >= TauC*2
     set33220PulseWidth(dev2,TauC)

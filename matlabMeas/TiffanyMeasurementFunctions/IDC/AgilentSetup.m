@@ -1,4 +1,5 @@
-%% for quick setup of Filament Agilent parameters
+%% for quick setup of the Agilent whether it's being used for the Filament
+%% or for twiddle and sense
 function [] = AgilentSetup(device, type)
 
 if strcmp(type,'Filament')

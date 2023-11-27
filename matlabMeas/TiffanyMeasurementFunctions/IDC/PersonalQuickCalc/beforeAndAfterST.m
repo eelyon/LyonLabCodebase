@@ -1,4 +1,10 @@
 function [] = beforeAndAfterST(folder,figure1,figure2,plotFigure)
+%% compares the pinchoffs/densities between two figures
+%  INPUTS: folder     = name of the folder with the data (ex: '')
+%          figure1    = number of first figure to compare
+%          figure2    = number of second figure to compare
+%          plotFigure = 0 (1) means no (yes) plot
+%          example = beforeAndAfterST('',22,22,0)
 
     %% Options
     Folder     = append('Data\',folder); 
