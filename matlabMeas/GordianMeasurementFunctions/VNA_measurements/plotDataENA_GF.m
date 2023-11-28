@@ -1,12 +1,12 @@
 %% Set single frequency sweep
-E5071SetPower(ENA,5); % in dBm
+E5071SetPower(ENA,5);        % in dBm
 E5071SetStartFreq(ENA,2122); % in MHz
-E5071SetStopFreq(ENA,2135); % in MHz
+E5071SetStopFreq(ENA,2135);  % in MHz
 
-fprintf(ENA,':INIT1'); % Set trigger value - for continuous set: ':INIT:CONT ON'
+fprintf(ENA,':INIT1');         % Set trigger value - for continuous set: ':INIT:CONT ON'
 fprintf(ENA,':TRIG:SOUR BUS'); % Set trigger source to "Bus Trigger"
-fprintf(ENA,':TRIG:SING'); % Trigger ENA to start sweep cycle
-query(ENA,'*OPC?'); % Execute *OPC? command and wait until command return 1
+fprintf(ENA,':TRIG:SING');     % Trigger ENA to start sweep cycle
+query(ENA,'*OPC?');            % Execute *OPC? command and wait until command return 1
 
 % Get mag (log) and phase (deg) data
 tag = 'freqSweepNoise';
@@ -26,19 +26,21 @@ sgtitle([sprintf('f_{res}= %.6f', fres),'GHz']);
 %% Set up meta data and save plot
 resistance = queryHP34401A(Thermometer);
 temperature = Therm.tempFromRes(resistance);
+
 % Patm = Patm + inHgToAtm(10);
 % numShots = numShots + 1; % Can reset number of shots in command line
+% capIDC = cap(VmeasC);
 
 metadata_struct.temperature = [num2str(temperature)];
 metadata_struct.Patm = [num2str(Patm)];
 metadata_struct.numShots = [num2str(numShots)];
 metadata_struct.power = [num2str(power)];
 metadata_struct.fres = [num2str(fres)];
+metadata_struct.capIDC = [num2str(capIDC)];
 myFig.UserData = metadata_struct;
 
 plotHandles = {freqvsmag,freqvsphase};
 % saveData(subPlotFigure,tag); % Save mag and phase data
-
 % disp(metadata_struct);
 
 function Patm = inHgToAtm(inHg)
@@ -47,4 +49,7 @@ function Patm = inHgToAtm(inHg)
     % param inHg: pressure reading in inches of mercury (pos. number)
     Patm = (30-inHg)*0.0334211;
 end
-    
+
+function capIDC = cap(Device)
+    capIDC = (-SR830queryY(Device)/SR830queryAmplitude(Device)/2/pi/SR830queryFreq(Device));
+end    

@@ -4,7 +4,7 @@ function [] = beforeAndAfterST(folder,figure1,figure2,plotFigure)
 %          figure1    = number of first figure to compare
 %          figure2    = number of second figure to compare
 %          plotFigure = 0 (1) means no (yes) plot
-%          example = beforeAndAfterST('',22,22,0)
+%          example = beforeAndAfterST('10_24_23',222,223,0)
 
     %% Options
     Folder     = append('Data\',folder); 

@@ -1,7 +1,8 @@
 function [ ] = doorAgi(VpulsAgi, VpulsAgi2,TauE,TauC,unit)
-%% generate an pulse sequence using the Agilent to get fast door pulses
-%% INPUTS: TauE = emitter door time in whatever unit, TauC = collector door time in whatever unit,
-%%         delay = delay in actual time you want it, unit = 'us', 'ms', etc for Agilent
+%% generates pulses using two Agilents (have to both start at the same time)
+% INPUTS: TauE = emitter door time in whatever unit, TauC = collector door time in whatever unit,
+%         delay = delay in actual time you want it, unit = 'us', 'ms', etc for Agilent
+
 dev1  = VpulsAgi;
 dev2  = VpulsAgi2;
 amp_high = 2.5;

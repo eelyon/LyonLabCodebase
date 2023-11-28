@@ -1,5 +1,5 @@
 function [ vdW ] = vdWThickness( H )
- % calculates the van der Waals film thickness
+ %% calculates the van der Waals film thickness
  % INPUTs: H = height of device above bulk in cm 
   thin = 1;
 
