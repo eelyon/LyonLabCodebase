@@ -15,7 +15,7 @@ while 1
     i = i+1;
     refreshdata;
     drawnow;
-    pause(timeBetweenPoints)
+    pause(timeBetweenPoints);
 end
 
     function cleanMeUp(handle)

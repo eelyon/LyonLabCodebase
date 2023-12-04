@@ -12,7 +12,7 @@ function [] = saveData(figObject,figName,varagin)
     figPath = getFigPath(getCurrentDataFolder(),figID);
     
     addFigID(figText);
-    saveas(figObject,figPath,'fig')
+    saveas(figObject,figPath,'fig');
     if incrementFile
         incrementFileNum();
     end

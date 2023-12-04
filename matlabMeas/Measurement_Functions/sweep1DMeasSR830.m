@@ -138,7 +138,7 @@ for value = paramVector
     currentAvgIndex = currentAvgIndex + 1;
 end
 for i = 1:numSR830s
-    saveData(subPlotFigureHandles{i},genSR830PlotName(sweepType{i}))
+    saveData(subPlotFigureHandles{i},genSR830PlotName(sweepType{i}));
 end
 end
 
@@ -191,8 +191,7 @@ function [x,y,mag,t] = getSR830Data(x,y,mag,t,currentTimeIndex,startTime,readSR8
 % objects!!!.
 for i = 1:length(readSR830)
     currentSR830 = readSR830{i};
-    x(i,currentTimeIndex) = currentSR830.SR830queryX();
-    y(i,currentTimeIndex) = currentSR830.SR830queryY(); %currentSR830.SR830queryTheta(); 
+    [x(i,currentTimeIndex),y(i,currentTimeIndex)] = currentSR830.SR830queryXY();
     t(i,currentTimeIndex) = (now()-startTime)*86400;
     mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
     pause(.005);
