@@ -1,4 +1,4 @@
-PinHg  = 16;    % added Helium to the cell                 
+PinHg  = 1;        % added Helium to the cell                 
 d      = 6.5e-3;    % distance of the device from bottom of cell
 heFill = heliumFillHeight( PinHg )*1e-3;   % [m], height of He in the cell
 H      = d - heFill;                       % [m], height of device above Helium
