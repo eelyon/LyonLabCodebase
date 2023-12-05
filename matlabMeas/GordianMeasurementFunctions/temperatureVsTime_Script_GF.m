@@ -6,10 +6,10 @@ thermometerType = 'X117656';
 % Thermometer;
 Therm = initializeThermometry(thermometerType);
 
-port = 1234; % for the big glass dewar??
+% port = 1234; % for the big glass dewar??
 %% Thermometer
-DMM_Address = '172.29.117.107';
-Thermometer = TCPIP_Connect(DMM_Address,port);
+% DMM_Address = '172.29.117.107';
+% Thermometer = TCPIP_Connect(DMM_Address,port);
 
 %% Initialize workspace arrays. Must be in workspace to update plots properly.
 [time,temperature] = deal(inf);
