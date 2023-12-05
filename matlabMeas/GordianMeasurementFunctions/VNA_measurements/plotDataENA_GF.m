@@ -1,8 +1,8 @@
 %% Set single frequency sweep
 power = 0; % power in dBm
 E5071SetPower(ENA,power); % in dBm
-E5071SetStartFreq(ENA,1520); % in MHz
-E5071SetStopFreq(ENA,1610); % in MHz
+E5071SetStartFreq(ENA,100); % in MHz
+E5071SetStopFreq(ENA,5000); % in MHz
 
 fprintf(ENA,':INIT1'); % Set trigger value - for continuous set: ':INIT:CONT ON'
 fprintf(ENA,':TRIG:SOUR BUS'); % Set trigger source to "Bus Trigger"
@@ -10,7 +10,7 @@ fprintf(ENA,':TRIG:SING'); % Trigger ENA to start sweep cycle
 query(ENA,'*OPC?'); % Execute *OPC? command and wait until command return 1
 
 % Get mag (log) and phase (deg) data
-tag = 'freqHeFilter';
+tag = 'freqSweepFilter';
 [fdata,mag,phase] = E5071GetData(ENA,tag);
 fres = fdata(find(mag==min(mag))); % Approximate resonance frequency
 
@@ -27,12 +27,12 @@ sgtitle([sprintf('f_{res}= %.6f', fres),'GHz']);
 %% Set up meta data (save important params as str) and save plot
 resistance = queryHP34401A(Thermometer);
 temperature = Therm.tempFromRes(resistance);
-Patm = Patm + inHgToAtm(0);
-numShots = numShots + 1; % Can reset number of shots in command line
+%Patm = Patm + inHgToAtm(0);
+%numShots = numShots + 1; % Can reset number of shots in command line
 
 metadata_struct.temperature = [num2str(temperature)];
-metadata_struct.Patm = [num2str(Patm)];
-metadata_struct.numShots = [num2str(numShots)];
+%metadata_struct.Patm = [num2str(Patm)];
+%metadata_struct.numShots = [num2str(numShots)];
 metadata_struct.power = [num2str(power)];
 metadata_struct.fres = [num2str(fres)];
 myFig.UserData = metadata_struct;
