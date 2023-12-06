@@ -1,7 +1,11 @@
 %% Set single frequency sweep
-E5071SetPower(ENA,5);        % in dBm
-E5071SetStartFreq(ENA,2122); % in MHz
-E5071SetStopFreq(ENA,2135);  % in MHz
+power = 5;                  % power in dBm
+startFreq = 2122;           % start frequency in MHz
+stopFreq = 2135;            % stop frequency in MHz
+
+E5071SetPower(ENA,power);           % in dBm
+E5071SetStartFreq(ENA,startFreq);   % in MHz
+E5071SetStopFreq(ENA,stopFreq);     % in MHz
 
 fprintf(ENA,':INIT1');         % Set trigger value - for continuous set: ':INIT:CONT ON'
 fprintf(ENA,':TRIG:SOUR BUS'); % Set trigger source to "Bus Trigger"
@@ -27,8 +31,8 @@ sgtitle([sprintf('f_{res}= %.6f', fres),'GHz']);
 resistance = queryHP34401A(Thermometer);
 temperature = Therm.tempFromRes(resistance);
 
-% Patm = Patm + inHgToAtm(10);
-% numShots = numShots + 1; % Can reset number of shots in command line
+% Patm = Patm + inHgToAtm(10); % initialise in command line
+% numShots = numShots + 1; % initialise in command line
 % capIDC = cap(VmeasC);
 
 metadata_struct.temperature = [num2str(temperature)];
@@ -40,7 +44,6 @@ metadata_struct.capIDC = [num2str(capIDC)];
 myFig.UserData = metadata_struct;
 
 plotHandles = {freqvsmag,freqvsphase};
-
 % saveData(subPlotFigure,tag); % Save mag and phase data
 % disp(metadata_struct);
 
