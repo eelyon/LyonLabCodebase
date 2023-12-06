@@ -25,6 +25,6 @@ while 1
 end
     function cleanMeUp(subPlotFigure)
         disp('Operation Terminated, saving data');
-        saveData(subPlotFigure,'resFreqTempVsTime');
+        saveData(subPlotFigure,'ResVsTemp');
     end
 end

@@ -9,7 +9,7 @@ fprintf(ENA,':TRIG:SING');     % Trigger ENA to start sweep cycle
 query(ENA,'*OPC?');            % Execute *OPC? command and wait until command return 1
 
 % Get mag (log) and phase (deg) data
-tag = 'freqSweepNoise';
+tag = 'freqSweepFilter_warm';
 [fdata,mag,phase] = E5071GetData(ENA,tag);
 fres = fdata(find(mag==min(mag))); % Approximate resonance frequency
 
@@ -23,7 +23,7 @@ subplot(1,2,2);
 [freqvsphase,myFig] = plotData(fdata,phase,'xLabel',"Frequency (GHz)",'yLabel',"\phi (^{\circ})",'color',"r.",'subPlot',1);
 sgtitle([sprintf('f_{res}= %.6f', fres),'GHz']);
 
-%% Set up meta data and save plot
+%% Set up meta data (save important params as str) and save plot
 resistance = queryHP34401A(Thermometer);
 temperature = Therm.tempFromRes(resistance);
 
@@ -32,14 +32,15 @@ temperature = Therm.tempFromRes(resistance);
 % capIDC = cap(VmeasC);
 
 metadata_struct.temperature = [num2str(temperature)];
-metadata_struct.Patm = [num2str(Patm)];
-metadata_struct.numShots = [num2str(numShots)];
+%metadata_struct.Patm = [num2str(Patm)];
+%metadata_struct.numShots = [num2str(numShots)];
 metadata_struct.power = [num2str(power)];
 metadata_struct.fres = [num2str(fres)];
 metadata_struct.capIDC = [num2str(capIDC)];
 myFig.UserData = metadata_struct;
 
 plotHandles = {freqvsmag,freqvsphase};
+
 % saveData(subPlotFigure,tag); % Save mag and phase data
 % disp(metadata_struct);
 
