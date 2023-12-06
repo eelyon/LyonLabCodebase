@@ -22,6 +22,8 @@ function plotName = genSR830PlotName(targetGate)
             plotName = 'PairSweep';
         case 'Freq'
             plotName = 'FrequencySweep';
+        case 'ThermoFreq'
+            plotName = 'ThermometryFrequencySweep';
         case 'IDC'
             plotName = 'IDCSweep';
         case 'TFE'

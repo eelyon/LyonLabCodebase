@@ -1,7 +1,8 @@
 function [ ] = doorAgi(VpulsAgi, VpulsAgi2,TauE,TauC,unit)
-%% generate an pulse sequence using the Agilent to get fast door pulses
-%% INPUTS: TauE = emitter door time in whatever unit, TauC = collector door time in whatever unit,
-%%         delay = delay in actual time you want it, unit = 'us', 'ms', etc for Agilent
+%% generates pulses using two Agilents (have to both start at the same time)
+% INPUTS: TauE = emitter door time in whatever unit, TauC = collector door time in whatever unit,
+%         delay = delay in actual time you want it, unit = 'us', 'ms', etc for Agilent
+
 dev1  = VpulsAgi;
 dev2  = VpulsAgi2;
 amp_high = 2.5;
@@ -23,8 +24,7 @@ else
     disp('your unit does not exist!')
 end
 
-% set Agilent doorE width
-
+% automatically adjusts Agilent doorE width/period based on what was set before so no error gets thrown
 currentPeriodE = str2double(query33220PulsePeriod(dev1));
 if currentPeriodE >= TauE*2
     set33220PulseWidth(dev1,TauE)
@@ -35,7 +35,6 @@ else
 end
 
 % set Agilent doorE width
-
 currentPeriodC = str2double(query33220PulsePeriod(dev2));
 if currentPeriodC >= TauC*2
     set33220PulseWidth(dev2,TauC)

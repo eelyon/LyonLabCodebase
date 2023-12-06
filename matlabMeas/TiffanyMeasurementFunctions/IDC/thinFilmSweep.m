@@ -1,4 +1,4 @@
-%% This script looks time of flight for different thin film voltages
+%% This script looks at time of flight for different thin film voltages
 
 tStart = tic;
 wait = 15;

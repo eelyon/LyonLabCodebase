@@ -1,7 +1,8 @@
 function [ ] = doorAWG(VpulsSig, VpulsAgi,TauE,TauC,delay,unit)
-%% generate an pulse sequence using the Agilent to get fast door pulses
-%% INPUTS: TauE = emitter door time in whatever unit, TauC = collector door time in whatever unit,
-%%         delay = delay in actual time you want it, unit = 'us', 'ms', etc for Agilent
+%% generates a pulse sequence using an Agilent and a Siglent (pulses don't have to start together)
+% INPUTS: TauE = emitter door time in whatever unit, TauC = collector door time in whatever unit,
+%         delay = delay in actual time you want it, unit = 'us', 'ms', etc for Agilent
+
 dev1  = VpulsSig;
 dev2  = VpulsAgi;
 amp_high = 2.5;
@@ -49,6 +50,6 @@ set5122Delay(dev1,delay);
 set5122Output(dev1,'ON');                % turn outputs on 
 
 % trigger other agilent to trigger siglent
-%set33220Trigger(VpulsAgi,'BUS');  % to open the doors
+% set33220Trigger(VpulsAgi,'BUS');  % to open the doors
 
 end

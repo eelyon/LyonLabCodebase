@@ -1,6 +1,6 @@
 start = 0; % sigDACQueryVoltage(DAC,StmCPort);
-deltaParam = -0.05;
-stop = start-0.4;
+deltaParam = -0.02;
+stop = start-0.45;
 sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.5,5,{VmeasC},DAC,{StmCPort},1);
 
 DCConfigDAC(DAC,'FlipTransfer1',10000);

@@ -1,6 +1,3 @@
-
-
-
 start = getVal(DAC,DoorEInPort);
 deltaParam = 0.01;
 deltaSweep = 0.05;

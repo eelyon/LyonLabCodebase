@@ -57,7 +57,7 @@ startTime = now();
 
 %% Main parameter loop.
 for value = paramVector
-    tic
+    
     for pIndex = 1:length(ports)
         port = ports{pIndex};
         if pIndex == 1
@@ -67,7 +67,7 @@ for value = paramVector
         end
         
     end
-    toc
+    
     
     % Update the DAC gui - this is sort of hard coded in maybe I need to
     % make an update function that updates all GUIs present.
@@ -81,10 +81,8 @@ for value = paramVector
     yVectorRepeat = [];
     %% Repeating for loop - changing repeat increases the number of averages to perform per point.
 
-    %% Query SR830 for Real/Imag data, calculate Magnitude and place in vectors
-    tic
+    %% Query SR830 for Real/Imag data, calculate Magnitude and place in vector
     [Real,Imag,Mag,time] = getSR830Data(Real,Imag,time,startTime,readSR830,repeat);
-    toc
     %% Place data in repeat vectors that get averaged and error bars get calculated.
     for srIndex = 1:numSR830s
         arrLength = length(Mag);
@@ -93,10 +91,8 @@ for value = paramVector
         yVectorRepeat    = Imag(arrLength-repeat+1:arrLength);
     end
     %% Increase timeIndex by 1.
-    tic
     currentTimeIndex = currentTimeIndex + 1;
     updateSR830TimePlots(plotHandles,Real,Imag,Mag,time,numSR830s);
-    toc
     %% Average all data and place in average arrays.
     magVectorMeans = mean(magVectorRepeat,2);
     xVectorMeans = mean(xVectorRepeat,2);
@@ -176,6 +172,8 @@ function [x,y,mag,t] = getSR830Data(x,y,t,startTime,readSR830,numPointsToRead)
 % targetSR830. IMPORTANT: readSR830 needs to be a cell array of SR830
 % objects!!!.
     currentSR830 = readSR830{1};
+    fprintf(currentSR830.client,"REST");
+    fprintf(currentSR830.client,'STRD');delay(3);fprintf(currentSR830.client,'PAUS');
     x = [x,currentSR830.SR830queryXFast(numPointsToRead)];
     y = [y,currentSR830.SR830queryYFast(numPointsToRead)];
     t = [t,(now() - startTime)*86400 - linspace(0,numPointsToRead/512,numPointsToRead)];

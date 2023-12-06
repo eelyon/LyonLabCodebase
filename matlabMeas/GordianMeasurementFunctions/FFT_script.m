@@ -1,5 +1,5 @@
 % Script for getting the FFT from noise data
-figNum = 6140;
+figNum = 6138;
 
 metaData = getFigMetaData(figNum); disp(metaData);
 Ts = str2num(metaData.sTime)/str2num(metaData.numPoints); % Time increment per point

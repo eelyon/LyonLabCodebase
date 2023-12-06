@@ -26,7 +26,7 @@ for i = n
     SR830setAmplitude(VmeasE,0.004)
 
     % Door Sweep
-    % doorAgi(VpulsAgi,VpulsAgi2,i,1000,'ms');
+    % doorAgi(VpulsAgi,VpulsAgi2,100,1000,'us');
     % doorAgi(VpulsAgi,VpulsAgi2,100,10,'us');
     doorAgi(VpulsAgi,VpulsAgi2,100,i,'us');
 
