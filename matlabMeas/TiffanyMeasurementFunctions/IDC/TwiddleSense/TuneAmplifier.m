@@ -60,7 +60,6 @@ minAmp = sweepOptimize(device, doorDevice, stepSize_amps, start, stop, 'Amp');
 
 doorDevice.set33220Amplitude(minAmp(end),'VRMS');
 pause(10)
-fprintf(['The optimal amplitude is ', num2str(minAmp(end)),' and the optimal phase is ', num2str(minPhase(end))]);
 currentMag = sqrt(SR830queryX(device)^2 + SR830queryY(device)^2);
 fprintf(['The magnitude is ', num2str(currentMag), ' with (real,imag) = (', num2str(SR830queryX(device)),',' num2str(SR830queryY(device)), ')']);
 SR830setSensitivity(device,16)  % set sensitivity to 500uV

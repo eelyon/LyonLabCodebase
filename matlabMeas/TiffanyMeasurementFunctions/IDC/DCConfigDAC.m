@@ -39,7 +39,7 @@ elseif strcmp(Command,'Transferring1')
     STOBiasE   = 0;
     STIBiasE   = 0;
     DoorEClose = -1;
-    DoorEOpen  = -0.3;
+    DoorEOpen  = -0.2;
     %% Collector   
     STOBiasC   = -4;
     STIBiasC   = STOBiasC;
@@ -65,13 +65,13 @@ elseif strcmp(Command,'Transferring2')
     STOBiasE   = 0;
     STIBiasE   = 0;
     DoorEClose = -1;
-    DoorEOpen  = -0.3;
+    DoorEOpen  = -0.2;
     %% Collector   
     STOBiasC   = 1;
     STIBiasC   = STOBiasC;
     TopC       = STOBiasC-0.5;
     StmC       = STOBiasC;
-    DoorCClose = -7;
+    DoorCClose = -4;
     DoorCOpen  = 1;
     %% Thin Film
     TfC        = -4;
@@ -92,27 +92,27 @@ elseif strcmp(Command,'Transfer')
     STOBiasE   = 0;
     STIBiasE   = 0;
     DoorEClose = -1;
-    DoorEOpen  = -0.1;
+    DoorEOpen  = 0;
     %% Collector
     STMC = 1;
     STOBiasC   = STMC;
     STIBiasC   = STMC;
     TopC       = STOBiasC-0.5;
     StmC       = STMC;
-    DoorCClose = 1; %-3;
+    DoorCClose = -1.8;
     DoorCOpen  = 1; %TopC-0.2;
     %% Thin Film
-    TfC        = 1.2;  %0.6
+    TfC        = 1;  %0.6
     TfE        = 0.3;  %0.3
     %% IDC
-    IdcNF      = -1;
-    IdcPF      = -1;
+    IdcNF      = -1.1;
+    IdcPF      = -1.1;
 
     sigDACRampVoltage(DAC,[DoorEInPort,SenseEPort,TwiddleEPort],[0,0,0],1000); 
     pause(2)
-    sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[STMC,STMC,STMC],1000);
+    sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[STMC+0.1,STMC+0.1,STMC+0.1],1000);
 
-elseif strcmp(Command,'Transfer_smaller')
+elseif strcmp(Command,'Transfer_larger')
     %% Emitter    
     TopE       = TopVoltage;
     StmE       = 0;
@@ -121,19 +121,19 @@ elseif strcmp(Command,'Transfer_smaller')
     DoorEClose = -1;
     DoorEOpen  = -0.1;
     %% Collector
-    STMC = 0.5;  %1.1
+    STMC = 2;  %1.1
     STOBiasC   = STMC;
     STIBiasC   = STMC;
     TopC       = STOBiasC-0.5;
     StmC       = STMC;
     DoorCClose = -0.3; %-1;
-    DoorCOpen  = 0.5; %TopC-0.2;
+    DoorCOpen  = 2; %TopC-0.2;
     %% Thin Film
-    TfC        = 0.4;  %0.6
-    TfE        = 0.1;  %0.3
+    TfC        = 1;  %0.6
+    TfE        = 0.3;  %0.3
     %% IDC
-    IdcNF      = 0;
-    IdcPF      = 0;
+    IdcNF      = -1;
+    IdcPF      = -1;
 
     sigDACRampVoltage(DAC,[DoorEInPort,SenseEPort,TwiddleEPort],[0,0,0],1000);
     pause(2)
@@ -149,18 +149,18 @@ elseif strcmp(Command,'TransferringBack')
     DoorEClose = 0;
     DoorEOpen  = -0.1;
     %% Collector    
-    STOBiasC   = 1.1;
+    STOBiasC   = 1;
     STIBiasC   = STOBiasC;
     TopC       = STOBiasC-0.5;
     StmC       = STOBiasC;
     DoorCClose = -3;
-    DoorCOpen  = 0.7;
+    DoorCOpen  = 1;
     %% Thin Film
-    TfC        = -2;
-    TfE        = -2;
+    TfC        = -1;
+    TfE        = 0;
     %% IDC
-    IdcNF      = -2;
-    IdcPF      = -2;
+    IdcNF      = -1.1;
+    IdcPF      = -1.1;
 
     sigDACRampVoltage(DAC,[DoorEInPort,SenseEPort,TwiddleEPort],[0,0,0],1000);
     pause(2)
@@ -179,8 +179,8 @@ elseif strcmp(Command,'TransferBack1')
     STIBiasC   = STOBiasC;
     TopC       = -2;
     StmC       = STOBiasC;
-    DoorCClose = -2.3;
-    DoorCOpen  = -0.8;
+    DoorCClose = -2.5;
+    DoorCOpen  = -1;
     %% Thin Film
     TfC        = -2;
     TfE        = -2;
@@ -198,21 +198,21 @@ elseif strcmp(Command,'TransferBack2')
     StmE       = 0;
     STOBiasE   = 0;
     STIBiasE   = 0;
-    DoorEClose = -0.1;
+    DoorEClose = 0;
     DoorEOpen  = 0;
     %% Collector    
     STOBiasC   = -1.5;
     STIBiasC   = STOBiasC;
     TopC       = -2;
     StmC       = STOBiasC;
-    DoorCClose = -2.3;
-    DoorCOpen  = -1;
+    DoorCClose = -2.5;
+    DoorCOpen  = -0.5;
     %% Thin Film
-    TfC        = -0.8;
-    TfE        = -0.3;
+    TfC        = -0.5;
+    TfE        = -0.1;
     %% IDC
-    IdcNF      = -1.2;
-    IdcPF      = -1.2;
+    IdcNF      = -1.1;
+    IdcPF      = -1.1;
 
     sigDACRampVoltage(DAC,[DoorEInPort,SenseEPort,TwiddleEPort],[0,0,0],1000);
     pause(2)
@@ -297,12 +297,12 @@ elseif strcmp(Command,'FlipEmit')
 
 elseif strcmp(Command,'FlipTransfer1')
     %% Emitter    
-    TopE       = 1.3;
-    StmE       = 1.6;
-    STOBiasE   = 1.6;
-    STIBiasE   = 1.6;
+    TopE       = 2.3;
+    StmE       = 2.6;
+    STOBiasE   = 2.6;
+    STIBiasE   = 2.6;
     DoorEClose = -1;
-    DoorEOpen  = 1.5;
+    DoorEOpen  = 2.5;
     %% Collector
     STOBiasC   = 0;
     STIBiasC   = 0;
@@ -323,12 +323,12 @@ elseif strcmp(Command,'FlipTransfer1')
 
 elseif strcmp(Command,'FlipTransfer')
     %% Emitter    
-    TopE       = 1.3;
-    StmE       = 1.6;
-    STOBiasE   = 1.6;
-    STIBiasE   = 1.6;
-    DoorEClose = 1.5; %-1;
-    DoorEOpen  = 1.5;
+    TopE       = 2.3;
+    StmE       = 2.6;
+    STOBiasE   = 2.6;
+    STIBiasE   = 2.6;
+    DoorEClose = 2.5; %-1;
+    DoorEOpen  = 2.5;
     %% Collector
     STOBiasC   = 0;
     STIBiasC   = 0;
@@ -337,24 +337,24 @@ elseif strcmp(Command,'FlipTransfer')
     DoorCClose = -1; %2;
     DoorCOpen  = 0;  %TopC-0.2;
     %% Thin Film
-    TfC        = 0.3;
-    TfE        = 1;
+    TfC        = 1.3;
+    TfE        = 2;
     %% IDC
-    IdcNF      = -0.1;
-    IdcPF      = -0.1;
+    IdcNF      = -1;
+    IdcPF      = -1;
 
     sigDACRampVoltage(DAC,[DoorEInPort,SenseEPort,TwiddleEPort],[StmE,StmE,StmE],1000);
     pause(2)
-    sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[0,0,0],1000);
+    sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[1.1,1.1,1.1],1000);
 
 elseif strcmp(Command,'FlipTransferBack1')
     %% Emitter    
-    TopE       = 1.3;
-    StmE       = 1.6;
-    STOBiasE   = 1.6;
-    STIBiasE   = 1.6;
+    TopE       = 2.3;
+    StmE       = 2.6;
+    STOBiasE   = 2.6;
+    STIBiasE   = 2.6;
     DoorEClose = -1;
-    DoorEOpen  = 1.5;
+    DoorEOpen  = 2.5;
     %% Collector
     STOBiasC   = 0;
     STIBiasC   = 0;
@@ -371,7 +371,7 @@ elseif strcmp(Command,'FlipTransferBack1')
 
     sigDACRampVoltage(DAC,[DoorEInPort,SenseEPort,TwiddleEPort],[StmE,StmE,StmE],1000);
     pause(2)
-    sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[0,0,0],1000);
+    sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[1.1,1.1,1.1],1000);
 
 elseif strcmp(Command,'FlipTransferBack2')
     %% Emitter    
@@ -397,7 +397,7 @@ elseif strcmp(Command,'FlipTransferBack2')
 
     sigDACRampVoltage(DAC,[DoorEInPort,SenseEPort,TwiddleEPort],[StmE,StmE,StmE],1000);
     pause(2)
-    sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[0,0,0],1000);
+    sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[1.1,1.1,1.1],1000);
 
 elseif strcmp(Command,'FlipTransferBack')
     %% Emitter    
@@ -415,7 +415,7 @@ elseif strcmp(Command,'FlipTransferBack')
     DoorCClose = -0.1; %2;
     DoorCOpen  = -1;
     %% Thin Film
-    TfC        = -0.4;
+    TfC        =  0;
     TfE        = -0.8;
     %% IDC
     IdcNF      = -1.1;
@@ -423,9 +423,7 @@ elseif strcmp(Command,'FlipTransferBack')
 
     sigDACRampVoltage(DAC,[DoorEInPort,SenseEPort,TwiddleEPort],[StmE,StmE,StmE],1000);
     pause(2)
-        sigDACRampVoltage(DAC,[DoorEInPort,SenseEPort,TwiddleEPort],[-0.8,-0.8,-0.8],1000);
-
-    sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[0,0,0],1000);
+    sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[1.1,1.1,1.1],1000);
 
 end
 

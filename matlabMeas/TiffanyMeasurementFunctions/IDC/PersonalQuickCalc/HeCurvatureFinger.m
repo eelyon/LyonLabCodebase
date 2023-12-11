@@ -19,13 +19,13 @@ pcm = 1e-2;
 widthStart = 12e-6;
 widthEnd = 27e-6;
 numWidths = 20;
-listH = [5.5e-3 6.5e-3 9e-3];
-% channelHeight = 0.640e-6;
-% fingerLength = 59;
+listH = [5.5e-3 6.5e-3 7.5e-3 8.5e-3];
+% channelHeight = 0.620e-6;
+% fingerLength = 55;
 
 channelWidths = linspace(widthStart,widthEnd,numWidths);
 centerHeights = zeros([1 numWidths]);
-channelXs = linspace(0,60e-6,numWidths);
+channelXs = linspace(0,65e-6,numWidths);
 
 ci=0;
 % collectx = [];  
@@ -115,7 +115,6 @@ for h = listH
         end
         d = dwins; 
         centerHeights(ci) = d(floor(len/2));
-         
     end
 
     figure(fn)

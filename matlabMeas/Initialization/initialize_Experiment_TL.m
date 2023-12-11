@@ -28,8 +28,11 @@ else
     sigDACPort = 'COM8';
 
     % SR830s
-    VmeasC_Address = '172.29.117.103';    
-    VmeasE_Address = '172.29.117.106';
+%     VmeasC_Address = '172.29.117.103';    
+%     VmeasE_Address = '172.29.117.106';
+
+    VmeasE_Address = '172.29.117.103';    
+    VmeasC_Address = '172.29.117.106';
     
     % Keysight DMM
     DMM_Address = '172.29.117.107';
@@ -41,7 +44,7 @@ else
     VdoorModC_Address = '172.29.117.127';
     VtwiddleC_Address = '172.29.117.126';
 
-    % Agilent for emitter door/twiddle
+    % Agilent for emitter door/twiddle (these are the top two Agilents)
     VdoorModE_Address = '172.29.117.123';
     VtwiddleE_Address = '172.29.117.125';
 
@@ -66,7 +69,7 @@ IDC = SIM900(IDCPort);
 % Oscope = TDS2022C(oscope_Address);
 % Filament = Agilent33220A(port,Fil_Address,1);
 % VpulsSig = Siglent5122(Sig_Address);
-% Thermometer = TCPIP_Connect(DMM_Address,port);
+Thermometer = TCPIP_Connect(DMM_Address,port);
 
 
 GUI = Tiffany_GUI;
