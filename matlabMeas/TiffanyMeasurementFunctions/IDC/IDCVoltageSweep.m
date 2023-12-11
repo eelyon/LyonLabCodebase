@@ -2,7 +2,7 @@
 
 sweepType = {'IDC'};
     
-start = 0;
+start = 0;  % for some reason 0V does strange things to capacitance, so in setVal if 0 volts then +0.5
 deltaParam = 5;  
 stop = 20;  % gets doubled to 40, hard coded in sweep1D to apply to 4,5 ports 
 

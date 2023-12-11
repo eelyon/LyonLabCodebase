@@ -1,16 +1,9 @@
 %% Transfer Measurement Procedure
 
-% emit electrons and measure
-DCConfigDAC(DAC,'Emitting',10000);
-pause(10);
+times = [800 600 550 500 575 800];
 
-start = 0;
-deltaParam = 0.025;
-stop = -0.3;
-sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.1,5,{VmeasE},DAC,{StmEPort},1);  % ST measurement
+for i = times
 
-n = [5000 4000 3500 3000 3750 5000]; % TauC scan
-for i = n
     % Transfer
     DCConfigDAC(DAC,'Transferring1',8000);
     pause(9)
@@ -20,27 +13,34 @@ for i = n
     
     DCConfigDAC(DAC,'Transfer',8000);
     pause(9)
-
-    % SR830setAmplitude(VmeasE,0.004)
-
+    
+    SR830setAmplitude(VmeasE,0.004)
+    pause(1)
+    SR830setAmplitude(VmeasC,0.004)
+    pause(1)
+    sigDACRampVoltage(DAC,STOBiasEPort,-0.15,1000)
+    
     % Door Sweep
-    doorAgi(VpulsAgi,VpulsAgi2,5000,i,'us');
+    doorAgi(VpulsAgi,VpulsAgi2,1000,i,'ms');
     pause(1)
     send33220Trigger(VpulsAgi);
-    pause(2)
-
-%     SR830setAmplitude(VmeasE,0.1)
-%     SR830setAmplitude(VmeasC,0.1)
-
+    pause(3)
+    
+    sigDACRampVoltage(DAC,STOBiasEPort,0,1000)
+    SR830setAmplitude(VmeasE,0.1)
+    pause(1)
+    SR830setAmplitude(VmeasC,0.1)
+    pause(1)
+    
     % After transfer sweeps
     start = 1; %sigDACQueryVoltage(DAC,StmCPort);
-    deltaParam = -0.005;
-    stop = start-0.05;
+    deltaParam = -0.01;
+    stop = start-0.15;
     sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.1,5,{VmeasC},DAC,{StmCPort},1);
     
     start = 0;
     deltaParam = 0.02;
-    stop = -0.25;
+    stop = -0.3;
     sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.1,5,{VmeasE},DAC,{StmEPort},1);  % ST measurement
     
     % Transfer Back
@@ -53,10 +53,15 @@ for i = n
     DCConfigDAC(DAC,'TransferBack2',8000);
     pause(9)
     
-    SR830setAmplitude(VmeasC,0.004)
-
-    sigDACRampVoltage(DAC,DoorCClosePort,-1,1000)
-    pause(10)
+    start = sigDACQueryVoltage(DAC,DoorCClosePort);
+    deltaParam = 0.05;
+    stop = -0.8;
+    sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.05,5,{VmeasC},DAC,{DoorCClosePort},0);
+    
+    sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[-1.2,-1.2,-1.2],1000);
+    pause(2)
+    sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[-1.1,-1.1,-1.1],1000);
+    pause(2)
     
     sigDACRampVoltage(DAC,STOBiasCPort,-1.7,1000)
     pause(7)
@@ -64,23 +69,14 @@ for i = n
     pause(1)
     sigDACRampVoltage(DAC,STIBiasCPort,-1.7,1000)
     pause(1)
-
-    sigDACRampVoltage(DAC,STOBiasCPort,-1.5,1000)
-    pause(1)
-    sigDACRampVoltage(DAC,StmCPort,-1.5,1000)
-    pause(1)
-    sigDACRampVoltage(DAC,STIBiasCPort,-1.5,1000)
-    pause(1)
-
-    SR830setAmplitude(VmeasC,0.1)
-
+    
     sigDACRampVoltage(DAC,STOBiasCPort,-1.8,1000)
     pause(5)
     sigDACRampVoltage(DAC,StmCPort,-1.8,1000)
     pause(1)
     sigDACRampVoltage(DAC,STIBiasCPort,-1.8,1000)
-    pause(1)
-
+    pause(3)
+    
     sigDACRampVoltage(DAC,STOBiasCPort,-1.5,1000)
     pause(1)
     sigDACRampVoltage(DAC,StmCPort,-1.5,1000)
@@ -89,10 +85,9 @@ for i = n
     pause(1)
     
     sigDACRampVoltage(DAC,DoorEClosePort,-1,1000)
-    pause(1)
-
+    
     start = 0;
     deltaParam = 0.02;
-    stop = -0.25;
+    stop = -0.3;
     sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.1,5,{VmeasE},DAC,{StmEPort},1);  % ST measurement
 end

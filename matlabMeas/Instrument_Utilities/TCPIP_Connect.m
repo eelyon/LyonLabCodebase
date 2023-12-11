@@ -1,12 +1,11 @@
 
 function [obj1] = TCPIP_Connect(IP_Address,port)
-
-%% Function creates a TCPIP connection and returns the object which
-%% holds the connection information.
-
-% Params: 
-%   IP_Address: string, IP Address of target instrument.
-%   port: integer, desired port in which to make the connection
+% %% Function creates a TCPIP connection and returns the object which
+% %% holds the connection information.
+% 
+% % Params: 
+% %   IP_Address: string, IP Address of target instrument.
+% %   port: integer, desired port in which to make the connection
 
 %% Instrument Connection
 
@@ -16,7 +15,7 @@ obj1 = instrfind('Type', 'tcpip', 'RemoteHost', IP_Address, 'RemotePort', port, 
 % Create the tcpip object if it does not exist
 % otherwise use the object that was found.
 if isempty(obj1)
-    obj1 = tcpserver(IP_Address, port);
+    obj1 = tcpclient(IP_Address, port);
 else
     fclose(obj1);
     obj1 = obj1(1);

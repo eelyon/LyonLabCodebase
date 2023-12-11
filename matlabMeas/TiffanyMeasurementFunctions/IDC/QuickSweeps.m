@@ -124,7 +124,7 @@ sweep1DMeasDUALSR830('ST',start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC
    
 start = sigDACQueryVoltage(DAC,StmCPort);
 deltaParam = -0.025;
-stop = start-0.55;
+stop = start-0.3;
 sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.5,5,{VmeasC},DAC,{StmCPort},1);
 
 start = sigDACQueryVoltage(DAC,20);
@@ -134,9 +134,9 @@ sweep1DMeasSR830({'ST'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},
 
 
 %% single VmeasE
-start = 3.6; % sigDACQueryVoltage(DAC,StmEPort); % it's because its setting what it's querying, not the actual value
+start = 0; % sigDACQueryVoltage(DAC,StmEPort); % it's because its setting what it's querying, not the actual value
 deltaParam = -0.02;
-stop = start-0.25;
+stop = -0.3;
 sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.5,5,{VmeasE},DAC,{StmEPort},1);
 
 start = 0;
@@ -158,7 +158,7 @@ sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.05,repeat,{VmeasE},DAC,{9},0);
 %% DoorE Sweep
 start = sigDACQueryVoltage(DAC,DoorEClosePort);
 deltaParam = -0.05;
-stop = -3.3;
+stop = -0.1;
 sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{DoorEClosePort},0);
 
 start = sigDACQueryVoltage(DAC,DoorEInPort);
@@ -185,7 +185,7 @@ sweep1DMeasSR830({'TWW'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{SenseEPort},
 start = sigDACQueryVoltage(DAC,DoorCClosePort);
 %start = 0;
 deltaParam = 0.05;
-stop = 0;
+stop = -1;
 sweep1DMeasSR830({'Door'},start,stop,deltaParam,timeBetweenPoints,repeat,{VmeasC},DAC,{DoorCClosePort},0);
 
 
