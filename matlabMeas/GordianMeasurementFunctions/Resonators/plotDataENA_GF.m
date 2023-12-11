@@ -7,7 +7,7 @@ stopFreq  = 2131;    % in MHz
 % decide whether to include metadata (1=include,0=don't)
 saveFig   = 1;       % for saving the figure
 plotHe    = 0;       % for Patm and numShots metaData
-plotIDC   = 1;       % for capacitance metaData
+plotIDC   = 0;       % for capacitance metaData
 tag = 'freqSweep';
 
 addedHe   = 0;       % in inHg from reading the gauge
