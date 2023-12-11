@@ -1,3 +1,4 @@
+%% Script that starts a timed frequency sweep and tracks the temperature
 timeBetweenPoints = 10;
 
 %% ENA parameters

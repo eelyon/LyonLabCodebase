@@ -1,7 +1,3 @@
-% fopen(ENA) % open client connection
-% fclose(ENA) % close client connection, or: clear ENA
-% query(ENA,'*IDN?') % check connection to ENA
-
 %% Set up ENA
 % fprintf(ENA,':SYST:KLOC:KBD OFF'); % Lock front panel and keyboard
 % fprintf(ENA,':SYST:KLOC:MOUS OFF'); % Lock mouse and touch screen
