@@ -1,13 +1,13 @@
 % for some reason you need to run this code twice each time for it to work...
 
-startNum = 7369;
-stopNum = 7385;
+startNum = 7423;
+stopNum = 7488;
 
-numFigs = stopNum-startNum;
+numFigs = stopNum - startNum;
 oldNumShots = 1;
 
-for i = 1:numFigs
-    currentFigNum = startNum + (i-1);
+for i = 0:numFigs
+    currentFigNum = startNum + i;
     [currentFigMetaData,figHandle] = displayFigNum(currentFigNum,'visibility',0);
     closeFigure(figHandle);
     pause(0.01);  % need this pause for code to work the first time, waits for figures to close

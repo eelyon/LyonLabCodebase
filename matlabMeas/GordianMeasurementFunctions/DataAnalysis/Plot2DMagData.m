@@ -1,15 +1,15 @@
 % Script for plotting the resonator data obtained in the He level meter
 % experiment.
 % date: 15th Oct. 2023
-clear all;
+% clear all;
 
-startNum = 6015;
-stopNum = 6157;
+startNum = 7423;
+stopNum = 7488;
 numFigs = stopNum-startNum;
 
 path_home = 'C:\Users\gordi\Dropbox (Princeton)\GroupDropbox\Gordian\rfReflectometry\VNA measurements\HeLevelMeter_110623\11_10_23\';
-path_lab = 'C:\Users\Lyon Lab Simulation\Dropbox (Princeton)\GroupDropbox\Gordian\rfReflectometry\VNA measurements\HeLevelMeter_110623\11_10_23\';
-tag = 'freqSweepNoise';
+path_lab = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\12_13_23\';
+tag = 'freqSweepFilter_HeLevel';
 
 oldNumShots = 0;
 currentNumShots = [];
@@ -60,14 +60,14 @@ for i = 0:2:numFigs
             freqData(j) = xDat(j);
         end
 
-    else
-        if oldNumShots ~= currentNumShots
-        oldNumShots = currentNumShots;
-        end
+%     else
+%         if oldNumShots ~= currentNumShots
+%         oldNumShots = currentNumShots;
+%         end
     end
 end
 
-LHe_cc = currentPatm.*18.44*2.54^3/757;
+LHe_cc = currentPatm.*(18.44+3.213)*2.54^3/757;
 
 figure
 
@@ -83,6 +83,7 @@ set(gca,'YDir','normal')
 xlabel('LHe (cm^3)')
 % xlabel('Temperature (K)')
 ylabel('Frequency (GHz)')
+ylim([1.330,1.355])
 h = colorbar;
 h.Label.VerticalAlignment = "bottom";
 ylabel(h,'S_{21} (dB)','FontSize',10,'Rotation',270)

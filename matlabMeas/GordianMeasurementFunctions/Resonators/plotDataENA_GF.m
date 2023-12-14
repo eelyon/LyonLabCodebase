@@ -1,17 +1,18 @@
 %% Set single frequency sweep
 
-power     = 10;      % in dBm
-startFreq = 2110;    % in MHz
-stopFreq  = 2131;    % in MHz 
+power     = -5;      % in dBm - be careful!! Do not set too high!!
+startFreq = 1000;    % in MHz
+stopFreq  = 3000;    % in MHz
 
 % decide whether to include metadata (1=include,0=don't)
 saveFig   = 1;       % for saving the figure
 plotHe    = 0;       % for Patm and numShots metaData
 plotIDC   = 0;       % for capacitance metaData
-tag = 'freqSweep';
+% tag = 'freqSweep_tuningFork';
+tag = 'freqSweep_LCfilter';
 
-addedHe   = 0;       % in inHg from reading the gauge
-deviceIDC = VmeasC;    % device for IDC measurement
+addedHe   = 25;       % in inHg from reading the gauge
+% deviceIDC = VmeasC;    % device for IDC measurement
 
 E5071SetPower(ENA,power);           % in dBm
 E5071SetStartFreq(ENA,startFreq);   % in MHz
@@ -24,7 +25,7 @@ query(ENA,'*OPC?');            % Execute *OPC? command and wait until command re
 
 % Get mag (log) and phase (deg) data
 [fdata,mag,phase] = E5071GetData(ENA,tag);
-fres = fdata(find(mag(600:end)==min(mag(600:end)))); % Approximate resonance frequency
+fres = fdata(find(mag==min(mag))); % Approximate resonance frequency
 
 %% Plot data
 measType = num2str(query(ENA,':CALC:PAR:DEF?')); % S21, S12, S22, or S11
@@ -58,11 +59,11 @@ if plotIDC == 1
 end
 
 myFig.UserData = metadata_struct;
+disp(metadata_struct);
 
 if saveFig == 1
     plotHandles = {freqvsmag,freqvsphase};
     saveData(subPlotFigure,tag); % Save mag and phase data
-    disp(metadata_struct);
 end
 
 function Patm = inHgToAtm(inHg)
