@@ -27,9 +27,12 @@ function [fres,subPlotFigure,tag,myFig] = E5071FreqSweep(ENA,powerIndBm,startFre
         resistance = queryHP34401A(Thermometer);
         temperature = Therm.tempFromRes(resistance);
 
-        sgtitle([sprintf('f_{res}= %.5f', fres),'GHz; ', sprintf('T=%.3f',temperature),'K']);
+        sgtitle(['f_{res}= %.5f', num2str(fres),'GHz, T=%.3f', num2str(temperature),'K']);
 
         metadata_struct.temperature = [num2str(temperature)]; % add temperature to metadata
+        metadata_struct.power = [num2str(powerIndBm)];
+        metadata_struct.fres  = [num2str(fres)];
+
         myFig.UserData = metadata_struct;
         
         saveData(subPlotFigure,tag); % Save mag and phase data

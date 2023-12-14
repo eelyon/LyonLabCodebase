@@ -1,15 +1,16 @@
 %% Set single frequency sweep
+close all;
 
 power     = -5;      % in dBm - be careful!! Do not set too high!!
 startFreq = 1000;    % in MHz
-stopFreq  = 3000;    % in MHz
+stopFreq  = 8000;    % in MHz
 
 % decide whether to include metadata (1=include,0=don't)
 saveFig   = 1;       % for saving the figure
 plotHe    = 0;       % for Patm and numShots metaData
 plotIDC   = 0;       % for capacitance metaData
 % tag = 'freqSweep_tuningFork';
-tag = 'freqSweep_LCfilter';
+tag = 'fSweepTF';
 
 addedHe   = 25;       % in inHg from reading the gauge
 % deviceIDC = VmeasC;    % device for IDC measurement
@@ -39,7 +40,7 @@ subplot(1,2,2);
 %% Set up meta data (save important params as str) and save plot
 resistance = queryHP34401A(Thermometer);
 temperature = Therm.tempFromRes(resistance);
-sgtitle([sprintf('f_{res}= %.6f', fres),'GHz; ','T=',num2str(temperature),'K']);
+sgtitle(['f_{res}=', num2str(fres),'GHz, T=', num2str(temperature),'K']);
 
 metadata_struct.temperature = [num2str(temperature)];
 
