@@ -1,4 +1,4 @@
-% This script sets up a frequency sweep on the vna every given time between
+%% This script sets up a frequency sweep on the vna every given time between
 % points
 powerIndBm = 0; % dBm
 startFreq = 1520; % MHz
