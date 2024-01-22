@@ -143,11 +143,4 @@ for h = listH
 
 end
 hold off
-% figure(10)
-% plot(collectx) 
-% grid
-% 
-% figure(11)
-% plot(collecty)
-% grid
 end

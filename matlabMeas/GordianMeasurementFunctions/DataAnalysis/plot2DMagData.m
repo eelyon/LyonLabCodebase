@@ -1,5 +1,3 @@
-% for some reason you need to run this code twice each time for it to work...
-
 startNum = 7423;
 stopNum = 7488;
 
