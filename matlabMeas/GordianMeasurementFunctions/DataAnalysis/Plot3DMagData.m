@@ -13,10 +13,10 @@ else
     numFigs = length(figNums);
 end
 
-whosePath = 'gordian';
-tag = 'freqSweepFilter_HeLevel';
+whosePath = 'tiffany';
+tag = 'freqSweep';
 
-oldNumShots = 0;
+oldNumShots = 2;
 currentNumShots = [];
 currentPatm = [];
 tempData = [];
@@ -37,7 +37,7 @@ for i = 0:2:numFigs
         case 'gordian'
             path_home = 'C:\Users\gordi\Dropbox (Princeton)\GroupDropbox\Gordian\rfReflectometry\VNA measurements\HeLevelMeter_110623\11_10_23\';
         case 'tiffany'
-            if currentFigNum <= 7037 %7312
+            if currentFigNum <= 7312 %7037
                 path_home = 'C:\Users\LyonLab\Dropbox (Princeton)\GroupDropbox\Tiffany\Application\MATLAB\Data\12_07_23\';
             else
                 path_home = 'C:\Users\LyonLab\Dropbox (Princeton)\GroupDropbox\Tiffany\Application\MATLAB\Data\12_08_23\';
