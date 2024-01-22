@@ -48,11 +48,45 @@ classdef SR830 < handle
             SR830Config(9) = num2str(SR830queryAuxOut(SR830,4));
         end
 
-        function [] = adjustSensitivity(device,mag)
-            sensArr = [2e-9, 5e-9, 1e-8, 2e-8, 5e-8, 1e-7, 2e-7,5e-7, 1e-6,2e-6,5e-6,1e-5,2e-5, 5e-5,1e-4,2e-4,5e-4,1e-3,2e-3,5e-3,.01,.02,.05,.1,.2,.5,1];
+        function [] = adjustSensitivity(device,mag,isCurrentMeas)
+
+            while mag == 0
+                % Sometimes, really low sensitivity makes it difficult to
+                % measure signal accurately. We want to reduce the
+                % sensitivity until signal is measured.
+                currentSens = SR830querySensitivityArrNum(device);
+                newSens = currentSens - 1;
+                SR830setSensitivity(device,newSens);
+                delay(.1);
+                mag = device.SR830queryY();
+            end
+
+            mag = abs(mag);
+            
+            %This sens array is in Volts! For current we MUST use the other
+            %scale!
+            voltSensArr = [2e-9, 5e-9, 1e-8, 2e-8, 5e-8, 1e-7, 2e-7,5e-7, 1e-6,2e-6,5e-6,1e-5,2e-5, 5e-5,1e-4,2e-4,5e-4,1e-3,2e-3,5e-3,.01,.02,.05,.1,.2,.5,1];
+            currentSensArr = voltSensArr.*1e-6;
+            
+            if isCurrentMeas
+                sensArr = currentSensArr;
+            else
+                sensArr = voltSensArr;
+            end
+            prevSens = SR830querySensitivity(device);
+            currentSens = prevSens;
+            firstIteration = 1;
+            
+            while prevSens ~= currentSens || firstIteration
+                if firstIteration
+                    firstIteration = 0;
+                end
             incSens = interp1(sensArr,sensArr,mag,'nearest');
             setSens = find(sensArr==incSens);
-            SR830setSensitivity(device,setSens);
+            SR830setSensitivity(device,setSens+3);
+            prevSens = currentSens;
+            currentSens = setSens;
+            end
         end
         %% Getter functions for the SR830 instrument
 
@@ -96,12 +130,10 @@ classdef SR830 < handle
             theta = str2double(query(SR830.client, 'OUTP ? 4'));
         end
 
-        function sensitivity = SR830querySensitivity(SR830)
-
+        function sensVal = SR830querySensitivity(SR830)
             sensArr = [2e-9, 5e-9, 1e-8, 2e-8, 5e-8, 1e-7, 2e-7,5e-7, 1e-6,2e-6,5e-6,1e-5,2e-5, 5e-5,1e-4,2e-4,5e-4,1e-3,2e-3,5e-3,.01,.02,.05,.1,.2,.5,1];
             sensVal = str2double(query(SR830.client, 'SENS ?'));
-            sensitivity = sensArr(sensVal+1);
-            SR830.sensitivity = sensitivity;
+            SR830.sensitivity = sensVal;
         end
 
         function sensVal = SR830querySensitivityArrNum(SR830)
@@ -201,9 +233,8 @@ classdef SR830 < handle
         end
         
         function SR830setSensitivity(SR830,sensitivity)
-            % Sensitivity values can be between the values in this array. However SR830 only takes in values between 0 and 26.
+            % Sensitivity values can be between the values in this array. However SR830 only takes in values between 0 and 26.            
             % By choosing a value between 0 and 26, you effectively choose the following sensitivities (in Volts).
-            
             sensArr = [2e-9, 5e-9, 1e-8, 2e-8, 5e-8, 1e-7, 2e-7,5e-7, 1e-6,2e-6,5e-6,1e-5,2e-5, 5e-5,1e-4,2e-4,5e-4,1e-3,2e-3,5e-3,.01,.02,.05,.1,.2,.5,1];
             if sensitivity < 0 || sensitivity > 26
                 disp('Sensitivity must be between 0 (2nV) and 26 (1V)!\n')

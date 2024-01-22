@@ -20,7 +20,7 @@ function [avgmags] = sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetwee
 %           doBackAndForth - 0 (False) or 1 (True). Boolean to determine
 %           whether or not to sweep the parameter back to its original
 %           value.
-
+flush(readSR830{1}.client);
 for srIndex = 1:length(readSR830)
     if exist('opt','var') 
         [plotHandles{srIndex},subPlotFigureHandles{srIndex}] = initializeSR830Meas1D(sweepType{srIndex},doBackAndForth,opt);
@@ -39,7 +39,9 @@ if doBackAndForth
 end
 
 if strcmp(sweepType{1},'Pair')
-    deltaGateParam = getVal(device,ports{2}) - getVal(device,ports{1}+.06);
+    DPVoltage = evalin('base',[device.name '.channelVoltages( ' num2str(ports{2}) ');']);
+    TMVoltage = evalin('base',[device.name '.channelVoltages( ' num2str(ports{1}) ');']);
+    deltaGateParam = DPVoltage - TMVoltage;
 end
 
 
@@ -83,10 +85,10 @@ for value = paramVector
     
     % Update the DAC gui - this is sort of hard coded in maybe I need to
     % make an update function that updates all GUIs present.
-    %evalin("base","DACGUI.updateDACGUI");
-    %drawnow;
-    
-    pause(timeBetweenPoints);
+%     evalin("base","DACGUI.updateDACGUI");
+%     drawnow;
+%     
+    delay(timeBetweenPoints);
     %% Initialize average vectors that gets reset for the repeating for loop
     magVectorRepeat = [];
     xVectorRepeat = [];
@@ -94,7 +96,6 @@ for value = paramVector
     
     %% Repeating for loop - changing repeat increases the number of averages to perform per point.
     for j = 1:repeat
-        
         %% Query SR830 for Real/Imag data, calculate Magnitude and place in vectors
         if strcmp(sweepType,'IDC')
             [Real,Imag,Mag,time] = getSR830DataCapacitance(Real,Imag,Mag,time,currentTimeIndex,startTime,readSR830);
@@ -204,9 +205,10 @@ function [x,y,mag,t] = getSR830DataCapacitance(x,y,mag,t,currentTimeIndex,startT
 % objects!!!.
 for i = 1:length(readSR830)
     currentSR830 = readSR830{i};
-    Igain = 1e12.*-1/(2*pi*SR830queryAmplitude(currentSR830)*SR830queryFreq(currentSR830));
-    x(i,currentTimeIndex) = currentSR830.SR830queryX()*Igain;
-    y(i,currentTimeIndex) = currentSR830.SR830queryY()*Igain;
+    Igain = 1;% 1e12.*-1/(2*pi*SR830queryAmplitude(currentSR830)*SR830queryFreq(currentSR830));
+    xyVals = SR830queryXY(currentSR830).*Igain;
+    x(i,currentTimeIndex) = xyVals(1);
+    y(i,currentTimeIndex) = xyVals(2);
     t(i,currentTimeIndex) = (now()-startTime)*86400;
     mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
     pause(.005);

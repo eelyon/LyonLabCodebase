@@ -20,7 +20,7 @@ if contains(name,'SR830') || contains(name,'VmeasC') || contains(name,'VmeasE')
         Device.SR830setFreq(Value);
         %delay(0.3);
     elseif contains(Port,'Amp')
-            Device.SR830setAmplitude(Value); %might need to change this, lookre at setters
+        Device.SR830setAmplitude(Value); %might need to change this, lookre at setters
     else
         Port = str2num(Port);
         Device.SR830setAuxOut(Port,Value); %might need to change this, lookre at setters
@@ -34,9 +34,7 @@ elseif contains(name,'AP24') || contains(name,'DAC')
             vRange = -10:.5:10;
             Value = interp1(vRange,vRange.*m+b,Value);
         end
-
         Device.sigDACSetVoltage(Port,Value);
-
 elseif contains(name,'AP16')
 
     if calibrate
@@ -45,7 +43,6 @@ elseif contains(name,'AP16')
         Value = interp1(vRange,vRange.*m+b,Value);
     end
     Device.sigDACSetVoltage(Port,Value)
-
 
 elseif contains(name,'SIM9') || contains(name,'IDC')
     if Value == 0

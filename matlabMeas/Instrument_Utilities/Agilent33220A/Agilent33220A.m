@@ -185,6 +185,7 @@ classdef Agilent33220A
         end
 
         function [] = set33220Phase(Agilent33220A,phaseInDegrees)
+            % NOTE: Phase Precision in .001 degrees!
             command = ['PHAS ' num2str(phaseInDegrees)];
             fprintf(Agilent33220A.client,command);
         end
@@ -193,6 +194,10 @@ classdef Agilent33220A
         %% SET VOLTAGES %%
         function [] = set33220Amplitude(Agilent33220A,amplitude,voltType)
             validVoltTypes = 'VPP,VRMS,DBM';
+            if amplitude < .0075
+                disp('ERROR minimum Agilent Voltage = 7mVRMS');
+                return;
+            end
             if ~contains(validVoltTypes,voltType)
                 fprintf([voltType ' is not a valid voltage source type. Valid types are:\n'])
                 fprintf([validVoltTypes, '\n']);

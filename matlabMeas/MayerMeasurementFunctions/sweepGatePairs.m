@@ -13,7 +13,8 @@ for i = 1:numSteps
 
     setVal(Dev1,Port1,d1Voltage);
     setVal(Dev2,Port2,d2Voltage);
-    pause(waitTime);
+   
+    delay(waitTime);
 end
 
 end

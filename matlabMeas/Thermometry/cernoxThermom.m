@@ -19,10 +19,11 @@ classdef cernoxThermom
         end
         
         function T = tempFromRes(obj,resistance)
-            if resistance <= obj.lookUpRes(length(obj.lookUpRes))
+            if abs(resistance) <= obj.lookUpRes(length(obj.lookUpRes))
+                resistance = abs(resistance);
                 T = tempFromLookUpTable(obj,resistance);
             else
-                T = tempFromResChebychev(obj,resistance);
+                T = tempFromResChebychev(obj,abs(resistance));
             end
         end
 
