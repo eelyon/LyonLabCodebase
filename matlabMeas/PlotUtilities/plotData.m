@@ -2,7 +2,7 @@ function [fig,myFig] = plotData(xData,yData,varargin)
     defaultXLabel = 'x axis (arb)';
     defaultYLabel = 'y axis (arb)';
     defaultLegend = '';
-    defaultColor = 'r';
+    defaultColor = 'ro';
     defaultSubPlot = 0;
     defaultTurnHoldOn = 0;
     defaultType = 'plot';
@@ -52,13 +52,13 @@ function [fig,myFig] = plotData(xData,yData,varargin)
     figDateFormat = 'mm_dd_yy HH:MM:SS';
     metadata_struct.time= datestr(now(),figDateFormat);
     instrumentList = parseInstrumentList();
-    save = 1;
-    if length(instrumentList) > 1 && save
+    save = 0;
+    if length(instrumentList) > 1 && save ==1
         for i = 1:length(instrumentList)
             if contains(instrumentList{i},"SR830")
                 metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
             elseif contains(instrumentList{i},"DAC")
-                %metadata_struct.sigDAC = evalin('base',['sigDACGetConfig(' instrumentList{i} ');']);
+                metadata_struct.sigDAC = evalin('base',[instrumentList{i} '.channelVoltages;']);
             elseif contains(instrumentList{i},"VmeasC")
                 metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
             elseif contains(instrumentList{i},"VmeasE")

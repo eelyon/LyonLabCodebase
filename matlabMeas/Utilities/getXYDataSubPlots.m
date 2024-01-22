@@ -21,8 +21,8 @@ function [xDat,yDat,xLab,yLab,titleName] = getXYDataSubPlots(figPath,varargin)
     targetAxis = findobj(ax(p.Results.plotNum),'Type',p.Results.type);
     xDat = targetAxis(p.Results.fieldNum).XData;
     yDat = targetAxis(p.Results.fieldNum).YData;
-    xLab = ax(p.Results.plotNum).XLabel.String;
-    yLab = ax(p.Results.plotNum).YLabel.String;
-    titleName = ax(p.Results.plotNum).Title.String;
+    xLab = convertCharsToStrings(ax(p.Results.plotNum).XLabel.String);
+    yLab = convertCharsToStrings(ax(p.Results.plotNum).YLabel.String);
+    titleName = convertCharsToStrings(ax(p.Results.plotNum).Title.String);
     closeFigure(fig);
 end

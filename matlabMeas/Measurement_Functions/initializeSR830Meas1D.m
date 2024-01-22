@@ -106,8 +106,11 @@ switch targetGate
         portSet = evalin("base","Top100Port");
         deviceSet2 = evalin("base","Dot100Device");
         portSet2 = evalin("base","Dot100Port");
-        delta = deviceSet2.sigDACQueryVoltage(portSet2) - deviceSet.sigDACQueryVoltage(portSet);
-        xAxisName = strcat("Top Metal Voltage (DP Bias ",num2str(delta),"V) [V]");
+        DPVoltage = evalin('base',[deviceSet.name '.channelVoltages( ' num2str(portSet2) ');']);
+        TMVoltage = evalin('base',[deviceSet.name '.channelVoltages( ' num2str(portSet) ');']);
+        deltaGateParam = DPVoltage - TMVoltage;
+        
+        xAxisName = strcat("Top Metal Voltage (DP Bias ",num2str(deltaGateParam),"V) [V]");
     case 'Freq'
         xAxisName = "SR830 Frequency [Hz]";
     case 'ThermoFreq'

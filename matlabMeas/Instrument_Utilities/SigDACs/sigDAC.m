@@ -8,13 +8,15 @@ classdef sigDAC
         comPort  
         channelVoltages 
         client
+        name
     end
     
     methods
-        function sigDAC = sigDAC(comPort, numChannels)
+        function sigDAC = sigDAC(comPort, numChannels,name)
             
             sigDAC.comPort = comPort;
             sigDAC.client = serial_Connect(comPort);
+            sigDAC.name = name;
             pause(1);
             sigDAC.numChannels = numChannels;
             sigDAC.identifier = query(sigDAC.client,"*IDN?");
@@ -33,15 +35,21 @@ classdef sigDAC
         function voltage = sigDACQueryVoltage(sigDAC,channel)
                 fprintf(sigDAC.client,['CH ' num2str(channel)]);
                 pause(0.1);
+                v = query(sigDAC.client,'VOLT?');
                 voltage = str2double(query(sigDAC.client,'VOLT?'));
         end
 
         function sigDACSetVoltage(sigDAC,channels,voltages)
                 for i=1:length(channels)
                     fprintf(sigDAC.client,['CH ' num2str(channels(i))])
+
                     pause(.1);
                     fprintf(sigDAC.client,['VOLT ' num2str(voltages(i))])
+                    pause(0.1);
+                    %sigDAC.channelVoltages(24) = voltages(i);
+                    evalin('base',[sigDAC.name '.channelVoltages( ' num2str(channels(i)) ') = ' num2str(voltages(i)) ';']);
                 end
+                
         end
 
         function  voltageArr = sigDACGetConfig(sigDAC)
