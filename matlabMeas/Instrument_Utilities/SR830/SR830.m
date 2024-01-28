@@ -47,14 +47,27 @@ classdef SR830 < handle
             SR830Config(8) = num2str(SR830queryAuxOut(SR830,3));
             SR830Config(9) = num2str(SR830queryAuxOut(SR830,4));
         end
+        function [targetSensArrNum] = getSensitivityArrNumFromTargetSens(SR830,targetSens,isCurrent)
+            voltSensArr = [2e-9, 5e-9, 1e-8, 2e-8, 5e-8, 1e-7, 2e-7,5e-7, 1e-6,2e-6,5e-6,1e-5,2e-5, 5e-5,1e-4,2e-4,5e-4,1e-3,2e-3,5e-3,.01,.02,.05,.1,.2,.5,1];
+            currentSensArr = voltSensArr.*1e-6;
+            if isCurrent
+                sensArr = currentSensArr;
+            else
+                sensArr = voltSensArr;
+            end
 
+            incSens = interp1(sensArr,sensArr,targetSens,'nearest');
+            targetSensArrNum = find(sensArr==incSens);
+            
+        end
         function [] = adjustSensitivity(device,mag,isCurrentMeas)
 
             while mag == 0
                 % Sometimes, really low sensitivity makes it difficult to
                 % measure signal accurately. We want to reduce the
                 % sensitivity until signal is measured.
-                currentSens = SR830querySensitivityArrNum(device);
+               
+                currentSens = SR830querySensitivity(device);
                 newSens = currentSens - 1;
                 SR830setSensitivity(device,newSens);
                 delay(.1);
@@ -81,11 +94,11 @@ classdef SR830 < handle
                 if firstIteration
                     firstIteration = 0;
                 end
+                
             incSens = interp1(sensArr,sensArr,mag,'nearest');
             setSens = find(sensArr==incSens);
             SR830setSensitivity(device,setSens+3);
-            prevSens = currentSens;
-            currentSens = setSens;
+            mag = device.SR830queryY();
             end
         end
         %% Getter functions for the SR830 instrument
@@ -135,8 +148,9 @@ classdef SR830 < handle
             sensVal = str2double(query(SR830.client, 'SENS ?'));
             SR830.sensitivity = sensVal;
         end
+        
 
-        function sensVal = SR830querySensitivityArrNum(SR830)
+        function sensitivity = SR830querySensitivityArrNum(SR830)
 
             sensArr = [2e-9, 5e-9, 1e-8, 2e-8, 5e-8, 1e-7, 2e-7,5e-7, 1e-6,2e-6,5e-6,1e-5,2e-5, 5e-5,1e-4,2e-4,5e-4,1e-3,2e-3,5e-3,.01,.02,.05,.1,.2,.5,1];
             sensVal = str2double(query(SR830.client, 'SENS ?'));
@@ -155,6 +169,7 @@ classdef SR830 < handle
             x = str2double(output(1));
             y = str2double(output(2));
         end
+
         %% Setter functions for the SR830 instrument
         function SR830setFreq(SR830,freq)
             if freq < .001 || freq > 102000
@@ -198,7 +213,7 @@ classdef SR830 < handle
 
         function SR830setBulkAuxOut(SR830,auxOuts,voltages)
             for k = 1:numel(auxOuts)
-               SR830setAuxOut(SR830,auxOuts(k),voltages(k))
+               SR830setAuxOut(SR830,auxOuts(k),voltages(k));
            end
         end
 
@@ -244,6 +259,7 @@ classdef SR830 < handle
                 fprintf(SR830.client,command);
                 SR830.sensitivity = numSens;
             end
+            delay(0.05);
         end
 
         function SR830setTimeConstant(SR830,timeConstant)
