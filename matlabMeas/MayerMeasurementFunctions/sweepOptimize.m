@@ -6,12 +6,14 @@ for i = N
     if strcmp(type,'Phase')
         SR830setSensitivity(device,26)
         doorDevice.set33220Phase(start)
+        pause(0.5)
         device.adjustSensitivity(device.SR830queryY(),1)
         pause(0.5)
         mags = sweep1DMeasSR830({'PHAS'},start,stop,delta,0.3,5,{device},doorDevice,{3},0,1);
     else
         SR830setSensitivity(device,26)
         doorDevice.set33220Amplitude(start,'VRMS');
+        pause(0.5)
         device.adjustSensitivity(device.SR830queryY(),1)
         mags = sweep1DMeasSR830({'Vrms'},start,stop,delta,0.3,5,{device},doorDevice,{4},0,1);
     end

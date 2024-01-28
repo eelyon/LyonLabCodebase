@@ -55,18 +55,18 @@
 
 setVal(DAC,7,-5);setVal(DAC,9,-5);setVal(DAC,16,-5);setVal(DAC,12,-5);
 setVal(DAC,10,-5);setVal(DAC,11,-5);setVal(DAC,13,-5);
-setVal(DAC,14,-1);setVal(DAC,16,-5);
-setVal(DAC,14,-1);setVal(DAC,13,-5);
+setVal(DAC,14,-1);setVal(DAC,16,-5);setVal(DAC,13,-5);
 setVal(DAC,3,-5);setVal(DAC,4,-5);setVal(DAC,5,-5);
-sweepGatePairs(DAC,DAC,1,2,0.5,0.5,100,.01)
+sweepGatePairs(DAC,DAC,1,2,0,0,100,.01)
 DACGUI.updateDACGUI;
 drawnow;
 disp("Flashing");
 AWG.send33220Trigger()
+rampVal(DAC,1,0,0.5,0.025,0.05);
 setVal(DAC,3,0.3);
 setVal(DAC,4,0.3);
 setVal(DAC,5,0.75);
 setVal(DAC,7,1);setVal(DAC,9,1);setVal(DAC,16,1);setVal(DAC,12,0.3);setVal(DAC,13,0.3);setVal(DAC,10,0.5);setVal(DAC,11,4);
-rampVal(DAC,1,0.5,1,0.025,0.05);
+
 DACGUI.updateDACGUI;
 drawnow;

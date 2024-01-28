@@ -5,9 +5,9 @@ if phaseStepSize < .001
     return;
 end
 
+flush(device.client);
 startPhaseStepExp = determineExponent(phaseStepSize);
 phaseArr = logspace(startPhaseStepExp,-3,startPhaseStepExp+4);
-
 
 startAmpStepExp = determineExponent(ampStepSize);
 ampStepSizeArr = logspace(startAmpStepExp,-5,startAmpStepExp+6);
@@ -35,7 +35,7 @@ for i = 1:totalIterations
 
     delay(0.5);
     device.adjustSensitivity(device.SR830queryY(),1);
-    
+%     
     optAmp = sweepOptimize(device, doorDevice, ampStepSizeArr(i), startAmp, stopAmp, 'Amp');
     doorDevice.set33220Amplitude(optAmp,'VRMS');
     
