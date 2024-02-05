@@ -31,8 +31,8 @@ else
 %     VmeasC_Address = '172.29.117.103';    
 %     VmeasE_Address = '172.29.117.106';
 
-    VmeasE_Address = '172.29.117.103';    
-    VmeasC_Address = '172.29.117.106';
+    VmeasC_Address = '172.29.117.103';    
+    VmeasE_Address = '172.29.117.106';
     
     % Keysight DMM
     DMM_Address = '172.29.117.107';
@@ -58,14 +58,14 @@ else
     oscope_Address = 'USB0::0x0699::0x0374::C011644::0';
 end
 
-DAC = sigDAC(sigDACPort,24);
+DAC = sigDAC(sigDACPort,24,'DAC');
 VmeasC = SR830(port,VmeasC_Address);
 VmeasE = SR830(port,VmeasE_Address);
 VdoorModC = Agilent33220A(port,VdoorModC_Address,1);
 VtwiddleC = Agilent33220A(port,VtwiddleC_Address,1);
 VtwiddleE = Agilent33220A(port,VtwiddleE_Address,1);
 VdoorModE = Agilent33220A(port,VdoorModE_Address,1);
-IDC = SIM900(IDCPort);
+% IDC = SIM900(IDCPort);
 % Oscope = TDS2022C(oscope_Address);
 % Filament = Agilent33220A(port,Fil_Address,1);
 % VpulsSig = Siglent5122(Sig_Address);

@@ -25,7 +25,7 @@ if strcmp(type,'Filament')
 
 else 
     % initialize Agilent
-    amplitude = 200e-3;
+    amplitude = 500e-3;
     voltType = 'VRMS';
     voltageOffset = 0;
     frequency = 89.5e3;

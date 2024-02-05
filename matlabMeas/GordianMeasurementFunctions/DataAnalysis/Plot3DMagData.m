@@ -3,20 +3,20 @@
 % date: 15th Oct. 2023
 % clear all;
 
-consecutive = 0;
+consecutive = 1;
 if consecutive
-    startNum = 7423;
-    stopNum  = 7488;
+    startNum = 10200;
+    stopNum  = 10210;
     numFigs  = stopNum-startNum;
 else
     figNums = [6931:1:6947 6948:1:6959 7037 7038 7132 7135 7157 7158 7159];
     numFigs = length(figNums);
 end
 
-whosePath = 'tiffany';
+whosePath = 'lab';
 tag = 'freqSweep';
 
-oldNumShots = 2;
+oldNumShots = 0;
 currentNumShots = [];
 currentPatm = [];
 tempData = [];
@@ -33,7 +33,7 @@ for i = 0:2:numFigs
 
     switch whosePath 
         case 'lab'
-            path_home = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\12_13_23\';
+            path_home = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\01_31_24\';
         case 'gordian'
             path_home = 'C:\Users\gordi\Dropbox (Princeton)\GroupDropbox\Gordian\rfReflectometry\VNA measurements\HeLevelMeter_110623\11_10_23\';
         case 'tiffany'
@@ -109,7 +109,7 @@ set(gca,'YDir','normal')
 xlabel('LHe (cm^3)')
 % xlabel('Temperature (K)')
 ylabel('Frequency (GHz)')
-ylim([1.330,1.355])
+% ylim([1.330,1.355])
 h = colorbar;
 h.Label.VerticalAlignment = "bottom";
 ylabel(h,'S_{21} (dB)','FontSize',10,'Rotation',270)

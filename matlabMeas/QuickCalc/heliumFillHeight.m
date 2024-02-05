@@ -32,10 +32,10 @@ function [ h ] = heliumFillHeight( Pkpa )
      h = Patm * (Vpanel+Vstick)*25.4/(757*Acell); % [mm]
 
  else  bigglassGordian   % big glass dewar Gordian Cell (RF) 
-     Vpanel = 18.44;     % in^3
+     Vpanel = 18.44+3.213;     % in^3
      Vstick = 26.19;     % in^3 
      Acell = pi*0.75^2;  % in^2
-     Patm =  (30-Pkpa)*0.0334211; % atm
+     Patm = 2;%(30-Pkpa)*0.0334211; % atm
      h = Patm * (Vpanel)*25.4/(757*Acell); % [mm]
  end
 end

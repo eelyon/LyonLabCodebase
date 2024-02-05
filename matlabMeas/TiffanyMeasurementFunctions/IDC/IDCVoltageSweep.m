@@ -17,4 +17,3 @@ sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR
 
 timeBetweenPoints = 0.05;
 repeat = 5;
-

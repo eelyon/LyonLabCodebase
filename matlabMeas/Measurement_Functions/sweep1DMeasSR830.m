@@ -205,8 +205,9 @@ function [x,y,mag,t] = getSR830DataCapacitance(x,y,mag,t,currentTimeIndex,startT
 % objects!!!.
 for i = 1:length(readSR830)
     currentSR830 = readSR830{i};
-    Igain = 1;% 1e12.*-1/(2*pi*SR830queryAmplitude(currentSR830)*SR830queryFreq(currentSR830));
-    xyVals = SR830queryXY(currentSR830).*Igain;
+    Igain = 1e12.*-1/(2*pi*SR830queryAmplitude(currentSR830)*SR830queryFreq(currentSR830));
+    [xVal,yVal] = SR830queryXY(currentSR830);
+    xyVals = [xVal,yVal].*Igain;
     x(i,currentTimeIndex) = xyVals(1);
     y(i,currentTimeIndex) = xyVals(2);
     t(i,currentTimeIndex) = (now()-startTime)*86400;
