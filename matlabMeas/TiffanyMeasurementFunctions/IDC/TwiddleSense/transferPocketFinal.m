@@ -58,3 +58,9 @@ for i = 1:numPockets
     sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.1,5,{VmeasC},DAC,{StmCPort},1);
 
 end
+
+
+start = 0;
+deltaParam = -0.05;
+stop = -0.7;
+sweep1DMeasSR830({'TWW'},start,stop,deltaParam,0.1,10,{VmeasC},VtwiddleE,{5},0,1);

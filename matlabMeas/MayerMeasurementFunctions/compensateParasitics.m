@@ -1,4 +1,4 @@
-function [] = compensateParasitics(device, doorDevice,startPhase,stopPhase,phaseStepSize,startAmp,stopAmp,ampStepSize)
+function [] = compensateParasitics(device, doorDevice,startPhase,stopPhase,phaseStepSize,startAmp,stopAmp,ampStepSize,isCurrentMeas)
 
 if phaseStepSize < .001
     disp('Minimum phase step size is 1e-3! Exiting compensation function!')
@@ -30,17 +30,17 @@ for i = 1:totalIterations
         stopAmp = optAmp + ampRange/2;
     end
     %% Find best phase first
-    optPhase = sweepOptimize(device, doorDevice, phaseArr(i), startPhase, stopPhase, 'Phase');
+    optPhase = sweepOptimize(device, doorDevice, phaseArr(i), startPhase, stopPhase, 'Phase', isCurrentMeas);
     doorDevice.set33220Phase(optPhase);
 
     delay(0.5);
-    device.adjustSensitivity(device.SR830queryY(),1);
+    device.adjustSensitivity(device.SR830queryY(),isCurrentMeas);
 %     
-    optAmp = sweepOptimize(device, doorDevice, ampStepSizeArr(i), startAmp, stopAmp, 'Amp');
+    optAmp = sweepOptimize(device, doorDevice, ampStepSizeArr(i), startAmp, stopAmp, 'Amp', isCurrentMeas);
     doorDevice.set33220Amplitude(optAmp,'VRMS');
     
     delay(0.5);
-    device.adjustSensitivity(device.SR830queryY(),1);
+    device.adjustSensitivity(device.SR830queryY(),isCurrentMeas);
 end
 
     function exponent = determineExponent(num)
@@ -50,4 +50,7 @@ end
         exponent = exponent{1};
         exponent = str2double(exponent);
     end
+
+fprintf(['(real,imag) = (', num2str(SR830queryX(device)*1e6),'uV,' num2str(SR830queryY(device)*1e6), 'uV) \n']);
+
 end

@@ -16,7 +16,7 @@ doorDevice.set33220Output(1);
 %% Find best phase first 
 start = -180;
 stop = 360;
-stepSize = [10 1 0.05];
+stepSize = [10 1 0.5];
 phases = sweepOptimize(device, doorDevice, stepSize, start, stop, 'Phase');
 
 %% then find best amplitude at this phase

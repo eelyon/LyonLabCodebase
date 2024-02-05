@@ -21,7 +21,7 @@ classdef SIM900
                fprintf('Voltage step is too small for SIM900\n');
            else
                connectSIM900Port(SIM900,port);
-               %pause(0.1)
+               pause(0.1)
                command = ['VOLT ' num2str(voltage)];
                fprintf(SIM900.client,command);
                disconnectSIM900Port(SIM900);

@@ -1,5 +1,5 @@
-startNum = 7423;
-stopNum = 7488;
+startNum = 10071;
+stopNum = 10086;
 
 numFigs = stopNum - startNum;
 oldNumShots = 1;
@@ -8,7 +8,7 @@ for i = 0:numFigs
     currentFigNum = startNum + i;
     [currentFigMetaData,figHandle] = displayFigNum(currentFigNum,'visibility',0);
     closeFigure(figHandle);
-    pause(0.01);  % need this pause for code to work the first time, waits for figures to close
+    pause(0.02);  % need this pause for code to work the first time, waits for figures to close
 
     shotNumArr = split(currentFigMetaData{1}.numShots,' ');
     currentNumShots = str2num(shotNumArr{1});

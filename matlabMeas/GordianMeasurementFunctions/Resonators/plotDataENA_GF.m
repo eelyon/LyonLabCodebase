@@ -1,24 +1,26 @@
 %% Set single frequency sweep
-close all;
+% close all;
 
-power     = -5;      % in dBm - be careful!! Do not set too high!!
-startFreq = 1000;    % in MHz
-stopFreq  = 8000;    % in MHz
+power     = 5;      % in dBm - be careful!! Do not set too high!!
+startFreq = 2125;    % in MHz
+stopFreq  = 2140;    % in MHz 
 
 % decide whether to include metadata (1=include,0=don't)
 saveFig   = 1;       % for saving the figure
-plotHe    = 0;       % for Patm and numShots metaData
-plotIDC   = 0;       % for capacitance metaData
+plotHe    = 1;       % for Patm and numShots metaData
+plotIDC   = 1;       % for capacitance metaData
 % tag = 'freqSweep_tuningFork';
-tag = 'fSweepTF';
+tag = 'freqSweep';
 
-addedHe   = 25;       % in inHg from reading the gauge
-% deviceIDC = VmeasC;    % device for IDC measurement
+addedHe   = 20;       % in inHg from reading the gauge
+deviceIDC = VmeasE;    % device for IDC measurement
 
 E5071SetPower(ENA,power);           % in dBm
 E5071SetStartFreq(ENA,startFreq);   % in MHz
 E5071SetStopFreq(ENA,stopFreq);     % in MHz
 
+flush(ENA);
+pause(0.1);
 fprintf(ENA,':INIT1');         % Set trigger value - for continuous set: ':INIT:CONT ON'
 fprintf(ENA,':TRIG:SOUR BUS'); % Set trigger source to "Bus Trigger"
 fprintf(ENA,':TRIG:SING');     % Trigger ENA to start sweep cycle
@@ -71,7 +73,7 @@ function Patm = inHgToAtm(inHg)
     % Function converting the reading on the small, silver gas
     % manifold gauge to Patm
     % param inHg: pressure reading in inches of mercury (pos. number)
-    Patm = (30-inHg)*0.0334211;
+    Patm = 2; %(30-inHg)*0.0334211;
 end
 
 function capIDC = cap(Device)
