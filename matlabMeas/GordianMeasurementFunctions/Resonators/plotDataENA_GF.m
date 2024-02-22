@@ -12,7 +12,7 @@ plotIDC   = 1;       % for capacitance metaData
 % tag = 'freqSweep_tuningFork';
 tag = 'freqSweep';
 
-addedHe   = 20;       % in inHg from reading the gauge
+addedHe   = 2;       % in inHg from reading the gauge
 deviceIDC = VmeasE;    % device for IDC measurement
 
 E5071SetPower(ENA,power);           % in dBm
@@ -73,7 +73,7 @@ function Patm = inHgToAtm(inHg)
     % Function converting the reading on the small, silver gas
     % manifold gauge to Patm
     % param inHg: pressure reading in inches of mercury (pos. number)
-    Patm = 2; %(30-inHg)*0.0334211;
+    Patm = (30-inHg)*0.0334211;
 end
 
 function capIDC = cap(Device)

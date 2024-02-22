@@ -11,23 +11,34 @@ DCConfigDAC(DAC,'TransferTwiddle',8000);
 pause(9)
 
 % assuming already have electrons in Emitter, clean them off T&S
+SR830setTimeConstant(VmeasC,9);
 Vopen = 0;
-Vclose = -0.8;
+Vclose = -0.7;
 cleanElectrons(DAC, DoorEInPort,SenseEPort,TwiddleEPort,Vopen,Vclose,'Emitter')
 % VtwiddleC.set33220Output(0)
 % VdoorModC.set33220Output(0)
-twdAmp = 0.3; 
+twdAmp = 0.2; 
 compensateParasitics(VmeasC,VdoorModE,-360,180,10,0.01,twdAmp,0.01,0)
 
 % let electrons in by lowering the door
-VdoorOpen = -0.5;
-sweep1DMeasSR830({'Door'},Vclose,VdoorOpen,-0.01,0.1,10,{VmeasC},DAC,{DoorEInPort},1,1); 
-sweep1DMeasSR830({'Door'},VdoorOpen,Vclose,-0.05,0.3,5,{VmeasC},DAC,{DoorEInPort},1,1); 
+SR830setTimeConstant(VmeasC,10);
+VdoorOpen = -0.1;
+sweep1DMeasSR830({'Door'},-0.9,VdoorOpen,-0.02,3,1,{VmeasC},DAC,{DoorEInPort},0,1); 
+pause(3)
+sweep1DMeasSR830({'Door'},VdoorOpen,Vclose,-0.05,0.3,5,{VmeasC},DAC,{DoorEInPort},0,1); 
+sweep1DMeasSR830({'Door'},0,-0.7,-0.05,0.3,5,{VmeasC},DAC,{DoorEInPort},0,1); 
 
 % twiddle sense measurement
-sweep1DMeasSR830({'TWW'},Vopen,Vopen+0.5,-0.02,0.1,10,{VmeasC},DAC,{TwiddleEPort},1,1);
+sweep1DMeasSR830({'TWW'},Vopen,Vopen+1,-0.02,3,1,{VmeasC},DAC,{TwiddleEPort},1,1);
+
+
+
+
+
 
 %% Test collector twiddle sense
+sweep1DMeasSR830({'ST'},-0.3,-0.7,-0.02,3,1,{VmeasC},DAC,{STIBiasEPort},0,1);
+
 
 % 1. transfer lots of electrons
 sigDACRampVoltage(DAC,[DoorEInPort,SenseEPort,TwiddleEPort,DoorCClosePort],[0,0,0,0.5],1000); pause(4)

@@ -5,8 +5,8 @@
 
 consecutive = 1;
 if consecutive
-    startNum = 10200;
-    stopNum  = 10210;
+    startNum = 11047;
+    stopNum  = 11060;
     numFigs  = stopNum-startNum;
 else
     figNums = [6931:1:6947 6948:1:6959 7037 7038 7132 7135 7157 7158 7159];
@@ -33,7 +33,7 @@ for i = 0:2:numFigs
 
     switch whosePath 
         case 'lab'
-            path_home = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\01_31_24\';
+            path_home = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\02_19_24\';
         case 'gordian'
             path_home = 'C:\Users\gordi\Dropbox (Princeton)\GroupDropbox\Gordian\rfReflectometry\VNA measurements\HeLevelMeter_110623\11_10_23\';
         case 'tiffany'

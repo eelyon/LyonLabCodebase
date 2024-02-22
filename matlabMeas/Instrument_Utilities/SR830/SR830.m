@@ -71,7 +71,13 @@ classdef SR830 < handle
                 newSens = currentSens - 1;
                 SR830setSensitivity(device,newSens);
                 delay(.1);
-                mag = device.SR830queryY();
+                xMag = device.SR830queryX();
+                yMag = device.SR830queryY();
+                if xMag >= yMag
+                    mag = xMag;
+                else
+                    mag = yMag;
+                end
             end
 
             mag = abs(mag);
