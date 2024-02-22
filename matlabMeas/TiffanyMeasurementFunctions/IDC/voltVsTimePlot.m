@@ -1,5 +1,5 @@
 %% Frequency of voltage querying in seconds.
-timeBetweenPoints = 1e-4;
+timeBetweenPoints = 3;
 
 %% Initialize workspace arrays. Must be in workspace to update plots properly.
 [time,voltageR, voltageI] = deal(inf);

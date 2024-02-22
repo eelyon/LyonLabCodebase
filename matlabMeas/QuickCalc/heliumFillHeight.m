@@ -35,7 +35,11 @@ function [ h ] = heliumFillHeight( Pkpa )
      Vpanel = 18.44+3.213;     % in^3
      Vstick = 26.19;     % in^3 
      Acell = pi*0.75^2;  % in^2
-     Patm = 2;%(30-Pkpa)*0.0334211; % atm
+<<<<<<< Updated upstream
+     Patm = (30-Pkpa)*0.0334211; % atm
+=======
+     Patm = 1.2;%(30-Pkpa)*0.0334211; % atm
+>>>>>>> Stashed changes
      h = Patm * (Vpanel)*25.4/(757*Acell); % [mm]
  end
 end

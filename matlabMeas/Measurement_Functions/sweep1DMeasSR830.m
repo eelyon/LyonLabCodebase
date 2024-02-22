@@ -20,6 +20,8 @@ function [avgmags] = sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetwee
 %           doBackAndForth - 0 (False) or 1 (True). Boolean to determine
 %           whether or not to sweep the parameter back to its original
 %           value.
+%           opt - 0 (Current) or 1 (Voltage) measurement. 
+
 flush(readSR830{1}.client);
 for srIndex = 1:length(readSR830)
     if exist('opt','var') 
@@ -138,8 +140,12 @@ for value = paramVector
     updateSR830AveragePlots(plotHandles,avgParam,avgmags,avgxs,avgys,stdm,stdx,stdy,doBackAndForth,currentAvgIndex,halfway,numSR830s);
     currentAvgIndex = currentAvgIndex + 1;
 end
+
 for i = 1:numSR830s
-    saveData(subPlotFigureHandles{i},genSR830PlotName(sweepType{i}));
+    if ~strcmp(sweepType,'PHAS') && ~strcmp(sweepType,'Vrms')
+        saveData(subPlotFigureHandles{i},genSR830PlotName(sweepType{i}));
+    else
+    end
 end
 end
 
