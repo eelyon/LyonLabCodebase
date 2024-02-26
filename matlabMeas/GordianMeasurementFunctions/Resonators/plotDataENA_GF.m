@@ -1,4 +1,4 @@
-%% Set single frequency sweep
+n %% Set single frequency sweep
 % close all;
 
 power     = 5;      % in dBm - be careful!! Do not set too high!!
