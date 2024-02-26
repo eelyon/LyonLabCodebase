@@ -5,13 +5,8 @@
 
 consecutive = 1;
 if consecutive
-<<<<<<< Updated upstream
-    startNum = 11047;
-    stopNum  = 11060;
-=======
-    startNum = 10790;
-    stopNum  = 10800;
->>>>>>> Stashed changes
+    startNum = 11184;
+    stopNum  = 11198;
     numFigs  = stopNum-startNum;
 else
     figNums = [10775 10777 10779 10780 10783:10787 10790];
@@ -38,11 +33,7 @@ for i = 0:2:numFigs
 
     switch whosePath 
         case 'lab'
-<<<<<<< Updated upstream
-            path_home = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\02_19_24\';
-=======
-            path_home = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\02_08_24\';
->>>>>>> Stashed changes
+            path_home = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\02_22_24\';
         case 'gordian'
             path_home = 'C:\Users\gordi\Dropbox (Princeton)\GroupDropbox\Gordian\rfReflectometry\VNA measurements\HeLevelMeter_110623\11_10_23\';
         case 'tiffany'

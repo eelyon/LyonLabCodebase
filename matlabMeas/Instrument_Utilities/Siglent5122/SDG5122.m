@@ -259,6 +259,36 @@ classdef SDG5122
             splitted = (split(outputParams, ','));
             imp = char(splitted(5));
         end
+
+        function [] = set5122BurstStateOn(SDG5122,onOrOff, chann)
+            if onOrOff
+                command = ['C',num2str(chann),':BTWV STATE,ON'];
+            else
+                command = ['C',num2str(chann),':BTWV STATE,OFF'];
+            end
+            fprintf(SDG5122.client,command);
+        end
+
+        function [] = set5122BurstTriggerSource(Siglent5122,burstTrigger, chann)
+            validTypes = 'EXT,INT,MAN';
+            if ~contains(validTypes,burstTrigger)
+                fprintf('Invalid burst trigger source, valid types are:\n');
+                fprintf(validTypes);
+            else
+                command = ['C',num2str(chann),':BTWV TRSR, ' burstTrigger];
+                fprintf(Siglent5122.client,command);
+            end
+        end
+
+        function [] = set33220TriggerOutput(Agilent33220A,OnOff)
+            if OnOff
+                command = 'OUTP:TRIG ON';
+            else
+                command = 'OUTP:TRIG OFF';
+            end
+            fprintf(Agilent33220A.client,command);
+        end
+
     end
 end
 
