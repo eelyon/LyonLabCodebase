@@ -2,7 +2,6 @@ function [] = cleanElectrons(DAC, DoorInPort, SensePort, TwiddlePort, Vopen, Vcl
     sigDACRampVoltage(DAC,[DoorInPort,SensePort,TwiddlePort],[Vopen,Vopen,Vopen],1000);
     pause(1)
     if strcmp(type,'Emitter')
-<<<<<<< Updated upstream
         sigDACRampVoltage(DAC,TwiddlePort,Vclose-0.2,1000);
         pause(5)
         sigDACRampVoltage(DAC,SensePort,Vclose-0.2,1000);
@@ -15,24 +14,10 @@ function [] = cleanElectrons(DAC, DoorInPort, SensePort, TwiddlePort, Vopen, Vcl
     end
     sigDACRampVoltage(DAC,14,Vclose-0.3,3000);
     pause(5)
-    sigDACRampVoltage(DAC,DoorInPort,Vclose-0.2,1000);
+    sigDACRampVoltage(DAC,DoorInPort,Vclose-0.4,1000);
     pause(2)
     sigDACRampVoltage(DAC,14,-0.7,3000);
     pause(5)
-=======
-        sigDACRampVoltage(DAC,TwiddlePort,Vclose-0.5,1000);
-        pause(5)
-        sigDACRampVoltage(DAC,SensePort,Vclose-0.5,1000);
-        pause(5)
-    else
-        sigDACRampVoltage(DAC,SensePort,Vclose,1000);
-        pause(5)
-        sigDACRampVoltage(DAC,TwiddlePort,Vclose,1000);
-        pause(5)
-    end
-    sigDACRampVoltage(DAC,DoorInPort,Vclose,1000);
-    pause(1)
->>>>>>> Stashed changes
     sigDACRampVoltage(DAC,[SensePort,TwiddlePort],[Vopen,Vopen],1000);
     pause(1)
 end

@@ -11,36 +11,33 @@ DCConfigDAC(DAC,'TransferTwiddle',8000);
 pause(9)
 
 % assuming already have electrons in Emitter, clean them off T&S
-SR830setTimeConstant(VmeasC,9);
+SR830setTimeConstant(VmeasC,7);
+VtwiddleE.set33220Output(0)
+VdoorModE.set33220Output(0)
 Vopen = 0;
 Vclose = -0.7;
 cleanElectrons(DAC, DoorEInPort,SenseEPort,TwiddleEPort,Vopen,Vclose,'Emitter')
-% VtwiddleC.set33220Output(0)
-% VdoorModC.set33220Output(0)
-<<<<<<< Updated upstream
-twdAmp = 0.2; 
-compensateParasitics(VmeasC,VdoorModE,-360,180,10,0.01,twdAmp,0.01,0)
+sigDACRampVoltage(DAC,STIBiasEPort,-0.2,1000)
 
-% let electrons in by lowering the door
+VtwiddleE.set33220Output(1)
+VdoorModE.set33220Output(1)
+twdAmp = 0.3; 
+compensateParasitics(VmeasC,VdoorModE,-360,180,10,0.01,twdAmp/2,0.01,0)
+pause(1)
 SR830setTimeConstant(VmeasC,10);
-VdoorOpen = -0.1;
-sweep1DMeasSR830({'Door'},-0.9,VdoorOpen,-0.02,3,1,{VmeasC},DAC,{DoorEInPort},0,1); 
-pause(3)
-sweep1DMeasSR830({'Door'},VdoorOpen,Vclose,-0.05,0.3,5,{VmeasC},DAC,{DoorEInPort},0,1); 
-sweep1DMeasSR830({'Door'},0,-0.7,-0.05,0.3,5,{VmeasC},DAC,{DoorEInPort},0,1); 
-=======
-twdAmp = 0.4; 
-set33220Amplitude(VtwiddleE,twdAmp,'VRMS');
-compensateParasitics(VmeasC,VdoorModE,-360,180,10,0.01,twdAmp,0.01,0)
+sweep1DMeasSR830({'TWW'},0,0.5,-0.02,3,1,{VmeasC},DAC,{TwiddleEPort},1,1);
 
+sigDACRampVoltage(DAC,STIBiasEPort,0,1000);
+pause(1)
 % let electrons in by lowering the door
 VdoorOpen = 0;
-sweep1DMeasSR830({'Door'},Vclose,VdoorOpen,-0.05,0.1,10,{VmeasC},DAC,{DoorEInPort},0,1); 
-sweep1DMeasSR830({'Door'},VdoorOpen,Vclose,-0.05,0.3,5,{VmeasC},DAC,{DoorEInPort},0,1); 
->>>>>>> Stashed changes
+sweep1DMeasSR830({'Door'},-1.1,VdoorOpen,-0.02,1,2,{VmeasC},DAC,{DoorEInPort},0,1); 
+pause(3)
 
+sigDACRampVoltage(DAC,STIBiasEPort,-0.1,1000);
+pause(1)
 % twiddle sense measurement
-sweep1DMeasSR830({'TWW'},Vopen,Vopen+1,-0.02,3,1,{VmeasC},DAC,{TwiddleEPort},1,1);
+sweep1DMeasSR830({'TWW'},0,1,-0.02,3,2,{VmeasC},DAC,{TwiddleEPort},1,1);
 
 
 

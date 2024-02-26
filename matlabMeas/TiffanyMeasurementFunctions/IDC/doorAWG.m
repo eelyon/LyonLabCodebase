@@ -28,9 +28,9 @@ else
     disp('your unit does not exist!')
 end
 
-% set Agilent doorE width
-set33220PulsePeriod(dev2,TauE*2)
-set33220PulseWidth(dev2, TauE)
+% % set Agilent doorE width
+% set33220PulsePeriod(dev2,TauE*2)
+% set33220PulseWidth(dev2, TauE)
 
 % initialize Siglent
 set5122Output(dev1,'OFF');               % turn outputs off 
@@ -40,14 +40,14 @@ set5122Rise(dev1,6e-9);                  % rise time to 6ns
 set5122VoltageHigh(dev1, amp_high);             % sets high level of C1
 set5122VoltageLow(dev1,amp_low);                % sets low level of C1
 
-% set Siglent
-set5122Period(dev1,TauC*2);
-set5122PulseWidth(dev1,TauC);
-set5122NumBurstCycles(dev1, 1);          % set num of cycles to burst
-set5122BurstStateOn(dev1,'ON');          % enable burst, needs to go here or else will pulse
-set5122BurstTriggerSource(dev1,'EXT');
-set5122Delay(dev1,delay);
-set5122Output(dev1,'ON');                % turn outputs on 
+% % set Siglent
+% set5122Period(dev1,TauC*2);
+% set5122PulseWidth(dev1,TauC);
+% set5122NumBurstCycles(dev1, 1);          % set num of cycles to burst
+% set5122BurstStateOn(dev1,'ON');          % enable burst, needs to go here or else will pulse
+% set5122BurstTriggerSource(dev1,'EXT');
+% set5122Delay(dev1,delay);
+% set5122Output(dev1,'ON');                % turn outputs on 
 
 % trigger other agilent to trigger siglent
 % set33220Trigger(VpulsAgi,'BUS');  % to open the doors

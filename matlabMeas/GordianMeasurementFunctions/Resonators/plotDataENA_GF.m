@@ -1,22 +1,18 @@
-%% Set single frequency sweep
+n %% Set single frequency sweep
 % close all;
 
 power     = 5;      % in dBm - be careful!! Do not set too high!!
-startFreq = 2128;    % in MHz
+startFreq = 2125;    % in MHz
 stopFreq  = 2140;    % in MHz 
 
 % decide whether to include metadata (1=include,0=don't)
 saveFig   = 1;       % for saving the figure
-plotHe    = 1;       % for Patm and numShots metaData
+plotHe    = 0;       % for Patm and numShots metaData
 plotIDC   = 0;       % for capacitance metaData
 % tag = 'freqSweep_tuningFork';
 tag = 'freqSweep';
 
-<<<<<<< Updated upstream
-addedHe   = 2;       % in inHg from reading the gauge
-=======
-addedHe   = 25;       % in inHg from reading the gauge
->>>>>>> Stashed changes
+addedHe   = 2;         % in inHg from reading the gauge
 deviceIDC = VmeasE;    % device for IDC measurement
 
 E5071SetPower(ENA,power);           % in dBm

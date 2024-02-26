@@ -21,7 +21,7 @@ elseif scanType == 'TE'
     start = sigDACQueryVoltage(DAC,14);
     % start = -0.5;
     deltaParam = 0.025;
-    stop = -1.1;
+    stop = -1;
     
     timeBetweenPoints = 0.05;
     repeat = 10;

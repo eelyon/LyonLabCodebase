@@ -102,16 +102,6 @@ classdef Siglent5122
             command = ['C1:OUTP ' cmdStr];
             fprintf(Siglent5122.client,command);
         end
-
-
-        function [] = set33220TriggerOutput(Agilent33220A,OnOff)
-            if OnOff
-                command = 'OUTP:TRIG ON';
-            else
-                command = 'OUTP:TRIG OFF';
-            end
-            fprintf(Agilent33220A.client,command);
-        end
        
     end
 end
