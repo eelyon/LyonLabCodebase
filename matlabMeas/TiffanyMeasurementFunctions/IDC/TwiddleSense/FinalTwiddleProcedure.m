@@ -63,7 +63,7 @@ sigDACRampVoltage(DAC,DoorEClosePort,-1,1000);
 % After transfer sweeps check
 start = sigDACQueryVoltage(DAC,StmCPort);
 deltaParam = -0.02;
-stop = start-0.4;
+stop = start-0.25;
 sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.1,5,{VmeasC},DAC,{StmCPort},1);
 
 start = 0;
@@ -103,7 +103,7 @@ for i = doorOpenList
     SR830setTimeConstant(VmeasE,7);
     twdAmp = 0.3; 
     compensateParasitics(VmeasE,VdoorModE,-360,180,10,0.01,twdAmp/2,0.01,0)
-    pause(2)
+    pause(10)
 
     SR830setTimeConstant(VmeasE,10);
     sweep1DMeasSR830({'TWW'},0,0.7,-0.02,3,2,{VmeasE},DAC,{TwiddleEPort},1,1);
@@ -116,8 +116,8 @@ for i = doorOpenList
 
     % transfer electrons create pocket electrons
     sigDACRampVoltage(DAC,[DoorCInPort,TwiddleCPort,SenseCPort],[-1,-1,-1],1000); pause(5)
-    sigDACRampVoltage(DAC,STOBiasCPort,-1.3,1000); pause(3)
     sigDACRampVoltage(DAC,StmCPort,-1.3,1000); pause(3)
+    sigDACRampVoltage(DAC,STIBiasCPort,-1.3,1000); pause(3)
     sigDACRampVoltage(DAC,DoorCInPort,-2,1000); pause(1)
     sigDACRampVoltage(DAC,[STOBiasCPort,StmCPort],[-1,-1],1000); pause(2)
 
@@ -133,14 +133,14 @@ for i = doorOpenList
     doorSiglent(VpulsSig,i,i*2,0,'ms');
     fprintf(VpulsSig.client,'C1:BTWV MTRIG');
     pause(5)
-%     sigDACRampVoltage(DAC,DoorCClosePort,-2,1000); pause(1)
-%     sigDACRampVoltage(DAC,DoorEClosePort,-0.8,1000); pause(1)
+    sigDACRampVoltage(DAC,DoorCClosePort,-2,1000); pause(1)
+    sigDACRampVoltage(DAC,DoorEClosePort,-0.8,1000); pause(1)
     
     set5122Output(VpulsSig,0,1);                % turn outputs off 
     set5122Output(VpulsSig,0,2);      
 
     % check for electrons
-    sweep1DMeasSR830({'TWW'},0,1,-0.02,3,2,{VmeasE},DAC,{TwiddleEPort},1,1);
+    sweep1DMeasSR830({'TWW'},0,0.8,-0.02,3,2,{VmeasE},DAC,{TwiddleEPort},1,1);
     
     % throw away electrons into reservoir
     VtwiddleE.set33220Output(0)

@@ -57,7 +57,7 @@ else
     % Oscilloscope
     oscope_Address = 'USB0::0x0699::0x0374::C011644::0';
 end
-
+% 
 % DAC = sigDAC(sigDACPort,24,'DAC');
 % VmeasC = SR830(port,VmeasC_Address);
 % VmeasE = SR830(port,VmeasE_Address);
@@ -69,8 +69,8 @@ VdoorModE = Agilent33220A(port,VdoorModE_Address,1);
 % Oscope = TDS2022C(oscope_Address);
 % Filament = Agilent33220A(port,Fil_Address,1);
 VpulsSig = SDG5122(Sig_Address);
-% Thermometer = TCPIP_Connect(DMM_Address,port);
-% 
-% 
-% GUI = Tiffany_GUI;
-% DCMap;
+Thermometer = TCPIP_Connect(DMM_Address,port);
+
+
+GUI = Tiffany_GUI;
+DCMap;

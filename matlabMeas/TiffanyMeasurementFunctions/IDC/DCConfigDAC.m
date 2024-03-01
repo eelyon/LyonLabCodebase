@@ -253,18 +253,18 @@ elseif strcmp(Command,'TransferBack2')
     DoorEClose = 0;
     DoorEOpen  = 0;
     %% Collector    
-    STOBiasC   = -1;
+    STOBiasC   = -1.5;
     STIBiasC   = STOBiasC;
-    TopC       = -1.5;
+    TopC       = -2;
     StmC       = STOBiasC;
-    DoorCClose = -2;
+    DoorCClose = -2.5;
     DoorCOpen  = -0.8;
     %% Thin Film
-    TfC        = -0.5;
+    TfC        = -0.8;
     TfE        = -0.2;
     %% IDC
-    IdcNF      = -1.3;
-    IdcPF      = -1.3;
+    IdcNF      = -1.2;
+    IdcPF      = -1.2;
 
     sigDACRampVoltage(DAC,[DoorEInPort,SenseEPort,TwiddleEPort],[0,0,0],1000);
     pause(2)

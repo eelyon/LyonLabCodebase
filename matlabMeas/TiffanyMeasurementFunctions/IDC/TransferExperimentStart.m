@@ -14,7 +14,7 @@ sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.1,5,{VmeasE},DAC,{StmEPort},1); 
 
 start = 0;
 deltaParam = 0.02;
-stop = -0.2;
+stop = -0.3;
 sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.1,5,{VmeasE},DAC,{StmEPort},1);  % ST measurement
 
 % Transfer
@@ -32,7 +32,7 @@ sigDACRampVoltage(DAC,DoorCClosePort,1,1000);
 
 start = sigDACQueryVoltage(DAC,DoorEClosePort);
 deltaParam = -0.02;
-stop = 0;
+stop = -0.1;
 sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.05,5,{VmeasE},DAC,{DoorEClosePort},0);
 
 sigDACRampVoltage(DAC,DoorCClosePort,-1,1000);
@@ -41,12 +41,12 @@ sigDACRampVoltage(DAC,DoorEClosePort,-1,1000);
 % After transfer sweeps
 start = sigDACQueryVoltage(DAC,StmCPort);
 deltaParam = -0.02;
-stop = start-0.4;
+stop = start-0.3;
 sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.1,5,{VmeasC},DAC,{StmCPort},1);
 
 start = 0;
-deltaParam = 0.02;
-stop = -0.3;
+deltaParam = 0.01;
+stop = -0.2;
 sweep1DMeasSR830({'ST'},start,stop,deltaParam,0.1,5,{VmeasE},DAC,{StmEPort},1);  % ST measurement
 
 % Transfer Back
@@ -64,7 +64,7 @@ deltaParam = 0.05;
 stop = -1;
 sweep1DMeasSR830({'Door'},start,stop,deltaParam,0.05,5,{VmeasC},DAC,{DoorCClosePort},0);
 
-sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[-0.7,-0.7,-0.7],1000);
+sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[-1.2,-1.2,-1.2],1000);
 pause(2)
 sigDACRampVoltage(DAC,[DoorCInPort,SenseCPort,TwiddleCPort],[-0.5,-0.5,-0.5],1000);
 pause(2)

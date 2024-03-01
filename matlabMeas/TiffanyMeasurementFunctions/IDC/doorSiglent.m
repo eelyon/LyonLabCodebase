@@ -36,6 +36,7 @@ if initialize
         set5122Rise(dev,6e-9,i)                     % rise time to 6ns
         set5122VoltageHigh(dev,amp_high,i)          % sets high level
         set5122VoltageLow(dev,amp_low,i);           % sets low level
+        set5122Polarity(dev,'NOR',i); 
     end 
 else
 end
@@ -53,7 +54,6 @@ set5122PulseWidth(dev,TauC,2);
 % set5122BurstStateOn(dev,1,2);          % enable burst, needs to go here or else will pulse
 % 
 % set5122BurstTriggerSource(dev,'MAN',1);
-% 
 % set5122BurstTriggerSource(dev,'EXT',2);
 % 
 % set5122Delay(dev,delay,2);
