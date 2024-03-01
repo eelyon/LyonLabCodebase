@@ -15,5 +15,5 @@ voltIPlot   = plotData(time,voltageI,'xLabel',"Time (minutes)",'yLabel',"Volt Im
 
 axesCell = {voltRHandle,voltIHandle};
 PlotCell = {voltRPlot,voltIPlot};
-SR830Cell = VmeasC;
+SR830Cell = VmeasE;
 plotVoltVsTime(PlotCell,subPlotFigure,SR830Cell,timeBetweenPoints);

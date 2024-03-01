@@ -8,4 +8,4 @@ E5071SetNumPoints(ENA,9000); % set no. of points
 E5071SetDataFormat(ENA,'PLOG'); % SLIN, SLOG, SCOM, SMIT, SADM, PLIN, PLOG, or POL
 %E5071SetDelay(ENA,500,2200); % correct for electrical delay
 E5071SetIFBand(ENA,1); % in kHz
-E5071SetSweepTime(ENA,4); % in secs
+E5071SetSweepTime(ENA,1); % in secs

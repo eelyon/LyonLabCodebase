@@ -36,8 +36,10 @@ pause(3)
 
 sigDACRampVoltage(DAC,STIBiasEPort,-0.1,1000);
 pause(1)
+sigDACRampVoltage(DAC,DoorEInPort,-0.8,1000);
+pause(1)
 % twiddle sense measurement
-sweep1DMeasSR830({'TWW'},0,1,-0.02,3,2,{VmeasC},DAC,{TwiddleEPort},1,1);
+sweep1DMeasSR830({'TWW'},0,0.7,-0.02,3,2,{VmeasC},DAC,{TwiddleEPort},1,1);
 
 
 

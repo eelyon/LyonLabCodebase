@@ -1,4 +1,4 @@
-n %% Set single frequency sweep
+%% Set single frequency sweep
 % close all;
 
 power     = 5;      % in dBm - be careful!! Do not set too high!!
@@ -7,7 +7,7 @@ stopFreq  = 2140;    % in MHz
 
 % decide whether to include metadata (1=include,0=don't)
 saveFig   = 1;       % for saving the figure
-plotHe    = 0;       % for Patm and numShots metaData
+plotHe    = 1;       % for Patm and numShots metaData
 plotIDC   = 0;       % for capacitance metaData
 % tag = 'freqSweep_tuningFork';
 tag = 'freqSweep';
@@ -73,7 +73,7 @@ function Patm = inHgToAtm(inHg)
     % Function converting the reading on the small, silver gas
     % manifold gauge to Patm
     % param inHg: pressure reading in inches of mercury (pos. number)
-    Patm = (30-inHg)*0.0334211;
+    Patm = 1; %(30-inHg)*0.0334211;
 end
 
 function capIDC = cap(Device)

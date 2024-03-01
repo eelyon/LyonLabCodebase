@@ -14,7 +14,7 @@ obj1 = instrfind('Type', 'visa-usb', 'RsrcName', USB, 'Tag', '');
 % Create the usb object if it does not exist
 % otherwise use the object that was found.
 if isempty(obj1)
-    obj1 = visa('NI', USB);
+    obj1 = visadev('NI', USB);
 else
     fclose(obj1);
     obj1 = obj1(1);

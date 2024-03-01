@@ -11,7 +11,7 @@ classdef SDG5122
     methods
         function SDG5122 = SDG5122(USBAddress)
             SDG5122.USBAddress    = USBAddress;
-            SDG5122.client        = visadev(USBAddress);
+            SDG5122.client        = USB_Connect(USBAddress);
             SDG5122.identifier    = 'SDG5122';
         end
 
