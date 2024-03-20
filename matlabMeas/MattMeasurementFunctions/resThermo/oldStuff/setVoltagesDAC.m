@@ -12,17 +12,17 @@ voltsEmitt = [-0.3,...  %DAC 1
         0,...   %DAC 7
         0];     %DAC 8
 
-voltsEmittMeas = [1.0,...  %DAC 1
-        -0.05,...   %DAC 2
-        -2.0,...   %DAC 3
+voltsEmittMeas = [-1.0,...  %DAC 1
+        -2.5,...   %DAC 2
+        -4.0,...   %DAC 3
         -0.0,...   %DAC 4
-        -1.5,...   %DAC 5
-        -1.5,...   %DAC 6
+        -3.5,...   %DAC 5
+        -3.5,...   %DAC 6
         0,...   %DAC 7
         0];     %DAC 8
 
 voltsEmittMeasRes = [2.5,...  %DAC 1
-        -0.5,...   %DAC 2
+        -2.0,...   %DAC 2
         -4,...   %DAC 3
         -0.0,...   %DAC 4
         -0.3,...   %DAC 5
@@ -67,7 +67,7 @@ voltUse = voltsEmittMeas;
 
 %%{
 for i = 1:length(voltUse)
-    rampVal(DAC,i, sigDACQueryVoltage(DAC, i), voltUse(i), 0.01, 0.03);
+    rampVal(DAC,i, sigDACQueryVoltage(DAC, i), voltUse(i), 0.05, 0.03);
     %setVal(DAC,i,voltUse(i));
     %pause(0.3);
 end
