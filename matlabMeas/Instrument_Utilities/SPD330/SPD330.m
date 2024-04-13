@@ -18,17 +18,13 @@ classdef SPD330
         function SPD330 = SPD330(IPAddress, port)
             SPD330.IPAddress    = IPAddress;
             SPD330.port         = port;
-            SPD330.client       = TCPIP_Connect(SPD330.IPAddress,SPD330.port);
+            SPD330.client       = TCPIP_VISA_Connect(SPD330.IPAddress);
             SPD330.identifier   = query(SPD330.client, '*IDN?');
-            SPD330.CH1Volt = getRealVolt(SPD330, 1);
-            SPD330.CH2Volt = getRealVolt(SPD330, 2);
-            SPD330.CH1Curr = getRealCurr(SPD330, 1);
-            SPD330.CH2Curr = getRealCurr(SPD330, 2);
         end
 
         %Voltage Setters and Getters
         
-        function voltage = getSetVolt(SPD330, chan)
+        function voltage = queryVolt(SPD330, chan)
             if(chan ~= 1 && chan ~= 2)
                 fprintf("The variable 'chan' must be either 1 or 2, to correspond with 1 of the two channels\n");
             else
@@ -36,30 +32,30 @@ classdef SPD330
             end
         end
 
-        function voltage = getRealVolt(SPD330, chan)
-            if(chan ~= 1 && chan ~= 2)
-                fprintf("The variable 'chan' must be either 1 or 2, to correspond with 1 of the two channels\n");
-            else
-                voltage = str2double(query(SPD330.client, ['MEAS:VOLT? CH', num2str(chan)]));
+%         function voltage = getRealVolt(SPD330, chan)
+%             if(chan ~= 1 && chan ~= 2)
+%                 fprintf("The variable 'chan' must be either 1 or 2, to correspond with 1 of the two channels\n");
+%             else
+%                 voltage = str2double(query(SPD330.client, ['MEAS:VOLT? CH', num2str(chan)]));
+% 
+%                 if chan == 1
+%                     SPD330.CH1Volt = voltage;
+%                 elseif chan == 2
+%                     SPD330.CH2Volt = voltage;
+%                 end
+%             end
+%         end
 
-                if chan == 1
-                    SPD330.CH1Volt = voltage;
-                elseif chan == 2
-                    SPD330.CH2Volt = voltage;
-                end
-            end
-        end
-
-        function setVolt(SPD330, voltSet, chan)
+        function setVolt(SPD330, chan, voltSet)
             if(chan ~= 1 && chan ~= 2)
                 fprintf("The variable 'chan' must be either 1 or 2, to correspond with 1 of the two channels\n");
             else
                 fprintf(SPD330.client, ['CH', num2str(chan), ':VOLT ', num2str(voltSet)]);
 
                 if chan == 1
-                    SPD330.CH1Volt = getRealVolt(SPD330, 1);
+                    SPD330.CH1Volt = queryVolt(SPD330, 1);
                 elseif chan == 2
-                    SPD330.CH2Volt = getRealVolt(SPD330, 2);
+                    SPD330.CH2Volt = queryVolt(SPD330, 2);
                 end
             end
         end
@@ -104,7 +100,7 @@ classdef SPD330
 
         % Misc Functions
 
-        function toggleOutput(SPD330, state, chan)
+        function toggleOutput(SPD330, chan,state)
             if(chan ~= 1 && chan ~= 2)
                 fprintf("The variable 'chan' must be either 1 or 2, to correspond with 1 of the two channels\n");
             else

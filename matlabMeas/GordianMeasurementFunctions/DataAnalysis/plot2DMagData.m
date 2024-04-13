@@ -1,5 +1,5 @@
-startNum = 10071;
-stopNum = 10086;
+startNum = 11982;
+stopNum = 12035;
 
 numFigs = stopNum - startNum;
 oldNumShots = 1;

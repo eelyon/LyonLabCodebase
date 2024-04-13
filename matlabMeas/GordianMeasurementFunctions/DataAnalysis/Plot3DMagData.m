@@ -5,8 +5,8 @@
 
 consecutive = 1;
 if consecutive
-    startNum = 11354;
-    stopNum  = 11369;
+    startNum = 11982;
+    stopNum  = 12035;
     numFigs  = stopNum-startNum;
 else
     figNums = [10775 10777 10779 10780 10783:10787 10790];
@@ -33,7 +33,7 @@ for i = 0:2:numFigs
 
     switch whosePath 
         case 'lab'
-            path_home = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\02_28_24\';
+            path_home = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\04_12_24\';
         case 'gordian'
             path_home = 'C:\Users\gordi\Dropbox (Princeton)\GroupDropbox\Gordian\rfReflectometry\VNA measurements\HeLevelMeter_110623\11_10_23\';
         case 'tiffany'
@@ -69,11 +69,17 @@ for i = 0:2:numFigs
         fprintf('Patm not found in metaData.\n')
     end
 
-    tempData(i/2+1) = str2num(currentFigMetaData.temperature);
+%     try
+%         tempData(i/2+1) = str2num(currentFigMetaData.temperature);
+%     catch
+%         fprintf('TempData not found.\n')
+%     end
 
     h = findall(gcf,'Type','line');
     xDat = h(2).XData; % 1 is phase (degrees) data, 2 is magnitude (dB) data
     yDat = h(2).YData;
+    xDat = xDat;
+    yDat = yDat;
 
     for k = 1:length(yDat)
         cData(i/2+1,k) = yDat(k);
