@@ -1,16 +1,15 @@
 %% Set single frequency sweep
 % close all;
 
-power     = 5;      % in dBm - be careful!! Do not set too high!!
-startFreq = 2105;    % in MHz
-stopFreq  = 2124;    % in MHz 
+power     = 0;      % in dBm - be careful!! Do not set too high!!
+startFreq = 0.3;    % in MHz
+stopFreq  = 200;    % in MHz 
 
 % decide whether to include metadata (1=include,0=don't)
-saveFig   = 0;       % for saving the figure
+saveFig   = 1;       % for saving the figure
 plotHe    = 0;       % for Patm and numShots metaData
 plotIDC   = 0;       % for capacitance metaData
-% tag = 'freqSweep_tuningFork';
-tag = 'freqSweep';
+tag = 'coaxSweep';
 
 addedHe   = 15;         % in inHg from reading the gauge
 % deviceIDC = VmeasE;    % device for IDC measurement
@@ -40,11 +39,13 @@ subplot(1,2,2);
 [freqvsphase,myFig] = plotData(fdata,phase,'xLabel',"Frequency (GHz)",'yLabel',"\phi (^{\circ})",'color',"r.",'subPlot',1,'type',"linear");
 
 %% Set up meta data (save important params as str) and save plot
-resistance = queryHP34401A(Thermometer);
-temperature = Therm.tempFromRes(resistance);
-sgtitle(['f_{res}=', num2str(fres),'GHz, T=', num2str(temperature),'K']);
+% resistance = queryHP34401A(Thermometer);
+% temperature = Therm.tempFromRes(resistance);
+% sgtitle(['f_{res}=', num2str(fres),'GHz, T=', num2str(temperature),'K']);
+% 
+% metadata_struct.temperature = [num2str(temperature)];
 
-metadata_struct.temperature = [num2str(temperature)];
+sgtitle(['f_{res}=', num2str(fres*1e3),'MHz, coax #11']);
 
 if plotHe == 1
     Patm     = Patm + inHgToAtm(addedHe);   % initialise in command line

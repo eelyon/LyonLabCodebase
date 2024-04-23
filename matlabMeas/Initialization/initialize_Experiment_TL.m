@@ -25,7 +25,8 @@ if small_glass_dewar
     
 else
     % Anthony's 24 channel DAC
-    sigDACPort = 'COM6';
+    sigDACPortControl = 'COM7';
+    sigDACPortSupply  = 'COM6';
 
     % SR830s
 %     VmeasC_Address = '172.29.117.103';    
@@ -58,7 +59,8 @@ else
     oscope_Address = 'USB0::0x0699::0x0374::C011644::0';
 end
 % 
- DAC = sigDAC(sigDACPort,24,'DAC');
+DAC_control = sigDAC(sigDACPortControl,24,'DAC');
+DAC_supply = sigDAC(sigDACPortSupply,24,'DAC');
 % VmeasC = SR830(port,VmeasC_Address);
 % VmeasE = SR830(port,VmeasE_Address);
 % VdoorModC = Agilent33220A(port,VdoorModC_Address,1);
