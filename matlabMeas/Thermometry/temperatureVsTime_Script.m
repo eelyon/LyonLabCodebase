@@ -14,3 +14,4 @@ thermPlot = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temper
 
 temperatureVsTime(Thermometer,timeBetweenPoints,Therm,thermPlot);
 
+ 
