@@ -3,6 +3,6 @@ function [xLabel,yLabel] = getXYLabel(figPath)
     ax = gca;
     xLabel = ax.XLabel.String;
     yLabel = ax.YLabel.String;
-    closeFig(fig);
+    closeFigure(fig);
 end
 

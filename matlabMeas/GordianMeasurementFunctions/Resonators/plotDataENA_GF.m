@@ -1,26 +1,25 @@
 %% Set single frequency sweep
 % close all;
 
-power     = 5;      % in dBm - be careful!! Do not set too high!!
-startFreq = 2125;    % in MHz
-stopFreq  = 2140;    % in MHz 
+power     = 0;      % in dBm - be careful!! Do not set too high!!
+startFreq = 0.3;    % in MHz
+stopFreq  = 200;    % in MHz 
 
 % decide whether to include metadata (1=include,0=don't)
 saveFig   = 1;       % for saving the figure
-plotHe    = 1;       % for Patm and numShots metaData
+plotHe    = 0;       % for Patm and numShots metaData
 plotIDC   = 0;       % for capacitance metaData
-% tag = 'freqSweep_tuningFork';
-tag = 'freqSweep';
+tag = 'coaxSweep';
 
-addedHe   = 2;         % in inHg from reading the gauge
-deviceIDC = VmeasE;    % device for IDC measurement
+addedHe   = 15;         % in inHg from reading the gauge
+% deviceIDC = VmeasE;    % device for IDC measurement
 
 E5071SetPower(ENA,power);           % in dBm
 E5071SetStartFreq(ENA,startFreq);   % in MHz
 E5071SetStopFreq(ENA,stopFreq);     % in MHz
 
 flush(ENA);
-pause(0.1);
+pause(0.1)
 fprintf(ENA,':INIT1');         % Set trigger value - for continuous set: ':INIT:CONT ON'
 fprintf(ENA,':TRIG:SOUR BUS'); % Set trigger source to "Bus Trigger"
 fprintf(ENA,':TRIG:SING');     % Trigger ENA to start sweep cycle
@@ -35,16 +34,18 @@ measType = num2str(query(ENA,':CALC:PAR:DEF?')); % S21, S12, S22, or S11
 subPlotFigure = figure(getNextMATLABFigNum());
 
 subplot(1,2,1);
-freqvsmag = plotData(fdata,mag,'xLabel',"Frequency (GHz)",'yLabel',strcat(measType," (dB)"),'color',"b.",'subPlot',1);
+freqvsmag = plotData(fdata,mag,'xLabel',"Frequency (GHz)",'yLabel',strcat(measType," (dB)"),'color',"b.",'subPlot',1,'type',"linear");
 subplot(1,2,2);
-[freqvsphase,myFig] = plotData(fdata,phase,'xLabel',"Frequency (GHz)",'yLabel',"\phi (^{\circ})",'color',"r.",'subPlot',1);
+[freqvsphase,myFig] = plotData(fdata,phase,'xLabel',"Frequency (GHz)",'yLabel',"\phi (^{\circ})",'color',"r.",'subPlot',1,'type',"linear");
 
 %% Set up meta data (save important params as str) and save plot
-resistance = queryHP34401A(Thermometer);
-temperature = Therm.tempFromRes(resistance);
-sgtitle(['f_{res}=', num2str(fres),'GHz, T=', num2str(temperature),'K']);
+% resistance = queryHP34401A(Thermometer);
+% temperature = Therm.tempFromRes(resistance);
+% sgtitle(['f_{res}=', num2str(fres),'GHz, T=', num2str(temperature),'K']);
+% 
+% metadata_struct.temperature = [num2str(temperature)];
 
-metadata_struct.temperature = [num2str(temperature)];
+sgtitle(['f_{res}=', num2str(fres*1e3),'MHz, coax #11']);
 
 if plotHe == 1
     Patm     = Patm + inHgToAtm(addedHe);   % initialise in command line
@@ -73,7 +74,7 @@ function Patm = inHgToAtm(inHg)
     % Function converting the reading on the small, silver gas
     % manifold gauge to Patm
     % param inHg: pressure reading in inches of mercury (pos. number)
-    Patm = 1; %(30-inHg)*0.0334211;
+    Patm = (30-inHg)*0.0334211;
 end
 
 function capIDC = cap(Device)

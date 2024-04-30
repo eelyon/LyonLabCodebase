@@ -15,8 +15,8 @@ function [] = overlayFigNums(figNumArray)
          figPathCell = findFigNumPath(figureNumber);
          figPath = figPathCell{1};
          [xDat,yDat] = getXYData(figPath);
-         xDats{figNum} = xDat;
-         yDats{figNum} = yDat;
+         xDats{figNum} = xDat.*1e9;
+         yDats{figNum} = yDat./xDat;
          figNum = figNum + 1;
     end
 

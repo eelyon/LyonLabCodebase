@@ -3,7 +3,7 @@
 % fprintf(ENA,':SYST:KLOC:MOUS OFF'); % Lock mouse and touch screen
 
 E5071SetAvg(ENA,'Off'); % Turn off averaging
-E5071SetMeas(ENA,1,'S21'); % S11, S12, S21, S22
+E5071SetMeas(ENA,1,'S12'); % S11, S12, S21, S22
 E5071SetNumPoints(ENA,9000); % set no. of points
 E5071SetDataFormat(ENA,'PLOG'); % SLIN, SLOG, SCOM, SMIT, SADM, PLIN, PLOG, or POL
 %E5071SetDelay(ENA,500,2200); % correct for electrical delay

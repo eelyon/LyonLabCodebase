@@ -6,12 +6,11 @@ function [] = saveData(figObject,figName,varagin)
             incrementFile = varagin;
     end
     
-    figID = genFigName(figName);
+    figID   = genFigName(figName);
     figText = genFigText(figName);
     
     figPath = getFigPath(getCurrentDataFolder(),figID);
-    
-    addFigID(figText);
+    addFigID(figObject,figText);
     saveas(figObject,figPath,'fig');
     if incrementFile
         incrementFileNum();

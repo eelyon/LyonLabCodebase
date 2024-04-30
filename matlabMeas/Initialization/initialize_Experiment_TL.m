@@ -25,7 +25,9 @@ if small_glass_dewar
     
 else
     % Anthony's 24 channel DAC
-    sigDACPort = 'COM5';
+
+    sigDACPortControl = 'COM7';
+    sigDACPortSupply  = 'COM6';
 
     % SR830s
 %     VmeasC_Address = '172.29.117.103';    
@@ -58,7 +60,9 @@ else
     oscope_Address = 'USB0::0x0699::0x0374::C011644::0';
 end
 % 
- DAC = sigDAC(sigDACPort,24,'DAC');
+DAC = sigDAC(sigDACPort,24,'DAC');
+DAC_control = sigDAC(sigDACPortControl,24,'DAC');
+DAC_supply = sigDAC(sigDACPortSupply,24,'DAC');
 % VmeasC = SR830(port,VmeasC_Address);
 % VmeasE = SR830(port,VmeasE_Address);
 % VdoorModC = Agilent33220A(port,VdoorModC_Address,1);
@@ -70,7 +74,16 @@ end
 % % Filament = Agilent33220A(port,Fil_Address,1);
 % VpulsSig = SDG5122(Sig_Address);
 % Thermometer = TCPIP_Connect(DMM_Address,port);
+
 % 
 % 
 % GUI = Tiffany_GUI;
 % DCMap;
+% 
+% GUI = Tiffany_GUI;
+% DCMap;
+
+% DMM1_Address = '172.29.117.107';
+% DMM2_Address = '172.29.117.108';
+% DMM1 = TCPIP_Connect(DMM1_Address,1234);
+% DMM2 = TCPIP_Connect(DMM2_Address,1234);
