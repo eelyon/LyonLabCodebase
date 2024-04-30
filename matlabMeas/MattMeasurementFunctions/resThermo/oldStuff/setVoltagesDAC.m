@@ -3,30 +3,12 @@
 channels = [1, 2, 3, 4, 5, 6, 7, 8];
 numSteps = 100;
 
-voltsEmitt = [-0.3,...  %DAC 1
-        -0.2,...   %DAC 2
-        -1.5,...   %DAC 3
-        -1.0,...   %DAC 4
+voltsEmittMeas = [0.5,...  %DAC 1
+        -0.15,...   %DAC 2
+        -0.2,...   %DAC 3
+        -0.0,...   %DAC 4
         -1.5,...   %DAC 5
         -1.5,...   %DAC 6
-        0,...   %DAC 7
-        0];     %DAC 8
-
-voltsEmittMeas = [-0.5,...  %DAC 1
-        -1.0,...   %DAC 2
-        -3.0,...   %DAC 3
-        -0.0,...   %DAC 4
-        -2.5,...   %DAC 5
-        -2.5,...   %DAC 6
-        0,...   %DAC 7
-        0];     %DAC 8
-
-voltsEmittMeasRes = [2.5,...  %DAC 1
-        -2.0,...   %DAC 2
-        -4,...   %DAC 3
-        -0.0,...   %DAC 4
-        -0.3,...   %DAC 5
-        -0.3,...   %DAC 6
         0,...   %DAC 7
         0];     %DAC 8
 
@@ -58,12 +40,10 @@ voltsSucc = [8,...  %DAC 1
         succer,...   %DAC 7
         succer];     %DAC 8
 
-%voltUse = voltsEmitt;
 voltUse = voltsEmittMeas;
 %voltUse = voltsEmittTest;
 %voltUse = voltsSucc;
 %voltUse = voltsGnd;
-%voltUse = voltsEmittMeasRes;
 
 %%{
 for i = 1:length(voltUse)
