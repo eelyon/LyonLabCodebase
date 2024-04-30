@@ -16,11 +16,11 @@ DACGUI = sigDACGUI;
 USBAddress = 'USB0::0xF4EC::0x1102::SDG2XFBQ7R2639::INSTR';
 SDG5122 = SDG5122(USBAddress);
 
-powPort = 5025;
-pow_Address = '172.29.117.132';
-
-dcps = SPD330(pow_Address,powPort);
-
+% powPort = 5025;
+% pow_Address = '172.29.117.132';
+% 
+% dcps = SPD330(pow_Address,powPort);
+% 
 % 
 % AWG_Address = '172.29.117.105';
 % AWG = Agilent33220A(port,AWG_Address);

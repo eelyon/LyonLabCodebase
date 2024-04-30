@@ -5,10 +5,11 @@ function [fig,myFig] = plotData(xData,yData,varargin)
     defaultColor = 'ro';
     defaultSubPlot = 0;
     defaultTurnHoldOn = 0;
-    defaultType = 'plot';
+    defaultType = 'linear';
     defaultTitle = '';
     defaultGrid = 'off';
     defaultMetaDat = '';
+
     % Parse optional arguments
     p = inputParser;
     addRequired(p,'xData',@isnumeric);

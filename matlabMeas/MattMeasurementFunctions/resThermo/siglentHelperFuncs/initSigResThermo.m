@@ -2,8 +2,8 @@ function [] = initSigResThermo(SDG5122 ,initFreq, initAmp)
     set5122Output(SDG5122, 0, 1);
     set5122Output(SDG5122, 0, 2);
 
-    set5122OutputLoad(SDG5122, '50', 1);
-    set5122OutputLoad(SDG5122, '50', 2);
+    set5122OutputLoad(SDG5122, 'HZ', 1);
+    set5122OutputLoad(SDG5122, 'HZ', 2);
     set5122Polarity(SDG5122, 'NOR', 1);
     set5122Polarity(SDG5122, 'INVT', 2);
 
