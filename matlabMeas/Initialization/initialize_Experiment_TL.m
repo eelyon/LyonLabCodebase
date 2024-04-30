@@ -25,6 +25,7 @@ if small_glass_dewar
     
 else
     % Anthony's 24 channel DAC
+
     sigDACPortControl = 'COM7';
     sigDACPortSupply  = 'COM6';
 
@@ -59,6 +60,7 @@ else
     oscope_Address = 'USB0::0x0699::0x0374::C011644::0';
 end
 % 
+DAC = sigDAC(sigDACPort,24,'DAC');
 DAC_control = sigDAC(sigDACPortControl,24,'DAC');
 DAC_supply = sigDAC(sigDACPortSupply,24,'DAC');
 % VmeasC = SR830(port,VmeasC_Address);
@@ -73,6 +75,10 @@ DAC_supply = sigDAC(sigDACPortSupply,24,'DAC');
 % VpulsSig = SDG5122(Sig_Address);
 % Thermometer = TCPIP_Connect(DMM_Address,port);
 
+% 
+% 
+% GUI = Tiffany_GUI;
+% DCMap;
 % 
 % GUI = Tiffany_GUI;
 % DCMap;

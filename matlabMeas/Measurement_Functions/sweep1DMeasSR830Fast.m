@@ -172,11 +172,19 @@ function [x,y,mag,t] = getSR830Data(x,y,t,startTime,readSR830,numPointsToRead)
 % targetSR830. IMPORTANT: readSR830 needs to be a cell array of SR830
 % objects!!!.
     currentSR830 = readSR830{1};
+    tc = SR830queryTimeConstant(currentSR830);
+    sratInd = floor(log2(1 / (0.0625 * tc)));
+    fprintf(currentSR830.client,"SRAT" + num2str(sratInd));
+
+    sratRate = (2^sratInd) * 0.0625;
+
+    %disp(sratRate);
+
     fprintf(currentSR830.client,"REST");
-    fprintf(currentSR830.client,'STRD');delay(3);fprintf(currentSR830.client,'PAUS');
+    fprintf(currentSR830.client,'STRD');delay(1 + (numPointsToRead/sratRate));fprintf(currentSR830.client,'PAUS');
     x = [x,currentSR830.SR830queryXFast(numPointsToRead)];
     y = [y,currentSR830.SR830queryYFast(numPointsToRead)];
-    t = [t,(now() - startTime)*86400 - linspace(0,numPointsToRead/512,numPointsToRead)];
+    t = [t,(now() - startTime)*86400 - linspace(0,numPointsToRead/sratRate,numPointsToRead)];
     mag = sqrt(x.^2 + y.^2);
 end
 

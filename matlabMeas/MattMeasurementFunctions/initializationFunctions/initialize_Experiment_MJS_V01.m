@@ -22,5 +22,6 @@ SDG5122 = SDG5122(USBAddress);
 % dcps = SPD330(pow_Address,powPort);
 % 
 % 
-% AWG_Address = '172.29.117.105';
-% AWG = Agilent33220A(port,AWG_Address);
+% % 
+% % AWG_Address = '172.29.117.105';
+% % AWG = Agilent33220A(port,AWG_Address);

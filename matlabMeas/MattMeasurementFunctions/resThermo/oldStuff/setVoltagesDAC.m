@@ -6,6 +6,7 @@ numSteps = 100;
 voltsEmittMeas = [1.0,...  %DAC 1
         -0.12,...   %DAC 2
         -0.15,...   %DAC 3
+
         -0.0,...   %DAC 4
         -1.5,...   %DAC 5
         -1.5,...   %DAC 6
