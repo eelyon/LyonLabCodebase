@@ -10,6 +10,7 @@ function [fig,myFig] = plotData(xData,yData,varargin)
     defaultGrid = 'off';
     defaultMetaDat = '';
     defaultSaveMeta = 1;
+
     % Parse optional arguments
     p = inputParser;
     addRequired(p,'xData',@isnumeric);

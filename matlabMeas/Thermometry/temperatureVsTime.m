@@ -1,7 +1,8 @@
 function [] = temperatureVsTime(Thermometer,timeBetweenPoints,therm,pHandle,figHandle)
+
 i=1;
 startTime = now();
-cleanupObj = onCleanup(@()cleanMeUp(pHandle));
+cleanupObj = onCleanup(@()cleanMeUp(figHandle));
 time = [];
 temperature = [];
 while 1

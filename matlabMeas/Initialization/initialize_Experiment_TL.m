@@ -28,6 +28,9 @@ else
     sigDACPortControl = 'COM6';
     sigDACPortSupply  = 'COM8';
 
+%     sigDACPortControl = 'COM7';
+%     sigDACPortSupply  = 'COM6';
+
     % SR830s
 
 %     VmeasC_Address = '172.29.117.103';    
@@ -62,7 +65,6 @@ else
     VpulsTrig_Address = '172.29.117.123';
 end
 
-
 controlDAC = sigDAC(sigDACPortControl,24,'controlDAC');
 supplyDAC = sigDAC(sigDACPortSupply,24,'supplyDAC');
 VmeasC = SR830(port,VmeasC_Address);
@@ -74,6 +76,7 @@ VdoorModE = Agilent33220A(port,VdoorModE_Address,1);
 Vpuls1 = Agilent33220A(port,Vpuls1_Address,1);
 Vpuls2 = Agilent33220A(port,Vpuls2_Address,1);
 VpulsTrig = Agilent33220A(port,VpulsTrig_Address,1);
+
 % VdoorModC = Agilent33220A(port,VdoorModC_Address,1);
 % VtwiddleC = Agilent33220A(port,VtwiddleC_Address,1);
 
