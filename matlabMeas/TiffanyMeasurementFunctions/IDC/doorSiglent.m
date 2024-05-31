@@ -1,7 +1,8 @@
 function [ ] = doorSiglent(VpulsSig,TauE,TauC,delay,unit)
-%% generates a pulse sequence using an Agilent and a Siglent (pulses don't have to start together)
+%% generates a pulse sequence using a Siglent (pulses don't have to start together)
 % INPUTS: TauE = emitter door time in whatever unit, TauC = collector door time in whatever unit,
 %         delay = delay in actual time you want it, unit = 'us', 'ms', etc for Agilent
+
 initialize = 0;
 dev  = VpulsSig;
 amp_high = 2.5;
@@ -42,6 +43,11 @@ else
 end
 
 % set Siglent
+set5122BurstTriggerSource(dev,'MAN',1);
+set5122BurstTriggerSource(dev,'EXT',2);
+set5122BurstStateOn(dev,1,1);          % enable burst, needs to go here or else will pulse
+set5122BurstStateOn(dev,1,2);          % enable burst, needs to go here or else will pulse
+delay(1)
 set5122Period(dev,TauE*2,1);
 set5122PulseWidth(dev,TauE,1);
 set5122Period(dev,TauC*2,2);
@@ -56,7 +62,7 @@ set5122PulseWidth(dev,TauC,2);
 % set5122BurstTriggerSource(dev,'MAN',1);
 % set5122BurstTriggerSource(dev,'EXT',2);
 % 
-% set5122Delay(dev,delay,2);
+% set5122BurstDelay(dev,delay,2);
 % set5122Output(dev,1,1);                % turn outputs on 
 % set5122Output(dev,1,2);                % turn outputs on 
 

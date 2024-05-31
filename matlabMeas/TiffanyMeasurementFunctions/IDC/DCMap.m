@@ -1,86 +1,50 @@
 % need connect since calls it anew everytime in the DCConfig function
 
 %% Emitter
-TopEPort       = 14;
-TopEDevice     = DAC; 
-
-StmEPort       = 19;
-StmEDevice     = DAC;
-
-DoorEClosePort      = 23;
-DoorECloseDevice    = DAC;
-
-DoorEOpenPort      = 15;
-DoorEOpenDevice    = DAC;
-
-STOBiasEPort      = 24;
-STOBiasEDevice    = DAC;
-
-STIBiasEPort      = 4;
-STIBiasEDevice    = DAC;
-
-TwiddleEPort      = 17;
-TwiddleEDevice    = DAC;
-
-SenseEPort      = 16;
-SenseEDevice    = DAC;
-
-DoorEInPort      = 9;
-DoorEInDevice    = DAC;
+TopEPort       = 9;
+StmEPort       = 10;
+DoorEClosePort     = 8;
+DoorEOpenPort      = 8;
+STOBiasEPort       = 22;
+STIBiasEPort       = 24;
+TwiddleEPort       = 21;
+SenseEPort         = 12;
+DoorEInPort        = 11;
 
 
 %% Collector
-TopCPort       = 18;
-TopCDevice     = DAC;
-
-StmCPort       = 20;
-StmCDevice     = DAC;
-
-DoorCClosePort      = 21;
-DoorCCloseDevice    = DAC;
-
-DoorCOpenPort      = 13;
-DoorCOpenDevice    = DAC;
-
-STOBiasCPort      = 22;
-STOBiasCDevice    = DAC;
-
+TopCPort       = 17;
+StmCPort       = 4;
+DoorCClosePort      = 18;
+DoorCOpenPort      = 18;
+STOBiasCPort      = 15;
 STIBiasCPort      = 2;
-STIBiasCDevice    = DAC;
-
-TwiddleCPort      = 7;
-TwiddleCDevice    = DAC;
-
-SenseCPort      = 11;
-SenseCDevice    = DAC;
-
-DoorCInPort      = 10;
-DoorCInDevice    = DAC;
+TwiddleCPort      = 5;
+SenseCPort      = 3;
+DoorCInPort      = 14;
 
 %% Thin Film
 
-TfCPort        = 3;
-TfCDevice      = DAC;
-
+TfCPort        = 1;
 TfEPort        = 1;
-TfEDevice      = DAC;
 
 %% IDC
 % IdcNGPort       = 9;
-% IdcNGDevice     = DAC;
-
-IdcNFPort       = 8;
-IdcNFDevice     = DAC;
-
+IdcNFPort       = 1;
 % IdcPGPort       = 10;
-% IdcPGDevice     = DAC;
+IdcPFPort       = 1;
 
-IdcPFPort       = 12;
-IdcPFDevice     = DAC;
+%% Supply Voltages
 
-%% Top Metal
 TopMetalPort   = 5;
-TopMetalDevice = DAC;
 
-EPort = 10;
-EDevice = DAC;
+% Emitter Amplifier
+VccAmpEPort   = 20;
+VbbAmpEPort   = 15;
+VccFollowerEPort   = 14; 
+
+% Collector Amplifier
+
+VccAmpCPort   = 7;
+VbbAmpCPort   = 24;
+VccFollowerCPort   = 13; 

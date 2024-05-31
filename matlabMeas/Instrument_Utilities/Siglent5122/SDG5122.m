@@ -172,7 +172,7 @@ classdef SDG5122
         end
 
         function [] = set5122Period(Siglent5122,periodInSec, chann) 
-            command = ['C',num2str(chann),':BSWV PERI,' num2str(periodInSec)];
+            command = ['C',num2str(chann),':BTWV PERI,' num2str(periodInSec)];
             fprintf(Siglent5122.client,command);
         end
 
@@ -195,7 +195,7 @@ classdef SDG5122
         end
 
         function [] = set5122Delay(Siglent5122,delay, chann) 
-            command = ['C',num2str(chann),':BTWV DLAY,' num2str(delay)];
+            command = ['C',num2str(chann),':BSWV DLAY,' num2str(delay)];
             fprintf(Siglent5122.client,command);
         end
 
@@ -260,6 +260,8 @@ classdef SDG5122
             imp = char(splitted(5));
         end
 
+        %% Burst Wave Functions %%
+
         function [] = set5122BurstStateOn(SDG5122,onOrOff, chann)
             if onOrOff
                 command = ['C',num2str(chann),':BTWV STATE,ON'];
@@ -270,6 +272,7 @@ classdef SDG5122
         end
 
         function [] = set5122BurstTriggerSource(Siglent5122,burstTrigger, chann)
+            set5122BurstStateOn(Siglent5122,1, chann);
             validTypes = 'EXT,INT,MAN';
             if ~contains(validTypes,burstTrigger)
                 fprintf('Invalid burst trigger source, valid types are:\n');
@@ -280,13 +283,32 @@ classdef SDG5122
             end
         end
 
-        function [] = set33220TriggerOutput(Agilent33220A,OnOff)
+        function [] = set5122BurstPeriod(Siglent5122,periodInSec,chann)
+            %set5122BurstStateOn(Siglent5122,1, chann);
+            command = ['C',num2str(chann),':BTWV PRD,' num2str(periodInSec)];
+            fprintf(Siglent5122.client,command);
+        end
+
+        function [] = set5122BurstRise(Siglent5122,time,chann) % sets rise time
+            set5122BurstStateOn(Siglent5122,1, chann);
+            command = ['C',num2str(chann),':BTWV RISE,' num2str(time)];
+            fprintf(Siglent5122.client,command);
+        end
+
+        function [] = set5122BurstDelay(Siglent5122,delay, chann)
+            set5122BurstStateOn(Siglent5122,1, chann);
+            command = ['C',num2str(chann),':BTWV DLAY,' num2str(delay)];
+            fprintf(Siglent5122.client,command);
+        end
+
+        function [] = set33220TriggerOutput(Siglent5122,OnOff)
+            set5122BurstStateOn(Siglent5122,1, chann);
             if OnOff
                 command = 'OUTP:TRIG ON';
             else
                 command = 'OUTP:TRIG OFF';
             end
-            fprintf(Agilent33220A.client,command);
+            fprintf(Siglent5122.client,command);
         end
 
     end

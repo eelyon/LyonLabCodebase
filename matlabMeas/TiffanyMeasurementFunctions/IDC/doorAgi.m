@@ -1,5 +1,5 @@
 function [ ] = doorAgi(VpulsAgi, VpulsAgi2,TauE,TauC,unit)
-%% generates pulses using two Agilents (have to both start at the same time)
+%% generates pulses using two Agilents (both have to start at the same time)
 % INPUTS: TauE = emitter door time in whatever unit, TauC = collector door time in whatever unit,
 %         delay = delay in actual time you want it, unit = 'us', 'ms', etc for Agilent
 

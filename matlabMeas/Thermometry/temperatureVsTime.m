@@ -1,5 +1,4 @@
-function [] = temperatureVsTime(Thermometer,timeBetweenPoints,therm,pHandle)
-
+function [] = temperatureVsTime(Thermometer,timeBetweenPoints,therm,pHandle,figHandle)
 i=1;
 startTime = now();
 cleanupObj = onCleanup(@()cleanMeUp(pHandle));
@@ -9,13 +8,13 @@ while 1
     resistance = queryHP34401A(Thermometer);
     time(i) = (now()-startTime)*86400/60;
     temperature(i) = therm.tempFromRes(resistance);
-    pHandle.YData = temperature;
-    pHandle.XData = time;
+    figHandle.YData = temperature;
+    figHandle.XData = time;
     title(['Temperature=' num2str(temperature(i)) 'K']);
     i = i+1;
     refreshdata;
     drawnow;
-    pause(timeBetweenPoints);
+    delay(timeBetweenPoints);
 end
 
     function cleanMeUp(handle)

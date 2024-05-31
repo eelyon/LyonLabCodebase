@@ -46,6 +46,10 @@ end
 xlabel(voltageAxisName);
 ylabel(yLabel);
 title("Real vs Voltage");
+ax = gca;
+ax.LineWidth = 1;
+ax.XMinorTick = 'on';
+ax.YMinorTick = 'on';
 
 subplot(2,3,5)
 if ~doBackAndForth
@@ -59,6 +63,10 @@ end
 xlabel(voltageAxisName);
 ylabel(yLabel);
 title("Imag vs Voltage");
+ax = gca;
+ax.LineWidth = 1;
+ax.XMinorTick = 'on';
+ax.YMinorTick = 'on';
 
 subplot(2,3,6)
 if ~doBackAndForth
@@ -69,6 +77,10 @@ else
     magVsVoltageErr2 = errorbar(time,Real,Imag,'GO');
     hold off
 end
+ax = gca;
+ax.LineWidth = 1;
+ax.XMinorTick = 'on';
+ax.YMinorTick = 'on';
 xlabel(voltageAxisName);
 ylabel(yLabel);
 title("Mag vs Voltage");
@@ -99,8 +111,12 @@ switch targetGate
         xAxisName = "Reservoir Voltage [V]";
     case 'Door'
         xAxisName = "Door Voltage [V]";
+    case 'DoorOut'
+        xAxisName = "Door Out Voltage [V]";
     case 'DP'
         xAxisName = "Dot Potential Voltage [V]";
+    case 'Guard'
+        xAxisName = "Guard Voltage [V]";
     case 'Pair'
         deviceSet = evalin("base","Top100Device");
         portSet = evalin("base","Top100Port");
@@ -130,7 +146,11 @@ switch targetGate
     case 'PHAS'
         xAxisName = 'Phase [Degrees]';
     case 'Vrms'
-        xAxisName = 'Agilent Amplitude [Vrms]';
+        xAxisName = 'Voltage Amplitude [Vrms]';
+    case 'Vpp'
+        xAxisName = 'Voltage Amplitude [Vpp]';
+    case 'STG'
+        xAxisName = 'Sommer Tanner Voltage [V]';
     otherwise
         xAxisName = 'unknown';
 end
