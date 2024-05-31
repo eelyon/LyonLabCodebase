@@ -4,7 +4,7 @@ function rampVal(Device,Port,startVal,stopVal,deltaVal,waitTime)
 
     for v = val
         setVal(Device,Port,v);
-        pause(waitTime);
+        delay(waitTime);
     end
 end
 

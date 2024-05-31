@@ -9,6 +9,7 @@ function [fig,myFig] = plotData(xData,yData,varargin)
     defaultTitle = '';
     defaultGrid = 'off';
     defaultMetaDat = '';
+    defaultSaveMeta = 1;
 
     % Parse optional arguments
     p = inputParser;
@@ -24,6 +25,7 @@ function [fig,myFig] = plotData(xData,yData,varargin)
     addParameter(p,'title',defaultTitle,@isstring);
     addParameter(p,'grid',defaultGrid,@isnumeric);
     addParameter(p,'metaData',defaultMetaDat,@isstring);
+    addParameter(p,'saveMeta',defaultSaveMeta,@isnumeric);
     parse(p,xData,yData,varargin{:});
     
     % Plot figure with optional arguments, defaults if arguments are not 
@@ -36,18 +38,19 @@ function [fig,myFig] = plotData(xData,yData,varargin)
         myFig = figure(newFigNum);
     end
     
+
     if strcmp(p.Results.type,'linear')
         fig = plot(xData,yData,p.Results.color);
     elseif strcmp(p.Results.type,'semilogy')
         fig = semilogy(xData,yData,p.Results.color);
     end
 
-    if p.Results.grid
-        ax = gca;
-        ax.YGrid = 'on';
-    end
-    
-    
+    ax = gca;
+    ax.YGrid = p.Results.grid;
+    ax.LineWidth = 1;
+    ax.XMinorTick = 'on';
+    ax.YMinorTick = 'on';
+
     if p.Results.holdOn
         hold on;
     else
@@ -66,17 +69,16 @@ function [fig,myFig] = plotData(xData,yData,varargin)
     metadata_struct.time= datestr(now(),figDateFormat);
     metadata_struct.metaData = p.Results.metaData;
     instrumentList = parseInstrumentList();
-    save = 0;
-    if length(instrumentList) > 1 && save ==1
+    if ~isempty(instrumentList) > 0 && p.Results.saveMeta
         for i = 1:length(instrumentList)
             if contains(instrumentList{i},"SR830")
                 metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
             elseif contains(instrumentList{i},"DAC")
                 metadata_struct.sigDAC = evalin('base',[instrumentList{i} '.channelVoltages;']);
-            elseif contains(instrumentList{i},"VmeasC")
-                metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
-            elseif contains(instrumentList{i},"VmeasE")
-                metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
+            elseif contains(instrumentList{i},"DoorLeft")
+                metadata_struct.DoorLeft = evalin("base",strcat("query33220PulseWidth(",instrumentList{i},");"));
+            elseif contains(instrumentList{i},"DoorRight")
+                metadata_struct.DoorRight = evalin("base",strcat("query33220PulseWidth(",instrumentList{i},");"));
             end
         end
         % Insert metadata structure into figure and save in data.

@@ -76,10 +76,10 @@ for valueIndex1 = 1:length(paramVector1) %loops through 1 first
     end
     
     if haveDAC
-        evalin("base","DACGUI.updateDACGUI");
-        drawnow;
+        %evalin("base","DACGUI.updateDACGUI");
+        %drawnow;
     end
-    pause(timeBetweenPoints);
+    delay(timeBetweenPoints);
     
     valueIndexVector2 = 1:length(paramVector2);
     if mod(valueIndex1, 2) == 0
@@ -111,7 +111,7 @@ for valueIndex1 = 1:length(paramVector1) %loops through 1 first
 %             evalin("base","DACGUI.updateDACGUI");
 %             drawnow;
 %         end
-        pause(timeBetweenPoints);
+        delay(timeBetweenPoints);
         %% Initialize average vectors that gets reset for the repeating for loop
         magVectorRepeat = [];
         %% Repeating for loop - changing repeat increases the number of averages to perform per point.
@@ -130,5 +130,5 @@ end
 
 function mag = getSR830MagData(readSR830)
     mag = sqrt(readSR830.SR830queryX()^2 + readSR830.SR830queryY()^2);
-    pause(.001);
+    delay(.001);
 end

@@ -58,12 +58,21 @@ elseif contains(name,'33220A')
     elseif Port == 3
         Device.set33220Phase(Value);
     elseif Port == 4
-        Device.set33220Amplitude(Value,'VRMS')
+        Device.set33220Amplitude(Value,'VPP')
     elseif Port == 5
         Device.set33220VoltageOffset(Value)
     else
         fprintf('\nUnknown Port\n')
         errorFlag = -3;
+    end
+elseif contains(name,'33622A')
+    % Honestly this 33622A portion is pretty bad. The port should also be
+    % passed in but I'm just going to assume port 2 is the one that will
+    % vary......
+    if Port == 3
+        Device.set33622APhase(Value,2);
+    elseif Port == 4
+        Device.set33622AAmplitude(Value,'VPP',2)
     end
 elseif contains(name,'SDG5122') || contains(name,'5122')
     if contains(Port,'DualModFreq')

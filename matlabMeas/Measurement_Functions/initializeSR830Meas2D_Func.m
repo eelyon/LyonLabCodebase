@@ -86,6 +86,8 @@ switch targetGate
         axisName = "Door Voltage [V]";
     case 'DP'
         axisName = "Dot Potential Voltage [V]";
+    case 'Guard'
+        axisName = "Guard Voltage [V]";
     case 'Pair'
         deviceSet = evalin("base","Top100Device");
         portSet = evalin("base","Top100Port");
@@ -105,8 +107,14 @@ switch targetGate
         axisName = "Integration Width [\mus]";
     case 'PHAS'
         axisName = "Phase [Degrees]";
+    case 'TWW'
+        axisName = "Twiddle [V]";
+    case 'SEN'
+        axisName = "Sense [V]";
     case 'Vrms'
         axisName = "Agilent Amplitude [Vrms]";
+    case 'Vpp'
+        axisName = "Agilent Amplitude [Vpp]";
     otherwise
         axisName = 'unknown';
 end
