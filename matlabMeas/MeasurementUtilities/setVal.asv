@@ -72,23 +72,11 @@ elseif contains(name,'SDG5122') || contains(name,'5122')
     if contains(Port, 'ModPhase2')
         set5122ModPhase(Device, Value, 2)
     end
-    if contains(Port, 'ModAmp1')
-        set5122ModAmp(Device, Value, 1)
-    end
-    if contains(Port, 'ModAmp2')
-        set5122ModAmp(Device, Value, 2)
-    end
     if contains(Port, 'BasePhase1')
         set5122Phase(Device, Value, 1)
     end
     if contains(Port, 'BasePhase2')
         set5122Phase(Device, Value, 2)
-    end
-    if contains(Port, 'BaseAmp1')
-        set5122Amp(Device, Value, 1)
-    end
-    if contains(Port, 'BaseAmp2')
-        set5122Amp(Device, Value, 2)
     end
     if contains(Port,'DualModFreq')
         set5122ModFreq(Device, Value, 1);

@@ -40,5 +40,13 @@ function plotName = genSR830PlotName(targetGate)
             plotName = 'Ag33220PhaseSweep';
         case 'Vrms'
             plotName = 'Ag33220VrmsAmpSweep';
+        case 'HeatPhase'
+            plotName = 'HeatingPhase';
+        case 'HeatPhaseUnmod'
+            plotName = 'HeatingPhaseUnmod';
+        case 'HeatAmpUnmod'
+            plotName = 'HeatingAmpUnmod';
+        case 'HeatAmp'
+            plotName = 'HeatingAmp';
     end
 end
