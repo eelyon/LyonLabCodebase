@@ -16,6 +16,8 @@ rampVal(d3_ccd(1),d3_ccd(2),getVal(d3_ccd(1),d3_ccd(2)),-1,-0.2,waitTime); % clo
 rampVal(ccd1(1),ccd1(2),getVal(ccd1(1),ccd1(2)),+3,+0.2,waitTime); % open phi1
 rampVal(d4_ccd(1),d4_ccd(2),getVal(d4_ccd(1),d4_ccd(2)),-1,-0.2,waitTime); % close 3rd door
 
+delay(10);
+
 ccd_units = 63; % number of repeating units in ccd array
 
 for i = 1:ccd_units 
