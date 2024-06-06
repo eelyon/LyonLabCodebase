@@ -1,31 +1,29 @@
 %% Script for moving electrons from Sommer-Tanner to first diff. meas. region
-Pinout_240530;
-
-waitTime = 0.01; % set wait time for DAC between bias steps
-
-% Do I need to tilt the Sommer-Tanner? Create voltage differential from
-% STD, STM, to STS
+DCPinout;
+deltaVal = 0.05; % voltage step for ramp
+waitTime = 0.01; % set wait time after each voltage step
+Vopen = 1; % holding voltage of ccd
+Vclose = -1; % closing voltage of ccd
 
 %% open first three doors
-rampVal(d1_ccd(1),d1_ccd(2),getVal(d1_ccd(1),d1_ccd(2)),+3,+0.2,waitTime); % open 1st door
-rampVal(d3_ccd(1),d3_ccd(2),getVal(d3_ccd(1),d3_ccd(2)),+3,+0.2,waitTime); % open 2nd door
-rampVal(d1_ccd(1),d1_ccd(2),getVal(d1_ccd(1),d1_ccd(2)),-1,-0.2,waitTime); % close 1st door
-rampVal(d4_ccd(1),d4_ccd(2),getVal(d4_ccd(1),d4_ccd(2)),+3,+0.2,waitTime); % open 3rd door
-rampVal(d3_ccd(1),d3_ccd(2),getVal(d3_ccd(1),d3_ccd(2)),-1,-0.2,waitTime); % close 2nd door
+rampVal(d1_ccd.Device,d1_ccd.Port,getVal(d1_ccd.Device,d1_ccd.Port),Vopen,deltaVal,waitTime); % open 1st door
+rampVal(d3_ccd.Device,d3_ccd.Port,getVal(d3_ccd.Device,d3_ccd.Port),Vopen,deltaVal,waitTime); % open 2nd door
+rampVal(d1_ccd.Device,d1_ccd.Port,getVal(d1_ccd.Device,d1_ccd.Port),Vclose,deltaVal,waitTime); % close 1st door
+rampVal(d4_ccd.Device,d4_ccd.Port,getVal(d4_ccd.Device,d4_ccd.Port),Vopen,deltaVal,waitTime); % open 3rd door
+rampVal(d3_ccd.Device,d3_ccd.Port,getVal(d3_ccd.Device,d3_ccd.Port),Vclose,deltaVal,waitTime); % close 2nd door
 
-rampVal(ccd1(1),ccd1(2),getVal(ccd1(1),ccd1(2)),+3,+0.2,waitTime); % open phi1
-rampVal(d4_ccd(1),d4_ccd(2),getVal(d4_ccd(1),d4_ccd(2)),-1,-0.2,waitTime); % close 3rd door
-
-delay(10);
+rampVal(ccd1.Device,ccd1.Port,getVal(ccd1Device,ccd1.Port),Vopen,deltaVal,waitTime); % open phi1
+rampVal(d4_ccdDevice,d4_ccd.Port,getVal(d4_ccdDevice,d4_ccd.Port),Vclose,deltaVal,waitTime); % close 3rd door
+delay(5);
 
 ccd_units = 63; % number of repeating units in ccd array
 
 for i = 1:ccd_units 
-    rampVal(ccd2(1),ccd2(2),getVal(ccd2(1),ccd2(2)),+3,+0.2,waitTime); % open phi2
-    rampVal(ccd1(1),ccd1(2),getVal(ccd1(1),ccd1(2)),-1,-0.2,waitTime); % close phi1
-    rampVal(ccd3(1),ccd3(2),getVal(ccd3(1),ccd3(2)),+3,+0.2,waitTime); % open phi3
-    rampVal(ccd2(1),ccd2(2),getVal(ccd2(1),ccd2(2)),-1,-0.2,waitTime); % close phi2
-    rampVal(ccd1(1),ccd1(2),getVal(ccd1(1),ccd1(2)),+3,+0.2,waitTime); % open phi1
-    rampVal(ccd3(1),ccd3(2),getVal(ccd3(1),ccd3(2)),-1,-0.2,waitTime); % close phi3
+    rampVal(ccd2.Device,ccd2.Port,getVal(ccd2.Device,ccd2.Port),Vopen,deltaVal,waitTime); % open phi2
+    rampVal(ccd1.Device,ccd1.Port,getVal(ccd1.Device,ccd1.Port),Vclose,deltaVal,waitTime); % close phi1
+    rampVal(ccd3.Device,ccd3.Port,getVal(ccd3.Device,ccd3.Port),Vopen,deltaVal,waitTime); % open phi3
+    rampVal(ccd2.Device,ccd2.Port,getVal(ccd2.Device,ccd2.Port),Vclose,deltaVal,waitTime); % close phi2
+    rampVal(ccd1.Device,ccd1.Port,getVal(ccd1.Device,ccd1.Port),Vopen,deltaVal,waitTime); % open phi1
+    rampVal(ccd3.Device,ccd3.Port,getVal(ccd3.Device,ccd3.Port),Vclose,deltaVal,waitTime); % close phi3
     fprintf(['CCD unit: ', num2str(i),'\n']);
 end

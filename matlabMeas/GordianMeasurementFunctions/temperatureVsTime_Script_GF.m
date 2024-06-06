@@ -1,9 +1,8 @@
 %% Frequency of temperature querying in seconds.
-timeBetweenPoints = 5*60;
+timeBetweenPoints = 60;
 
 %% Initialize Thermometer type (this is related to your thermometer you have)
 thermometerType = 'X117656';
-% Thermometer;
 Therm = initializeThermometry(thermometerType);
 
 port = 1234; % for the big glass dewar??
