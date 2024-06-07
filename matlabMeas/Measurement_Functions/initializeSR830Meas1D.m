@@ -11,7 +11,7 @@ else
     yLabel = "Current [A]";
 end
 
-if contains(sweepType, 'TMHeat') || contains(sweepType, 'Amp')
+if contains(sweepType, 'TMHeat') || contains(sweepType, 'Amp') || contains(sweepType, 'HeatPhase') || contains(sweepType, 'HeatPhaseUnmod')
         yLabel = "Voltage [V]";
 end
 
@@ -146,6 +146,15 @@ switch targetGate
     case 'PHAS'
         xAxisName = 'Phase [Degrees]';
     case 'Vrms'
+        xAxisName = 'Agilent Amplitude [Vrms]';
+    case 'HeatPhase'
+        xAxisName = 'Phase [Degrees]';
+    case 'HeatPhaseUnmod'
+        xAxisName = 'Phase [Degrees]';
+    case 'HeatAmp'
+        xAxisName = 'Amplitude [Vpp]';
+    case 'HeatAmpUnmod'
+        xAxisName = 'Amplitude [Vpp]';
         xAxisName = 'Voltage Amplitude [Vrms]';
     case 'Vpp'
         xAxisName = 'Voltage Amplitude [Vpp]';

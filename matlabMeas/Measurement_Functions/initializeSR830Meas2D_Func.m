@@ -113,6 +113,14 @@ switch targetGate
         axisName = "Sense [V]";
     case 'Vrms'
         axisName = "Agilent Amplitude [Vrms]";
+    case 'HeatPhase'
+        axisName = "Phase [Degrees]";
+    case 'HeatPhaseUnmod'
+        axisName = "Phase [Degrees]";
+    case 'HeatAmp'
+        axisName = "Amplitude [Vpp]";
+    case 'HeatAmpUnmod'
+        axisName = "Amplitude [Vpp]";
     case 'Vpp'
         axisName = "Agilent Amplitude [Vpp]";
     otherwise
