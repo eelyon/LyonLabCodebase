@@ -16,6 +16,8 @@ function plotName = genSR830PlotName(targetGate)
             plotName = 'ReservoirSweep';
         case 'Door'
             plotName = 'DoorSweep';
+        case 'DoorOut'
+            plotName = 'DoorOutSweep';
         case 'DP'
             plotName = 'DotPotentialSweep';
         case 'Pair'
@@ -48,5 +50,10 @@ function plotName = genSR830PlotName(targetGate)
             plotName = 'HeatingAmpUnmod';
         case 'HeatAmp'
             plotName = 'HeatingAmp';
+            plotName = 'Vrms';
+        case 'Vpp'
+            plotName = 'Vpp';
+        case 'Guard'
+            plotName = 'Guard';
     end
 end

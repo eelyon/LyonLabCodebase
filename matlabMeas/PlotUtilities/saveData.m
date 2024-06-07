@@ -5,7 +5,7 @@ function [] = saveData(figObject,figName,varagin)
         case 3
             incrementFile = varagin;
     end
-    
+
     figID   = genFigName(figName);
     figText = genFigText(figName);
     

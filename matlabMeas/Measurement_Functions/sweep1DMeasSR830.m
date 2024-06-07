@@ -142,7 +142,7 @@ for value = paramVector
 end
 
 for i = 1:numSR830s
-    if ~strcmp(sweepType,'PHAS') && ~strcmp(sweepType,'Vrms')
+    if ~strcmp(sweepType,'PHAS') && ~strcmp(sweepType,'Vpp')
         saveData(subPlotFigureHandles{i},genSR830PlotName(sweepType{i}));
     else
     end
@@ -201,7 +201,7 @@ for i = 1:length(readSR830)
     [x(i,currentTimeIndex),y(i,currentTimeIndex)] = currentSR830.SR830queryXY();
     t(i,currentTimeIndex) = (now()-startTime)*86400;
     mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
-    pause(.005);
+    delay(.01);
 end
 end
 
@@ -218,7 +218,7 @@ for i = 1:length(readSR830)
     y(i,currentTimeIndex) = xyVals(2);
     t(i,currentTimeIndex) = (now()-startTime)*86400;
     mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
-    pause(.005);
+    pause(.01);
 end
 end
 

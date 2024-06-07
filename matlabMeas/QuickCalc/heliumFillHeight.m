@@ -7,8 +7,9 @@ function [ h ] = heliumFillHeight( Pkpa )
  littleglassdewar = 0;
  bigglass = 0;
  bigglassRF = 0;
- bigglassGordian = 1;
- 
+ bigglassGordian = 0;
+ bigglassNewRF = 1;
+
  if littleglassdewar   
      Vpanel = 18.4;     % in^3
      Vstick = 20.965;   % in^3 
@@ -31,10 +32,16 @@ function [ h ] = heliumFillHeight( Pkpa )
      Patm = (30-Pkpa)*0.0334211; % converts inHg to atm
      h = Patm * (Vpanel+Vstick)*25.4/(757*Acell); % [mm]
 
- else  bigglassGordian   % big glass dewar Gordian Cell (RF) 
+ elseif  bigglassGordian   % big glass dewar Gordian Cell (RF) 
      Vpanel = 18.44+3.213;     % in^3
      Vstick = 26.19;     % in^3 
      Acell = pi*0.75^2;  % in^2
+     Patm = (30-Pkpa)*0.0334211; % atm
+     h = Patm * (Vpanel)*25.4/(757*Acell); % [mm]
+
+ elseif  bigglassNewRF   % big glass dewar updated RF Cell that Mayer designed (RF) 
+     Vpanel = 18.44+3.213;     % in^3, Vstick not measured 
+     Acell = pi*(2.27/2)^2;  % in^2
      Patm = (30-Pkpa)*0.0334211; % atm
      h = Patm * (Vpanel)*25.4/(757*Acell); % [mm]
  end
