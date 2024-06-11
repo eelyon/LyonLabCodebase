@@ -1,1 +1,1 @@
-Instruments: controlDAC,DoorRight,DoorLeft
+Instruments: 
