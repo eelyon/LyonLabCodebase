@@ -75,10 +75,10 @@ function [fig,myFig] = plotData(xData,yData,varargin)
                 metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
             elseif contains(instrumentList{i},"DAC")
                 metadata_struct.sigDAC = evalin('base',[instrumentList{i} '.channelVoltages;']);
-            elseif contains(instrumentList{i},"DoorLeft")
-                metadata_struct.DoorLeft = evalin("base",strcat("query33220PulseWidth(",instrumentList{i},");"));
-            elseif contains(instrumentList{i},"DoorRight")
-                metadata_struct.DoorRight = evalin("base",strcat("query33220PulseWidth(",instrumentList{i},");"));
+%             elseif contains(instrumentList{i},"DoorLeft")
+%                 metadata_struct.DoorLeft = evalin("base",strcat("query33220PulseWidth(",instrumentList{i},");"));
+%             elseif contains(instrumentList{i},"DoorRight")
+%                 metadata_struct.DoorRight = evalin("base",strcat("query33220PulseWidth(",instrumentList{i},");"));
             end
         end
         % Insert metadata structure into figure and save in data.
