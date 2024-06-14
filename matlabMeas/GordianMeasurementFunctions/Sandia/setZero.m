@@ -4,16 +4,15 @@ deltaVal = 0.2; % set step size
 waitTime = 0.001; % set wait time after each voltage step
 stopVal = 0;
 
-rampVal(fil.Device,fil.Port,getVal(fil.Device,fil.Port),stopVal,deltaVal,waitTime); % make backing plate positive
-rampVal(TM.Device,TM.Port,getVal(TM.Device,TM.Port),stopVal,deltaVal,waitTime); % make top metal positive
+rampVal(fil.Device,fil.Port,getVal(fil.Device,fil.Port),stopVal,deltaVal,waitTime);
+rampVal(TM.Device,TM.Port,getVal(TM.Device,TM.Port),stopVal,deltaVal,waitTime);
 
-%% Set underlying gates negative
-rampVal(STD.Device,STD.Port,getVal(STD.Device,STD.Port),stopVal,deltaVal,waitTime); % Sommer-Tanner drive
-rampVal(STS.Device,STS.Port,getVal(STS.Device,STS.Port),stopVal,deltaVal,waitTime); % Sommer-Tanner sense
-rampVal(STM.Device,STM.Port,getVal(STM.Device,STM.Port),stopVal,deltaVal,waitTime); % Sommer-Tanner middle gate
-rampVal(STG.Device,STG.Port,getVal(STG.Device,STG.Port),stopVal,deltaVal,waitTime); % ramp Sommer-Tanner (left) guard
-rampVal(M2S.Device,M2S.Port,getVal(M2S.Device,M2S.Port),stopVal,deltaVal,waitTime); % ramp M2 shield
-rampVal(BPG.Device,BPG.Port,getVal(BPG.Device,BPG.Port),stopVal,deltaVal,waitTime); % ramp bond pad guard
+rampVal(STD.Device,STD.Port,getVal(STD.Device,STD.Port),stopVal,deltaVal,waitTime);
+rampVal(STS.Device,STS.Port,getVal(STS.Device,STS.Port),stopVal,deltaVal,waitTime);
+rampVal(STM.Device,STM.Port,getVal(STM.Device,STM.Port),stopVal,deltaVal,waitTime);
+rampVal(STG.Device,STG.Port,getVal(STG.Device,STG.Port),stopVal,deltaVal,waitTime);
+rampVal(M2S.Device,M2S.Port,getVal(M2S.Device,M2S.Port),stopVal,deltaVal,waitTime);
+rampVal(BPG.Device,BPG.Port,getVal(BPG.Device,BPG.Port),stopVal,deltaVal,waitTime);
 delay(2);
 
 %% Set ccd gates
@@ -37,5 +36,4 @@ rampVal(dm1_ol.Device,dm1_ol.Port,getVal(dm1_ol.Device,dm1_ol.Port),stopVal,delt
 rampVal(shield.Device,shield.Port,getVal(shield.Device,shield.Port),stopVal,deltaVal,waitTime)
 delay(2);
 
-rampVal(TM.Device,TM.Port,getVal(TM.Device,TM.Port),stopVal,deltaVal,waitTime); % make top metal negative
 fprintf('All gates set to 0V.\n')
