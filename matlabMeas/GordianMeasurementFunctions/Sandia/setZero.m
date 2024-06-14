@@ -2,23 +2,18 @@
 DCPinout; % load DC pinout  script
 deltaVal = 0.2; % set step size
 waitTime = 0.001; % set wait time after each voltage step
+stopVal = 0;
 
-rampVal(fil.Device,fil.Port,getVal(fil.Device,fil.Port),3,deltaVal,waitTime); % make backing plate positive
-rampVal(TM.Device,TM.Port,getVal(TM.Device,TM.Port),1,deltaVal,waitTime); % make top metal positive
-
-%% Check if electrons are still there with Sommer-Tanner
-sweep1DMeasSR830({'ST'},0,-0.6,-0.02,1,9,{SR830ST},STM.Device,{STM.Port},1);
-delay(2);
+rampVal(fil.Device,fil.Port,getVal(fil.Device,fil.Port),stopVal,deltaVal,waitTime); % make backing plate positive
+rampVal(TM.Device,TM.Port,getVal(TM.Device,TM.Port),stopVal,deltaVal,waitTime); % make top metal positive
 
 %% Set underlying gates negative
-stopVal = -2; % set stop voltage
-
 rampVal(STD.Device,STD.Port,getVal(STD.Device,STD.Port),stopVal,deltaVal,waitTime); % Sommer-Tanner drive
 rampVal(STS.Device,STS.Port,getVal(STS.Device,STS.Port),stopVal,deltaVal,waitTime); % Sommer-Tanner sense
 rampVal(STM.Device,STM.Port,getVal(STM.Device,STM.Port),stopVal,deltaVal,waitTime); % Sommer-Tanner middle gate
-rampVal(STG.Device,STG.Port,getVal(STG.Device,STG.Port),-1,deltaVal,waitTime); % ramp Sommer-Tanner (left) guard
-rampVal(M2S.Device,M2S.Port,getVal(M2S.Device,M2S.Port),-0.5,deltaVal,waitTime); % ramp M2 shield
-rampVal(BPG.Device,BPG.Port,getVal(BPG.Device,BPG.Port),-1,deltaVal,waitTime); % ramp bond pad guard
+rampVal(STG.Device,STG.Port,getVal(STG.Device,STG.Port),stopVal,deltaVal,waitTime); % ramp Sommer-Tanner (left) guard
+rampVal(M2S.Device,M2S.Port,getVal(M2S.Device,M2S.Port),stopVal,deltaVal,waitTime); % ramp M2 shield
+rampVal(BPG.Device,BPG.Port,getVal(BPG.Device,BPG.Port),stopVal,deltaVal,waitTime); % ramp bond pad guard
 delay(2);
 
 %% Set ccd gates
@@ -42,5 +37,5 @@ rampVal(dm1_ol.Device,dm1_ol.Port,getVal(dm1_ol.Device,dm1_ol.Port),stopVal,delt
 rampVal(shield.Device,shield.Port,getVal(shield.Device,shield.Port),stopVal,deltaVal,waitTime)
 delay(2);
 
-rampVal(TM.Device,TM.Port,getVal(TM.Device,TM.Port),-2,deltaVal,waitTime); % make top metal negative
-fprintf('Electrons are ejected.\n')
+rampVal(TM.Device,TM.Port,getVal(TM.Device,TM.Port),stopVal,deltaVal,waitTime); % make top metal negative
+fprintf('All gates set to 0V.\n')
