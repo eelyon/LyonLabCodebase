@@ -8,4 +8,5 @@ hbareV = 6.582e-16;   % in eV*s
 heV    = 4.135e-15;   % in eV*s
 kb     = 1.3806e-23;  % J/K
 kb_eV  = 8.617e-5;    % eV/K
-e0     = 8.855e-12;   % F/m  
+e0     = 8.855e-12;   % F/m
+eHe    = 1.057;       % approx. below 2K

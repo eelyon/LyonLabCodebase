@@ -2,7 +2,7 @@
 DCPinout;
 deltaVal = 0.5; % voltage step for ramp
 waitTime = 0.001; % set wait time after each voltage step
-Vopen = 2; % holding voltage of ccd
+Vopen = 1; % holding voltage of ccd
 Vclose = -1; % closing voltage of ccd
 
 %% open first three doors
