@@ -1,11 +1,12 @@
 function [ h ] = heliumFillHeight( Pkpa )
  % calculates the height of He in the cell based on fill volume in mm
- % INPUTs: Pkpa = pressure of stick after filling with He (read directly
- % from gauge, if small glass then in kPa, if large glass then in inHg)
+ %% INPUTs: Pkpa = pressure of stick after filling with He (read directly
+ %%                from gauge, if small glass then in kPa, 
+ %%                if large glass then in inHg)
  
  littleglassdewar = 0;
  bigglass = 0;
- bigglassRF = 1;
+ bigglassRF = 0;
  bigglassGordian = 1;
  
  if littleglassdewar   
@@ -27,14 +28,14 @@ function [ h ] = heliumFillHeight( Pkpa )
      Vpanel = 18.44;     % in^3
      Vstick = 24.26;   % in^3 
      Acell = pi*0.75^2; % in^2
-     Patm = (30-Pkpa)*0.0334211; % atm
+     Patm = (30-Pkpa)*0.0334211; % converts inHg to atm
      h = Patm * (Vpanel+Vstick)*25.4/(757*Acell); % [mm]
 
- else  bigglassGordian % big glass dewar Gordian Cell (RF) 
+ else  bigglassGordian   % big glass dewar Gordian Cell (RF) 
      Vpanel = 18.44;     % in^3
      Vstick = 26.19;     % in^3 
      Acell = pi*0.75^2;  % in^2
      Patm =  (30-Pkpa)*0.0334211; % atm
-     h = Patm * (Vpanel+Vstick) * 25.4/(757*Acell); % [mm]
+     h = Patm * (Vpanel)*25.4/(757*Acell); % [mm]
  end
 end

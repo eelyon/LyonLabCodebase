@@ -1,7 +1,7 @@
 function [] = HeCurvatureFinger( channelHeight, fingerLength )
 
 %%Constants
-fn = 4;
+fn = 1;
 % Physical Conastants
 i  = sqrt(-1);
 epHe = 1.056;
@@ -16,16 +16,16 @@ nm = 1e9;
 pcm = 1e-2;
 
 % Experimental constants
-widthStart = 12e-6;
-widthEnd = 27e-6;
-numWidths = 20;
-listH = [5.5e-3 6.5e-3 7.5e-3 8.5e-3];
+widthStart = 6e-6;
+widthEnd = 42e-6;
+numWidths = 50;
+listH = [3e-3 4e-3 5e-3];
 % channelHeight = 0.620e-6;
 % fingerLength = 55;
 
 channelWidths = linspace(widthStart,widthEnd,numWidths);
 centerHeights = zeros([1 numWidths]);
-channelXs = linspace(0,65e-6,numWidths);
+channelXs = linspace(0,fingerLength*1e-6,numWidths);
 
 ci=0;
 % collectx = [];  
@@ -36,7 +36,7 @@ for h = listH
     
         ci = ci+1;
         p = channelWidth/2;
-        ne = 1e9*1e4;
+        ne = 1e8*1e4;
         n_mu = 0;
         n_sigma = p/7;
         V0 = 0;
@@ -64,19 +64,21 @@ for h = listH
         Ex = @(x,z,V0) i.*2.*V0./pi./p.*sqrt(2./pi).*(sum1(x,z)-sum2(x,z));
         Ez = @(x,z,V0) 2.*V0./pi./p.*sqrt(2./pi).*(sum1(x,z)+sum2(x,z));
         
-        depth = @(x,y) [y(2); -B/A*y(1)^(-3)-1/A*y(1)-C/A-D/A*(epHe*(Ez(x,y(1)))^2+(Ex(x,y(1)))^2)];
-        HBalance0 = @(d,x,n,V0) (h+d) - (epHe - 1).*ep0./2./rho./g.*(epHe.*Ez(x,d,V0).^2+Ex(x,d,V0).^2) - k.^4./d.^3 + n.*n.*e.*e./2./ep0./epHe./rho./g;
+        % Rc = sigma/(rho*g*h + (ne)^2*e^2/(2*epHe*ep0));
+
+        % depth = @(x,y) [y(2); -B/A*y(1)^(-3)-1/A*y(1)-C/A-D/A*(epHe*(Ez(x,y(1)))^2+(Ex(x,y(1)))^2)];
+        % HBalance0 = @(d,x,n,V0) (h+d) - (epHe - 1).*ep0./2./rho./g.*(epHe.*Ez(x,d,V0).^2+Ex(x,d,V0).^2) - k.^4./d.^3 + n.*n.*e.*e./2./ep0./epHe./rho./g;
         dpp = @(d,x,n,V0) 1./sigma.*rho.*g.*((h+d) - (epHe - 1).*ep0./2./rho./g.*(epHe.*Ez(x,d,V0).^2+Ex(x,d,V0).^2) - k.^4./d.^3 + n.*n.*e.*e./2./ep0./epHe./rho./g);
-        dppBulk = @(d,x,n,V0) 1./sigma.*rho.*g.*((h+d)); % - (epHe - 1).*ep0./2./rho./g.*(epHe.*Ez(x,d,V0).^2+Ex(x,d,V0).^2) - k.^4./d.^3 + n.*n.*e.*e./2./ep0./epHe./rho./g);
+        % dppBulk = @(d,x,n,V0) 1./sigma.*rho.*g.*((h+d)); % - (epHe - 1).*ep0./2./rho./g.*(epHe.*Ez(x,d,V0).^2+Ex(x,d,V0).^2) - k.^4./d.^3 + n.*n.*e.*e./2./ep0./epHe./rho./g);
         
         params = sprintf(' [ h=%1.0e , p=%2.0e ] ',h,p);
         
         %% Iterative Solver
         
-        %Loop Start
+        % Loop Start
         
-        %subplot(1,1,1)
-        %hold off
+%         subplot(1,1,1)
+%         hold off
         
         
         dWinner = dStart;
@@ -125,8 +127,12 @@ for h = listH
     ylabel('Helium Depth [um]')
     title('Depth Vs Finger Length')
     xline(fingerLength,'HandleVisibility','off')
+    for i= listH
+        yline(vdWThickness(1e2*i)*1e-3,'HandleVisibility','off')
+    end
     legend('show')
     ci = 0;
+    
 %     y_um = centerHeights.*um;
 %     x_um = channelXs.*um;
 %     
