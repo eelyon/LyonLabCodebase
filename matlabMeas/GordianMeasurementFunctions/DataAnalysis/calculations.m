@@ -1,11 +1,11 @@
 %% Script for calculating electron density and number of electrons
-%% Electron density and filling plot... to do...
-% Make plot of d_withElectrons vs electron density for channel width, bulk distance
-% Could also just calculate critical electron density for certain filling
+close all;
+clear all;
 
-
-%% Bulk LHe calculation for cell
+%% Bulk LHe
+T = 1.9; % measurement temperature in K
 P_atm = 33; % atmospheres of He gas fed into cell
+
 r_cell = 2.7305e-2; % in m
 V_panel = (18.44+3.213)*2.54^3/1e6; % gas manifold + T-KF volume from in^3 to m^3
 A_cell = pi*(r_cell)^2; % bottom area of cell
@@ -20,10 +20,22 @@ t = 1.25e-6; % channel height
 w = 3e-6; % ST channel width
 V_pinch = -0.3; % pinch off voltage
 
-Rc = constant().sig/(constant().rho*constant().g*h_bulk); % Rc without electrons
-d = t - Rc*(1-sqrt(1-(w^2/(4*Rc^2)))); % assuming no electrons
-ne = -(V_pinch*constant().eHe*constant().e0)/(constant().e*d)*1e-4;
+sig = surfaceT(T); % surface tension at TK
+rc = Rc(sig,h_bulk); % radius of curvature with no electrons
+d = ch_depth(rc,w,t); % LHe height in channel
+ne = eD_ST(V_pinch,d);
 fprintf(['electron density from sommer-tanner = ', num2str(ne, '%.3e'), ' cm^-2\n'])
+
+%% Plot channel depth vs. electron density
+n = linspace(1e8,1e10,1e6); % electron density
+rc_withE = Rc(sig,h_bulk,n); % radius of curvature with electrons
+d = ch_depth(rc_withE,w,t); % channel depth
+
+figure;
+semilogx(n,d*1e6,'b-','DisplayName',['h_{bulk} = ',num2str(h_bulk*1e3,'%.1f'),' mm']);
+xlabel('n_{e} (cm^{-2})');
+ylabel('channel depth (\mum)');
+legend;
 
 %% Twiddle and Sense
 V_rms = 4e-3; % voltage measured by SR830
@@ -43,9 +55,47 @@ tw_w = 2.5e-6; % twiddle gate width
 d_twiddle = de_twiddle(n,ch_w,sense_w,shield_w,tw_w);
 fprintf(['electron density in twiddle and sense = ', num2str(d_twiddle, '%.3e'), ' cm^-2\n']);
 
-function [d] = d_sommer()
-% Calculate electron density from Sommer-Tanner pinch-off data
+function [r] = Rc(sig,h,opt)
+% Calculates radius of curvature with and without electrons
+% sig: surface tension of LHe4 (in N/m)
+% h: distance between bulk LHe and top of device (in m)
+% opt: if with electrons, enter electron density (in cm^-2)
+% return: radius of curvature (in m)
+    arguments
+        sig double
+        h double
+        opt {mustBeNonempty} = true
+    end
 
+    if opt
+        n = opt; % electron density
+        r = sig./(constant().rho*constant().g*h + (n*1e4).^2*constant().e.^2./(2*constant().eHe*constant().e0));
+    else
+        r = sig/(constant().rho*constant().g*h_bulk); % no electrons
+    end
+end
+
+function [d] = ch_depth(Rc,w,t)
+% Calculates LHe depth in channel
+% Rc: radius of curvature
+% w: channel width (in m)
+% t: channel depth (in m)
+% return: LHe depth (in m)
+    d = t - Rc.*(1-sqrt(1-(w^2./(4*Rc.^2))));
+end
+
+function [eD] = eD_ST(V_pinch,d)
+% Calculate electron density from Sommer-Tanner pinch-off data
+% V_pinch: pinch off voltage measured from Sommer-Tanner (in V)
+% d: channel height (in m)
+    eD = -(V_pinch*constant().eHe*constant().e0)/(constant().e*d)*1e-4;
+end
+
+function [sig] = surfaceT(T)
+% Calculate the surface tension of LHe at different temperatures
+% From Atkins, The surface tension of liquid helium (1953)
+    sig0 = 0.352; % erg/cm^2 at 0K
+    sig = (sig0 - 6.9e-3*T^(7/3))*1e-3; % N/m
 end
 
 function [n] = ne_twiddle(V_rms,gain,C_sg,alpha,num_ch)
@@ -77,11 +127,11 @@ function [const] = constant()
     const.h      = 6.626e-32;   % in J*s
     const.hbareV = 6.582e-16;   % in eV*s
     const.heV    = 4.135e-15;   % in eV*s
-    const.kb     = 1.3806e-23;  % J/K
-    const.kb_eV  = 8.617e-5;    % eV/K
-    const.e0     = 8.855e-12;   % F/m
+    const.kb     = 1.3806e-23;  % in J/K
+    const.kb_eV  = 8.617e-5;    % in eV/K
+    const.e0     = 8.855e-12;   % in F/m
     const.eHe    = 1.057;       % approx. below 2K
-    const.g      = 9.80665;     % gravity in m/s^2
-    const.sig    = 3.34*10^-4;  % [N/m] surface tension at 1.5K
-    const.rho    = 145.4;       % [kg/m3] density of LHe
+    const.g      = 9.80665;     % in m/s^2
+    const.sig    = 3.34*10^-4;  % surface tension at 1.5K (in N/m)
+    const.rho    = 145.4;       % density of LHe (in kg/m3)
 end
