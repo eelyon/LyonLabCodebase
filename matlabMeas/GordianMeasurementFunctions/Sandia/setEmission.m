@@ -1,10 +1,10 @@
 %% This script sets relevant gate voltages for emission
 DCPinout; % load DC pinout script
-deltaVal = 0.05; % set step size
-waitTime = 0.05; % set wait time after each voltage step
+deltaVal = 0.25; % set step size
+waitTime = 0.01; % set wait time after each voltage step
 
 %% Set Sommer-Tanner
-rampVal(TM.Device,TM.Port,getVal(TM.Device,TM.Port),-0.5,deltaVal,waitTime); % ramp top metal
+rampVal(TM.Device,TM.Port,getVal(TM.Device,TM.Port),-0.75,deltaVal,waitTime); % ramp top metal
 rampVal(STG.Device,STG.Port,getVal(STG.Device,STG.Port),-1,deltaVal,waitTime); % ramp Sommer-Tanner (left) guard
 rampVal(M2S.Device,M2S.Port,getVal(M2S.Device,M2S.Port),-0.5,deltaVal,waitTime); % ramp M2 shield
 rampVal(BPG.Device,BPG.Port,getVal(BPG.Device,BPG.Port),-1,deltaVal,waitTime); % ramp bond pad guard
