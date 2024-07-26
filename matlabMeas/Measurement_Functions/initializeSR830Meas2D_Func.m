@@ -123,6 +123,10 @@ switch targetGate
         axisName = "Amplitude [Vpp]";
     case 'Vpp'
         axisName = "Agilent Amplitude [Vpp]";
+    case 'CollC'
+        axisName = "Cascode Collector [V]";
+    case 'CollE'
+        axisName = "Emitter Collector [V]";
     otherwise
         axisName = 'unknown';
 end
