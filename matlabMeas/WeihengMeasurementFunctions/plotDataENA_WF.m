@@ -1,9 +1,9 @@
 %% Set single frequency sweep
 % close all;
 
-power     = 0;      % in dBm - be careful!! Do not set too high!!
-startFreq = 0.3;    % in MHz
-stopFreq  = 200;    % in MHz 
+power     = -20;      % in dBm - be careful!! Do not set too high!!
+startFreq = 7.02*1000;    % in MHz
+stopFreq  = 7.1*1000;    % in MHz 
 
 % decide whether to include metadata (1=include,0=don't)
 saveFig   = 1;       % for saving the figure

@@ -1,6 +1,6 @@
 %% Script for removing all electrons from device
 DCPinout; % load DC pinout  script
-deltaVal = 0.2; % set step size
+deltaVal = 0.25; % set step size
 waitTime = 0.001; % set wait time after each voltage step
 stopVal = 0;
 
