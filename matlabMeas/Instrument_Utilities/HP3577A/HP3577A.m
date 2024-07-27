@@ -26,7 +26,7 @@ classdef HP3577A
             correctY = [];
             [correctionX,correctionY] = getXYData('C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\07_10_24\Background_S21.fig');
             for i = 1:length(correctionY)
-                correctY(i) = datArr(i)- correctionY(i);
+                correctY(i) = datArr(i)+ 76;
             end
             voltageGain = convertdBmToVoltage(correctY);
             [fit,gof] = fitRollOff(freqArr,voltageGain);

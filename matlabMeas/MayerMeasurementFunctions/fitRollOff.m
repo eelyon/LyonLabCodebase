@@ -18,7 +18,7 @@ function [fitresult, gof] = fitRollOff(RTX, RTVoltageRatio)
 [xData, yData] = prepareCurveData( RTX, RTVoltageRatio );
 
 % Set up fittype and options.
-ft = fittype( 'a/sqrt((1+x^2/b^2)) + c', 'independent', 'x', 'dependent', 'y' );
+ft = fittype( 'a/sqrt((1+x^2/b^2))+c', 'independent', 'x', 'dependent', 'y' );
 opts = fitoptions( 'Method', 'NonlinearLeastSquares' );
 opts.DiffMaxChange = 0.01;
 opts.Display = 'Off';

@@ -1,7 +1,7 @@
 %% Script for removing all electrons from device
 DCPinout; % load DC pinout  script
 deltaVal = 0.25; % set step size
-waitTime = 0.001; % set wait time after each voltage step
+waitTime = 0.01; % set wait time after each voltage step
 stopVal = 0;
 
 rampVal(fil.Device,fil.Port,getVal(fil.Device,fil.Port),stopVal,deltaVal,waitTime);
