@@ -1,17 +1,32 @@
-% Script for unloading electrons from the first twiddle-sense
-DCPinout;
+%% Script for unloading electron in twiddle-sense
+% Run DCPinout before running this script
 numSteps = 1000;
 Vopen = 2; % holding voltage of ccd
 Vclose = -1; % closing voltage of ccd
 
-% Set potential gradient across twiddle to door to eject electrons
-sigDACRampVoltage(shieldl.Device,shieldl.Port,0,numSteps); % open left shield
-sigDACRampVoltage(door.Device,door.Port,1.5,numSteps); % open door
-sigDACRampVoltage(ccd1.Device,ccd1.Port,Vopen,numSteps); % open ccd1
-% sigDACRampVoltage(ccd3.Device,ccd3.Port,Vopen,numSteps); % open ccd3
+% set33622AOutput(Ag2Channel,1, 'OFF'); % turn twiddle off
+% set33622AOutput(Ag2Channel,2, 'OFF'); % turn compensation off
 
-%% Sweep doors
-sweep1DMeasSR830({'Door'},-1,1,0.1,1,9,{SR830Twiddle},offset.Device,{offset.Port},0);
-sweep1DMeasSR830({'TWW'},0,-3,0.1,1,9,{SR830Twiddle},controlDAC,{18},0);
-% rampVal(dm1_t.Device,dm1_t.Port,getVal(dm1_t.Device,dm1_t.Port),Vclose,deltaVal,waitTime); % close twiddle
-% rampVal(dm1_gl.Device,dm1_gl.Port,getVal(dm1_gl.Device,dm1_gl.Port),Vclose,deltaVal,waitTime); % close left gate twiddle
+%% Set potential gradient across twiddle-sense and unload electrons
+sigDACRampVoltage(twiddle.Device,twiddle.Port,-0.4,numSteps); % make twiddle slightly negative
+% sweep1DMeasSR830({'Twiddle'},0,-0.2,0.01,1,9,{SR830Twiddle},twiddle.Device,{twiddle.Port},0,1); % sweep offset
+
+sigDACRampVoltage(shieldl.Device,shieldl.Port,-1,numSteps); % make shield negative
+% sweep1DMeasSR830({'Shield'},0,-1,0.05,1,9,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1); % sweep offset
+
+sigDACRampVoltage(offset.Device,offset.Port,1,numSteps); % open offset gate
+% sweep1DMeasSR830({'Door'},-1,1,0.1,1,9,{SR830Twiddle},offset.Device,{offset.Port},1,1); % sweep offset
+
+sigDACRampVoltage(door.Device,door.Port,Vopen,numSteps); % open door
+% sweep1DMeasSR830({'CCDdoor'},-1,2,0.1,1,9,{SR830Twiddle},door.Device,{door.Port},0,1); % sweep offset
+delay(2);
+
+sigDACRampVoltage(offset.Device,offset.Port,Vclose,numSteps); % close offset gate
+delay(1);
+
+sigDACRampVoltage(twiddle.Device,twiddle.Port,0,numSteps); % set twiddle back to 0V
+
+% set33622AOutput(Ag2Channel,1, 'ON'); % turn twiddle back on
+% set33622AOutput(Ag2Channel,2, 'ON'); % turn compensation back on
+
+sweep1DMeasSR830({'Shield'},-1,0,0.05,1,9,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1); % sweep shield

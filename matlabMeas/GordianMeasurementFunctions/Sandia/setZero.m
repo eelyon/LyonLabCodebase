@@ -1,39 +1,34 @@
 %% Script for removing all electrons from device
 DCPinout; % load DC pinout  script
-deltaVal = 0.25; % set step size
-waitTime = 0.01; % set wait time after each voltage step
+numSteps = 100; % set wait time after each voltage step
 stopVal = 0;
 
-rampVal(fil.Device,fil.Port,getVal(fil.Device,fil.Port),stopVal,deltaVal,waitTime);
-rampVal(TM.Device,TM.Port,getVal(TM.Device,TM.Port),stopVal,deltaVal,waitTime);
+sigDACRampVoltage(fil.Device,fil.Port,stopVal,numSteps);
+sigDACRampVoltage(TM.Device,TM.Port,stopVal,numSteps);
 
-rampVal(STD.Device,STD.Port,getVal(STD.Device,STD.Port),stopVal,deltaVal,waitTime);
-rampVal(STS.Device,STS.Port,getVal(STS.Device,STS.Port),stopVal,deltaVal,waitTime);
-rampVal(STM.Device,STM.Port,getVal(STM.Device,STM.Port),stopVal,deltaVal,waitTime);
-rampVal(STG.Device,STG.Port,getVal(STG.Device,STG.Port),stopVal,deltaVal,waitTime);
-rampVal(M2S.Device,M2S.Port,getVal(M2S.Device,M2S.Port),stopVal,deltaVal,waitTime);
-rampVal(BPG.Device,BPG.Port,getVal(BPG.Device,BPG.Port),stopVal,deltaVal,waitTime);
-delay(2);
+sigDACRampVoltage(STD.Device,STD.Port,stopVal,numSteps);
+sigDACRampVoltage(STS.Device,STS.Port,stopVal,numSteps);
+sigDACRampVoltage(STM.Device,STM.Port,stopVal,numSteps);
+sigDACRampVoltage(STG.Device,STG.Port,stopVal,numSteps);
+sigDACRampVoltage(M2S.Device,M2S.Port,stopVal,numSteps);
+sigDACRampVoltage(BPG.Device,BPG.Port,stopVal,numSteps);
 
 %% Set ccd gates
-rampVal(d1_ccd.Device,d1_ccd.Port,getVal(d1_ccd.Device,d1_ccd.Port),stopVal,deltaVal,waitTime)
-rampVal(d2_ccd.Device,d2_ccd.Port,getVal(d2_ccd.Device,d2_ccd.Port),stopVal,deltaVal,waitTime)
-rampVal(d3_ccd.Device,d3_ccd.Port,getVal(d3_ccd.Device,d3_ccd.Port),stopVal,deltaVal,waitTime)
-rampVal(d4_ccd.Device,d4_ccd.Port,getVal(d4_ccd.Device,d4_ccd.Port),stopVal,deltaVal,waitTime)
-delay(2);
+sigDACRampVoltage(d1_ccd.Device,d1_ccd.Port,stopVal,numSteps)
+sigDACRampVoltage(d2_ccd.Device,d2_ccd.Port,stopVal,numSteps)
+sigDACRampVoltage(d3_ccd.Device,d3_ccd.Port,stopVal,numSteps)
+sigDACRampVoltage(d4_ccd.Device,d4_ccd.Port,stopVal,numSteps)
 
-rampVal(ccd1.Device,ccd1.Port,getVal(ccd1.Device,ccd1.Port),stopVal,deltaVal,waitTime)
-rampVal(ccd2.Device,ccd2.Port,getVal(ccd2.Device,ccd2.Port),stopVal,deltaVal,waitTime)
-rampVal(ccd3.Device,ccd3.Port,getVal(ccd3.Device,ccd3.Port),stopVal,deltaVal,waitTime)
-delay(2);
+sigDACRampVoltage(ccd1.Device,ccd1.Port,stopVal,numSteps)
+sigDACRampVoltage(ccd2.Device,ccd2.Port,stopVal,numSteps)
+sigDACRampVoltage(ccd3.Device,ccd3.Port,stopVal,numSteps)
 
-rampVal(d_diff.Device,d_diff.Port,getVal(d_diff.Device,d_diff.Port),stopVal,deltaVal,waitTime)
-rampVal(dm1_gl.Device,dm1_gl.Port,getVal(dm1_gl.Device,dm1_gl.Port),stopVal,deltaVal,waitTime)
-rampVal(dm1_t.Device,dm1_t.Port,getVal(dm1_t.Device,dm1_t.Port),stopVal,deltaVal,waitTime)
-rampVal(dm1_gr.Device,dm1_gr.Port,getVal(dm1_gr.Device,dm1_gr.Port),stopVal,deltaVal,waitTime)
-rampVal(dm1_sl.Device,dm1_sl.Port,getVal(dm1_sl.Device,dm1_sl.Port),stopVal,deltaVal,waitTime)
-rampVal(dm1_ol.Device,dm1_ol.Port,getVal(dm1_ol.Device,dm1_ol.Port),stopVal,deltaVal,waitTime)
-rampVal(shield.Device,shield.Port,getVal(shield.Device,shield.Port),stopVal,deltaVal,waitTime)
-delay(2);
+sigDACRampVoltage(door.Device,door.Port,stopVal,numSteps)
+sigDACRampVoltage(shieldl.Device,shieldl.Port,stopVal,numSteps)
+sigDACRampVoltage(twiddle.Device,twiddle.Port,stopVal,numSteps)
+sigDACRampVoltage(shieldr.Device,shieldr.Port,stopVal,numSteps)
+sigDACRampVoltage(sense.Device,sense.Port,stopVal,numSteps)
+sigDACRampVoltage(offset.Device,offset.Port,stopVal,numSteps)
+sigDACRampVoltage(shield.Device,shield.Port,stopVal,numSteps)
 
 fprintf('All gates set to 0V.\n')

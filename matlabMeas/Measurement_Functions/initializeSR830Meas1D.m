@@ -111,6 +111,12 @@ switch targetGate
         xAxisName = "Reservoir Voltage [V]";
     case 'Door'
         xAxisName = "Door Voltage [V]";
+    case 'CCDdoor'
+        xAxisName = 'CCD Door Voltage [V]';
+    case 'CCD1'
+        xAxisName = '\Phi 1 [V]';
+    case 'CCD3'
+        xAxisName = '\Phi 3 [V]';
     case 'DoorOut'
         xAxisName = "Door Out Voltage [V]";
     case 'DP'
@@ -160,6 +166,8 @@ switch targetGate
         xAxisName = 'Voltage Amplitude [Vpp]';
     case 'STG'
         xAxisName = 'Sommer Tanner Voltage [V]';
+    case 'Shield'
+        xAxisName = 'Shield Voltage [V]';
     otherwise
         xAxisName = 'unknown';
 end

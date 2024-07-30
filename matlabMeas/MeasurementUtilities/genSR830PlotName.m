@@ -59,5 +59,14 @@ function plotName = genSR830PlotName(targetGate)
             plotName = 'Vpp';
         case 'Guard'
             plotName = 'Guard';
+        case 'CCD1'
+            plotName = 'CCD1';
+        case 'CCD3'
+            plotName = 'CCD3';
+        case 'CCDdoor'
+            plotName = 'CCDDoor';
+
+        case 'Shield'
+            plotName = 'shield';
     end
 end

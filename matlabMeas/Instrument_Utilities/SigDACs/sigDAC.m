@@ -51,6 +51,14 @@ classdef sigDAC
                 
         end
 
+        function sigDACSetChannels(sigDAC,voltage)
+            % Set all channels of DAC to the same voltage
+            numSteps = 100;
+            for i = 1:sigDAC.numChannels
+                sigDACRampVoltage(sigDAC,i,voltage,numSteps);
+            end
+        end
+
         function  voltageArr = sigDACGetConfig(sigDAC)
             for channel = 1:sigDAC.numChannels
                 sigDAC.channelVoltages(channel) = sigDACQueryVoltage(sigDAC,channel);
@@ -84,10 +92,20 @@ classdef sigDAC
                 str = [numSteps numChans channels calvoltList];
                 convertArray = sprintf('%d ', str);
                 fprintf(sigDAC.client,['RAMP ' convertArray]);
+                delayTime = 0.00006*numSteps*numChans;
+                delay(1.5*delayTime)
+                for i=1:numChans
+                    evalin('base',[sigDAC.name '.channelVoltages( ' num2str(channels(i)) ') = ' num2str(voltages(i)) ';']);
+                end
            else
                 str = [numSteps numChans channels voltages];
                 convertArray = sprintf('%d ', str);  % num2str pads the array with space, use sprintf instead!
                 fprintf(sigDAC.client,['RAMP ' convertArray]);
+                delayTime = 0.00006*numSteps*numChans; 
+                delay(1.5*delayTime)
+                for i=1:numChans
+                    evalin('base',[sigDAC.name '.channelVoltages( ' num2str(channels(i)) ') = ' num2str(voltages(i)) ';']);
+                end
            end
         end
 
