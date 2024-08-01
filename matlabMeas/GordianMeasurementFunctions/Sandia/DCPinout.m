@@ -9,7 +9,7 @@ STG = pinout(supplyDAC,5); % Sommer-Tanner (left) door guard
 M2S = pinout(controlDAC,9); % Sommer-Tanner shield on M2
 BPG = pinout(controlDAC,24); % bond pad guard
 
-filament = pinout(supplyDAC,10); % filament backing plate
+filament = pinout(supplyDAC,20); % filament backing plate
 
 %% CCD
 d1_ccd = pinout(supplyDAC,17); % 1st door, uneven channels
@@ -25,7 +25,7 @@ ccd3 = pinout(controlDAC,10); % phi 3
 shield = pinout(controlDAC,5); % shield underneath twiddle
 door = pinout(supplyDAC,19); % door after phi1 and before offset gate
 offset = pinout(controlDAC,1); % offset gate left of twiddle
-sense = pinout(controlDAC,3); % sense gate left of twiddle
+sense = pinout(controlDAC,2); % sense gate left of twiddle, 3c on PCB but ch3 on cDAC broken
 shieldl = pinout(controlDAC,6); % left shield from twiddle
 twiddle = pinout(controlDAC,18); % twiddle gate
 shieldr = pinout(supplyDAC,22); % right gate from twiddle

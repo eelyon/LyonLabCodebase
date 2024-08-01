@@ -6,7 +6,7 @@ stopVal = -2; % set stop voltage
 delayTime = 1; % time before next step
 
 %% Set backing plate and top metal positive then sweep ST middle gate
-sigDACRampVoltage(fil.Device,fil.Port,3,numSteps); % make backing plate positive
+sigDACRampVoltage(filament.Device,filament.Port,3,numSteps); % make backing plate positive
 sigDACRampVoltage(TM.Device,TM.Port,1,numSteps); % make top metal positive
 
 sweep1DMeasSR830({'ST'},0,-0.6,-0.02,1,9,{SR830ST},STM.Device,{STM.Port},1);

@@ -1,7 +1,6 @@
 %% This script sets relevant gate voltages for emission
 % Run DCPinout before running this script
-deltaVal = 0.25; % set step size
-numSteps = 0.01; % set wait time after each voltage step
+numSteps = 1000; % set wait time after each voltage step
 stopVal = -1;
 
 %% Set Sommer-Tanner
@@ -31,5 +30,5 @@ sigDACRampVoltage(offset.Device,offset.Port,stopVal,numSteps)
 sigDACRampVoltage(shield.Device,shield.Port,stopVal,numSteps)
 fprintf('Twiddle and sense set for emission.\n');
  
-sigDACRampVoltage(fil.Device,fil.Port,-2,numSteps); % ramp filament backing plate
+sigDACRampVoltage(filament.Device,filament.Port,-2,numSteps); % ramp filament backing plate
 fprintf('Voltages set for emission.\n')

@@ -1,10 +1,10 @@
 %% Script for moving electrons from Sommer-Tanner to phi1 before door of 1st twiddle-sense
 % Run DCPinout before running this script
 numSteps = 1000; % number of steps in ramp
-Vload = 0.5; % set voltage on first two doors to control no. of electrons
+Vload = 0; % set voltage on first two doors to control no. of electrons
 Vopen = 2; % holding voltage of ccd
-Vclose = -1; % closing voltage of ccd
-delayTime = 1; % set delay before next step
+Vclose = -2; % closing voltage of ccd
+delayTime = 2; % set delay before next step
 
 %% Open first three doors to CCD - using sigDACRampVoltage function
 sigDACRampVoltage(d1_ccd.Device,d1_ccd.Port,Vload,numSteps); % open 1st door
@@ -49,6 +49,7 @@ fprintf('Sense, twiddle, and both shield gate voltages set\n');
 delay(delayTime);
 
 %% Sweep offset and door gates
-sweep1DMeasSR830({'Door'},-1,0,0.05,1,3,0.05,{SR830Twiddle},offset.Device,offset.Port,0,1);
-sweep1DMeasSR830({'CCDdoor'},2,-1,0.05,1,3,0.05,{SR830Twiddle},door.Device,door.Port,1,1);
-sweep1DMeasSR830({'Door'},0,-1,0.05,1,3,0.05,{SR830Twiddle},offset.Device,offset.Port,0,1);
+sigDACRampVoltage(offset.Device,offset.Port,Vopen,numSteps);
+sigDACRampVoltage(door.Device,door.Port,Vclose,numSteps);
+sigDACRampVoltage(offset.Device,offset.Port,Vclose,numSteps);
+sweep1DMeasSR830({'Shield'},0,-0.5,0.02,3,1,{SR830Twiddle},shieldl.Device,{shieldl.Port},1,1); % sweep shield

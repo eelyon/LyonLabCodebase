@@ -3,6 +3,7 @@
 numSteps = 1000;
 Vopen = 2; % holding voltage of ccd
 Vclose = -1; % closing voltage of ccd
+Vdelta = 0.2; % set Vdelta between ccd3 and door
 
 % set33622AOutput(Ag2Channel,1, 'OFF'); % turn twiddle off
 % set33622AOutput(Ag2Channel,2, 'OFF'); % turn compensation off
@@ -14,6 +15,8 @@ sigDACRampVoltage(twiddle.Device,twiddle.Port,-0.4,numSteps); % make twiddle sli
 sigDACRampVoltage(shieldl.Device,shieldl.Port,-1,numSteps); % make shield negative
 % sweep1DMeasSR830({'Shield'},0,-1,0.05,1,9,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1); % sweep offset
 
+% sigDACRampVoltage(sense.Device,sense.Port,-0.5,numSteps); % make sense negative
+
 sigDACRampVoltage(offset.Device,offset.Port,1,numSteps); % open offset gate
 % sweep1DMeasSR830({'Door'},-1,1,0.1,1,9,{SR830Twiddle},offset.Device,{offset.Port},1,1); % sweep offset
 
@@ -21,11 +24,11 @@ sigDACRampVoltage(door.Device,door.Port,Vopen,numSteps); % open door
 % sweep1DMeasSR830({'CCDdoor'},-1,2,0.1,1,9,{SR830Twiddle},door.Device,{door.Port},0,1); % sweep offset
 delay(2);
 
-sigDACRampVoltage(offset.Device,offset.Port,Vclose,numSteps); % close offset gate
+sigDACRampVoltage(offset.Device,offset.Port,Vclose+Vdelta,numSteps); % close offset gate
 delay(1);
 
 sigDACRampVoltage(twiddle.Device,twiddle.Port,0,numSteps); % set twiddle back to 0V
-fprintf('Electrons unloaded\n');
+fprintf('Electrons unloaded from twiddle-sense\n');
 
 % set33622AOutput(Ag2Channel,1, 'ON'); % turn twiddle back on
 % set33622AOutput(Ag2Channel,2, 'ON'); % turn compensation back on
@@ -37,8 +40,9 @@ numSplits = 1;
 for i = 1:numSplits
     sigDACRampVoltage(ccd1.Device,ccd1.Port,Vopen,numSteps); % open ccd1
     sigDACRampVoltage(ccd3.Device,ccd3.Port,Vopen,numSteps); % open ccd3
-    delay(1); % wait for electrons to distribute amongst ccd3, ccd1, and door
-    sigDACRampVoltage(ccd1.Device,ccd1.Port,Vclose,numSteps); % close ccd1
+    delay(2); % wait for electrons to distribute amongst ccd3, ccd1, and door
+    sigDACRampVoltage(ccd1.Device,ccd1.Port,Vclose,75000); % close ccd1 slowly (~1V/sec given 40us per step)
+    fprintf(['Eletrons split: ccd1 ramped to ', num2str(Vclose), 'V\n'])
 
     %% Move electrons on CCD3 back to ST through CCD
     ccd_units = 63; % number of repeating units in ccd array
@@ -56,12 +60,12 @@ for i = 1:numSplits
     %% Unload CCD
     sigDACRampVoltage(d4_ccd.Device,d4_ccd.Port,Vopen,numSteps); % open 3rd door
     sigDACRampVoltage(ccd1.Device,ccd1.Port,Vclose,numSteps); % close phi1
-    sigDACRampVoltage(d3_ccd.Device,d3_ccd.Port,Vload,numSteps); % open 2nd door
+    sigDACRampVoltage(d3_ccd.Device,d3_ccd.Port,Vopen,numSteps); % open 2nd door
     sigDACRampVoltage(d4_ccd.Device,d4_ccd.Port,Vclose,numSteps); % close 3rd door
-    sigDACRampVoltage(d1_ccd.Device,d1_ccd.Port,Vload,numSteps); % open 1st door
+    sigDACRampVoltage(d1_ccd.Device,d1_ccd.Port,Vopen,numSteps); % open 1st door
     sigDACRampVoltage(d3_ccd.Device,d3_ccd.Port,Vclose,numSteps); % close 2nd door
     sigDACRampVoltage(d1_ccd.Device,d1_ccd.Port,Vclose,numSteps); % close 1st door
-    fprintf('\nElectrons loaded back onto ST-Sense\n');
+    fprintf('Electrons loaded back onto ST-Sense\n');
 end
 
 %% Sweep offset from -1V to 1V and back to let electrons from door onto sense
