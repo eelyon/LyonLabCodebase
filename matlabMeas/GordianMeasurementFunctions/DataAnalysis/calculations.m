@@ -1,10 +1,10 @@
 %% Script for calculating electron density and number of electrons
-close all;
-clear all;
+% close all;
+% clear all;
 
 %% Bulk LHe
-T = 1.9; % measurement temperature in K
-P_atm = 33; % atmospheres of He gas fed into cell
+T = 1.8; % measurement temperature in K
+P_atm = 31; % atmospheres of He gas fed into cell
 
 r_cell = 2.7305e-2; % in m
 V_panel = (18.44+3.213)*2.54^3/1e6; % gas manifold + T-KF volume from in^3 to m^3

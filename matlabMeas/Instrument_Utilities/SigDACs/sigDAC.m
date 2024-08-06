@@ -92,7 +92,7 @@ classdef sigDAC
                 str = [numSteps numChans channels calvoltList];
                 convertArray = sprintf('%d ', str);
                 fprintf(sigDAC.client,['RAMP ' convertArray]);
-                delayTime = 0.00006*numSteps*numChans;
+                delayTime = 0.00004*numSteps*numChans; % set delay until DAC has run ramp
                 delay(1.5*delayTime)
                 for i=1:numChans
                     evalin('base',[sigDAC.name '.channelVoltages( ' num2str(channels(i)) ') = ' num2str(voltages(i)) ';']);
@@ -101,7 +101,7 @@ classdef sigDAC
                 str = [numSteps numChans channels voltages];
                 convertArray = sprintf('%d ', str);  % num2str pads the array with space, use sprintf instead!
                 fprintf(sigDAC.client,['RAMP ' convertArray]);
-                delayTime = 0.00006*numSteps*numChans; 
+                delayTime = 0.00004*numSteps*numChans; 
                 delay(1.5*delayTime)
                 for i=1:numChans
                     evalin('base',[sigDAC.name '.channelVoltages( ' num2str(channels(i)) ') = ' num2str(voltages(i)) ';']);
