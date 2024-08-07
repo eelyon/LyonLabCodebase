@@ -54,5 +54,5 @@ fprintf('Electrons loaded back onto Sommer-Tanner\n')
 
 %% Sweep shield to check for electrons in twiddle
 interleavedRamp(shieldl.Device,shieldl.Port,startShield,numSteps,waitTime); % set left shield back to 0V
-[avgMag,avgReal,avgImag] = sweep1DMeasSR830({'Shield'},startShield,stopShield,stopShield-startShield,5,numRepeats,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1); % sweep shield
+[avgReal,avgImag,stdReal,stdImag] = sweep1DMeasSR830({'Shield'},startShield,stopShield,stopShield-startShield,5,numRepeats,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1); % sweep shield
 interleavedRamp(shieldl.Device,shieldl.Port,startShield,numSteps,waitTime); % set left shield back

@@ -15,6 +15,7 @@ function [fig,myFig] = plotData(xData,yData,varargin)
     p = inputParser;
     addRequired(p,'xData',@isnumeric);
     addRequired(p,'yData',@isnumeric);
+    addParameter(p,'yError',@isnumeric); % Add errorbars
     addParameter(p,'xLabel',defaultXLabel,@isstring);
     addParameter(p,'yLabel',defaultYLabel,@isstring);
     addParameter(p,'legend',defaultLegend,@ischar);
@@ -47,6 +48,8 @@ function [fig,myFig] = plotData(xData,yData,varargin)
         fig = loglog(xData,yData,p.Results.color);
     elseif strcmp(p.Results.type,'semilogx')
         fig = semilogx(xData,yData,p.Results.color);
+    elseif strcmp(p.Results.type,'errorbar') % Add errorbars
+        fig = errorbar(xData,yData,p.Results.yError,p.Results.color);
     end
 
     ax = gca;
