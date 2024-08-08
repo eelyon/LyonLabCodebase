@@ -35,19 +35,14 @@ function [ h ] = heliumFillHeight( Pkpa )
  elseif  bigglassGordian   % big glass dewar Gordian Cell (RF) 
      Vpanel = 18.44+3.213;     % in^3
      Vstick = 26.19;     % in^3 
-<<<<<<< Updated upstream
      Acell = pi*0.75^2;  % in^2
      Patm = (30-Pkpa)*0.0334211; % atm
      h = Patm * (Vpanel)*25.4/(757*Acell); % [mm]
 
  elseif  bigglassNewRF   % big glass dewar updated RF Cell that Mayer designed (RF) 
-     Vpanel = 18.44+3.213;     % in^3, Vstick not measured 
-     Acell = pi*(2.27/2)^2;  % in^2
+     Vpanel = 18.44+3.213;       % in^3, Vstick not measured 
+     Acell = pi*(2.15/2)^2;      % in^2
      Patm = (30-Pkpa)*0.0334211; % atm
-=======
-     Acell = pi*1.075^2;  % in^2
-     Patm =  (30-Pkpa)*0.0334211; % atm
->>>>>>> Stashed changes
      h = Patm * (Vpanel)*25.4/(757*Acell); % [mm]
  end
 end
