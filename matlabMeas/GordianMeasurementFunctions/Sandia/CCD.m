@@ -1,31 +1,55 @@
-% Script for moving electrons from Sommer-Tanner to first diff. meas. region
-DCPinout;
-deltaVal = 0.5; % voltage step for ramp
-waitTime = 0.001; % set wait time after each voltage step
-Vopen = 1; % holding voltage of ccd
-Vclose = -1; % closing voltage of ccd
+%% Script for moving electrons from Sommer-Tanner to phi1 before door of 1st twiddle-sense
+% Run DCPinout before running this script
+numSteps = 100; % number of steps in ramp
+Vload = 0; % set voltage on first two doors to control no. of electrons
+Vopen = 0.6; % holding voltage of ccd
+Vclose = -0.6; % closing voltage of ccd
+delayTime = 2; % set delay before next step
 
-%% open first three doors
-rampVal(d1_ccd.Device,d1_ccd.Port,getVal(d1_ccd.Device,d1_ccd.Port),Vopen,deltaVal,waitTime); % open 1st door
-rampVal(d3_ccd.Device,d3_ccd.Port,getVal(d3_ccd.Device,d3_ccd.Port),Vopen,deltaVal,waitTime); % open 2nd door
-rampVal(d1_ccd.Device,d1_ccd.Port,getVal(d1_ccd.Device,d1_ccd.Port),Vclose,deltaVal,waitTime); % close 1st door
-rampVal(d4_ccd.Device,d4_ccd.Port,getVal(d4_ccd.Device,d4_ccd.Port),Vopen,deltaVal,waitTime); % open 3rd door
-rampVal(d3_ccd.Device,d3_ccd.Port,getVal(d3_ccd.Device,d3_ccd.Port),Vclose,deltaVal,waitTime); % close 2nd door
-fprintf('Doors opened.\n');
+%% Open first three doors to CCD - using sigDACRampVoltage function
+sigDACRampVoltage(d1_ccd.Device,d1_ccd.Port,Vload,numSteps); % open 1st door
+sigDACRampVoltage(d3_ccd.Device,d3_ccd.Port,Vload,numSteps); % open 2nd door
+sigDACRampVoltage(d1_ccd.Device,d1_ccd.Port,Vclose,numSteps); % close 1st door
+sigDACRampVoltage(d4_ccd.Device,d4_ccd.Port,Vopen,numSteps); % open 3rd door
+sigDACRampVoltage(d3_ccd.Device,d3_ccd.Port,Vclose,numSteps); % close 2nd door
+fprintf('Electrons loaded onto third door\n');
+% delay(delayTime);
 
-rampVal(ccd1.Device,ccd1.Port,getVal(ccd1.Device,ccd1.Port),Vopen,deltaVal,waitTime); % open phi1
-rampVal(d4_ccd.Device,d4_ccd.Port,getVal(d4_ccd.Device,d4_ccd.Port),Vclose,deltaVal,waitTime); % close 3rd door
-fprintf('Electrons loaded onto first ccd gate (phi1).\n'); delay(5);
+sigDACRampVoltage(ccd1.Device,ccd1.Port,Vopen,numSteps); % open phi1
+sigDACRampVoltage(d4_ccd.Device,d4_ccd.Port,Vclose,numSteps); % close 3rd door
+fprintf('Electrons loaded onto ccd1\n');
+% delay(delayTime);
 
+%% Run CCD gates
 ccd_units = 63; % number of repeating units in ccd array
-
-for i = 1:ccd_units 
-    rampVal(ccd2.Device,ccd2.Port,getVal(ccd2.Device,ccd2.Port),Vopen,deltaVal,waitTime); % open phi2
-    rampVal(ccd1.Device,ccd1.Port,getVal(ccd1.Device,ccd1.Port),Vclose,deltaVal,waitTime); % close phi1
-    rampVal(ccd3.Device,ccd3.Port,getVal(ccd3.Device,ccd3.Port),Vopen,deltaVal,waitTime); % open phi3
-    rampVal(ccd2.Device,ccd2.Port,getVal(ccd2.Device,ccd2.Port),Vclose,deltaVal,waitTime); % close phi2
-    rampVal(ccd1.Device,ccd1.Port,getVal(ccd1.Device,ccd1.Port),Vopen,deltaVal,waitTime); % open phi1
-    rampVal(ccd3.Device,ccd3.Port,getVal(ccd3.Device,ccd3.Port),Vclose,deltaVal,waitTime); % close phi3
-    fprintf(['CCD unit: ', num2str(i),'\n']);
+for i = 1:ccd_units
+    sigDACRampVoltage(ccd2.Device,ccd2.Port,Vopen,numSteps); % open phi2
+    sigDACRampVoltage(ccd1.Device,ccd1.Port,Vclose,numSteps); % close phi1
+    sigDACRampVoltage(ccd3.Device,ccd3.Port,Vopen,numSteps); % open phi3
+    sigDACRampVoltage(ccd2.Device,ccd2.Port,Vclose,numSteps); % close phi2
+    sigDACRampVoltage(ccd1.Device,ccd1.Port,Vopen,numSteps); % open phi1
+    sigDACRampVoltage(ccd3.Device,ccd3.Port,Vclose,numSteps); % close phi3
+    fprintf([num2str(i),' ']);
 end
-fprintf(['Electrons moved ', num2str(ccd_units), ' ccd units.\n']);
+fprintf(['\nElectrons moved ', num2str(ccd_units), ' ccd units into ccd1\n']);
+% delay(delayTime);
+
+%% Move electrons onto door gate
+sigDACRampVoltage(door.Device,door.Port,Vopen,numSteps); % open door
+sigDACRampVoltage(ccd1.Device,ccd1.Port,Vclose,numSteps); % close phi1
+fprintf('Electrons loaded onto door gate\n');
+% delay(delayTime);
+
+%% Set sense, shield and twiddle
+sigDACRampVoltage(shieldr.Device,shieldr.Port,-2,numSteps); % close door right of twiddle
+interleavedRamp(sense.Device,sense.Port,0,2,0.5); % open sense
+interleavedRamp(shieldl.Device,shieldl.Port,0.1,2,0.5); % open shield
+sigDACRampVoltage(twiddle.Device,twiddle.Port,0,numSteps); % open twiddle
+fprintf('Sense, twiddle, and both shield gate voltages set\n');
+% delay(delayTime);
+
+%% Open offset and door gates and sweep shield for electrons
+interleavedRamp(offset.Device,offset.Port,Vopen,2,0.5);
+sigDACRampVoltage(door.Device,door.Port,Vclose,numSteps);
+interleavedRamp(offset.Device,offset.Port,Vclose,2,0.5);
+sweep1DMeasSR830({'Shield'},0.1,-0.5,0.01,1,10,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1); % sweep shield

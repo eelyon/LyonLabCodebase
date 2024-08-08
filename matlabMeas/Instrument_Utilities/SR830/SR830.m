@@ -149,6 +149,14 @@ classdef SR830 < handle
             theta = str2double(query(SR830.client, 'OUTP ? 4'));
         end
 
+        function dVal = SR830queryDisplay1(SR830)
+            dVal = str2double(query(SR830.client, 'OUTR ? 1'));
+        end
+
+        function dVal = SR830queryDisplay2(SR830)
+            dVal = str2double(query(SR830.client, 'OUTR ? 2'));
+        end
+ 
         function sensVal = SR830querySensitivity(SR830)
             sensArr = [2e-9, 5e-9, 1e-8, 2e-8, 5e-8, 1e-7, 2e-7,5e-7, 1e-6,2e-6,5e-6,1e-5,2e-5, 5e-5,1e-4,2e-4,5e-4,1e-3,2e-3,5e-3,.01,.02,.05,.1,.2,.5,1];
             sensVal = str2double(query(SR830.client, 'SENS ?'));

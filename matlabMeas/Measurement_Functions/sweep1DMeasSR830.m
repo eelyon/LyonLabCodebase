@@ -1,4 +1,4 @@
-function [avgmags] = sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,opt)
+function [avgxs,avgys,stdx,stdy] = sweep1DMeasSR830(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,opt)
 % Function sweeps the device and ports from the start to stop parameter
 % with a given delta. 
 % Parameters:

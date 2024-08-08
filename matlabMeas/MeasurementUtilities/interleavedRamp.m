@@ -13,6 +13,7 @@ end
 
 for vParam = 1:length(voltages{1})
     for portParam = 1:length(ports)
+        % voltages{portParam}(vParam)
         setVal(devices(portParam),ports(portParam),voltages{portParam}(vParam));
         pause(waitTime);
     end

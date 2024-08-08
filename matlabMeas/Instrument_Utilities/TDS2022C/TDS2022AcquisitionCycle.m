@@ -1,7 +1,7 @@
 scope = Oscilloscope;
-masterTrigger = AWG;
-triggerChannel = 'CH2';
-samplePosition = 6.5;
+%masterTrigger = AWG;
+%triggerChannel = 'CH2';
+%samplePosition = 6.5;
 % if ~strcmp(queryTDS2022TriggerSource(scope),triggerChannel)
 %   setTDS2022TriggerSource(scope,triggerChannel);
 % else
@@ -20,7 +20,7 @@ end
 % %setTDS2022TriggerLevel(Oscilloscope,triggerLevel);
 % pause(1)
 % 
- send33220Trigger(masterTrigger);
+ %send33220Trigger(masterTrigger);
 %pause(1);
 figHandle = get2ChannelTDS2022Data(scope);%get1ChannelTDS2022Data(Oscilloscope,1);%
 % emissionxLim = xlim;

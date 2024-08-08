@@ -1,5 +1,5 @@
 %% Frequency of temperature querying in seconds.
-timeBetweenPoints = 60;
+timeBetweenPoints = 5;
 
 %% Initialize Thermometer type (this is related to your thermometer you have)
 thermometerType = 'X117656';
@@ -14,7 +14,6 @@ Thermometer = TCPIP_Connect(DMM_Address,port);
 [time,temperature] = deal(inf);
 
 %% Create plot for thermometry and set the data sources for the figure handle below.
-thermPlot = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"rx");
-
-temperatureVsTime(Thermometer,timeBetweenPoints,Therm,thermPlot);
-fclose(Thermometer);
+[thermPlot,figHandle] = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"rx");
+flush(Thermometer);
+temperatureVsTime(Thermometer,timeBetweenPoints,Therm,figHandle,thermPlot);

@@ -1,37 +1,38 @@
-%% This script sets relevant gate voltages for emission
-DCPinout; % load DC pinout script
-deltaVal = 0.05; % set step size
-waitTime = 0.05; % set wait time after each voltage step
-
-%% Set Sommer-Tanner
-rampVal(TM.Device,TM.Port,getVal(TM.Device,TM.Port),-0.5,deltaVal,waitTime); % ramp top metal
-rampVal(STG.Device,STG.Port,getVal(STG.Device,STG.Port),-1,deltaVal,waitTime); % ramp Sommer-Tanner (left) guard
-rampVal(M2S.Device,M2S.Port,getVal(M2S.Device,M2S.Port),-0.5,deltaVal,waitTime); % ramp M2 shield
-rampVal(BPG.Device,BPG.Port,getVal(BPG.Device,BPG.Port),-1,deltaVal,waitTime); % ramp bond pad guard
-fprintf('Sommer-Tanner set for emission.\n'); delay(2);
-
-%% Set ccd gates
+%% This script sets all gate voltages for emission
+% Run DCPinout before running this script
+numSteps = 1000; % set wait time after each voltage step
 stopVal = -1;
 
-rampVal(d1_ccd.Device,d1_ccd.Port,getVal(d1_ccd.Device,d1_ccd.Port),stopVal,deltaVal,waitTime)
-rampVal(d2_ccd.Device,d2_ccd.Port,getVal(d2_ccd.Device,d2_ccd.Port),stopVal,deltaVal,waitTime)
-rampVal(d3_ccd.Device,d3_ccd.Port,getVal(d3_ccd.Device,d3_ccd.Port),stopVal,deltaVal,waitTime)
-rampVal(d4_ccd.Device,d4_ccd.Port,getVal(d4_ccd.Device,d4_ccd.Port),stopVal,deltaVal,waitTime)
-delay(2);
+%% Set Sommer-Tanner
+interleavedRamp(TM.Device,TM.Port,-0.8,5,0.1); % ramp top metal
+sigDACRampVoltage(STD.Device,STD.Port,+2,numSteps); % ramp ST-Drive
+sigDACRampVoltage(STS.Device,STS.Port,+2,numSteps); % ramp ST-Sense
+sigDACRampVoltage(STM.Device,STM.Port,+2,numSteps); % ramp ST-Middle
+sigDACRampVoltage(STG.Device,STG.Port,+2,numSteps); % ramp Sommer-Tanner (left) guard
 
-rampVal(ccd1.Device,ccd1.Port,getVal(ccd1.Device,ccd1.Port),stopVal,deltaVal,waitTime)
-rampVal(ccd2.Device,ccd2.Port,getVal(ccd2.Device,ccd2.Port),stopVal,deltaVal,waitTime)
-rampVal(ccd3.Device,ccd3.Port,getVal(ccd3.Device,ccd3.Port),stopVal,deltaVal,waitTime)
-fprintf('CCDs set for emission.\n'); delay(2);
+sigDACRampVoltage(M2S.Device,M2S.Port,-0.5,numSteps); % ramp M2 guard
+sigDACRampVoltage(BPG.Device,BPG.Port,-1,numSteps); % ramp bond pad guard
+fprintf('Sommer-Tanner set for emission.\n');
 
-rampVal(d_diff.Device,d_diff.Port,getVal(d_diff.Device,d_diff.Port),stopVal,deltaVal,waitTime)
-rampVal(dm1_gl.Device,dm1_gl.Port,getVal(dm1_gl.Device,dm1_gl.Port),stopVal,deltaVal,waitTime)
-rampVal(dm1_t.Device,dm1_t.Port,getVal(dm1_t.Device,dm1_t.Port),stopVal,deltaVal,waitTime)
-rampVal(dm1_gr.Device,dm1_gr.Port,getVal(dm1_gr.Device,dm1_gr.Port),-2,deltaVal,waitTime) % Set -2V for twiddle measurements
-rampVal(dm1_sl.Device,dm1_sl.Port,getVal(dm1_sl.Device,dm1_sl.Port),stopVal,deltaVal,waitTime)
-rampVal(dm1_ol.Device,dm1_ol.Port,getVal(dm1_ol.Device,dm1_ol.Port),stopVal,deltaVal,waitTime)
-rampVal(shield.Device,shield.Port,getVal(shield.Device,shield.Port),stopVal,deltaVal,waitTime)
-fprintf('Twiddle and sense set for emission.\n'); delay(2);
+%% Set CCD and twiddle gates
+sigDACRampVoltage(d1_ccd.Device,d1_ccd.Port,stopVal,numSteps)
+sigDACRampVoltage(d2_ccd.Device,d2_ccd.Port,stopVal,numSteps)
+sigDACRampVoltage(d3_ccd.Device,d3_ccd.Port,stopVal,numSteps)
+sigDACRampVoltage(d4_ccd.Device,d4_ccd.Port,stopVal,numSteps)
 
-rampVal(fil.Device,fil.Port,getVal(fil.Device,fil.Port),-2,deltaVal,waitTime); % ramp filament backing plate
+sigDACRampVoltage(ccd1.Device,ccd1.Port,stopVal,numSteps)
+sigDACRampVoltage(ccd2.Device,ccd2.Port,stopVal,numSteps)
+sigDACRampVoltage(ccd3.Device,ccd3.Port,stopVal,numSteps)
+fprintf('CCDs set for emission.\n');
+
+sigDACRampVoltage(door.Device,door.Port,stopVal,numSteps)
+interleavedRamp(offset.Device,offset.Port,stopVal,5,0.1)
+interleavedRamp(sense.Device,sense.Port,-0.5,5,0.1)
+interleavedRamp(shieldl.Device,shieldl.Port,stopVal,5,0.1)
+sigDACRampVoltage(twiddle.Device,twiddle.Port,stopVal,numSteps)
+sigDACRampVoltage(shieldr.Device,shieldr.Port,stopVal,numSteps)
+interleavedRamp(shield.Device,shield.Port,stopVal,5,0.1) % this is the guard underneath twiddle-sense
+fprintf('Twiddle and sense set for emission.\n');
+ 
+sigDACRampVoltage(filament.Device,filament.Port,-2,numSteps); % ramp filament backing plate
 fprintf('Voltages set for emission.\n')
