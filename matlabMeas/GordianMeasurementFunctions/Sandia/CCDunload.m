@@ -2,22 +2,22 @@ loop = 1;
 for j=1:loop
     %% Script for decreasing number of electrons in twiddle-sense
     % Run DCPinout before running this script
-    numSteps = 2;
-    numSteps_ccd = 100;
+    numSteps = 5;
+    numSteps_ccd = 500;
     waitTime = 0.5; % 5 times time constant
-    Vopen = 0.6; % holding voltage of ccd
-    Vclose = -0.6; % closing voltage of ccd
+    Vopen = 3.5; % holding voltage of ccd
+    Vclose = -0.75; % closing voltage of ccdc
     
-    interleavedRamp(TM.Device,TM.Port,-0.75,numSteps,waitTime); % make top metal less negative
+%     interleavedRamp(TM.Device,TM.Port,-0.7,numSteps,waitTime); % make top metal less negative
     
     %% Set potential gradient across twiddle-sense and unload electrons
-    sigDACRampVoltage(ccd1.Device,ccd1.Port,0.6,500); % open ccd1
-    sigDACRampVoltage(door.Device,door.Port,0.6,500); % open door
-    interleavedRamp(offset.Device,offset.Port,0.3,numSteps,waitTime); % open offset
+    sigDACRampVoltage(ccd1.Device,ccd1.Port,2,500); % open ccd1
+    sigDACRampVoltage(door.Device,door.Port,1,500); % open door
 
-%     sigDACRampVoltage(shieldr.Device,shieldr.Port,-3,500); % make right shield negative
-    sigDACRampVoltage(twiddle.Device,twiddle.Port,-2,500); % make twiddle negative
-    interleavedRamp(shieldl.Device,shieldl.Port,-0.6,numSteps,waitTime); % make shield negative
+    sigDACRampVoltage(shieldr.Device,shieldr.Port,-3,500); % make right shield negative
+    sigDACRampVoltage(twiddle.Device,twiddle.Port,-2,5000); % make twiddle negative
+    interleavedRamp(shieldl.Device,shieldl.Port,-1,numSteps,waitTime); % make shield negative
+    interleavedRamp(offset.Device,offset.Port,0.5,numSteps,waitTime); % open offset
     interleavedRamp(sense.Device,sense.Port,-0.3,numSteps,waitTime); % make sense negative
     delay(1); % wait for electrons to diffuse across twiddle to door
     fprintf('Twiddle-sense unloaded\n')
@@ -27,7 +27,7 @@ for j=1:loop
     
 %     sigDACRampVoltage(shieldr.Device,shieldr.Port,-2,500); % set right shield back to -2V
     sigDACRampVoltage(twiddle.Device,twiddle.Port,0,500); % set twiddle back to 0V
-    interleavedRamp(shieldl.Device,shieldl.Port,0.1,numSteps,waitTime); % set left shield back to 0V
+    interleavedRamp(shieldl.Device,shieldl.Port,0.1,numSteps,waitTime); % set left shield back
     interleavedRamp(sense.Device,sense.Port,0,numSteps,waitTime); % set sense back to 0V
     fprintf('Twiddle-sense voltages set back\n')
     
@@ -55,8 +55,7 @@ for j=1:loop
     fprintf('Electrons loaded back onto Sommer-Tanner\n')
     
     %% Sweep shield to check for electrons in twiddle
-    interleavedRamp(shieldl.Device,shieldl.Port,0.1,numSteps,waitTime); % set left shield back to 0V
-    sweep1DMeasSR830({'Shield'},0.1,-0.5,0.01,1.5,5,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1); % sweep shield
+    sweep1DMeasSR830({'Shield'},0.1,-1,0.1,1,10,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1); % sweep shield
     interleavedRamp(shieldl.Device,shieldl.Port,0.1,numSteps,waitTime); % set left shield back
     fprintf(['CCD unload run #',num2str(j),' - END. \n'])
 end

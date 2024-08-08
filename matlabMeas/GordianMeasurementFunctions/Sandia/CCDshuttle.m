@@ -5,7 +5,7 @@ waitTime = 0.5; % 5 times time constant
 Vopen = 0.6; % holding voltage of ccd
 Vclose = -0.6; % closing voltage of ccd
 
-interleavedRamp(TM.Device,TM.Port,-0.67,5,0.1); % make top metal less negative
+% interleavedRamp(TM.Device,TM.Port,-0.67,5,0.1); % make top metal less negative
 
 %% Set potential gradient across twiddle-sense and unload electrons
 sigDACRampVoltage(ccd1.Device,ccd1.Port,0.6,500); % open ccd1
@@ -27,7 +27,7 @@ interleavedRamp(shieldl.Device,shieldl.Port,0.1,numSteps,waitTime); % set left s
 interleavedRamp(sense.Device,sense.Port,0,numSteps,waitTime); % set sense back to 0V
 fprintf('Twiddle-sense voltages set back\n')
 
-sweep1DMeasSR830({'Shield'},0.1,-0.4,0.01,1.5,10,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1); % sweep shield
+sweep1DMeasSR830({'Shield'},0.1,-0.6,0.02,1,10,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1); % sweep shield
 interleavedRamp(shieldl.Device,shieldl.Port,0.1,numSteps,waitTime); % set left shield back
 
 interleavedRamp(offset.Device,offset.Port,0.6,numSteps,waitTime); % open offset
@@ -35,5 +35,5 @@ interleavedRamp(door.Device,door.Port,-0.6,numSteps,waitTime); % close door slow
 interleavedRamp(offset.Device,offset.Port,-2,numSteps,waitTime); % close offset slowly
 delay(1);
 
-sweep1DMeasSR830({'Shield'},0.1,-0.4,0.01,1.5,10,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1);
+sweep1DMeasSR830({'Shield'},0.1,-0.6,0.02,1,10,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1);
 interleavedRamp(shieldl.Device,shieldl.Port,0.1,numSteps,waitTime); % set left shield back

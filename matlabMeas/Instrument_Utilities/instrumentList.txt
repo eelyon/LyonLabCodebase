@@ -1,1 +1,1 @@
-Instruments: 
+Instruments: controlDAC,supplyDAC

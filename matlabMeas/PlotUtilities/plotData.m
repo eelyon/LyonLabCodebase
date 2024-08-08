@@ -15,7 +15,6 @@ function [fig,myFig] = plotData(xData,yData,varargin)
     p = inputParser;
     addRequired(p,'xData',@isnumeric);
     addRequired(p,'yData',@isnumeric);
-    addParameter(p,'yError',@isnumeric); % Add errorbars
     addParameter(p,'xLabel',defaultXLabel,@isstring);
     addParameter(p,'yLabel',defaultYLabel,@isstring);
     addParameter(p,'legend',defaultLegend,@ischar);
@@ -23,6 +22,7 @@ function [fig,myFig] = plotData(xData,yData,varargin)
     addParameter(p,'subPlot',defaultSubPlot,@isnumeric);
     addParameter(p,'holdOn',defaultTurnHoldOn,@isnumeric);
     addParameter(p,'type',defaultType,@isstring);
+    addParameter(p,'yError',@isnumeric); % Add errorbars
     addParameter(p,'title',defaultTitle,@isstring);
     addParameter(p,'grid',defaultGrid,@isnumeric);
     addParameter(p,'metaData',defaultMetaDat,@isstring);
@@ -76,12 +76,14 @@ function [fig,myFig] = plotData(xData,yData,varargin)
     metadata_struct.time= datestr(now(),figDateFormat);
     metadata_struct.metaData = p.Results.metaData;
     instrumentList = parseInstrumentList();
-    if ~isempty(instrumentList) > 0 && p.Results.saveMeta
+    if ~isempty(instrumentList) > 0
         for i = 1:length(instrumentList)
             if contains(instrumentList{i},"SR830")
                 metadata_struct.SR830 = evalin("base",strcat("getSR830State(",instrumentList{i},");"));
-            elseif contains(instrumentList{i},"DAC")
-                metadata_struct.sigDAC = evalin('base',[instrumentList{i} '.channelVoltages;']);
+            elseif contains(instrumentList{i},"controlDAC")
+                metadata_struct.controlDAC = evalin('base',[instrumentList{i} '.channelVoltages;']);
+            elseif contains(instrumentList{i},"supplyDAC")
+                metadata_struct.supplyDAC = evalin('base',[instrumentList{i} '.channelVoltages;']);
 %             elseif contains(instrumentList{i},"DoorLeft")
 %                 metadata_struct.DoorLeft = evalin("base",strcat("query33220PulseWidth(",instrumentList{i},");"));
 %             elseif contains(instrumentList{i},"DoorRight")
