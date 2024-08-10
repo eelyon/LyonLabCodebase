@@ -1,31 +1,35 @@
 %% Script for unloading electron in twiddle-sense
 % Run DCPinout before running this script
-numSteps = 1000;
-numStepsCCD = 500;
-numStepsRC = 5;
-waitTime = 0.5;
-Vopen = 0.8; % holding voltage of ccd
+numSteps = 500; % sigDACRampVoltage
+numStepsCCD = 500; % sigDACRampVoltage
+numStepsRC = 5; % interleavedRamp
+waitTime = 0.5; % interleavedRamp
+Vopen = 3; % holding voltage of ccd
 Vclose = -0.75; % closing voltage of ccd
 
 %% Set potential gradient across twiddle-sense and unload electrons
-sigDACRampVoltage(ccd1.Device,ccd1.Port,0.6,numSteps); % open ccd1
-sigDACRampVoltage(door.Device,door.Port,0.4,numSteps); % open door
+sigDACRampVoltage(ccd2.Device,ccd2.Port,Vopen,numStepsCCD); % open ccd2
+sigDACRampVoltage(ccd1.Device,ccd1.Port,2,numSteps); % open ccd1
+sigDACRampVoltage(door.Device,door.Port,1,numSteps); % open door
 
 % sigDACRampVoltage(shieldr.Device,shieldr.Port,-3,numSteps); % make right shield negative
-% sigDACRampVoltage(twiddle.Device,twiddle.Port,-1.5,numSteps); % make twiddle negative
+sigDACRampVoltage(twiddle.Device,twiddle.Port,-1.5,numSteps); % make twiddle negative
 interleavedRamp(shieldl.Device,shieldl.Port,-1,numStepsRC,waitTime); % make shield negative
-interleavedRamp(offset.Device,offset.Port,0.2,numStepsRC,waitTime); % open offset
+interleavedRamp(offset.Device,offset.Port,0.5,numStepsRC,waitTime); % open offset
 % interleavedRamp(sense.Device,sense.Port,-0.3,numSteps,waitTime); % make sense negative
 delay(1); % wait for electrons to diffuse across twiddle to door
 fprintf('Twiddle-sense unloaded\n')
 
-interleavedRamp(offset.Device,offset.Port,-2,numStepsRC,waitTime); % close offset
-sigDACRampVoltage(door.Device,door.Port,Vclose,numSteps); % close door
+%% Push electrons onto top metal
+interleavedRamp(offset.Device,offset.Port,-2,numSteps,waitTime); % close offset
+sigDACRampVoltage(door.Device,door.Port,-2,numSteps); % close door
+sigDACRampVoltage(ccd1.Device,ccd1.Port,-1.5,numSteps*10); % open ccd1
 
+%% Reset twiddle-sense
 % sigDACRampVoltage(shieldr.Device,shieldr.Port,-2,numSteps); % set right shield back to -2V
-% sigDACRampVoltage(twiddle.Device,twiddle.Port,0,numSteps); % set twiddle back to 0V
-interleavedRamp(shieldl.Device,shieldl.Port,startShield,numStepsRC,waitTime); % set left shield back
-% interleavedRamp(sense.Device,sense.Port,0,numStepsRC,waitTime); % set sense back to 0V
+sigDACRampVoltage(twiddle.Device,twiddle.Port,0,numSteps); % set twiddle back to 0V
+interleavedRamp(shieldl.Device,shieldl.Port,0.1,numStepsRC,waitTime); % set left shield back
+interleavedRamp(sense.Device,sense.Port,0,numStepsRC,waitTime); % set sense back to 0V
 fprintf('Twiddle-sense voltages set back\n')
 
 %% Move electrons on CCD3 back to ST through CCD
@@ -51,5 +55,5 @@ sigDACRampVoltage(d3_ccd.Device,d3_ccd.Port,Vclose,numSteps); % close 2nd door
 sigDACRampVoltage(d1_ccd.Device,d1_ccd.Port,Vclose,numSteps); % close 1st door
 fprintf('Electrons loaded back onto Sommer-Tanner\n')
 
-[avgMag,avgReal,avgImag,stdReal,stdImag] = sweep1DMeasSR830({'Shield'},startShield,stopShield,stopShield-startShield,10,numRepeats,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1);
+[avgMag,avgReal,avgImag,stdReal,stdImag] = sweep1DMeasSR830({'Shield'},0.1,-0.7,0.02,3,10,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1);
 interleavedRamp(shieldl.Device,shieldl.Port,startShield,numStepsRC,waitTime); % set left shield back

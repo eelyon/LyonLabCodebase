@@ -4,7 +4,7 @@
 
 %% Bulk LHe
 T = 1.8; % measurement temperature in K
-P_atm = 31; % atmospheres of He gas fed into cell
+P_atm = 0.1; % atmospheres of He gas fed into cell
 
 r_cell = 2.7305e-2; % in m
 V_panel = (18.44+3.213)*2.54^3/1e6; % gas manifold + T-KF volume from in^3 to m^3
@@ -16,7 +16,7 @@ h_bulk = cell_depth-LHe/A_cell; % in mm
 fprintf(['height from LHe bulk = ', num2str(h_bulk*1e3, '%.1f'), ' mm\n'])
 
 %% Sommer-Tanner
-t = 1.25e-6; % channel height
+t = 1.27e-6; % channel height
 w = 3e-6; % ST channel width
 V_pinch = -0.3; % pinch off voltage
 
@@ -27,7 +27,7 @@ ne = eD_ST(V_pinch,d);
 fprintf(['electron density from sommer-tanner = ', num2str(ne, '%.3e'), ' cm^-2\n'])
 
 %% Plot channel depth vs. electron density
-n = linspace(1e8,1e10,1e6); % electron density
+n = linspace(1e8,3e10,1e6); % electron density
 rc_withE = Rc(sig,h_bulk,n); % radius of curvature with electrons
 d = ch_depth(rc_withE,w,t); % channel depth
 
