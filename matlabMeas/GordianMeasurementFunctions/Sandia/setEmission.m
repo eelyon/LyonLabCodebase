@@ -30,11 +30,11 @@ fprintf('CCDs set for emission.\n')
 
 sigDACRampVoltage(door.Device,door.Port,stopVal,numSteps)
 interleavedRamp(offset.Device,offset.Port,stopVal,numStepsRC,waitTime)
-% interleavedRamp(sense.Device,sense.Port,-0.5,numStepsRC,waitTime)
+interleavedRamp(sense.Device,sense.Port,-0.5,numStepsRC,waitTime)
 interleavedRamp(shieldl.Device,shieldl.Port,stopVal,numStepsRC,waitTime)
 sigDACRampVoltage(twiddle.Device,twiddle.Port,stopVal,numSteps)
 sigDACRampVoltage(shieldr.Device,shieldr.Port,stopVal,numSteps)
-interleavedRamp(shield.Device,shield.Port,stopVal,numStepsRC,waitTime) % this is the guard underneath twiddle-sense
+interleavedRamp(shield.Device,shield.Port,-0.5,numStepsRC,waitTime) % this is the guard underneath twiddle-sense
 fprintf('Twiddle and sense set for emission.\n')
 
 sigDACRampVoltage(filament.Device,filament.Port,-1,numSteps) % ramp filament backing plate

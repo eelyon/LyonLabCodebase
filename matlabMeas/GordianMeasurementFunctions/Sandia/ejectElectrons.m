@@ -16,7 +16,7 @@ delay(10);
 sigDACRampVoltage(STD.Device,STD.Port,stopVal,numSteps); % Sommer-Tanner drive
 sigDACRampVoltage(STS.Device,STS.Port,stopVal,numSteps); % Sommer-Tanner sense
 sigDACRampVoltage(STM.Device,STM.Port,stopVal,numSteps); % Sommer-Tanner middle gate
-sigDACRampVoltage(STG.Device,STG.Port,-1,numSteps); % Sommer-Tanner (left) guard
+sigDACRampVoltage(STG.Device,STG.Port,stopVal,numSteps); % Sommer-Tanner (left) guard
 sigDACRampVoltage(M2S.Device,M2S.Port,-0.5,numSteps); % M2 shield
 sigDACRampVoltage(BPG.Device,BPG.Port,-1,numSteps); % bond pad guard
 

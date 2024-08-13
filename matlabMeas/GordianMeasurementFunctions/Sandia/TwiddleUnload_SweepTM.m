@@ -24,7 +24,7 @@ numRepeats = 20; % Points averaged over for each sweep point
 
 while cleanTwiddleSense
     
-    TwiddleUnload; % Run twiddle unloading script
+    TwiddleUnload_Split; % Run twiddle unloading script
     mag = correctedMag(avgReal,avgImag); % Get corrected magnitude
     delta = max(mag) - min(mag); % Calc. change in signal
     numEs = calcNumElectrons(capacitance,delta,gain); % Calc. tot. no. of electrons

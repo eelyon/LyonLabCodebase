@@ -1,16 +1,17 @@
 %% Load any electrons left in CCD back into Sommer-Tanner
+% Leaves door (here offset) to sense closed
 loop = 1;
 for j=1:loop
     % Run DCPinout before running this script
     numSteps = 5;
     numSteps_ccd = 500;
     waitTime = 0.5;
-    Vopen = 4; % holding voltage of ccd
-    Vclose = -0.75; % closing voltage of ccd
+    Vopen = 0.6; % holding voltage of ccd
+    Vclose = -0.6; % closing voltage of ccd
 
-    interleavedRamp(door.Device,door.Port,Vopen,numSteps,waitTime); % open door
+%     interleavedRamp(door.Device,door.Port,Vopen,numSteps,waitTime); % open door
     sigDACRampVoltage(ccd1.Device,ccd1.Port,Vopen,500); % open ccd1
-    interleavedRamp(door.Device,door.Port,Vclose,numSteps,waitTime); % close door
+%     interleavedRamp(door.Device,door.Port,Vclose,numSteps,waitTime); % close door
 
     %% Move electrons on CCD3 back to ST through CCD
     ccd_units = 63; % number of repeating units in ccd array

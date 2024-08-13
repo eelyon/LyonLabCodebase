@@ -1,9 +1,13 @@
-for n = 1:5
-    [avgMag,avgReal,avgImag,stdReal,stdImag] = sweep1DMeasSR830({'Shield'},startShield,stopShield,stopShield-startShield,10,numRepeats,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1);
+startShield = 0.2;
+stopShield = -3;
+shieldStep = 0.2;
+
+for n = 1:1
+    [avgMag,avgReal,avgImag,stdReal,stdImag] = sweep1DMeasSR830Fast({'Shield'},startShield,stopShield,shieldStep,3,5,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1);
     mag = correctedMag(avgReal,avgImag); % Get corrected magnitude
     delta = max(mag) - min(mag); % Calc. change in signal
     numEs = calcNumElectrons(capacitance,delta,gain); % Calc. tot. no. of electrons
-    display(numEs)
+    display(numEs,'numEs'); fprintf(['\nstdev = ',num2str(sqrt(stdReal(1).^2+stdImag(1).^2)),'\n'])
 end
 
 function [nE] = calcNumElectrons(capacitance,Volts,gain)

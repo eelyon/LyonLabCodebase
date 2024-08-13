@@ -3,9 +3,9 @@ function [] = QuickHeCalcs()
 %% how different densities of electrons change that
     % set parameters
     h = 6e-3;              % distance of device from bulk helium that you want
-    Vpinch = -0.2;         % pinch off voltage     
-    channelDepth = 1.2e-6; % depth of ST channels 
-    width = 10e-6;         % width of ST channels
+    Vpinch = -0.3;         % pinch off voltage     
+    channelDepth = 1.27e-6; % depth of ST channels 
+    width = 4e-6;         % width of ST channels
     
     % calculated
     Rc = radiusOfCurv(h);             % radius of curvature with no electrons
