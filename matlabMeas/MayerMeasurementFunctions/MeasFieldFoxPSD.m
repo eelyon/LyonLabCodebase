@@ -1,5 +1,5 @@
 startFreq = 100;
-stopFreq = 5e6;
+stopFreq = 10e6;
 numPoints = 1001;
 
 fprintf(fieldFox,'*CLS\n');
@@ -19,9 +19,9 @@ fprintf(fieldFox, 'FORM:DATA REAL,32\n')
 fprintf(fieldFox, 'TRACE:DATA?')
 myBinData = binblockread(fieldFox,'float');
 xDat = linspace(startFreq,stopFreq,numPoints);
-myBinData = myBinData.*1e9/(28.4*10);
+myBinData = myBinData.*1e9/(26.6*10);
 [handle,myFig] = plotData(xDat,myBinData,'xLabel',"Frequency (Hz)",'yLabel',"nV/sqrt(Hz)",'color',"r-",'type', "loglog");
-annotation('textbox',[0.2 0.5 0.3 0.3],'String',"1.8K PSD Choked, x28.4 Amp Gain, x10 FEMTO gain",'FitBoxToText','on');
+annotation('textbox',[0.2 0.5 0.3 0.3],'String',"1.85K PSD Choked, x26.6 Amp Gain, x10 FEMTO gain",'FitBoxToText','on');
 saveData(myFig,'PSD');
 % % There will be a line feed not read, i.e. hanging. Read it to clear
 % %buffer.

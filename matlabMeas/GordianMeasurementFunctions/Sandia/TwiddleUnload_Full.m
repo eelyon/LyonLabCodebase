@@ -9,7 +9,7 @@ Vopen = 0.8; % holding voltage of ccd
 Vclose = -1.5; % closing voltage of ccd
 
 % startShield = 0.2; % sets start value for shield sweep
-% stopShield = -1.4; % sets stop value for shield sweep
+% stopShield = -1; % sets stop value for shield sweep
 shieldStep = stopShield-startShield;
 
 % interleavedRamp(TM.Device,TM.Port,-0.8,numStepsRC,waitTime); % make top metal less negative
@@ -47,7 +47,7 @@ sigDACRampVoltage(d4_ccd.Device,d4_ccd.Port,Vclose,numSteps) % close 3rd door
 sigDACRampVoltage(d1_ccd.Device,d1_ccd.Port,Vopen,numSteps) % open 1st door
 sigDACRampVoltage(d3_ccd.Device,d3_ccd.Port,Vclose,numSteps) % close 2nd door
 sigDACRampVoltage(d1_ccd.Device,d1_ccd.Port,Vclose,numSteps) % close 1st door
-fprintf('Electrons loaded back onto Sommer-Tanner\n')
+fprintf('\nElectrons loaded back onto Sommer-Tanner\n')
 
 %% Reset twiddle-sense voltages
 sigDACRampVoltage(shieldr.Device,shieldr.Port,-2,numSteps); % set right shield back to -2V

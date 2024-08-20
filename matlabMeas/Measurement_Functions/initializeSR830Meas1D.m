@@ -29,10 +29,7 @@ imagVsTime = plotData(time,Real,'xLabel',timeLabel,'yLabel',"Imag",'title',"Imag
 subplot(2,3,3)
 magVsTime = plotData(time,Real,'xLabel',timeLabel,'yLabel',"Mag",'title',"Mag vs Time",'subPlot',1);
 
-
-
 %[vavg1,vavg2,avgxs1,avgxs2,avgys1,avgys2,stdx1,stdx2,stdy1,stdy2,avgmags1,avgmags2,stdm1,stdm2] = deal(inf);
-
 
 subplot(2,3,4)
 if ~doBackAndForth
@@ -168,4 +165,3 @@ switch targetGate
         xAxisName = 'unknown';
 end
 end
-

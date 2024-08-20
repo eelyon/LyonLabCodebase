@@ -3,7 +3,7 @@
 numSteps = 500; % sigDACRampVoltage
 numStepsRC = 5; % interleavedRamp
 waitTime = 0.5; % interleavedRamp
-stopVal = -2;
+stopVal = -3;
 
 %% Set Sommer-Tanner
 interleavedRamp(TM.Device,TM.Port,-3,numStepsRC,waitTime) % ramp top metal
@@ -14,7 +14,7 @@ fprintf('Top metal, M2 shield, and bond pad guard set for emission.\n')
 sigDACRampVoltage(STD.Device,STD.Port,+2,numSteps) % ramp ST-Drive
 sigDACRampVoltage(STS.Device,STS.Port,+2,numSteps) % ramp ST-Sense
 sigDACRampVoltage(STM.Device,STM.Port,+2,numSteps) % ramp ST-Middle
-sigDACRampVoltage(STG.Device,STG.Port,-2,numSteps) % ramp Sommer-Tanner (left) guard
+sigDACRampVoltage(STG.Device,STG.Port,stopVal,numSteps) % ramp Sommer-Tanner (left) guard
 fprintf('Sommer-Tanner set for emission.\n')
 
 %% Set CCD and twiddle gates

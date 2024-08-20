@@ -13,8 +13,8 @@ numSteps = 500;
 % sigDACRampVoltage(ccd3.Device,ccd3.Port,Vclean,numSteps); % open phi3
 
 %% Loop top metal sweep and unload electrons
-for n = 1:1
-    sweep1DMeasSR830({'TM'},-1.5,-2,0.1,3,5,{SR830Twiddle},TM.Device,{TM.Port},1,1);
+for n = 1:5
+    sweep1DMeasSR830({'TM'},-1,-2,0.2,3,5,{SR830Twiddle},TM.Device,{TM.Port},1,1);
     TwiddleUnload_Full;
 end
 

@@ -9,7 +9,7 @@ STG = pinout(supplyDAC,5); % Sommer-Tanner (left) door guard
 M2S = pinout(controlDAC,9); % Sommer-Tanner shield on M2
 BPG = pinout(controlDAC,24); % bond pad guard
 
-filament = pinout(supplyDAC,20); % filament backing plate
+filament = pinout(supplyDAC,1); % filament backing plate
 
 %% CCD
 d1_ccd = pinout(supplyDAC,17); % 1st door, uneven channels
