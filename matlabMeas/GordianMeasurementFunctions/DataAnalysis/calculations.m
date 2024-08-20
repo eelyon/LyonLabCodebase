@@ -2,9 +2,15 @@
 % close all;
 % clear all;
 
+%% Device parameters
+t = 0.96e-6+250e-9+20e-9; % channel height
+w = 4e-6; % ST channel width
+V_pinch = -0.3; % pinch off voltage
+
 %% Bulk LHe
 T = 1.85; % measurement temperature in K
-P_atm = 20; % atmospheres of He gas fed into cell
+P_atm = 0.1; % atmospheres of He gas fed into cell
+fprintf(['For ',num2str(P_atm),' atm of He gas:\n'])
 
 r_cell = 2.7305e-2; % in m
 V_panel = (18.44+3.213)*2.54^3/1e6; % gas manifold + T-KF volume from in^3 to m^3
@@ -12,15 +18,14 @@ A_cell = pi*(r_cell)^2; % bottom area of cell
 cell_depth = 1.6e-3+0.630e-3+10.16e-3; % PCB, device, height from cell bottom to PCB bottom
 
 LHe = P_atm*V_panel/757; % volume of LHe in cell in m^3
-h_bulk = cell_depth-LHe/A_cell; % in mm
+h_bulk = cell_depth-LHe/A_cell; % in m
 fprintf(['Height from LHe bulk = ', num2str(h_bulk*1e3, '%.1f'), ' mm\n'])
 
-%% Sommer-Tanner
-t = 1.27e-6; % channel height
-w = 4e-6; % ST channel width
-V_pinch = -0.3; % pinch off voltage
-fprintf(['Given a channel width of ', num2str(w*1e6),'um:\n'])
+t_vdW = vdWThick(h_bulk*1e2,"thin"); % output in nm
+fprintf(['van der Waals film thickness = ',num2str(t_vdW,'%.1f'),'nm\n'])
 
+%% Sommer-Tanner
+fprintf(['Given a channel width of ', num2str(w*1e6),'um:\n'])
 sig = surfaceT(T); % surface tension at TK
 rc = Rc(sig,h_bulk); % radius of curvature with no electrons
 d = ch_depth(rc,w,t); % LHe height in channel
@@ -120,6 +125,21 @@ function [d] = de_twiddle(n_e,ch_w,sense_w,shield_w,tw_w)
 % return: electron density per cm^2
     A = ch_w*(sense_w+shield_w+tw_w); % area in m^2
     d = n_e/(A*100^2); % per cm^2
+end
+
+function [t_vdW] = vdWThick(H,l)
+ %% calculates the van der Waals film thickness
+ % H: height of device above bulk in cm
+ % t_ch: channel depth in m
+ % return t_vdW: van der Waal's thickness in nm
+  if l == "thin" % l < 60e-9
+      kv = 2.88*10^-6; % [cm^(4/3)] for metal substrates  
+      t_vdW  = kv*H^(-1/3)*1e7;  % [nm]
+
+elseif l == "thick" % l > 60e-9
+      kv = 2.9*10^-6; % [cm^(5/4)]
+      t_vdW = kv*H^(-1/4)*1e7;  % [nm]
+  end
 end
 
 function [const] = constant()
