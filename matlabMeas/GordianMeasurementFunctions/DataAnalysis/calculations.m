@@ -4,12 +4,12 @@
 
 %% Device parameters
 t = 0.96e-6+250e-9+20e-9; % channel height
-w = 3e-6; % ST channel width
+w = 4e-6; % ST channel width
 V_pinch = -0.3; % pinch off voltage
 
 %% Bulk LHe
 T = 1.85; % measurement temperature in K
-P_atm = 1; % atmospheres of He gas fed into cell
+P_atm = 0.1; % atmospheres of He gas fed into cell
 fprintf(['For ',num2str(P_atm),' atm of He gas:\n'])
 
 r_cell = 2.7305e-2; % in m
