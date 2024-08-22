@@ -1,5 +1,5 @@
-startNum = 14862;
-stopNum  = 14948;
+startNum = 15040;
+stopNum  = 15105;
 numFigs  = stopNum-startNum;
 
 whosePath = 'lab';
@@ -7,14 +7,14 @@ tag = 'load';
 
 numEs = [];
 yErrs = [];
-Vloads = 1:-0.05:-0.3; % [-0.1 0 0.1 0.2 0.3 0.4];
+Vloads = 1:-0.05:0; % [-0.1 0 0.1 0.2 0.3 0.4];
 
 gain = 26.6; % Enter gain from roll-off plot
 cap = 5.05*1e-12; % Enter approximate HEMT input capacitance
 
 switch whosePath 
     case 'lab'
-        path_home = 'C:\Users\Lyon-Lab-B417\Princeton Dropbox\Mayer Feldman\GroupDropbox\Gordian\Experiments\Sandia2023\CCD_Twiddle\08_19_24\';
+        path_home = 'C:\Users\Lyon Lab Simulation\Dropbox (Princeton)\GroupDropbox\Gordian\Experiments\Sandia2023\CCD_Twiddle\08_20_24\';
     case 'gordian'
         path_home = 'C:\Users\gordi\Dropbox (Princeton)\GroupDropbox\Gordian\rfReflectometry\VNA measurements\HeLevelMeter_110623\11_10_23\';
     otherwise
@@ -57,6 +57,9 @@ for n = 0:numFigs
 
 end
 
+display(min(nonzeros(yErrs)));
+display(max(nonzeros(yErrs)));
+display(mean(nonzeros(yErrs)));
 figure()
 fig = errorbar(Vloads,nonzeros(numEs),nonzeros(yErrs),'r.');
 xlabel('V_{load} (V)')
@@ -64,7 +67,7 @@ ylabel('Total # of Electrons')
 
 function [nE] = calcNumElectrons(cap,Volts,gain)
 % Calc. electron number from measured voltage
-    nE = (cap*2*sqrt(2)*Volts)/(1.602e-19*gain);
+    nE = (cap*2*sqrt(2)*Volts)/(1.602e-19*gain*0.52);
 end
 
 function [corrMag] = correctedMag(real,imag)

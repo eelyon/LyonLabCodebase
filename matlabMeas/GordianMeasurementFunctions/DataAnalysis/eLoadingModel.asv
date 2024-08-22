@@ -1,0 +1,19 @@
+a = 0.01; % coupling of Sommer-Tanner sense
+b = 0.47; % coupling of door 1 and 2
+c = 0.01; % coupling of door 3
+d = 0.51; % coupling of top metal
+
+Vsts = 0;
+Vd12 = 0;
+Vd3 = -0.7;
+Vtm = -1;
+
+n_st = 1.498e13; % cm-^2
+area = 15e-12; % area of door 1 and 2 (5x3um) in m^2
+
+mu_sts = (-constants().e*n_st*1.23e-6)/(constants().eHe*constants().e0)+Vsts*b+Vtm*d;
+mu_d12 = (-constants().e*n_st*1.23e-6)/(constants().eHe*constants().e0)+Vsts*a+Vd12*b+Vtm*d+Vd3*c;
+N_e = (1.498e13)*(15e-12);
+numE = (constants().eHe*constants().e0*(a*Vsts+b*Vd12+c*Vtm+Vd3*-0.7))/(-constants().e*1.23e-6)*area
+delta_mu = mu_d12-
+ne = (constants().eHe*constants().e*delta_mu)/(constants().e*1.23e-6)*area

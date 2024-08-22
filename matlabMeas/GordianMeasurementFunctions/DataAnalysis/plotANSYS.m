@@ -1,8 +1,8 @@
-data = readtable('C:\Users\Lyon Lab Simulation\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\Simulations\sandia_loadingPotential_TM-1V.txt','HeaderLines',1);
+data = readtable('C:\Users\Lyon Lab Simulation\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\Simulations\sandia_twiddleSense_tw+300mV_gd0V.txt','HeaderLines',1);
 x = data.Var1;
 y = data.Var2;
 voltage = data.Var4;
-xVal = 0:0.1e-6:25e-6;
+xVal = 21e-6:-0.1e-6:0;
 yVal = 0:0.1e-6:9e-6;
 spacing = 0.1e-6;
 
