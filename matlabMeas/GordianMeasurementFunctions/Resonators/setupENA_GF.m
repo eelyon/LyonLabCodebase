@@ -4,8 +4,8 @@
 
 E5071SetAvg(ENA,'Off'); % Turn off averaging
 E5071SetMeas(ENA,1,'S12'); % S11, S12, S21, S22
-E5071SetNumPoints(ENA,9000); % set no. of points
+E5071SetNumPoints(ENA,4000); % set no. of points
 E5071SetDataFormat(ENA,'PLOG'); % SLIN, SLOG, SCOM, SMIT, SADM, PLIN, PLOG, or POL
 %E5071SetDelay(ENA,500,2200); % correct for electrical delay
 E5071SetIFBand(ENA,1); % in kHz
-E5071SetSweepTime(ENA,1); % in secs
+E5071SetSweepTime(ENA,4); % in secs
