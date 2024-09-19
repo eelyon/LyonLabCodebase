@@ -1,5 +1,5 @@
 %% Frequency of temperature querying in seconds.
-timeBetweenPoints = 1;
+timeBetweenPoints = 20;
 %% Initialize Thermometer type (this is related to your thermometer you have)
 
 %thermometerType = 'X117656'; %Big Glass Dewar
