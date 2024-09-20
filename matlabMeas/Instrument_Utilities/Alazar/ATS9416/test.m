@@ -17,3 +17,6 @@ value = ...
         boardHandle		...	% system ID
         );
 
+AlazarForceTrigger(boardHandle)
+AlazarTriggered(boardHandle)
+AlazarStartCapture(boardHandle)

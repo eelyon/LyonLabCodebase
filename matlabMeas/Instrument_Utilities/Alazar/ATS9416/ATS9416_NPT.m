@@ -1,9 +1,6 @@
-function [text] = errorToText(errorCode)
-% Convert an error number to a string
-
 %---------------------------------------------------------------------------
 %
-% Copyright (c) 2008-2011 AlazarTech, Inc.
+% Copyright (c) 2008-2016 AlazarTech, Inc.
 %
 % AlazarTech, Inc. licenses this software under specific terms and
 % conditions. Use of any of the software or derivatives thereof in any
@@ -23,8 +20,48 @@ function [text] = errorToText(errorCode)
 % THE SUM PAID TO ALAZARTECH FOR THE PRODUCT LICENSED HEREUNDER.
 %
 %---------------------------------------------------------------------------
+%
+% This sample configures an ATS9350 to make a no pre-trigger (NPT) mode
+% AutoDMA acqusition, optionally saving the data to file and displaying it
+% on screen.
+%
 
-errorText = calllib('ATSApi', 'AlazarErrorToText', errorCode);
-text = sprintf('%s (%d)', errorText, errorCode);
+% Add path to AlazarTech mfiles
+addpath('C:\AlazarTech\ATS-SDK\7.2.2\Samples_MATLAB\Include')
 
+
+%%%%%%%%%%
+%% MAIN %%
+%%%%%%%%%%
+
+% Call mfile with library definitions
+AlazarDefs
+
+% Load driver library
+if ~alazarLoadLibrary()
+  fprintf('Error: ATSApi library not loaded\n');
+  return
 end
+
+% TODO: Select a board
+systemId = int32(1);
+boardId = int32(1);
+
+% Get a handle to the board
+boardHandle = AlazarGetBoardBySystemID(systemId, boardId);
+setdatatype(boardHandle, 'voidPtr', 1, 1);
+if boardHandle.Value == 0
+  fprintf('Error: Unable to open board system ID %u board ID %u\n', systemId, boardId);
+  return
+end
+
+% Configure the board's sample rate, input, and trigger settings
+if ~configureBoard(boardHandle)
+  fprintf('Error: Board configuration failed\n');
+  return
+end
+
+% Acquire data, optionally saving it to a file
+sampleNumber = 10000;
+[retCode,outB]=acquireDataNPT(boardHandle,sampleNumber,Awg2Ch);
+

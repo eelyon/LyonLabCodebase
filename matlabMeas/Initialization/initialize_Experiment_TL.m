@@ -28,57 +28,37 @@ else
     sigDACPortControl = 'COM6';
     sigDACPortSupply  = 'COM8';
 
-%     sigDACPortControl = 'COM7';
-%     sigDACPortSupply  = 'COM6';
-
     % SR830s
-
-%     VmeasC_Address = '172.29.117.103';    
-%     VmeasE_Address = '172.29.117.106';
+    VmeasTop_Address    = '172.29.117.106';    
+    VmeasBottom_Address = '172.29.117.103';
     
     % Keysight DMM
     DMM_Address = '172.29.117.107';
     
-    % Agilent for Filament
-    %Fil_Address = '172.29.117.127';
-
-    % Agilent for collector door/twiddle
-%     VdoorModC_Address = '172.29.117.127';
-%     VtwiddleC_Address = '172.29.117.126';
-% 
-%     % Agilent for emitter door/twiddle (these are the top two Agilents)
-%     VdoorModE_Address = '172.29.117.123';
-%     VtwiddleE_Address = '172.29.117.125';
-
-    % Siglent or 2nd Agilent for collector door
-    Sig_Address = 'USB0::0xF4ED::0xEE3A::SDG050D1150018::0::INSTR';
+    % Keysight AWG (Houck)
+    houckAWG_Address = '172.29.117.137';
     
-    % SIM900 
-    IDCPort = 'COM4';
+    % Keysight AWG (Natalie)
+    deLeonAWG_Address = '172.29.117.133';
 
     % Oscilloscope
     oscope_Address = 'USB0::0x0699::0x03A5::C011465::0';
 
-    % Agilents for pulsed door experiment
-    Vpuls1_Address = '172.29.117.125';
-    Vpuls2_Address = '172.29.117.126';
-    VpulsTrig_Address = '172.29.117.123';
+
+
 end
 
 controlDAC = sigDAC(sigDACPortControl,24,'controlDAC');
 supplyDAC = sigDAC(sigDACPortSupply,24,'supplyDAC');
-VmeasC = SR830(port,VmeasC_Address);
-VmeasE = SR830(port,VmeasE_Address);
+controlDACGUI = sigDACGUI;
+supplyDACGUI = sigDACGUI;
 
-VtwiddleE = Agilent33220A(port,VtwiddleE_Address,1);
-VdoorModE = Agilent33220A(port,VdoorModE_Address,1);
+% VmeasTop = SR830(port,VmeasTop_Address);
+SR830Twiddle = SR830(port,VmeasBottom_Address);
+SR830TwiddleC = SR830(1234,VmeasTop_Address);
 
-Vpuls1 = Agilent33220A(port,Vpuls1_Address,1);
-Vpuls2 = Agilent33220A(port,Vpuls2_Address,1);
-VpulsTrig = Agilent33220A(port,VpulsTrig_Address,1);
-
-% VdoorModC = Agilent33220A(port,VdoorModC_Address,1);
-% VtwiddleC = Agilent33220A(port,VtwiddleC_Address,1);
+Awg2Ch = Agilent33622A(1234,houckAWG_Address,1); % two-channel AWG
+Ag2Nat = Agilent33622A(1234,deLeonAWG_Address,1); % two-channel AWG
 
 % Oscope = TDS2022C(oscope_Address);
 % % IDC = SIM900(IDCPort);
@@ -88,8 +68,3 @@ VpulsTrig = Agilent33220A(port,VpulsTrig_Address,1);
 
 % GUI = Tiffany_GUI;
 % DCMap;
-
-% DMM1_Address = '172.29.117.107';
-% DMM2_Address = '172.29.117.108';
-% DMM1 = TCPIP_Connect(DMM1_Address,1234);
-% DMM2 = TCPIP_Connect(DMM2_Address,1234);
