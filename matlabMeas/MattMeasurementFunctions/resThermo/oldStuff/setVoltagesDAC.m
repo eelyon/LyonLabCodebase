@@ -40,8 +40,8 @@ voltsSucc = [8,...  %DAC 1
         succer,...   %DAC 7
         succer];     %DAC 8
 
-%voltUse = voltsEmittMeas;
-voltUse = voltsEmittTest;
+voltUse = voltsEmittMeas;
+%voltUse = voltsEmittTest;
 %voltUse = voltsSucc;
 %voltUse = voltsGnd;
 
