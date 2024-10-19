@@ -31,8 +31,10 @@ DACGUI = sigDACGUI;
 
 % SDG5122
 % connect to SDG5122 via USB-B
-SDGPort = 'COM';
+SDGPort = 'USB0::0xF4ED::0xEE3A::SDG050D1150018::INSTR';
 SDG5122 = SDG5122(SDGPort);
+% in the case of error using sdg5122, try physically disconnecting and
+% connecting back again
 
 % If needed run setupENA in folder as well.
 % connect ethernet cable behind to VNA
