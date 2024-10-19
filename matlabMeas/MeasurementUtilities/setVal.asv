@@ -75,7 +75,7 @@ elseif contains(name,'33622A')
         Device.set33622AAmplitude(Value,'VPP',2)
     end
 elseif contains(name,'SDG5122') || contains(name,'5122')
-    if isstring(Port) || ischar(Port)
+
     if contains(Port, 'ModPhase1')
         set5122ModPhase(Device, Value, 1)
     end
