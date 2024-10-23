@@ -115,6 +115,10 @@ elseif contains(name,'SDG5122') || contains(name,'5122')
         fprintf('\nInvalid Port Type for SDG5122\n')
         errorFlag = -6;
     end
+    if contains(Port,'DualModAmp')
+        set5122ModAmp(Device, Value, 1);
+        set5122ModAmp(Device, Value, 2);
+    end
 else
     fprintf('\nUnknown Device\n')
     errorFlag = -2;
