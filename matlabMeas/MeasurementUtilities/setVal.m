@@ -96,6 +96,9 @@ elseif contains(name,'SDG5122') || contains(name,'5122')
         elseif contains(Port,'DualModFreq')
             set5122ModFreq(Device, Value, 1);
             set5122ModFreq(Device, Value, 2);
+        elseif contains(Port,'DualModAmp')
+            set5122ModAmp(Device, Value, 1);
+            set5122ModAmp(Device, Value, 2);
         else
             fprintf('\nUnknown Port String for SDG5122\n')
             errorFlag = -4;
