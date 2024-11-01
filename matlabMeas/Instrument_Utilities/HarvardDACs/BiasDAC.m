@@ -12,25 +12,21 @@ classdef BiasDAC
     end
     
     methods
-        function sigDAC = BiasDAC(comPort, numChannels,name)
+        function BiasDAC = BiasDAC(comPort, numChannels,name)
             
-            sigDAC.comPort = comPort;
-            sigDAC.client = serial_Connect(comPort);
-            sigDAC.name = name;
+            BiasDAC.comPort = comPort;
+            BiasDAC.client = serial_Connect(comPort);
+            BiasDAC.name = name;
             pause(1);
-            sigDAC.numChannels = numChannels;
-            sigDAC.identifier = query(sigDAC.client,"*IDN?");
-            pause(1);
-            restarted = input('Did you restart the DAC? (y/n)',"s");
-            if strcmp(restarted,'y')
-                sigDACInit(sigDAC);
-            end
+            BiasDAC.numChannels = numChannels;
+            BiasDAC.identifier = query(BiasDAC.client,"*IDN?");
+            %{
             for i = 1:numChannels
-                sigDAC.channelVoltages(i) = sigDACQueryVoltage(sigDAC,i);
+                BiasDAC.channelVoltages(i) = sigDACQueryVoltage(BiasDAC,i);
             end
-
+            %}
         end
-        
+%{        
         function voltage = sigDACQueryVoltage(sigDAC,channel)
                 fprintf(sigDAC.client,['CH ' num2str(channel)]);
                 pause(0.1);
@@ -118,7 +114,8 @@ classdef BiasDAC
             fprintf(sigDAC.client,['DOOR ' num2str([2,DoorEPort,DoorCPort, ...
                              4,vPort,2,0,0,TauE,TauC])]);
         end
-
+%}
+        
     end
 end
 
