@@ -32,7 +32,7 @@ else
     VmeasTop_Address    = '172.29.117.106';    
     VmeasBottom_Address = '172.29.117.103';
     
-    % Keysight DMM
+    % Agilent DMM
     DMM_Address = '172.29.117.107';
     
     % Keysight AWG (Houck)
@@ -63,7 +63,7 @@ Ag2Nat = Agilent33622A(1234,deLeonAWG_Address,1); % two-channel AWG
 % Oscope = TDS2022C(oscope_Address);
 % % IDC = SIM900(IDCPort);
 % VpulsSig = SDG5122(Sig_Address);
-% % Filament = Agilent33220A(port,Fil_Address,1);
+% % Filament = Agilent33220A(port,'172.29.117.127',1);
 % Thermometer = TCPIP_Connect(DMM_Address,port);
 
 % GUI = Tiffany_GUI;

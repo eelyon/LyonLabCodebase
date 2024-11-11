@@ -41,7 +41,7 @@ function [ h ] = heliumFillHeight( Pkpa )
 
  elseif  bigglassNewRF   % big glass dewar updated RF Cell that Mayer designed (RF) 
      Vpanel = 18.44+3.213;       % in^3, Vstick not measured 
-     Acell = pi*(2.15/2)^2;      % in^2
+     Acell = pi*(2.15/2)^2;      % in^2, 2.15/2
      Patm = (30-Pkpa)*0.0334211; % atm
      h = Patm * (Vpanel)*25.4/(757*Acell); % [mm]
  end
