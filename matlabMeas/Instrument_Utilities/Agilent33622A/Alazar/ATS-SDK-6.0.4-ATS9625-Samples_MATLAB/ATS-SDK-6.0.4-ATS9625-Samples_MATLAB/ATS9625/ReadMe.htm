@@ -1,0 +1,727 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 11 (filtered)">
+<title>ATS9625 Samples Programs</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:SimSun;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"Arial Unicode MS";
+	panose-1:2 11 6 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:"\@SimSun";
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"\@Arial Unicode MS";
+	panose-1:2 11 6 4 2 2 2 2 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h2
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:14.0pt;
+	font-family:Arial;}
+h3
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:13.0pt;
+	font-family:Arial;}
+p.MsoToc2, li.MsoToc2, div.MsoToc2
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:12.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoToc3, li.MsoToc3, div.MsoToc3
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoCaption, li.MsoCaption, div.MsoCaption
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	font-weight:bold;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+ /* Page Definitions */
+ @page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=Section1>
+
+<p class=MsoNormal><b><span style='font-size:16.0pt;font-family:Arial;
+color:blue'>ATS9625 Sample Programs</span></b></p>
+
+<p class=MsoNormal>© 2003-2012 Alazar Technologies, Inc.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294085">Introduction</a></span></p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294086">System
+requirements</a></span></p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294087">Getting
+started</a></span></p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294088">Single-port
+acquisitions</a></span></p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294089">Single-port
+samples</a></span></p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294090">Dual-port
+AutoDMA acquisitions</a></span></p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294091">Dual-port
+AutoDMA samples</a></span></p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294092">Dual-port
+AutoDMA: Continuous streaming mode samples</a></span></p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294093">Dual-port
+AutoDMA: Triggered streaming mode samples</a></span></p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294094">Dual-port
+AutoDMA: NPT mode samples</a></span></p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294095">Dual-port AutoDMA:
+Traditional mode samples</a></span></p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294096">Utility
+samples</a></span></p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294097">Modifying a
+sample program</a></span></p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294098">Running a
+sample program</a></span></p>
+
+<p class=MsoToc3><span class=MsoHyperlink><a href="#_Toc283294099">For more
+information</a></span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<h3><a name="_Toc283294085">Introduction</a></h3>
+
+<p class=MsoNormal>This folder contains sample programs that demonstrate how to
+configure and acquire data from AlazarTech ATS9625 16-bit, 250 MS/s, 2-channel
+digitizer boards with a 4-lane PCIe host bus interface and user-programmable
+FPGA. </p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>These sample programs are part of the AlazarTech SDK, and
+are documented in the “AlazarTech SDK Programmer’s Guide”.</p>
+
+<h3><a name="_Toc283294086">System requirements</a></h3>
+
+<p class=MsoNormal>MATLAB® version 7.2.0.232 (R2006a) or later is required to
+load the script.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>A 1Vpp, 1 KHz sine from a function generator should be connected
+to CH A of the digitizer before running samples requiring a trigger signal. If
+a suitable trigger input is not supplied, the acquisition timeout interval will
+expire before the board receives the number of triggers required and, as a
+result, the acquisition will fail with a timeout error.</p>
+
+<h3><a name="_Toc283294087">Getting started</a></h3>
+
+<p class=MsoNormal>To get the most from an AlazarTech ATS9625 digitizer board,
+a programmer should:</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'>1.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Read
+the “ATS9625 User Guide”. It provides an overview of the digitizer board’s
+hardware features, as well as its specifications.</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'>2.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Read
+the “AlazarTech SDK Programmer’s Guide”. It describes how to program the
+digitizer hardware to make an acquisition, and to transfer sample data into
+application buffers.</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'>3.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Browse
+through the SDK sample programs. They demonstrate how to make most types of
+acquisitions, and provide a starting point for creating new applications.</p>
+
+<h3><a name="_Toc283294088">Single-port acquisitions</a></h3>
+
+<p class=MsoNormal>A single-port acquisition allows a board to acquire to
+on-board memory and, after the acquisition is complete, transfer sample data
+from on-board memory to application buffers. </p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>Single-port acquisitions should be used when:</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>The application can tolerate missing trigger events while it
+transfers data from on-board memory, and re-arms a board for another
+acquisition.</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>The average data acquisition data rate that is greater than the
+maximum PCIe bus transfer rate. </p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>Single-port acquisitions should not be used for imaging
+applications such as: ultrasonic testing, OCT, RADAR, and LIDAR. These
+applications should use <a href="#_Dual-port_AutoDMA_acquisitions">Dual-port
+AutoDMA acquisitions</a> described below.</p>
+
+<h3><a name="_Toc283294089">Single-port samples</a></h3>
+
+<p class=MsoNormal>The samples in the “SinglePort” directory demonstrate how to
+make single-port acquisitions. Most programmers should begin with the
+“SinglePort\AR” sample.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;background:#CCCCCC;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Directory</p>
+  </td>
+  <td valign=top style='border:solid windowtext 1.0pt;border-left:none;
+  background:#CCCCCC;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Description</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>SinglePort\AR</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>This sample acquires records to on-board memory, and calls
+  AlazarRead to transfer entire records from on-board memory to an application
+  buffer, and optionally displays the data on screen. It demonstrates a basic
+  single-port acquisition.</p>
+  </td>
+ </tr>
+</table>
+
+<h3><a name="_Toc283294090"></a><a name="_Dual-port_AutoDMA_acquisitions"></a>Dual-port
+AutoDMA acquisitions</h3>
+
+<p class=MsoNormal>A dual-port AutoDMA acquisition allows a board to acquire to
+on-board memory while, at the same time, transferring sample data from on-board
+memory to application buffers. </p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>AutoDMA acquisitions should be used when:</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>The average data acquisition rate is less than the PCIe bus
+bandwidth.</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>An application cannot miss trigger events that occur while it
+transfers data to host memory, or re-arms a board for another acquisition.</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>An application acquires more sample points or records per
+acquisition than can be stored in on-board memory.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>Scanning applications such as ultrasonic testing, OCT,
+RADAR, and LIDAR imaging should use AutoDMA acquisitions.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>An AutoDMA acquisition is divided into segments. AutoDMA
+hardware on a board transfers sample data, one segment at a time, from on-board
+memory to a buffer in host memory. There may be an unlimited number of segments
+in an AutoDMA acquisition, so a board can be armed to make an acquisition of
+infinite duration.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>There are four AutoDMA acquisition modes.</p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td valign=top style='border:solid black 1.0pt;background:#CCCCCC;padding:
+  0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Mode</p>
+  </td>
+  <td valign=top style='border:solid black 1.0pt;border-left:none;background:
+  #CCCCCC;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Triggered</p>
+  </td>
+  <td valign=top style='border:solid black 1.0pt;border-left:none;background:
+  #CCCCCC;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Pre-trigger samples</p>
+  </td>
+  <td valign=top style='border:solid black 1.0pt;border-left:none;background:
+  #CCCCCC;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Record headers</p>
+  </td>
+  <td valign=top style='border:solid black 1.0pt;border-left:none;background:
+  #CCCCCC;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Description</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid black 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><a href="#_Dual-port_AutoDMA:_Traditional">Traditional</a></p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Yes</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Yes</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Optional</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Acquire multiple records – one per trigger event. Each
+  record may contain samples before and after its trigger event. Each buffer
+  contains one or more records. A record header may optionally precede each
+  record.</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid black 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><a href="#_Dual-port_AutoDMA:_NPT">NPT<br>
+  (NoPreTrigger)</a></p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Yes</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>No</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>No</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Acquire multiple records – one per trigger event. Each
+  record may contain only samples after its trigger event. Each buffer contains
+  one or more records.</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid black 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><a href="#_Dual-port_AutoDMA:_Continuous_">Continuous
+  streaming</a></p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>No</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>No</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>No</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Acquire a single, gapless record spanning multiple
+  buffers, where each buffer contains a segment from the record. Do not wait
+  for a trigger event before acquiring the record. </p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid black 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><a href="#_Dual-port_AutoDMA:_Triggered_">Triggered
+  streaming</a></p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Yes</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>No</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>No</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Acquire a single, gapless record spanning multiple
+  buffers, where each buffer contains a segment from the record. Wait for a
+  trigger event before acquiring the record. </p>
+  </td>
+ </tr>
+</table>
+
+<h3><a name="_Toc283294091"></a><a name="_Toc251819908">Dual-port AutoDMA
+samples</a></h3>
+
+<p class=MsoNormal>The sample programs in the “DualPort” directory demonstrate
+how to make dual-port AutoDMA acquisitions. They are grouped by AutoDMA mode.</p>
+
+<h3><a name="_Toc283294092"></a><a name="_Toc251819909"></a><a
+name="_Dual-port_AutoDMA:_Continuous_"></a>Dual-port AutoDMA: Continuous
+streaming mode samples</h3>
+
+<p class=MsoNormal>The following samples demonstrate how to make an AutoDMA
+acquisition in continuous streaming mode.</p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;background:#CCCCCC;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Directory</p>
+  </td>
+  <td valign=top style='border:solid windowtext 1.0pt;border-left:none;
+  background:#CCCCCC;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Description</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>DualPort\CS</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>This sample calls AlazarPostAsyncBuffer and
+  AlazarWaitAsyncBufferComplete to acquire a single record per channel spanning
+  several AutoDMA buffers. </p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>DualPort\CS_MasterSlave</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Based on “DualPort\CS”, this sample adds code to acquire
+  from a master-slave board system. It demonstrates how to make a continuous
+  streaming AutoDMA acquisition with a master-slave board system.</p>
+  </td>
+ </tr>
+</table>
+
+<h3><a name="_Toc283294093"></a><a name="_Toc251819910"></a><a
+name="_Dual-port_AutoDMA:_Triggered_"></a>Dual-port AutoDMA: Triggered
+streaming mode samples</h3>
+
+<p class=MsoNormal>The following samples demonstrate how to make an AutoDMA
+acquisition in triggered streaming mode.</p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;background:#CCCCCC;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Directory</p>
+  </td>
+  <td valign=top style='border:solid windowtext 1.0pt;border-left:none;
+  background:#CCCCCC;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Description</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>DualPort\TS</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>This sample calls AlazarPostAsyncBuffer and
+  AlazarWaitAsyncBufferComplete to acquire a single, gapless record per channel
+  spanning several AutoDMA buffers..</p>
+  </td>
+ </tr>
+</table>
+
+<h3><a name="_Toc283294094"></a><a name="_Toc251819911"></a><a
+name="_Dual-port_AutoDMA:_NPT"></a>Dual-port AutoDMA: NPT mode samples</h3>
+
+<p class=MsoNormal>The following samples demonstrate how to make an AutoDMA
+acquisition in NPT (No-PreTrigger samples) mode. </p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;background:#CCCCCC;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Directory</p>
+  </td>
+  <td valign=top style='border:solid windowtext 1.0pt;border-left:none;
+  background:#CCCCCC;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Description</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>DualPort\NPT</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>This sample calls AlazarPostAsyncBuffer and
+  AlazarWaitAsyncBufferComplete to acquire a multiple records per channel – one
+  per trigger event – with one or more records per AutoDMA buffer.</p>
+  </td>
+ </tr>
+</table>
+
+<h3><a name="_Toc283294095"></a><a name="_Toc251819912"></a><a
+name="_Dual-port_AutoDMA:_Traditional"></a>Dual-port AutoDMA: Traditional mode
+samples</h3>
+
+<p class=MsoNormal>The following sample programs demonstrate how to make an
+AutoDMA acquisition in “traditional” mode.</p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;background:#CCCCCC;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Directory</p>
+  </td>
+  <td valign=top style='border:solid windowtext 1.0pt;border-left:none;
+  background:#CCCCCC;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Description</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>DualPort\TR</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>This sample calls AlazarPostAsyncBuffer and
+  AlazarWaitAsyncBufferComplete to acquire a multiple records per channel – one
+  per trigger event – with one or more records per AutoDMA buffer.</p>
+  </td>
+ </tr>
+</table>
+
+<h3><a name="_Toc283294096"></a><a name="_Toc251819913">Utility samples</a></h3>
+
+<p class=MsoNormal>The following sample programs demonstrate how to get
+information about a board.</p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;background:#CCCCCC;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Directory</p>
+  </td>
+  <td valign=top style='border:solid windowtext 1.0pt;border-left:none;
+  background:#CCCCCC;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Description</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><a href="../AlazarSysInfo/ReadMe.htm">..\AlazarSysInfo</a></p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>This sample calls a number of status and information API
+  functions to display detailed information about digitizer boards. This
+  information includes: sample size in bits, memory size in samples per
+  channel, serial number, and latest calibration date. It demonstrates how to
+  obtain a board handle, use the status and information API functions, and
+  control the LED on a board’s PCIe mounting bracket.</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<h3><a name="_Toc283294097"></a><a name="_Traditional_AutoDMA_mode"></a><a
+name="_Dual-port_AutoDMA:_Continuous"></a><a
+name="_Dual-port_AutoDMA:_Triggered"></a>Modifying a sample program</h3>
+
+<p class=MsoNormal>All lines containing parameters that should be modified are
+labeled with “TODO” comments. Search for these lines in the source files, and
+edit them as required.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>The file AcqToDisk.m contains the main program script. It
+calls configureBoard.m to setup a board for an acquisition, and acquireData.m
+to perform the acquisition. </p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>Boad parameters in configureBoard.m should be modified as
+required to suite your application. These parameters need to be set once on
+program startup, but don’t need to be called again unless a parameter is
+changed. </p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>Acquisition parameters in acquireData.m must also be
+modified as required. The functions in this file should be called once per
+acquisition. </p>
+
+<h3><a name="_Toc283294098">Running a sample program</a></h3>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>Start MATLAB. </p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>Change the current directory to a directory containing a sample
+program.</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>Type “AcqToDisk” from the command prompt to run the sample. </p>
+
+<h3><a name="_Toc283294099">For more information</a></h3>
+
+<p class=MsoNormal>Please refer to the “AlazarTech SDK Programmer’s Guide” for
+more information about the using the code in the sample programs. If you have
+any questions or comments, or need assistance, contact us.</p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Web</p>
+  </td>
+  <td valign=top style='border:solid windowtext 1.0pt;border-left:none;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><a href="http://www.alazartech.com/">http://www.alazartech.com</a></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Email</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><a href="mailto:support@alazartech.com">support@alazartech.com</a></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Phone</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>514-426-4899</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Fax</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>514-426-2723</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Mail</p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Alazar Technologies Inc.</p>
+  <p class=MsoNormal>6600 Trans-Canada Highway, Suite 310</p>
+  <p class=MsoNormal>Pointe-Claire, QC </p>
+  <p class=MsoNormal>Canada H9R 4S2</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>
