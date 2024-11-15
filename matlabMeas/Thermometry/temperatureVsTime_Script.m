@@ -1,5 +1,5 @@
 %% Frequency of temperature querying in seconds.
-timeBetweenPoints = 5;
+timeBetweenPoints = 10;
 %% Initialize Thermometer type (this is related to your thermometer you have)
 
 %thermometerType = 'X117656'; %Big Glass Dewar
@@ -16,4 +16,3 @@ Therm = initializeThermometry(thermometerType);
 flush(Thermometer);
 temperatureVsTime(Thermometer,timeBetweenPoints,Therm,figHandle,thermPlot);
 
- 
