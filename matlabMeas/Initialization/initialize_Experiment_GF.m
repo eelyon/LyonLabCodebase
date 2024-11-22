@@ -26,9 +26,9 @@ SR830Twiddle = SR830(port,twiddle_Address); % for twiddle
 
 %% Agilent AWGs
 % deLeonAWG_Address = '172.29.117.133';
-% Ag2Channel = Agilent33622A(1234,deLeonAWG_Address,1); % two-channel AWG
+% Awg2ch_deLeon = Agilent33622A(1234,deLeonAWG_Address,1); % two-channel AWG
 houckAWG_Address = '172.29.117.137';
-Awg2Ch = Agilent33622A(1234,houckAWG_Address,1); % two-channel AWG
+Awg2ch_Houck = Agilent33622A(1234,houckAWG_Address,1); % two-channel AWG
 
 %% GUIs
 controlDACGUI = sigDACGUI;

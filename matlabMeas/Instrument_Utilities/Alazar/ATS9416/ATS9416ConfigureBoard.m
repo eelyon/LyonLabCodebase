@@ -12,22 +12,22 @@ result = false;
 % For example: if samplesPerSec is 100.e6 (100 MS/s), then:
 % - select clock source INTERNAL_CLOCK and sample rate SAMPLE_RATE_100MSPS
 % - select clock source FAST_EXTERNAL_CLOCK, sample rate SAMPLE_RATE_USER_DEF,
-%   and connect a 100 MHz signalto the EXT CLK BNC connector.
+%   and connect a 100 MHz signal to the EXT CLK BNC connector.
 
 % global variable used in acquireData.m
 global samplesPerSec;
 global inputRangeIdChA;
 
 inputRangeIdChA = INPUT_RANGE_PM_1_V;
-samplesPerSec = 10e6;
+samplesPerSec = 100e6;
 
 retCode = ...
     AlazarSetCaptureClock(  ...
         boardHandle,        ... % HANDLE -- board handle
-        EXTERNAL_CLOCK_10MHZ_REF,     ... % U32 -- clock source id
-        SAMPLE_RATE_10MSPS, ... % U32 -- sample rate id
+        INTERNAL_CLOCK,     ... % U32 -- clock source id
+        SAMPLE_RATE_100MSPS, ... % U32 -- sample rate id
         CLOCK_EDGE_RISING,  ... % U32 -- clock edge id
-        10                   ... % U32 -- clock decimation
+        0                   ... % U32 -- clock decimation
         );
 if retCode ~= ApiSuccess
     fprintf('Error: AlazarSetCaptureClock failed -- %s\n', errorToText(retCode));
@@ -245,8 +245,8 @@ if retCode ~= ApiSuccess
 end
 
 %% Trigger
-inputRange_volts = 1.; % +- range
-triggerLevelJ_volts = .5; % trigger level
+inputRange_volts = 3.3; % +- range
+triggerLevelJ_volts = 1; % trigger level
 triggerLevelJ = (128 + 128 * triggerLevelJ_volts / inputRange_volts);
 
 % TODO: Select trigger inputs and levels as required

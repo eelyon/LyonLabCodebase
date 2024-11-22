@@ -22,8 +22,8 @@ if boardHandle.Value == 0
   return
 end
 
-% Configure the board's sample rate, input, and trigger settings
-if ~configureBoard(boardHandle)
-  fprintf('Error: Board configuration failed\n');
-  return
-end
+% % Configure the board's sample rate, input, and trigger settings
+% if ~configureBoard(boardHandle)
+%   fprintf('Error: Board configuration failed\n');
+%   return
+% end
