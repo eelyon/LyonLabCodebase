@@ -23,7 +23,7 @@
 % This sample displays information about AlazarTech digitizers
 
 % Add path to AlazarTech mfiles
-addpath('..\Include')
+% addpath('..\Include')
 
 % Call mfile with library definitions
 AlazarDefs
