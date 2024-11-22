@@ -19,7 +19,7 @@ if strcmp(sign,'Pos')
     end
 else
     step = 0:-0.5:finalVoltage+0.5;
-    thinFilmVolt= -1.5; % getVal(controlDAC,TfVolt);
+    thinFilmVolt= -1; % getVal(controlDAC,TfVolt);
     for i = 1:length(step)
         volt = step(i);
         doorOutVolt = volt-1.5;

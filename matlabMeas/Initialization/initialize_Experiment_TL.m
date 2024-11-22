@@ -53,7 +53,6 @@ supplyDAC = sigDAC(sigDACPortSupply,24,'supplyDAC');
 controlDACGUI = sigDACGUI;
 supplyDACGUI = sigDACGUI;
 
-% VmeasTop = SR830(port,VmeasTop_Address);
 SR830Twiddle = SR830(port,VmeasBottom_Address);
 SR830TwiddleC = SR830(1234,VmeasTop_Address);
 
@@ -64,7 +63,7 @@ Ag2Nat = Agilent33622A(1234,deLeonAWG_Address,1); % two-channel AWG
 % % IDC = SIM900(IDCPort);
 % VpulsSig = SDG5122(Sig_Address);
 % % Filament = Agilent33220A(port,'172.29.117.127',1);
-% Thermometer = TCPIP_Connect(DMM_Address,port);
+Thermometer = TCPIP_Connect(DMM_Address,port);
 
 % GUI = Tiffany_GUI;
-% DCMap;
+DCMap;

@@ -33,8 +33,8 @@ BEPort = 1; % tied to sp17
 BCPort = 7; % tied to sp7
 
 %% other barriers
-Block1Port = 6;
-Block2Port = 23;
+BlockPort = 6; % bussed to 23
+
 
 
 %% Supply Voltages
