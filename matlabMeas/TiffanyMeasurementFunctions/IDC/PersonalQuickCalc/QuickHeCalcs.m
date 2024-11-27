@@ -2,10 +2,10 @@ function [] = QuickHeCalcs()
 %% calculations that give a general idea of helium height in channels and
 %% how different densities of electrons change that
     % set parameters
-    h = 6e-3;              % distance of device from bulk helium that you want
+    h = 5e-3;              % distance of device from bulk helium that you want
     Vpinch = -0.2;         % pinch off voltage     
-    channelDepth = 1.2e-6; % depth of ST channels 
-    width = 10e-6;         % width of ST channels
+    channelDepth = 650e-9; % depth of ST channels 
+    width = 6e-6;         % width of ST channels
     
     % calculated
     Rc = radiusOfCurv(h);             % radius of curvature with no electrons
@@ -18,8 +18,8 @@ function [] = QuickHeCalcs()
     d_withElectron  = dmin(Rc_withElectron,width,channelDepth);
     
     fprintf('\n')
-    fprintf(['For a channel height of ', num2str(channelDepth), ' you have a helium filling of ', num2str(d), ' with Rc=', num2str(Rc), ' and nc=', num2str(nc*1e-10), 'e10/cm^2', '\n']);
-    fprintf(['For a pinch off of ', num2str(Vpinch), ' you have a density of ', num2str(n*1e-9), 'e9/cm^2 with He compression of ', num2str(d_withElectron), ' and Rc=', num2str(Rc_withElectron), '\n'])
+    fprintf(['For being ', num2str(h*1e3),'mm from bulk He and a channel height of ', num2str(channelDepth*1e9), 'nm you have a helium filling of ', num2str(d*1e9), 'nm and nc=', num2str(nc*1e-10), 'e10/cm^2', '\n']);
+    fprintf(['For a pinch off of ', num2str(Vpinch), ' you have a density of ', num2str(n*1e-9), 'e9/cm^2 with He compression to ', num2str(d_withElectron*1e9), 'nm', '\n'])
 
 % %% calculations of thin vdW film and nc given added He into cell
 %     PinHg  = 25;          % added Helium to the cell as read from gauge                 
