@@ -1,17 +1,17 @@
 %% Set single frequency sweep
-% close all;
+close all;
 
-power     = 0;      % in dBm - be careful!! Do not set too high!!
-startFreq = 0.3;    % in MHz
-stopFreq  = 200;    % in MHz 
+power     = 5;      % in dBm - be careful!! Do not set too high!!
+startFreq = 1500;    % in MHz
+stopFreq  = 2500;    % in MHz 
 
 % decide whether to include metadata (1=include,0=don't)
-saveFig   = 1;       % for saving the figure
+saveFig   = 0;       % for saving the figure
 plotHe    = 0;       % for Patm and numShots metaData
 plotIDC   = 0;       % for capacitance metaData
-tag = 'coaxSweep';
+tag = 'LCFilter';
 
-addedHe   = 15;         % in inHg from reading the gauge
+% addedHe   = 15;         % in inHg from reading the gauge
 % deviceIDC = VmeasE;    % device for IDC measurement
 
 E5071SetPower(ENA,power);           % in dBm
@@ -45,7 +45,7 @@ subplot(1,2,2);
 % 
 % metadata_struct.temperature = [num2str(temperature)];
 
-sgtitle(['f_{res}=', num2str(fres*1e3),'MHz, coax #11']);
+sgtitle(['f_{res}=', num2str(fres*1e3),'MHz']);
 
 if plotHe == 1
     Patm     = Patm + inHgToAtm(addedHe);   % initialise in command line

@@ -12,9 +12,9 @@ for i = N
         SR830setSensitivity(device,26)
 
         setVal(doorDevice,3,start);
-        pause(0.5)
+        delay(0.5)
         device.adjustSensitivity(device.SR830queryY(),isCurrentMeas)
-        pause(0.5)
+        delay(0.5)
 
         mags = sweep1DMeasSR830({'PHAS'},start,stop,delta,1,5,{device},doorDevice,{3},0,1);
     else
@@ -25,7 +25,7 @@ for i = N
         end
         SR830setSensitivity(device,26)
         setVal(doorDevice,4,start);
-        pause(0.5)
+        delay(0.5)
         device.adjustSensitivity(device.SR830queryY(),isCurrentMeas)
         mags = sweep1DMeasSR830({'Vpp'},start,stop,delta,1,5,{device},doorDevice,{4},0,1);
     end

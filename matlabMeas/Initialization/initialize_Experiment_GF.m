@@ -9,10 +9,10 @@ port = 1234; % for the big glass dewar
 % initializeENA;
 
 %% AJS's 24 channel DACs
-% sigDACPortControl = 'COM6'; % 20-bit DAC
-% sigDACPortSupply  = 'COM8'; % 18-bit DAC
-% controlDAC = sigDAC(sigDACPortControl,24,'controlDAC');
-% supplyDAC = sigDAC(sigDACPortSupply,24,'supplyDAC');
+sigDACPortControl = 'COM6'; % 20-bit DAC
+sigDACPortSupply  = 'COM8'; % 18-bit DAC
+controlDAC = sigDAC(sigDACPortControl,24,'controlDAC');
+supplyDAC = sigDAC(sigDACPortSupply,24,'supplyDAC');
 
 %% SR830 Lock-ins
 st_Address = '172.29.117.106'; % top SR830
@@ -25,8 +25,10 @@ SR830Twiddle = SR830(port,twiddle_Address); % for twiddle
 % Fil_Address = '172.29.117.127'; % Agilent for Filament
 
 %% Agilent AWGs
-deLeonAWG_Address = '172.29.117.133';
-Ag2Channel = Agilent33622A(1234,deLeonAWG_Address,1); % two-channel AWG
+% deLeonAWG_Address = '172.29.117.133';
+% Ag2Channel = Agilent33622A(1234,deLeonAWG_Address,1); % two-channel AWG
+houckAWG_Address = '172.29.117.137';
+Awg2Ch = Agilent33622A(1234,houckAWG_Address,1); % two-channel AWG
 
 %% GUIs
 controlDACGUI = sigDACGUI;

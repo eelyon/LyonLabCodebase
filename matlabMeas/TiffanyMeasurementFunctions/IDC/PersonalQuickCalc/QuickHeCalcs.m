@@ -2,10 +2,11 @@ function [] = QuickHeCalcs()
 %% calculations that give a general idea of helium height in channels and
 %% how different densities of electrons change that
     % set parameters
-    h = 5e-3;              % distance of device from bulk helium that you want
-    Vpinch = -0.2;         % pinch off voltage     
-    channelDepth = 650e-9; % depth of ST channels 
-    width = 6e-6;         % width of ST channels
+
+    h = 4e-3;              % distance of device from bulk helium that you want
+    Vpinch = -0.25;         % pinch off voltage     
+    channelDepth = 0.7e-6; % depth of ST channels 
+    width = 7e-6;         % width of ST channels
     
     % calculated
     Rc = radiusOfCurv(h);             % radius of curvature with no electrons

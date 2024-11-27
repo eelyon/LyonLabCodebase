@@ -2,8 +2,8 @@ function [] = amtgas(h)
 %% calculates the amount of gas you need to fill the cell for a certain height 
 %  INPUTS: h = distance of device from He level in m
 
-Area = pi*(1.075)^2;
-H = 12.26e-3-h;                                   % helium level height in cell
+Area = pi*(2.15/2)^2;
+H = 8.1; %9.5-(h-4.75);                      % helium level height in cell
 amount = H*757*Area/((18.44+3.213)*25.4);      % amount of gas needed in atm
 volume = (amount)*(18.44+3.213)*(2.54)^3/757;  % volume of gas in cm^3
 % amount = volume/(18.44*(2.54)^3/757)

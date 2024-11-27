@@ -1,4 +1,4 @@
-function [avgmags] = sweep1DMeasSR830Fast(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth)
+function [avgmags,avgxs,avgys,stdx,stdy] = sweep1DMeasSR830Fast(sweepType,start,stop,deltaParam,timeBetweenPoints,repeat,readSR830,device,ports,doBackAndForth,opt)
 % Function sweeps the device and ports from the start to stop parameter
 % with a given delta. 
 % Parameters:
@@ -20,8 +20,15 @@ function [avgmags] = sweep1DMeasSR830Fast(sweepType,start,stop,deltaParam,timeBe
 %           doBackAndForth - 0 (False) or 1 (True). Boolean to determine
 %           whether or not to sweep the parameter back to its original
 %           value.
+%           opt - 0 (Current) or 1 (Voltage) measurement. 
+
+flush(readSR830{1}.client);
 for srIndex = 1:length(readSR830)
-    [plotHandles{srIndex},subPlotFigureHandles{srIndex}] = initializeSR830Meas1D(sweepType{srIndex},doBackAndForth);
+    if exist('opt','var') 
+        [plotHandles{srIndex},subPlotFigureHandles{srIndex}] = initializeSR830Meas1D(sweepType{srIndex},doBackAndForth,opt);
+    else
+        [plotHandles{srIndex},subPlotFigureHandles{srIndex}] = initializeSR830Meas1D(sweepType{srIndex},doBackAndForth);
+    end
 end
 %% Parameters to probe
 
@@ -181,7 +188,9 @@ function [x,y,mag,t] = getSR830Data(x,y,t,startTime,readSR830,numPointsToRead)
     %disp(sratRate);
 
     fprintf(currentSR830.client,"REST");
-    fprintf(currentSR830.client,'STRD');delay(1 + (numPointsToRead/sratRate));fprintf(currentSR830.client,'PAUS');
+    fprintf(currentSR830.client,'STRD'); % starts scanning after 0.5sec
+    delay(1 + (numPointsToRead/sratRate));
+    fprintf(currentSR830.client,'PAUS');
     x = [x,currentSR830.SR830queryXFast(numPointsToRead)];
     y = [y,currentSR830.SR830queryYFast(numPointsToRead)];
     t = [t,(now() - startTime)*86400 - linspace(0,numPointsToRead/sratRate,numPointsToRead)];

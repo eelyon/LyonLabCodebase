@@ -305,6 +305,32 @@ classdef SR830 < handle
             yDat = str2double(yDat);
             yDat = yDat';
         end
+        function capacitance = SR830MeasureCapacitance(SR830, amplification)
+            % Ensure the SR830 is set to voltage mode
+            fprintf('Make sure lockin is set to voltage mode with appropriate sensitivity\n');
+
+            % Ensure the SR830 is hooked correctly
+            fprintf('Make sure output is hooked to fempto because lockin has input inductance\n');
+
+            % Query frequency and amplitude from the SR830
+            frequency = SR830.SR830queryFreq();  % Frequency in Hz
+            amplitude = SR830.SR830queryAmplitude();  % Amplitude in Volts
+            
+            % Calculate angular frequency
+            omega = 2 * pi * frequency;  % Angular frequency in rad/s
+
+            % Acquire measurements from the two output channels
+            [xChannel, yChannel] = SR830.SR830queryXY();  % Get X and Y outputs
+            
+            % Calculate the total current (assumes current is in one channel)
+            I = sqrt(xChannel^2 + yChannel^2)/amplification;  % Total current in Amperes
+            
+            % Calculate capacitance
+            capacitance = I / (omega * amplitude);  % Capacitance in Farads
+
+            % Display the result
+            fprintf('Measured Capacitance: %.2e F\n', capacitance);
+        end
     end
 end
 

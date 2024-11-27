@@ -29,10 +29,7 @@ imagVsTime = plotData(time,Real,'xLabel',timeLabel,'yLabel',"Imag",'title',"Imag
 subplot(2,3,3)
 magVsTime = plotData(time,Real,'xLabel',timeLabel,'yLabel',"Mag",'title',"Mag vs Time",'subPlot',1);
 
-
-
 %[vavg1,vavg2,avgxs1,avgxs2,avgys1,avgys2,stdx1,stdx2,stdy1,stdy2,avgmags1,avgmags2,stdm1,stdm2] = deal(inf);
-
 
 subplot(2,3,4)
 if ~doBackAndForth
@@ -111,12 +108,6 @@ switch targetGate
         xAxisName = "Reservoir Voltage [V]";
     case 'Door'
         xAxisName = "Door Voltage [V]";
-    case 'CCDdoor'
-        xAxisName = 'CCD Door Voltage [V]';
-    case 'CCD1'
-        xAxisName = '\Phi 1 [V]';
-    case 'CCD3'
-        xAxisName = '\Phi 3 [V]';
     case 'DoorOut'
         xAxisName = "Door Out Voltage [V]";
     case 'DP'
@@ -160,7 +151,7 @@ switch targetGate
     case 'HeatAmp'
         xAxisName = 'Amplitude [Vpp]';
     case 'HeatAmpUnmod'
-        xAxisName = 'Amplitude [Vpp]';
+%         xAxisName = 'Amplitude [Vpp]';
         xAxisName = 'Voltage Amplitude [Vrms]';
     case 'Vpp'
         xAxisName = 'Voltage Amplitude [Vpp]';
@@ -168,8 +159,9 @@ switch targetGate
         xAxisName = 'Sommer Tanner Voltage [V]';
     case 'Shield'
         xAxisName = 'Shield Voltage [V]';
+    case 'Load'
+        xAxisName = "Shield Voltage [V]";
     otherwise
         xAxisName = 'unknown';
 end
 end
-

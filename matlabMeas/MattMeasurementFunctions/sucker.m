@@ -7,7 +7,7 @@ voltsGnd = [0,...  %DAC 1
         0,...   %DAC 7
         0];     %DAC 8
 
-succer = -4;
+succer = -5;
 voltsSucc = [8,...  %DAC 1
         succer,...   %DAC 2
         succer,...   %DAC 3

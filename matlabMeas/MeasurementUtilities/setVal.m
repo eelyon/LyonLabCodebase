@@ -75,33 +75,52 @@ elseif contains(name,'33622A')
         Device.set33622AAmplitude(Value,'VPP',2)
     end
 elseif contains(name,'SDG5122') || contains(name,'5122')
-    if contains(Port, 'ModPhase1')
-        set5122ModPhase(Device, Value, 1)
+    if isstring(Port) || ischar(Port)
+        % Original string-based commands
+        if contains(Port, 'ModPhase1')
+            set5122ModPhase(Device, Value, 1)
+        elseif contains(Port, 'ModPhase2')
+            set5122ModPhase(Device, Value, 2)
+        elseif contains(Port, 'ModAmp1')
+            set5122ModAmp(Device, Value, 1)
+        elseif contains(Port, 'ModAmp2')
+            set5122ModAmp(Device, Value, 2)
+        elseif contains(Port, 'BasePhase1')
+            set5122Phase(Device, Value, 1)
+        elseif contains(Port, 'BasePhase2')
+            set5122Phase(Device, Value, 2)
+        elseif contains(Port, 'BaseAmp1')
+            set5122Amp(Device, Value, 1)
+        elseif contains(Port, 'BaseAmp2')
+            set5122Amp(Device, Value, 2)
+        elseif contains(Port,'DualModFreq')
+            set5122ModFreq(Device, Value, 1);
+            set5122ModFreq(Device, Value, 2);
+        elseif contains(Port,'DualModAmp')
+            set5122ModAmp(Device, Value, 1);
+            set5122ModAmp(Device, Value, 2);
+        else
+            fprintf('\nUnknown Port String for SDG5122\n')
+            errorFlag = -4;
+        end
+     elseif isnumeric(Port)
+        % New numeric port-based commands (mirroring 33622A for compensateParasitics support)
+        switch Port
+            case 3
+                set5122Phase(Device, Value, 2)  % Assuming channel 2
+            case 4
+                set5122Amp(Device, Value, 2)  % Assuming channel 2
+            otherwise
+                fprintf('\nUnknown Numeric Port for SDG5122\n')
+                errorFlag = -5;
+        end
+    else
+        fprintf('\nInvalid Port Type for SDG5122\n')
+        errorFlag = -6;
     end
-    if contains(Port, 'ModPhase2')
-        set5122ModPhase(Device, Value, 2)
-    end
-    if contains(Port, 'ModAmp1')
-        set5122ModAmp(Device, Value, 1)
-    end
-    if contains(Port, 'ModAmp2')
-        set5122ModAmp(Device, Value, 2)
-    end
-    if contains(Port, 'BasePhase1')
-        set5122Phase(Device, Value, 1)
-    end
-    if contains(Port, 'BasePhase2')
-        set5122Phase(Device, Value, 2)
-    end
-    if contains(Port, 'BaseAmp1')
-        set5122Amp(Device, Value, 1)
-    end
-    if contains(Port, 'BaseAmp2')
-        set5122Amp(Device, Value, 2)
-    end
-    if contains(Port,'DualModFreq')
-        set5122ModFreq(Device, Value, 1);
-        set5122ModFreq(Device, Value, 2);
+    if contains(Port,'DualModAmp')
+        set5122ModAmp(Device, Value, 1);
+        set5122ModAmp(Device, Value, 2);
     end
 else
     fprintf('\nUnknown Device\n')
