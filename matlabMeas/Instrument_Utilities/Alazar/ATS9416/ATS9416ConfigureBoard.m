@@ -16,18 +16,15 @@ result = false;
 
 % global variable used in acquireData.m
 global samplesPerSec;
-global inputRangeIdChA;
-
-inputRangeIdChA = INPUT_RANGE_PM_1_V;
-samplesPerSec = 100e6;
+samplesPerSec = 10e6;
 
 retCode = ...
     AlazarSetCaptureClock(  ...
         boardHandle,        ... % HANDLE -- board handle
         INTERNAL_CLOCK,     ... % U32 -- clock source id
-        SAMPLE_RATE_100MSPS, ... % U32 -- sample rate id
+        SAMPLE_RATE_10MSPS, ... % U32 -- sample rate id
         CLOCK_EDGE_RISING,  ... % U32 -- clock edge id
-        0                   ... % U32 -- clock decimation
+        10                   ... % U32 -- clock decimation
         );
 if retCode ~= ApiSuccess
     fprintf('Error: AlazarSetCaptureClock failed -- %s\n', errorToText(retCode));
@@ -41,7 +38,7 @@ retCode = ...
         boardHandle,                  ... % HANDLE -- board handle
         CHANNEL_A,     ... % U32 -- input channel
         DC_COUPLING,    ... % U32 -- input coupling id
-        inputRangeIdChA, ... % U32 -- input range id
+        INPUT_RANGE_PM_1_V, ... % U32 -- input range id
         IMPEDANCE_50_OHM    ... % U32 -- input impedance id
         );
 if retCode ~= ApiSuccess
@@ -245,8 +242,8 @@ if retCode ~= ApiSuccess
 end
 
 %% Trigger
-inputRange_volts = 3.3; % +- range
-triggerLevelJ_volts = 1; % trigger level
+inputRange_volts = 3.5; % +- range
+triggerLevelJ_volts = inputRange_volts/2; % trigger level
 triggerLevelJ = (128 + 128 * triggerLevelJ_volts / inputRange_volts);
 
 % TODO: Select trigger inputs and levels as required
@@ -255,7 +252,7 @@ retCode = ...
         boardHandle,        ... % HANDLE -- board handle
         TRIG_ENGINE_OP_J,   ... % U32 -- trigger operation
         TRIG_ENGINE_J,      ... % U32 -- trigger engine id
-        TRIG_CHAN_A,        ... % U32 -- trigger source id
+        TRIG_EXTERNAL,        ... % U32 -- trigger source id
         TRIGGER_SLOPE_POSITIVE, ... % U32 -- trigger slope id
         triggerLevelJ,                ... % U32 -- trigger level from 0 (-range) to 255 (+range)
         TRIG_ENGINE_K,      ... % U32 -- trigger engine id
@@ -302,7 +299,7 @@ end
 % trigger parameters have been determined, otherwise the
 % board may trigger if the timeout interval expires before a
 % hardware trigger event arrives.
-triggerTimeout_sec = 0;
+triggerTimeout_sec = 5;
 triggerTimeout_clocks = uint32(floor(triggerTimeout_sec / 10.e-6 + 0.5));
 retCode = ...
     AlazarSetTriggerTimeOut(    ...
@@ -318,8 +315,8 @@ end
 retCode = ...
     AlazarConfigureAuxIO(   ...
         boardHandle,        ... % HANDLE -- board handle
-        AUX_OUT_TRIGGER,    ... % U32 -- mode
-        0                   ... % U32 -- parameter
+        AUX_OUT_PACER,    ... % U32 -- mode
+        10                   ... % U32 -- parameter
         );
 if retCode ~= ApiSuccess
     fprintf('Error: AlazarConfigureAuxIO failed -- %s\n', errorToText(retCode));

@@ -223,7 +223,7 @@ while ~captureDone
            % Find scale factor for this channel
             scaleValue = scaleValueChB;                   
             
-            bufferVolts = zeros(channelCount, samplesPerRecord);
+            bufferVolts = zeros(channelCount, maxSamplesPerRecord);
 
             % Convert sample values to volts and store for display
             for col = 1 : samplesPerBuffer

@@ -11,7 +11,7 @@ if ~alazarLoadLibrary()
 end
 
 % TODO: Select a board
-systemId = int32(1);
+systemId = int32(1);dis
 boardId = int32(1);
 
 % Get a handle to the board

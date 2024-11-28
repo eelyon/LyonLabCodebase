@@ -1,9 +1,12 @@
-function [result] = ATS9416AcquireData_NPT(boardHandle, postTriggerSamples)
+function [bufferOut] = ATS9416AcquireData_NPT(boardHandle, postTriggerSamples, records)
 % Make an AutoDMA acquisition from dual-ported memory.
+% param boardHandle: from ATS9416InitializeAlazar
+% param postTriggerSamples: number of samples to acquire after trigger
+% param records: select no. of records per acquisition (averaging?)
+% return results, xaxis, bufferVolts (converted from bits to voltage)
 
 % global variable set in configureBoard.m
 global samplesPerSec;
-global inputRangeIdChA;
 
 % set default return code to indicate failure
 result = false;
@@ -18,19 +21,19 @@ preTriggerSamples = 0;
 % postTriggerSamples = postTriggerSamples; % 2048
 
 % TODO: Specify the number of records per channel per DMA buffer
-recordsPerBuffer = 1;
+recordsPerBuffer = records;
 
-% TODO: Specifiy the total number of buffers to capture
+% TODO: Specify the total number of buffers to capture
 buffersPerAcquisition = 1;
 
 % TODO: Select which channels to capture (A, B, or both)
-channelMask = CHANNEL_A;
+channelMask = CHANNEL_A + CHANNEL_B;
 
 % TODO: Select if you wish to save the sample data to a binary file
 saveData = false;
 
 % TODO: Select if you wish to plot the data to a chart
-drawData = true;
+drawData = false;
 
 % Calculate the number of enabled channels from the channel mask
 channelCount = 0;
@@ -128,11 +131,11 @@ if retCode ~= ApiSuccess
 end
 
 % Create a progress window
-waitbarHandle = waitbar(0, ...
-                        'Captured 0 buffers', ...
-                        'Name','Capturing ...', ...
-                        'CreateCancelBtn', 'setappdata(gcbf,''canceling'',1)');
-setappdata(waitbarHandle, 'canceling', 0);
+% waitbarHandle = waitbar(0, ...
+%                         'Captured 0 buffers', ...
+%                         'Name','Capturing ...', ...
+%                         'CreateCancelBtn', 'setappdata(gcbf,''canceling'',1)');
+% setappdata(waitbarHandle, 'canceling', 0);
 
 % TODO: Insert trigger signal here
 % send33622ATrigger(triggerDev);
@@ -212,10 +215,12 @@ while ~captureDone
             end
         end
 
+        size(bufferOut.Value)
+
         % Display the buffer on screen
         if drawData
             % TODO: Convert bytes into voltage
-            inputRangeInVolts = inputRangeIdToVolts(inputRangeIdChA);
+            inputRangeInVolts = inputRangeIdToVolts(INPUT_RANGE_PM_1_V);
 
             % This 16-bit sample code represents a 0V input
             codeZero = 2 ^ (double(bitsPerSample) - 1) - 0.5;
@@ -230,19 +235,20 @@ while ~captureDone
             scaleValue = inputRangeInVolts / codeRange;
 
             % create an array to store sample data     
-            % bufferVolts = zeros(channelCount, samplesPerBuffer);
-            bufferVolts = zeros(1, samplesPerRecord);
+            bufferVolts = zeros(channelCount, samplesPerRecord);
 
             % Convert sample values to volts and store for display
-            for i = 1:samplesPerRecord
-                bufferVolts(i) = scaleValue * (double(bufferOut.Value(i)) - offsetValue); % need double or else just have int
+            for i = 1:channelCount
+                for j = 1:samplesPerRecord
+                    bufferVolts(i,j) = scaleValue * (double(bufferOut.Value(j)) - offsetValue); % need double or else just have int
+                end
             end
 
             midPoint = min(bufferVolts) + (max(bufferVolts) - min(bufferVolts)) / 2;  % just for sine wave
             bufferVolts = bufferVolts - midPoint;
             xaxis = linspace(0, postTriggerSamples / samplesPerSec, length(bufferVolts));
-            plot(xaxis, bufferVolts);
-            % outB = bufferVolts;
+            plot(xaxis, bufferVolts(1,:));
+            plot(xaxis,bufferVolts(2,:));
             % plot(bufferOut.Value);
         end
 
@@ -262,14 +268,14 @@ while ~captureDone
             updateTickCount = tic;
 
             % Update waitbar progress
-            waitbar(double(buffersCompleted) / double(buffersPerAcquisition), ...
-                    waitbarHandle, ...
-                    sprintf('Completed %u buffers', buffersCompleted));
+%             waitbar(double(buffersCompleted) / double(buffersPerAcquisition), ...
+%                     waitbarHandle, ...
+%                     sprintf('Completed %u buffers', buffersCompleted));
 
             % Check if waitbar cancel button was pressed
-            if getappdata(waitbarHandle,'canceling')
-                break
-            end
+%             if getappdata(waitbarHandle,'canceling')
+%                 break
+%             end
         end
 
     end % if bufferFull
@@ -280,7 +286,7 @@ end % while ~captureDone
 transferTime_sec = toc(startTickCount);
 
 % Close progress window
-delete(waitbarHandle);
+% delete(waitbarHandle);
 
 % Abort the acquisition
 retCode = AlazarAbortAsyncRead(boardHandle);
