@@ -11,7 +11,7 @@ if ~alazarLoadLibrary()
 end
 
 % TODO: Select a board
-systemId = int32(1);dis
+systemId = int32(1);
 boardId = int32(1);
 
 % Get a handle to the board
@@ -22,8 +22,8 @@ if boardHandle.Value == 0
   return
 end
 
-% % Configure the board's sample rate, input, and trigger settings
-% if ~configureBoard(boardHandle)
-%   fprintf('Error: Board configuration failed\n');
-%   return
-% end
+% Configure the board's sample rate, input, and trigger settings
+if ~ATS9416ConfigureBoard(boardHandle)
+  fprintf('Error: Board configuration failed\n');
+  return
+end

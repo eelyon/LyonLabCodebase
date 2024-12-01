@@ -1,5 +1,5 @@
 classdef ATS9416
-    %ATS9416 Summary of this class goes here
+    % ATS9416 Summary of this class goes here
     %   Detailed explanation goes here
     
     properties
@@ -9,9 +9,9 @@ classdef ATS9416
         samplesPerSec
     end
     
-    methods
+    methods(Static)
 
-        function ATS9416 = initialiazeAlazar()
+        function ATS9416 = ATS9416Initialize
             % Add path to AlazarTech mfiles
             addpath('C:\AlazarTech\ATS-SDK\7.2.2\Samples_MATLAB\Include')
             
@@ -32,19 +32,28 @@ classdef ATS9416
             ATS9416.boardHandle = AlazarGetBoardBySystemID(ATS9416.systemId, ATS9416.boardId);
             setdatatype(ATS9416.boardHandle, 'voidPtr', 1, 1);
             if ATS9416.boardHandle.Value == 0
-              fprintf('Error: Unable to open board system ID %u board ID %u\n', systemId, boardId);
+              fprintf('Error: Unable to open board system ID %u board ID %u\n', ATS9416.systemId, ATS9416.boardId);
               return
             end
             
             % Configure the board's sample rate, input, and trigger settings
-            if ~configureBoard(ATS9416.boardHandle)
+            if ~ATS9416ConfigureBoard(ATS9416.boardHandle,10e6)
               fprintf('Error: Board configuration failed\n');
               return
             end
         end
+    end
+
+    methods
 
         function [result] = ATS9416ConfigureBoard(ATS9416, samplesPerSec)
             % Configure sample rate, input, and trigger settings
+            if samplesPerSec ~= 10e6
+                fprintf('Sample rate entered different from 10MSa/sec. Do not forget to change sample rate id.\n')
+                ATS9416.samplesPerSec = samplesPerSec;
+            else
+                ATS9416.samplesPerSec = samplesPerSec;
+            end
             
             % Call mfile with library definitions
             AlazarDefs
@@ -57,8 +66,7 @@ classdef ATS9416
             % For example: if samplesPerSec is 100.e6 (100 MS/s), then:
             % - select clock source INTERNAL_CLOCK and sample rate SAMPLE_RATE_100MSPS
             % - select clock source FAST_EXTERNAL_CLOCK, sample rate SAMPLE_RATE_USER_DEF,
-            %   and connect a 100 MHz signal to the EXT CLK BNC connector.
-                        
+            %   and connect a 100 MHz signal to the EXT CLK BNC connector.            
             retCode = ...
                 AlazarSetCaptureClock(  ...
                     ATS9416.boardHandle,        ... % HANDLE -- board handle
@@ -282,9 +290,9 @@ classdef ATS9416
                 return
             end
             
-            %% Trigger
+            %% Trigger - Agilent 336220A TTL 3.3-3.5V
             inputRange_volts = 3.5; % +- range
-            triggerLevelJ_volts = inputRange_volts/2; % trigger level
+            triggerLevelJ_volts = inputRange_volts*0.5; % trigger level
             triggerLevelJ = (128 + 128 * triggerLevelJ_volts / inputRange_volts);
             
             % TODO: Select trigger inputs and levels as required
@@ -320,7 +328,7 @@ classdef ATS9416
             
             % TODO: Set trigger delay as required.
             triggerDelay_sec = 0;
-            triggerDelay_samples = uint32(floor(triggerDelay_sec * samplesPerSec + 0.5));
+            triggerDelay_samples = uint32(floor(triggerDelay_sec * ATS9416.samplesPerSec + 0.5));
             retCode = AlazarSetTriggerDelay(ATS9416.boardHandle, triggerDelay_samples);
             if retCode ~= ApiSuccess
                 fprintf('Error: AlazarSetTriggerDelay failed -- %s\n', errorToText(retCode));
@@ -328,7 +336,6 @@ classdef ATS9416
             end
             
             % TODO: Set trigger timeout as required.
-            
             % NOTE:
             % The board will wait for a for this amount of time for a trigger event.
             % If a trigger event does not arrive, then the board will automatically
@@ -370,10 +377,10 @@ classdef ATS9416
 
         function [result, bufferOut] = ATS9416AcquireData_NPT(ATS9416, postTriggerSamples, records)
             % Make an AutoDMA acquisition from dual-ported memory.
-            % param boardHandle: from ATS9416InitializeAlazar
+            % param Alazar object
             % param postTriggerSamples: number of samples to acquire after trigger
             % param records: select no. of records per acquisition (averaging?)
-            % return results, xaxis, bufferVolts (converted from bits to voltage)
+            % return results, bufferOut: returns raw unconverted buffer data
                     
             % set default return code to indicate failure
             result = false;
@@ -385,7 +392,7 @@ classdef ATS9416
             preTriggerSamples = 0;
             
             % TODO: Select the number of post-trigger samples per record
-            % postTriggerSamples = postTriggerSamples; % 2048
+            % postTriggerSamples = postTriggerSamples;
             
             % TODO: Specify the number of records per channel per DMA buffer
             recordsPerBuffer = records;
@@ -400,7 +407,7 @@ classdef ATS9416
             saveData = false;
             
             % TODO: Select if you wish to plot the data to a chart
-            drawData = false;
+            drawData = true;
             
             % Calculate the number of enabled channels from the channel mask
             channelCount = 0;
@@ -418,7 +425,7 @@ classdef ATS9416
             end
             
             % Get the sample and memory size
-            [retCode, boardHandle, maxSamplesPerRecord, bitsPerSample] = AlazarGetChannelInfo(ATS9416.boardHandle, 0, 0);
+            [retCode, ~, maxSamplesPerRecord, bitsPerSample] = AlazarGetChannelInfo(ATS9416.boardHandle, 0, 0);
             if retCode ~= ApiSuccess
                 fprintf('Error: AlazarGetChannelInfo failed -- %s\n', errorToText(retCode));
                 return
@@ -504,9 +511,6 @@ classdef ATS9416
             %                         'CreateCancelBtn', 'setappdata(gcbf,''canceling'',1)');
             % setappdata(waitbarHandle, 'canceling', 0);
             
-            % TODO: Insert trigger signal here
-            % send33622ATrigger(triggerDev);
-            
             % Wait for sufficient data to arrive to fill a buffer, process the buffer,
             % and repeat until the acquisition is complete
             startTickCount = tic;
@@ -522,7 +526,7 @@ classdef ATS9416
                 pbuffer = buffers{1, bufferIndex};
             
                 % Wait for the first available buffer to be filled by the board
-                [retCode, boardHandle, bufferOut] = ...
+                [retCode, ~, bufferOut] = ...
                     AlazarWaitAsyncBufferComplete(ATS9416.boardHandle, pbuffer, 5000);
                 if retCode == ApiSuccess
                     % This buffer is full
@@ -545,7 +549,6 @@ classdef ATS9416
                     % TODO: Process sample data in this buffer.
                     %
                     % NOTE:
-                    %
                     % While you are processing this buffer, the board is already
                     % filling the next available buffer(s).
                     %
@@ -586,37 +589,37 @@ classdef ATS9416
             
                     % Display the buffer on screen
                     if drawData
-                        % TODO: Convert bytes into voltage
-                        inputRangeInVolts = inputRangeIdToVolts(INPUT_RANGE_PM_1_V);
-            
-                        % This 16-bit sample code represents a 0V input
-                        codeZero = 2 ^ (double(bitsPerSample) - 1) - 0.5;
-            
-                        % This is the range of 16-bit sample codes with respect to 0V level
-                        codeRange = 2 ^ (double(bitsPerSample) - 1) - 0.5;
-            
-                        % Subtract this amount from a 16-bit sample value to remove the 0V offset
-                        offsetValue = codeZero;
-            
-                        % Multiply a 16-bit sample value by this factor to convert it to volts
-                        scaleValue = inputRangeInVolts / codeRange;
-            
-                        % create an array to store sample data     
-                        bufferVolts = zeros(channelCount, samplesPerRecord);
-            
-                        % Convert sample values to volts and store for display
-                        for i = 1:channelCount
-                            for j = 1:samplesPerRecord
-                                bufferVolts(i,j) = scaleValue * (double(bufferOut.Value(j)) - offsetValue); % need double or else just have int
-                            end
-                        end
-            
-                        midPoint = min(bufferVolts) + (max(bufferVolts) - min(bufferVolts)) / 2;  % just for sine wave
-                        bufferVolts = bufferVolts - midPoint;
-                        xaxis = linspace(0, postTriggerSamples / ATS9416.samplesPerSec, length(bufferVolts));
-                        plot(xaxis, bufferVolts(1,:));
-                        plot(xaxis,bufferVolts(2,:));
-                        % plot(bufferOut.Value);
+%                         % TODO: Convert bytes into voltage
+%                         inputRangeInVolts = inputRangeIdToVolts(INPUT_RANGE_PM_1_V);
+%             
+%                         % This 16-bit sample code represents a 0V input
+%                         codeZero = 2 ^ (double(bitsPerSample) - 1) - 0.5;
+%             
+%                         % This is the range of 16-bit sample codes with respect to 0V level
+%                         codeRange = 2 ^ (double(bitsPerSample) - 1) - 0.5;
+%             
+%                         % Subtract this amount from a 16-bit sample value to remove the 0V offset
+%                         offsetValue = codeZero;
+%             
+%                         % Multiply a 16-bit sample value by this factor to convert it to volts
+%                         scaleValue = inputRangeInVolts / codeRange;
+%             
+%                         % create an array to store sample data     
+%                         bufferVolts = zeros(channelCount, samplesPerRecord);
+%             
+%                         % Convert sample values to volts and store for display
+%                         for i = 1:channelCount
+%                             for j = 1:samplesPerRecord
+%                                 bufferVolts(i,j) = scaleValue * (double(bufferOut.Value(j)) - offsetValue); % need double or else just have int
+%                             end
+%                         end
+%             
+%                         midPoint = min(bufferVolts) + (max(bufferVolts) - min(bufferVolts)) / 2;  % just for sine wave
+%                         bufferVolts = bufferVolts - midPoint;
+%                         xaxis = linspace(0, postTriggerSamples / ATS9416.samplesPerSec, length(bufferVolts));
+%                         plot(xaxis, bufferVolts(1,:));
+%                         plot(xaxis,bufferVolts(2,:));
+                        plot(bufferOut.Value);
                     end
             
                     % Make the buffer available to be filled again by the board
@@ -699,10 +702,8 @@ classdef ATS9416
             % set return code to indicate success
             result = success;
             end
-    end
 
-        function [bufferVolts] = bufferToVolts(buffer)
-           if drawData
+        function [bufferVolts] = bufferToVolts(bufferOut)
             % TODO: Convert bytes into voltage
             inputRangeInVolts = inputRangeIdToVolts(INPUT_RANGE_PM_1_V);
     
@@ -735,7 +736,7 @@ classdef ATS9416
             plot(xaxis,bufferVolts(2,:));
             % plot(bufferOut.Value);
         end
-    end
 
+    end
 end
 

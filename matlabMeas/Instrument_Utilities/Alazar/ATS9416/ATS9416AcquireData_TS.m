@@ -1,4 +1,4 @@
-function [result, chData] = ATS9416AcquireData_TS(boardHandle)
+function [result, bufferOut] = ATS9416AcquireData_TS(boardHandle)
 % Make an AutoDMA acquisition from dual-ported memory.
 
 % global variable set in configureBoard.m
@@ -12,13 +12,13 @@ result = false;
 AlazarDefs
 
 % TODO: Select the total acquisition length in seconds
-acquisitionLength_sec = 0.5;
+acquisitionLength_sec = 1e-1;
 
 % TODO: Select the number of samples in each DMA buffer
-samplesPerBufferPerChannel = 204800;
+samplesPerBufferPerChannel = 10e6*acquisitionLength_sec;
 
 % TODO: Select which channels to capture (A, B, or both)
-channelMask = CHANNEL_A;
+channelMask = CHANNEL_A + CHANNEL_B;
 
 % TODO: Select if you wish to save the sample data to a binary file
 saveData = false;
@@ -85,7 +85,10 @@ if saveData
         fprintf('Error: Unable to create data file\n');
     end
 end
-retCode = AlazarBeforeAsyncRead(boardHandle, channelMask, 0, samplesPerBufferPerChannel, 1, hex2dec('7FFFFFFF'), ADMA_EXTERNAL_STARTCAPTURE + ADMA_TRIGGERED_STREAMING);
+
+admaFlags = ADMA_EXTERNAL_STARTCAPTURE + ADMA_TRIGGERED_STREAMING; %ADMA_FIFO_ONLY_STREAMING;
+
+retCode = AlazarBeforeAsyncRead(boardHandle, channelMask, 0, samplesPerBufferPerChannel, 1, hex2dec('7FFFFFFF'), admaFlags);
 if retCode ~= ApiSuccess
     fprintf('Error: AlazarBeforeAsyncRead failed -- %s\n', errorToText(retCode));
     return
@@ -203,36 +206,36 @@ while ~captureDone
         if drawData
             % If plotting data then calculate scale factors to convert sample
             % values to volts, and allocate a buffer to store the values in volts.
-            inputRangeInVolts = inputRangeIdToVolts(inputRangeIdChA);
-
-            % This 16-bit sample code represents a 0V input
-            codeZero = 2 ^ (double(bitsPerSample) - inputRangeInVolts);
-        
-            % This is the range of 16-bit sample codes with respect to 0V level
-            codeRange = 2 ^ (double(bitsPerSample) - inputRangeInVolts);
-        
-            % Subtract this amount from a 16-bit sample value to remove the 0V offset
-            offsetValue = codeZero;
-        
-            % Multiply a 16-bit sample value by this factor to convert it to volts
-            scaleValueChB = inputRangeInVolts/codeRange;
-        
-            % create an array to store sample data     
-            % bufferVolts = zeros(channelCount, samplesPerBuffer);
-
-           % Find scale factor for this channel
-            scaleValue = scaleValueChB;                   
-            
-            bufferVolts = zeros(channelCount, maxSamplesPerRecord);
-
-            % Convert sample values to volts and store for display
-            for col = 1 : samplesPerBuffer
-                    bufferVolts(rowInPlotBuffer, col) = scaleValue * (double(bufferOut(col)) - offsetValue);
-            end
-            rowInPlotBuffer = rowInPlotBuffer + 1;
-            bufferVolts = scaleValue * (bufferOut - offsetValue);
+%             inputRangeInVolts = inputRangeIdToVolts(inputRangeIdChA);
+% 
+%             % This 16-bit sample code represents a 0V input
+%             codeZero = 2 ^ (double(bitsPerSample) - inputRangeInVolts);
+%         
+%             % This is the range of 16-bit sample codes with respect to 0V level
+%             codeRange = 2 ^ (double(bitsPerSample) - inputRangeInVolts);
+%         
+%             % Subtract this amount from a 16-bit sample value to remove the 0V offset
+%             offsetValue = codeZero;
+%         
+%             % Multiply a 16-bit sample value by this factor to convert it to volts
+%             scaleValueChB = inputRangeInVolts/codeRange;
+%         
+%             % create an array to store sample data     
+%             % bufferVolts = zeros(channelCount, samplesPerBuffer);
+% 
+%            % Find scale factor for this channel
+%             scaleValue = scaleValueChB;                   
+%             
+%             bufferVolts = zeros(channelCount, maxSamplesPerRecord);
+% 
+%             % Convert sample values to volts and store for display
+%             for col = 1 : samplesPerBuffer
+%                     bufferVolts(rowInPlotBuffer, col) = scaleValue * (double(bufferOut(col)) - offsetValue);
+%             end
+%             rowInPlotBuffer = rowInPlotBuffer + 1;
+%             bufferVolts = scaleValue * (bufferOut - offsetValue);
            
-            plot(bufferVolts.Value);
+            plot(bufferOut.Value);
             % bufferOut.Value
         end
 

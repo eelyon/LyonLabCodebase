@@ -1,9 +1,9 @@
-function [bufferOut] = ATS9416AcquireData_NPT(boardHandle, postTriggerSamples, records)
+function [result,buffer,bitsPerSample,samplesPerRecord,channelCount] = ATS9416AcquireData_NPT(boardHandle, postTriggerSamples, records, buffersPerAcquisition)
 % Make an AutoDMA acquisition from dual-ported memory.
 % param boardHandle: from ATS9416InitializeAlazar
 % param postTriggerSamples: number of samples to acquire after trigger
-% param records: select no. of records per acquisition (averaging?)
-% return results, xaxis, bufferVolts (converted from bits to voltage)
+% param records: select no. of records per acquisition
+% return result, bufferOut (converted from bits to voltage)
 
 % global variable set in configureBoard.m
 global samplesPerSec;
@@ -24,7 +24,7 @@ preTriggerSamples = 0;
 recordsPerBuffer = records;
 
 % TODO: Specify the total number of buffers to capture
-buffersPerAcquisition = 1;
+% buffersPerAcquisition = 2;
 
 % TODO: Select which channels to capture (A, B, or both)
 channelMask = CHANNEL_A + CHANNEL_B;
@@ -96,7 +96,7 @@ if retCode ~= ApiSuccess
 end
 
 % TODO: Select AutoDMA flags as required
-admaFlags = ADMA_EXTERNAL_STARTCAPTURE + ADMA_NPT + ADMA_FIFO_ONLY_STREAMING;
+admaFlags = ADMA_NPT + ADMA_EXTERNAL_STARTCAPTURE + ADMA_FIFO_ONLY_STREAMING; %+ ADMA_ALLOC_BUFFERS + ADMA_GET_PROCESSED_DATA 
 
 % Configure the board to make an AutoDMA acquisition
 recordsPerAcquisition = recordsPerBuffer * buffersPerAcquisition;
@@ -215,7 +215,8 @@ while ~captureDone
             end
         end
 
-        size(bufferOut.Value)
+        buffer = bufferOut.Value;
+        size(buffer)
 
         % Display the buffer on screen
         if drawData
@@ -247,9 +248,9 @@ while ~captureDone
             midPoint = min(bufferVolts) + (max(bufferVolts) - min(bufferVolts)) / 2;  % just for sine wave
             bufferVolts = bufferVolts - midPoint;
             xaxis = linspace(0, postTriggerSamples / samplesPerSec, length(bufferVolts));
-            plot(xaxis, bufferVolts(1,:));
-            plot(xaxis,bufferVolts(2,:));
-            % plot(bufferOut.Value);
+            plot(xaxis,bufferVolts(1,:));
+%             plot(xaxis,bufferVolts(2,:));
+%             plot(bufferOut.Value);
         end
 
         % Make the buffer available to be filled again by the board
