@@ -9,7 +9,6 @@ y = fft(yDat);
 f = (0:(L/2)) * Fs/L; % FFT frequency
 
 figure
-
 if NSD == true
     P2 = abs(y)*1/(sqrt(Fs)*L);
     P1 = P2(1:L/2+1);
@@ -25,6 +24,3 @@ else
     xlabel('Frequency (Hz)')
     ylabel('V')
 end
-
-figure
-plot(ifft(y))

@@ -1,10 +1,13 @@
 %% Acquire data from ATS9416 board and average
 global samplesPerSec;
+global inputRange_volts
 
+inputRange_volts = 1;
 samplesPerSec = 10e6;
-buffers = 2; % Set at least 2 buffers to allow for continuous data transfer
+
+buffers = 1; % Set at least 2 buffers to allow for continuous data transfer
 records = 1; % Set number of averages
-samples = 1000; % Let's get many more samples for avg., 1000 should be about 100 cycles
+samples = 100000; % Let's get many more samples for avg., 1000 should be about 100 cycles
 
 [~,buffer,bitsPerSample,samplesPerRecord,channelCount] = ATS9416AcquireData_NPT(boardHandle,samples,records,buffers);
 

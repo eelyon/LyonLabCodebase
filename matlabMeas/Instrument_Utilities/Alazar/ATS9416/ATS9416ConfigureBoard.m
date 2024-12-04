@@ -9,10 +9,8 @@ result = false;
 
 % TODO: Select clock parameters as required to generate this sample rate.
 %
-% For example: if samplesPerSec is 100.e6 (100 MS/s), then:
-% - select clock source INTERNAL_CLOCK and sample rate SAMPLE_RATE_100MSPS
-% - select clock source FAST_EXTERNAL_CLOCK, sample rate SAMPLE_RATE_USER_DEF,
-%   and connect a 100 MHz signal to the EXT CLK BNC connector.
+% A 10 MHz reference procudes a 100 MHz. Set a lower sampling frequency by
+% specifying a decimation value.
 
 % global variable used in acquireData.m
 global samplesPerSec;
@@ -21,8 +19,8 @@ samplesPerSec = 10e6;
 retCode = ...
     AlazarSetCaptureClock(  ...
         boardHandle,        ... % HANDLE -- board handle
-        INTERNAL_CLOCK,     ... % U32 -- clock source id
-        SAMPLE_RATE_10MSPS, ... % U32 -- sample rate id
+        EXTERNAL_CLOCK_10MHz_REF,     ... % U32 -- clock source id
+        SAMPLE_RATE_100MSPS, ... % U32 -- sample rate id
         CLOCK_EDGE_RISING,  ... % U32 -- clock edge id
         10                   ... % U32 -- clock decimation
         );

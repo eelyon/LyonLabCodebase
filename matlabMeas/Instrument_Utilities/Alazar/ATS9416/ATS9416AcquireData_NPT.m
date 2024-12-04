@@ -27,7 +27,7 @@ recordsPerBuffer = records;
 % buffersPerAcquisition = 2;
 
 % TODO: Select which channels to capture (A, B, or both)
-channelMask = CHANNEL_A + CHANNEL_B;
+channelMask = CHANNEL_A;
 
 % TODO: Select if you wish to save the sample data to a binary file
 saveData = false;
