@@ -243,7 +243,7 @@ end
 
 %% Trigger
 inputRange_volts = 3.5; % +- range
-triggerLevelJ_volts = inputRange_volts/2; % trigger level
+triggerLevelJ_volts = inputRange_volts/4; % trigger level
 triggerLevelJ = (128 + 128 * triggerLevelJ_volts / inputRange_volts);
 
 % TODO: Select trigger inputs and levels as required
