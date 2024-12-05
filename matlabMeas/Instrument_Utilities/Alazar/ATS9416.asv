@@ -734,49 +734,27 @@ classdef ATS9416
             filtered_signal_X = real(ifft(ifftshift(filtered_signal_X_fft)));  % X component
             filtered_signal_Y = real(ifft(ifftshift(filtered_signal_Y_fft)));  % Y component
             
-            % Normalise the filtered signal to account for the scaling from FFT/IFFT
-            filtered_signal_X = filtered_signal_X / N;  % Normalize X
-            filtered_signal_Y = filtered_signal_Y / N;  % Normalize Y
+            % Normalize the filtered signal to account for the scaling from FFT/IFFT
+            filtered_signal_X = filtered_signal_X / N;  % Normalize the X component
+            filtered_signal_Y = filtered_signal_Y / N;  % Normalize the Y component
+
+            X = rms(filtered_signal_X);
+            Y = rms(filtered_signal_Y);
             
-            % X and Y
-            X = sqrt(mean(filtered_signal_X.^2));
-            Y = sqrt(mean(filtered_signal_Y.^2));
-            
-            % R and phi in time-domain
             R = sqrt(filtered_signal_X.^2 + filtered_signal_Y.^2);
             phi = rad2deg(atan2(filtered_signal_Y, filtered_signal_X));
             
             % Amplitude and phase extraction from X and Y
             amplitude = sqrt(mean(filtered_signal_X.^2 + filtered_signal_Y.^2)); % Mean amplitude
             phase = atan2(mean(filtered_signal_Y), mean(filtered_signal_X)); % Phase (radians)
+            
+            % Display extracted amplitude and phase
+            disp(['Extracted Amplitude (Vpeak): ', num2str(amplitude)]);
+            disp(['Extracted Phase (degrees): ', num2str(rad2deg(phase))]);
         end
 
-        function [f,P1] = ATS9416GetFFT(ATS9416,bufferVolts)
-            Fs = ATS9416.samplesPerSec; % Sampling frequency
-            NSD = false; % Noise Spectral Density
+        function [fftbase,bufferFFT] = ATS9416GetFFT(ATS9416,buffer)
             
-            yDat = bufferVolts(1,:); % Data
-            L = length(yDat); % Data length
-            
-            y = fft(yDat);
-            f = (0:(L/2)) * Fs/L; % FFT frequency
-            
-            figure
-            if NSD == true
-                P2 = abs(y)*1/(sqrt(Fs)*L);
-                P1 = P2(1:L/2+1);
-                P1(2:end-1) = 2*P1(2:end-1); % (1) and (end) correspond to zero and Nyquist frequencies
-                plot(f,P1)
-                xlabel('Frequency (Hz)')
-                ylabel('NSD (V/\surd{Hz})')
-            else
-                P2 = abs(y)*1/L;
-                P1 = P2(1:L/2+1);
-                P1(2:end-1) = 2*P1(2:end-1); % (1) and (end) correspond to zero and Nyquist frequencies
-                plot(f,P1)
-                xlabel('Frequency (Hz)')
-                ylabel('V')
-            end
         end
     end
 end
