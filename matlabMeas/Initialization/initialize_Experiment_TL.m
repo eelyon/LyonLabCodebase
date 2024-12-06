@@ -39,7 +39,9 @@ else
     houckAWG_Address = '172.29.117.137';
     
     % Keysight AWG (Natalie)
-    deLeonAWG_Address = '172.29.117.133';
+    % deLeonAWG_Address = '172.29.117.133';
+    AWGTwiddle_Address = '172.29.117.16';
+    AWGComp_Address = '172.29.117.17';
 
     % Oscilloscope
     oscope_Address = 'USB0::0x0699::0x03A5::C011465::0';
@@ -49,15 +51,17 @@ else
 end
 
 controlDAC = sigDAC(sigDACPortControl,24,'controlDAC');
-supplyDAC = sigDAC(sigDACPortSupply,24,'supplyDAC');
+supplyDAC  = sigDAC(sigDACPortSupply,24,'supplyDAC');
 controlDACGUI = sigDACGUI;
-supplyDACGUI = sigDACGUI;
+supplyDACGUI  = sigDACGUI;
 
-SR830Twiddle = SR830(port,VmeasBottom_Address);
+SR830Twiddle  = SR830(port,VmeasBottom_Address);
 SR830TwiddleC = SR830(1234,VmeasTop_Address);
 
-Awg2Ch = Agilent33622A(1234,houckAWG_Address,1); % two-channel AWG
-Ag2Nat = Agilent33622A(1234,deLeonAWG_Address,1); % two-channel AWG
+Awg2Ch     = Agilent33622A(1234,houckAWG_Address,1); % two-channel AWG
+% Ag2Nat = Agilent33622A(1234,deLeonAWG_Address,1); % two-channel AWG
+AwgTwiddle = Agilent33220A(1234,AWGTwiddle_Address,1); % two-channel AWG
+AwgComp    = Agilent33220A(1234,AWGComp_Address,1); % two-channel AWG
 
 % Oscope = TDS2022C(oscope_Address);
 % % IDC = SIM900(IDCPort);
