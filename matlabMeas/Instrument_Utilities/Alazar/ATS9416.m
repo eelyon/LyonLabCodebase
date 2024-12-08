@@ -1,17 +1,21 @@
 classdef ATS9416
-    % ATS9416 Summary of this class goes here
+    % ATS9416: Class for AlazarTech ATS9416 board
     %   Detailed explanation goes here
     
     properties
-        boardId
-        systemId
-        boardHandle
-        samplesPerSec
+        boardId = int32(1)
+        systemId = int32(1)
+        boardHandle = {}
+        samplesPerSec {mustBeNumeric}
     end
     
-    methods(Static)
+    methods
+        function ATS9416 = ATS9416(systemId, boardId, samplesPerSec)
+            % Initialise ATS9416 board, get board handle and configure
+            ATS9416.systemId = systemId;
+            ATS9416.boardId = boardId;
+            ATS9416.samplesPerSec = samplesPerSec;
 
-        function ATS9416 = ATS9416Initialize
             % Add path to AlazarTech mfiles
             addpath('C:\AlazarTech\ATS-SDK\7.2.2\Samples_MATLAB\Include')
             
@@ -24,12 +28,13 @@ classdef ATS9416
               return
             end
             
-            % TODO: Select a board
-            ATS9416.systemId = int32(1);
-            ATS9416.boardId = int32(1);
+%             % TODO: Select a board
+%             ATS9416.systemId = int32(1);
+%             ATS9416.boardId = int32(1);
             
             % Get a handle to the board
-            ATS9416.boardHandle = AlazarGetBoardBySystemID(ATS9416.systemId, ATS9416.boardId);
+            boardHandle = AlazarGetBoardBySystemID(ATS9416.systemId, ATS9416.boardId);
+            ATS9416.boardHandle = boardHandle;
             setdatatype(ATS9416.boardHandle, 'voidPtr', 1, 1);
             if ATS9416.boardHandle.Value == 0
               fprintf('Error: Unable to open board system ID %u board ID %u\n', ATS9416.systemId, ATS9416.boardId);
@@ -37,14 +42,11 @@ classdef ATS9416
             end
             
             % Configure the board's sample rate, input, and trigger settings
-            if ~ATS9416ConfigureBoard(ATS9416.boardHandle,10e6)
+            if ~ATS9416ConfigureBoard(ATS9416.boardHandle,samplesPerSec)
               fprintf('Error: Board configuration failed\n');
               return
             end
         end
-    end
-
-    methods
 
         function [result] = ATS9416ConfigureBoard(ATS9416, samplesPerSec)
             % Configure sample rate, input, and trigger settings
@@ -56,7 +58,7 @@ classdef ATS9416
             end
 
             ATS9416.samplesPerSec = samplesPerSec;
-            clockDecimation = 100e6/samplesPerSec;
+            clockDecimation = 100e6/samplesPerSec
             
             % Call mfile with library definitions
             AlazarDefs
@@ -645,7 +647,7 @@ classdef ATS9416
             result = success;
         end
 
-        function [xaxis,bufferVolts] = bufferToVolts(buffer, channelCount, bitsPerSample, samplesPerRecord, records)
+        function [xaxis,bufferVolts] = ATS9416BufferToVolts(buffer, channelCount, bitsPerSample, samplesPerRecord, records)
             % Right shift 16-bit to get 14-bit
             bufferShift = buffer / 2^(16-double(bitsPerSample));
             

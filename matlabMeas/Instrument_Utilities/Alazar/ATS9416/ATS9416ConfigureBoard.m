@@ -1,4 +1,4 @@
-function [result] = ATS9416ConfigureBoard(boardHandle)
+function [result] = ATS9416ConfigureBoard(boardHandle, samplesPerSec)
 % Configure sample rate, input, and trigger settings
 
 % Call mfile with library definitions
@@ -12,9 +12,16 @@ result = false;
 % A 10 MHz reference procudes a 100 MHz. Set a lower sampling frequency by
 % specifying a decimation value.
 
-% global variable used in acquireData.m
-global samplesPerSec;
-samplesPerSec = 10e6;
+% Configure sample rate, input, and trigger settings
+allowedSampleRates = [100e6,50e6,20e6,10e6,5e6,2e6,1e6,500e3,200e3,100e3];
+
+if ismember(samplesPerSec,allowedSampleRates) == 0
+    fprintf('Sample rate %i is not allowed!\n', samplesPerSec)
+    return
+end
+
+clockDecimation = 100e6/samplesPerSec; % Set clock decimation value
+fprintf('Clock decimation is %i\n', clockDecimation)
 
 retCode = ...
     AlazarSetCaptureClock(  ...
@@ -22,7 +29,7 @@ retCode = ...
         EXTERNAL_CLOCK_10MHz_REF,     ... % U32 -- clock source id
         SAMPLE_RATE_100MSPS, ... % U32 -- sample rate id
         CLOCK_EDGE_RISING,  ... % U32 -- clock edge id
-        10                   ... % U32 -- clock decimation
+        clockDecimation                   ... % U32 -- clock decimation
         );
 if retCode ~= ApiSuccess
     fprintf('Error: AlazarSetCaptureClock failed -- %s\n', errorToText(retCode));
@@ -241,7 +248,7 @@ end
 
 %% Trigger
 inputRange_volts = 3.5; % +- range
-triggerLevelJ_volts = inputRange_volts/4; % trigger level
+triggerLevelJ_volts = inputRange_volts*0.5; % trigger level
 triggerLevelJ = (128 + 128 * triggerLevelJ_volts / inputRange_volts);
 
 % TODO: Select trigger inputs and levels as required

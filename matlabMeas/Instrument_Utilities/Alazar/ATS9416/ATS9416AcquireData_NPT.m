@@ -1,12 +1,12 @@
-function [result,buffer,bitsPerSample,samplesPerRecord,channelCount] = ATS9416AcquireData_NPT(boardHandle, postTriggerSamples, records, buffersPerAcquisition)
+function [result,bufferVolts] = ATS9416AcquireData_NPT(boardHandle, samplesPerSec, postTriggerSamples, recordsPerBuffer, buffersPerAcquisition, channelMask)
 % Make an AutoDMA acquisition from dual-ported memory.
-% param boardHandle: from ATS9416InitializeAlazar
-% param postTriggerSamples: number of samples to acquire after trigger
-% param records: select no. of records per acquisition
-% return result, bufferOut (converted from bits to voltage)
-
-% global variable set in configureBoard.m
-global samplesPerSec;
+% param boardHandle
+% param samplesPerSec
+% param postTriggerSamples
+% param recordsPerBuffer
+% param buffersPerAcquisition
+% param channelMask
+% return result, xaxis, bufferVolts
 
 % set default return code to indicate failure
 result = false;
@@ -18,22 +18,18 @@ AlazarDefs
 preTriggerSamples = 0;
 
 % TODO: Select the number of post-trigger samples per record
-% postTriggerSamples = postTriggerSamples; % 2048
+if postTriggerSamples < 256 || mod(postTriggerSamples,128) ~= 0
+    fprintf('Set an acceptable number of samples per record\n')
+    return
+end
 
-% TODO: Specify the number of records per channel per DMA buffer
-recordsPerBuffer = records;
-
-% TODO: Specify the total number of buffers to capture
-% buffersPerAcquisition = 2;
-
-% TODO: Select which channels to capture (A, B, or both)
-channelMask = CHANNEL_A;
+inputRange_volts = inputRangeIdToVolts(INPUT_RANGE_PM_1_V);
 
 % TODO: Select if you wish to save the sample data to a binary file
 saveData = false;
 
 % TODO: Select if you wish to plot the data to a chart
-drawData = false;
+voltsData = true;
 
 % Calculate the number of enabled channels from the channel mask
 channelCount = 0;
@@ -215,41 +211,54 @@ while ~captureDone
             end
         end
 
-        buffer = bufferOut.Value;
-        size(buffer)
+        size(bufferOut.Value)
 
-        % Display the buffer on screen
-        if drawData
-            % TODO: Convert bytes into voltage
-            inputRangeInVolts = inputRangeIdToVolts(INPUT_RANGE_PM_1_V);
-
-            % This 16-bit sample code represents a 0V input
-            codeZero = 2 ^ (double(bitsPerSample) - 1) - 0.5;
-
-            % This is the range of 16-bit sample codes with respect to 0V level
-            codeRange = 2 ^ (double(bitsPerSample) - 1) - 0.5;
-
-            % Subtract this amount from a 16-bit sample value to remove the 0V offset
-            offsetValue = codeZero;
-
-            % Multiply a 16-bit sample value by this factor to convert it to volts
-            scaleValue = inputRangeInVolts / codeRange;
-
-            % create an array to store sample data     
-            bufferVolts = zeros(channelCount, samplesPerRecord);
-
-            % Convert sample values to volts and store for display
-            for i = 1:channelCount
-                for j = 1:samplesPerRecord
-                    bufferVolts(i,j) = scaleValue * (double(bufferOut.Value(j)) - offsetValue); % need double or else just have int
+        % Convert buffer to volts
+        if voltsData
+            % Right shift 16-bit to get 14-bit
+            bufferShift = bufferOut.Value / 2^(16-double(bitsPerSample));
+            
+            % This 14-bit sample code represents a 0V input
+            codeZero = 2^(double(bitsPerSample) - 1) - 0.5;
+            
+            % This is the range of 14-bit sample codes with respect to 0V level
+            codeRange = 2^(double(bitsPerSample) - 1) - 0.5;
+            
+            % Create an array to store sample data
+            bufferVolts = zeros(channelCount,postTriggerSamples);
+            sine = true;
+            
+            if recordsPerBuffer > 1
+                fprintf('Records per buffer set to %i', recordsPerBuffer)
+                for i = 1:recordsPerBuffer
+                    for j = 1:channelCount
+                        col = 1; % Set counter
+                        for k = j:channelCount:(length(bufferShift)/recordsPerBuffer)
+                            bufferVolts(j,col) = inputRange_volts * (double(bufferShift(k)) - codeZero) / codeRange; % need double or else just have int
+                            col = col + 1;
+                        end
+                        if sine == true
+                            midPoint = min(bufferVolts(j,:)) + (max(bufferVolts(j,:)) - min(bufferVolts(j,:))) / 2;
+                            bufferVolts(j,:) = bufferVolts(j,:) - midPoint;
+                        end
+                    end
+                end
+            
+            else % For measurements with 1 record only
+                for i = 1:channelCount % Each row contains a separate channel
+                    col = 1; % Set counter
+                    for j = i:channelCount:length(bufferShift) % Channel data is interleaved
+                        bufferVolts(i,col) = inputRange_volts * (double(bufferShift(j)) - codeZero) / codeRange; % Need double or else just have int
+                        col = col + 1;
+                    end
+                    if sine == true
+                        midPoint = min(bufferVolts(i,:)) + (max(bufferVolts(i,:)) - min(bufferVolts(i,:))) / 2;
+                        bufferVolts(i,:) = bufferVolts(i,:) - midPoint;
+                    end
                 end
             end
-
-            midPoint = min(bufferVolts) + (max(bufferVolts) - min(bufferVolts)) / 2;  % just for sine wave
-            bufferVolts = bufferVolts - midPoint;
-            xaxis = linspace(0, postTriggerSamples / samplesPerSec, length(bufferVolts));
-            plot(xaxis,bufferVolts(1,:));
-%             plot(xaxis,bufferVolts(2,:));
+            
+%             xaxis = linspace(0, postTriggerSamples/samplesPerSec, length(bufferVolts(1,:)));
 %             plot(bufferOut.Value);
         end
 
@@ -267,16 +276,6 @@ while ~captureDone
             success = true;
         elseif toc(updateTickCount) > updateInterval_sec
             updateTickCount = tic;
-
-            % Update waitbar progress
-%             waitbar(double(buffersCompleted) / double(buffersPerAcquisition), ...
-%                     waitbarHandle, ...
-%                     sprintf('Completed %u buffers', buffersCompleted));
-
-            % Check if waitbar cancel button was pressed
-%             if getappdata(waitbarHandle,'canceling')
-%                 break
-%             end
         end
 
     end % if bufferFull
@@ -285,9 +284,6 @@ end % while ~captureDone
 
 % Save the transfer time
 transferTime_sec = toc(startTickCount);
-
-% Close progress window
-% delete(waitbarHandle);
 
 % Abort the acquisition
 retCode = AlazarAbortAsyncRead(boardHandle);

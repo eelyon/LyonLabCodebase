@@ -1,6 +1,6 @@
 % Parameters
 Fs = 10e6;          % Sampling frequency (Hz)
-T = 1000/Fs; % 1;               % Duration of the signal (seconds)
+T = postTriggerSamples/Fs; % 1;               % Duration of the signal (seconds)
 t = 0:1/Fs:T-1/Fs;   % Time vector
 length(t)
 f_signal = 1e6;       % Frequency of the signal (Hz)
@@ -8,16 +8,16 @@ f_reference = 1e6;    % Frequency of the reference signal (Hz)
 sqr_wave = false;
 noise_level = 0.5;   % Amplitude of noise
 
-% signal = sqrt(2)*bufferVolts(1,:);
+signal = sqrt(2)*bufferVolts(1,:);
 
 % Generate the signal and noise
-signal = sqrt(2)*sin(2*pi*f_signal*t) + noise_level*randn(size(t)); % Signal with noise
+% signal = sqrt(2)*square(2*pi*f_signal*t-pi/2) + noise_level*randn(size(t)); % Signal with noise
 
 % Generate the reference signal (known frequency)
 if sqr_wave == true
     reference_signal = sqrt(2)*square(2*pi*f_reference*t)-1i*sqrt(2)*square(2*pi*f_reference*t+pi/2);
 else
-    reference_signal = sqrt(2)*sin(2*pi*f_reference*t)-1i*sqrt(2)*cos(2*pi*f_reference*t);
+    reference_signal = sqrt(2)*cos(2*pi*f_reference*t-pi)-1i*sqrt(2)*sin(2*pi*f_reference*t-pi);
 end
 
 % Perform FFT on the signal and reference signal
@@ -44,8 +44,8 @@ filtered_signal_X_fft = mixed_signal_X_fft .* H_rc;
 filtered_signal_Y_fft = mixed_signal_Y_fft .* H_rc;
 
 % Perform inverse FFT to return to the time domain
-filtered_signal_X = real(ifft(ifftshift(filtered_signal_X_fft)));  % X component
-filtered_signal_Y = real(ifft(ifftshift(filtered_signal_Y_fft)));  % Y component
+filtered_signal_X = real(ifft(ifftshift(filtered_signal_X_fft)))*pi/4;  % X component
+filtered_signal_Y = real(ifft(ifftshift(filtered_signal_Y_fft)))*pi/4;  % Y component
 
 % Normalize the filtered signal to account for the scaling from FFT/XFFT
 filtered_signal_X = filtered_signal_X / N;  % Normalize the X component
