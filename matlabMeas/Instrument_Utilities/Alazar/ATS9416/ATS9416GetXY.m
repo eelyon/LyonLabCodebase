@@ -1,19 +1,20 @@
-function [filtered_signal_X,filtered_signal_Y] = ATS9416GetXY(buffer, samplesPerSec, postTriggerSamples, f_signal, waveForm)
+function [filtered_signal_X,filtered_signal_Y] = ATS9416GetXY(buffer, samplesPerSec, postTriggerSamples, f_signal, waveForm, phase)
 %ATS9416GETXY Summary of this function goes here
 %   Detailed explanation goes here
 % Parameters
 T = postTriggerSamples/samplesPerSec;
 t = 0:1/samplesPerSec:T-1/samplesPerSec; % Time vector
+% phase = pi*0.25; %pi/3;
 
 input_signal = buffer(1,:); % Input signal
 
 % Generate the reference signal (known frequency)
 if strcmp(waveForm,'square')
-    reference_signal_X = square(2 * pi * f_signal * t + pi/3);
-    reference_signal_Y = square(2 * pi * f_signal * t + pi/3 + pi/2);
+    reference_signal_X = square(2 * pi * f_signal * t + phase);
+    reference_signal_Y = square(2 * pi * f_signal * t + phase + pi/2);
 elseif strcmp(waveForm,'sine')
-    reference_signal_X = sin(2 * pi * f_signal * t + pi/3);
-    reference_signal_Y = cos(2 * pi * f_signal * t + pi/3 + pi/2);
+    reference_signal_X = sin(2 * pi * f_signal * t + phase);
+    reference_signal_Y = cos(2 * pi * f_signal * t + phase + pi/2);
 else
     fprintf('Enter the correct wave type!\n')
     return
@@ -48,9 +49,9 @@ ylabel('Amplitude');
 legend('Sig.','RefX','RefY')
 
 subplot(4, 1, 2);
-plot(t(1:256), demodulated_signal_X(1:256));
+plot(t(end-256:end), demodulated_signal_X(end-256:end));
 hold on
-plot(t(1:256), demodulated_signal_Y(1:256));
+plot(t(end-256:end), demodulated_signal_Y(end-256:end));
 hold off
 title('Demodulated Signal');
 xlabel('Time (s)');

@@ -1,12 +1,8 @@
-function [result,bufferVolts] = ATS9416AcquireData_TS(boardHandle, samplesPerSec, acquisitionLength_sec, samplesPerBufferPerChannel, channelMask)
+function [result, bufferVolts] = AlazarAcquireData_TS(boardHandle)
 % Make an AutoDMA acquisition from dual-ported memory.
-% param boardHandle
-% param samplesPerSec
-% param postTriggerSamples
-% param recordsPerBuffer
-% param buffersPerAcquisition
-% param channelMask
-% return result, xaxis, bufferVolts
+
+% global variable set in configureBoard.m
+samplesPerSec = 20e6;
 
 % set default return code to indicate failure
 result = false;
@@ -14,20 +10,20 @@ result = false;
 % call mfile with library definitions
 AlazarDefs
 
-% 
-% % TODO: Select the number of post-trigger samples per record
-% if postTriggerSamples < 256 || mod(postTriggerSamples,128) ~= 0
-%     fprintf('Set an acceptable number of samples per record\n')
-%     return
-% end
+% TODO: Select the total acquisition length in seconds
+acquisitionLength_sec = 0.01;
 
-inputRange_volts = inputRangeIdToVolts(INPUT_RANGE_PM_1_V);
+% TODO: Select the number of samples in each DMA buffer
+samplesPerBufferPerChannel = 640000;
+
+% TODO: Select which channels to capture (A, B, or both)
+channelMask = CHANNEL_A;
 
 % TODO: Select if you wish to save the sample data to a binary file
 saveData = false;
 
 % TODO: Select if you wish to plot the data to a chart
-voltsData = true;
+drawData = true;
 
 % Calculate the number of enabled channels from the channel mask
 channelCount = 0;
@@ -88,12 +84,7 @@ if saveData
         fprintf('Error: Unable to create data file\n');
     end
 end
-
-% TODO: Select AutoDMA flags as required
-admaFlags = ADMA_EXTERNAL_STARTCAPTURE + ADMA_TRIGGERED_STREAMING; % + ADMA_FIFO_ONLY_STREAMING; %+ ADMA_ALLOC_BUFFERS + ADMA_GET_PROCESSED_DATA 
-
-% Configure the board to make an AutoDMA acquisition
-retCode = AlazarBeforeAsyncRead(boardHandle, channelMask, 0, samplesPerBufferPerChannel, 1, hex2dec('7FFFFFFF'), admaFlags);
+retCode = AlazarBeforeAsyncRead(boardHandle, channelMask, 0, samplesPerBufferPerChannel, 1, hex2dec('7FFFFFFF'), ADMA_EXTERNAL_STARTCAPTURE + ADMA_TRIGGERED_STREAMING);
 if retCode ~= ApiSuccess
     fprintf('Error: AlazarBeforeAsyncRead failed -- %s\n', errorToText(retCode));
     return
@@ -122,6 +113,15 @@ if retCode ~= ApiSuccess
     fprintf('Error: AlazarStartCapture failed -- %s\n', errorToText(retCode));
     return
 end
+
+% AlazarForceTrigger(boardHandle);
+
+% Create a progress window
+waitbarHandle = waitbar(0, ...
+                        'Captured 0 buffers', ...
+                        'Name','Capturing ...', ...
+                        'CreateCancelBtn', 'setappdata(gcbf,''canceling'',1)');
+setappdata(waitbarHandle, 'canceling', 0);
 
 % Wait for sufficient data to arrive to fill a buffer, process the buffer,
 % and repeat until the acquisition is complete
@@ -197,11 +197,14 @@ while ~captureDone
                 fprintf('Error: Write buffer %u failed\n', buffersCompleted);
             end
         end
+        
+        buffer = bufferOut.Value;
+        size(buffer)
 
-        size(bufferOut.Value)
+        % Display the buffer on screen
+        if drawData
+            inputRange_volts = inputRangeIdToVolts(INPUT_RANGE_PM_1_V);
 
-        % Convert buffer to volts
-        if voltsData
             % Right shift 16-bit to get 14-bit
             bufferShift = bufferOut.Value / 2^(16-double(bitsPerSample));
             
@@ -227,9 +230,11 @@ while ~captureDone
                 end
             end
             
-            xaxis = linspace(0, samplesPerBufferPerChannel/samplesPerSec, length(bufferVolts(1,:)));
-            figure
-            plot(xaxis, bufferVolts(1,:));
+%             xaxis = linspace(0, samplesPerBufferPerChannel/samplesPerSec, length(bufferVolts(1,:)));
+%             figure
+%             plot(xaxis, bufferVolts);
+%             figure
+%             plot(buffer);
         end
 
         % Make the buffer available to be filled again by the board
@@ -246,6 +251,16 @@ while ~captureDone
             success = true;
         elseif toc(updateTickCount) > updateInterval_sec
             updateTickCount = tic;
+
+            % Update waitbar progress
+            waitbar(double(buffersCompleted) / double(buffersPerAcquisition), ...
+                    waitbarHandle, ...
+                    sprintf('Completed %u buffers', buffersCompleted));
+
+            % Check if waitbar cancel button was pressed
+            if getappdata(waitbarHandle,'canceling')
+                break
+            end
         end
 
     end % if bufferFull
@@ -254,6 +269,9 @@ end % while ~captureDone
 
 % Save the transfer time
 transferTime_sec = toc(startTickCount);
+
+% Close progress window
+delete(waitbarHandle);
 
 % Abort the acquisition
 retCode = AlazarAbortAsyncRead(boardHandle);
@@ -292,6 +310,7 @@ if buffersCompleted > 0
     fprintf('Transferred %u bytes (%.4g bytes per sec)\n', bytesTransferred, bytesPerSec);
 end
 
-% set return code to indicate success
+                                % set return code to indicate success
+
 result = success;
 end

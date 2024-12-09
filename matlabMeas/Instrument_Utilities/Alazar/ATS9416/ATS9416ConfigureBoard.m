@@ -304,7 +304,7 @@ end
 % trigger parameters have been determined, otherwise the
 % board may trigger if the timeout interval expires before a
 % hardware trigger event arrives.
-triggerTimeout_sec = 5;
+triggerTimeout_sec = 0;
 triggerTimeout_clocks = uint32(floor(triggerTimeout_sec / 10.e-6 + 0.5));
 retCode = ...
     AlazarSetTriggerTimeOut(    ...
@@ -320,8 +320,8 @@ end
 retCode = ...
     AlazarConfigureAuxIO(   ...
         boardHandle,        ... % HANDLE -- board handle
-        AUX_OUT_PACER,    ... % U32 -- mode
-        10                   ... % U32 -- parameter
+        AUX_OUT_TRIGGER,    ... % U32 -- mode
+        0                   ... % U32 -- parameter
         );
 if retCode ~= ApiSuccess
     fprintf('Error: AlazarConfigureAuxIO failed -- %s\n', errorToText(retCode));
