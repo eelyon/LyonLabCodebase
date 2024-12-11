@@ -92,7 +92,7 @@ if retCode ~= ApiSuccess
 end
 
 % TODO: Select AutoDMA flags as required
-admaFlags = ADMA_NPT + ADMA_EXTERNAL_STARTCAPTURE; % + ADMA_FIFO_ONLY_STREAMING; %+ ADMA_ALLOC_BUFFERS + ADMA_GET_PROCESSED_DATA 
+admaFlags = ADMA_NPT + ADMA_EXTERNAL_STARTCAPTURE + ADMA_FIFO_ONLY_STREAMING; %+ ADMA_ALLOC_BUFFERS + ADMA_GET_PROCESSED_DATA 
 
 % Configure the board to make an AutoDMA acquisition
 recordsPerAcquisition = recordsPerBuffer * buffersPerAcquisition;
