@@ -9,24 +9,8 @@ recordsPerBuffer = 1; % Set for averaging
 buffersPerAcquisition = 1; % Set number of buffers
 
 % TS parameters
-acquisitionLength_sec = 0.01;
-samplesPerBufferPerChannel = 640000;
-
-% retCode = ...
-%     AlazarConfigureAuxIO(   ...
-%         boardHandle,        ... % HANDLE -- board handle
-%         AUX_OUT_SERIAL_DATA,    ... % U32 -- mode
-%         0                   ... % U32 -- parameter
-%         );
-% 
-% delay(0.1);
-% 
-% retCode = ...
-%     AlazarConfigureAuxIO(   ...
-%         boardHandle,        ... % HANDLE -- board handle
-%         AUX_OUT_PACER,    ... % U32 -- mode
-%         5                   ... % U32 -- parameter
-%         );
+% acquisitionLength_sec = 0.01;
+% samplesPerBufferPerChannel = 640000;
 
 [result,bufferVolts] = ATS9416AcquireData_NPT(boardHandle, samplesPerSec, postTriggerSamples, recordsPerBuffer, buffersPerAcquisition, channelMask);
 % [result,bufferVolts] = ATS9416AcquireData_TS(boardHandle, samplesPerSec, acquisitionLength_sec, samplesPerBufferPerChannel, channelMask);
