@@ -52,16 +52,17 @@ end
 
 controlDAC = sigDAC(sigDACPortControl,24,'controlDAC');
 supplyDAC  = sigDAC(sigDACPortSupply,24,'supplyDAC');
-controlDACGUI = sigDACGUI;
-supplyDACGUI  = sigDACGUI;
+controlDACGUI = sigDACGUI_controlTL;
+supplyDACGUI  = sigDACGUI_supplyTL;
+SR830Gui = SR830_GUI;
 
 SR830Twiddle  = SR830(port,VmeasBottom_Address);
 SR830TwiddleC = SR830(1234,VmeasTop_Address);
 
 Awg2Ch     = Agilent33622A(1234,houckAWG_Address,1); % two-channel AWG
 % Ag2Nat = Agilent33622A(1234,deLeonAWG_Address,1); % two-channel AWG
-AwgTwiddle = Agilent33220A(1234,AWGTwiddle_Address,1); % two-channel AWG
-AwgComp    = Agilent33220A(1234,AWGComp_Address,1); % two-channel AWG
+AwgTwiddle = Agilent33220A(1234,AWGTwiddle_Address,1); % AWG
+AwgComp    = Agilent33220A(1234,AWGComp_Address,1); % AWG
 
 % Oscope = TDS2022C(oscope_Address);
 % % IDC = SIM900(IDCPort);

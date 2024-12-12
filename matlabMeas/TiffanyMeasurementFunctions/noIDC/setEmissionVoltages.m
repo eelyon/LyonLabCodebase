@@ -3,7 +3,7 @@
 DCMap;
 numSteps = 5000;
 setVal(supplyDAC,BackMetalPort,-1);
-setVal(controlDAC,BlockPort,-2);
+setVal(controlDAC,BlockPort,-1);
 
 
 %% Compensation voltages
@@ -16,8 +16,9 @@ sigDACRampVoltage(controlDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],
 sigDACRampVoltage(controlDAC,[TfCPort,TfEPort,BEPort,BCPort],[-2,-2,-2,-2],numSteps);
 
 % compensateParasitics(SR830Twiddle,Ag2Nat,Ag2Nat,-180,180,10,0.2,0.3,0.010,0)    % HEMT1
-compensateParasitics(SR830TwiddleC,AwgComp,AwgTwiddle,-180,180,10,0.2,0.3,0.010,0)   % HEMT2
-compensateParasitics(SR830Twiddle,Awg2Ch,Awg2Ch,-180,0,10,0.3,0.4,0.010,0)   % HEMT1
+compensateParasitics(SR830Twiddle,Awg2Ch,Awg2Ch,-180,180,10,0.3,0.4,0.010,0)   % HEMT1
+compensateParasitics(SR830TwiddleC,AwgComp,AwgTwiddle,-180,180,10,0.3,0.4,0.010,0)   % HEMT2
+
 
 %% EMISSION VOLTAGES
 % emission to HEMT2 side
@@ -52,9 +53,9 @@ sigDACRampVoltage(controlDAC,[TfCPort,TfEPort,BEPort,BCPort],[-3,-3,-3,-3],numSt
 
 % check sommer tanner for electrons
 sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830Twiddle},controlDAC,{StmEPort},1);
-sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830TwiddleC},controlDAC,{StmCPort},1);
+sweep1DMeasSR830({'ST'},0,-0.8,-0.05,0.1,10,{SR830TwiddleC},controlDAC,{StmCPort},1);
 
-sweep1DMeasSR830({'ST'},-2,-2-0.65,-0.05,0.1,10,{SR830TwiddleC},controlDAC,{StmCPort},1);
+sweep1DMeasSR830({'ST'},-2,-2-0.7,-0.05,0.1,10,{SR830TwiddleC},controlDAC,{StmCPort},1);
 
 % sweep top metal 
 sweep1DMeasSR830({'TE'},-0.7,-1.1,-0.05,0.1,10,{SR830Twiddle},controlDAC,{TopEPort},1);

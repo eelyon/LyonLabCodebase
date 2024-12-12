@@ -10,5 +10,5 @@ interleavedRamp([supplyDAC,supplyDAC,supplyDAC],[14,15,16],[2,2.3,0.5],5,0.1)
 
 
 % turn off HEMTS
-interleavedRamp([supplyDAC,supplyDAC,supplyDAC],[14,15,16],[0,0,0],5,0.1)
 interleavedRamp([supplyDAC,supplyDAC,supplyDAC],[24,13,23],[0,0,0],5,0.1)
+interleavedRamp([supplyDAC,supplyDAC,supplyDAC],[14,15,16],[0,0,0],5,0.1)
