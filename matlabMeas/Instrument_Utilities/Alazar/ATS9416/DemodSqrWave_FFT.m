@@ -10,12 +10,12 @@ signal_amplitude = 1;
 noise_level = 0;   % Amplitude of noise
 
 % Generate input signal (square wave + noise)
-signal = signal_amplitude * cos(2 * pi * f_signal * t + 45*pi/180) + noise_level * randn(size(t));
+signal = signal_amplitude * square(2 * pi * f_signal * t + phase*pi/180) + noise_level * randn(size(t));
 % signal = sign(cos(2 * pi * f_signal * t + 0*pi/180)) + noise_level * randn(size(t));
 
 % Generate sine and cosine reference signals
-reference_X = cos(2 * pi * f_signal * t); % In-phase
-reference_Y = cos(2 * pi * f_signal * t + pi/2); % Quadrature
+reference_X = square(2 * pi * f_signal * t); % In-phase
+reference_Y = square(2 * pi * f_signal * t + pi/2); % Quadrature
 
 % Fourier Transform of input and reference signals
 input_fft = fftshift(fft(signal));

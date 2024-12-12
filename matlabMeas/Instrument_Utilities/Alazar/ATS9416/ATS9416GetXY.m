@@ -2,11 +2,12 @@ function [filtered_X,filtered_Y] = ATS9416GetXY(buffer, samplesPerSec, postTrigg
 %ATS9416GETXY Summary of this function goes here
 %   Detailed explanation goes here
 % Parameters
-T = postTriggerSamples/samplesPerSec;
+T = postTriggerSamples/samplesPerSec; % Period
 t = 0:1/samplesPerSec:T-1/samplesPerSec; % Time vector
 N = length(t);
+f = (-N/2:N/2-1)*(samplesPerSec/N);  % Frequency vector
 
-input_signal = buffer(1,:); % Input signal
+input_signal = buffer; % Input signal
 
 % Generate the reference signal (known frequency)
 if strcmp(waveForm,'square')
@@ -16,7 +17,7 @@ elseif strcmp(waveForm,'sine')
     reference_signal_X = cos(2 * pi * f_signal * t + phase);
     reference_signal_Y = cos(2 * pi * f_signal * t + phase + pi/2);
 else
-    fprintf('Enter the correct wave type!\n')
+    fprintf('Enter the correct wave form!\n')
     return
 end
 
@@ -30,20 +31,18 @@ end
 % filtered_X = filtfilt(b, a, demodulated_signal_X);
 % filtered_Y = filtfilt(b, a, demodulated_signal_Y);
 
+demod_X = input_signal .* reference_signal_X;
+demod_Y = input_signal .* reference_signal_Y;
+
 % Demodulation
-demod_X_fft = fftshift(fft(input_signal .* reference_signal_X)) / N; % In-phase demodulation
-demod_Y_fft = fftshift(fft(input_signal .* reference_signal_Y)) / N; % Quadrature demodulation
+demod_X_fft = fftshift(fft(demod_X)) / N; % In-phase demodulation
+demod_Y_fft = fftshift(fft(demod_Y)) / N; % Quadrature demodulation
 
 % RC filter transfer function
 stages = 2;
 fc = 10;
 tau = 1 / fc;
 H_rc = (1 ./ (1 + 1j * 2 * pi * f * tau)).^stages;
-
-% Simple rejecting filter mask
-% Fc = 10; % Cut-off frequency
-% filterMask = (abs(f) <= Fc) | (abs(f) >= Fs - Fc);
-% signal_filterMask_fft = (fftshift(fft(signal))) .* filterMask;
 
 % Apply the RC filter in frequency domain
 filtered_X_fft = demod_X_fft .* H_rc;
@@ -54,28 +53,30 @@ filtered_X = ifft(ifftshift(filtered_X_fft))*N; % Normalize X
 filtered_Y = ifft(ifftshift(filtered_Y_fft))*N; % Normalize Y
 
 amplitude = sqrt(filtered_X.^2 + filtered_Y.^2);
-phase = rad2deg(atan2(filtered_Y, filtered_X));
+phase = rad2deg(atan2(real(filtered_Y), real(filtered_X)));
 
 % Plot results
 figure;
 
 subplot(4, 1, 1);
-plot(t(1:256), input_signal(1:256));
+plot(t, input_signal);
 hold on
-plot(t(1:256), reference_signal_X(1:256));
+plot(t, 0.3*reference_signal_X);
 hold on
-plot(t(1:256), reference_signal_Y(1:256));
+plot(t, 0.3*reference_signal_Y);
 hold off
+xlim([t(1), t(200)])
 title('Input Signal (Square Wave + Noise)');
 xlabel('Time (s)');
 ylabel('Amplitude');
 legend('Sig.','RefX','RefY')
 
 subplot(4, 1, 2);
-plot(t(end-256:end), ifft(ifftshift(demod_X_fft(end-256:end))));
+plot(t, demod_X);
 hold on
-plot(t(end-256:end), ifft(ifftshift(demod_Y_fft(end-256:end))));
+plot(t, demod_Y);
 hold off
+xlim([t(1), t(200)])
 title('Demodulated Signal');
 xlabel('Time (s)');
 ylabel('Amplitude');

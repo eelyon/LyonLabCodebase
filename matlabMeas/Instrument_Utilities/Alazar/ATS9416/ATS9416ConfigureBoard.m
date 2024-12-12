@@ -248,7 +248,7 @@ end
 
 %% Trigger
 inputRange_volts = 1; % +- range
-triggerLevelJ_volts = 0.1; % trigger level
+triggerLevelJ_volts = 0.15; % trigger level
 triggerLevelJ = 128 + 127 * triggerLevelJ_volts / inputRange_volts;
 
 % TODO: Select trigger inputs and levels as required
@@ -257,7 +257,7 @@ retCode = ...
         boardHandle,        ... % HANDLE -- board handle
         TRIG_ENGINE_OP_J,   ... % U32 -- trigger operation
         TRIG_ENGINE_J,      ... % U32 -- trigger engine id
-        TRIG_CHAN_B,        ... % U32 -- trigger source id
+        TRIG_CHAN_A,        ... % U32 -- trigger source id
         TRIGGER_SLOPE_POSITIVE, ... % U32 -- trigger slope id
         triggerLevelJ,                ... % U32 -- trigger level from 0 (-range) to 255 (+range)
         TRIG_ENGINE_K,      ... % U32 -- trigger engine id
