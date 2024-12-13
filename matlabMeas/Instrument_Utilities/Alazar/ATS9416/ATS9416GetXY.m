@@ -1,13 +1,12 @@
 function [filtered_X,filtered_Y] = ATS9416GetXY(buffer, samplesPerSec, postTriggerSamples, f_signal, waveForm, phase)
 %ATS9416GETXY Summary of this function goes here
 %   Detailed explanation goes here
+
 % Parameters
 T = postTriggerSamples/samplesPerSec; % Period
 t = 0:1/samplesPerSec:T-1/samplesPerSec; % Time vector
 N = length(t);
 f = (-N/2:N/2-1)*(samplesPerSec/N);  % Frequency vector
-
-input_signal = buffer; % Input signal
 
 % Generate the reference signal (known frequency)
 if strcmp(waveForm,'square')
@@ -22,8 +21,8 @@ else
 end
 
 % % Multiply input signal with reference signal (demodulation)
-% demodulated_signal_X = input_signal .* reference_signal_X;
-% demodulated_signal_Y = input_signal .* reference_signal_Y;
+% demodulated_signal_X = buffer .* reference_signal_X;
+% demodulated_signal_Y = buffer .* reference_signal_Y;
 % 
 % % Butterworth filter to extract the DC component
 % filter_cutoff = 1e6;  % Cutoff frequency (Hz)
@@ -31,8 +30,8 @@ end
 % filtered_X = filtfilt(b, a, demodulated_signal_X);
 % filtered_Y = filtfilt(b, a, demodulated_signal_Y);
 
-demod_X = input_signal .* reference_signal_X;
-demod_Y = input_signal .* reference_signal_Y;
+demod_X = buffer .* reference_signal_X;
+demod_Y = buffer .* reference_signal_Y;
 
 % Demodulation
 demod_X_fft = fftshift(fft(demod_X)) / N; % In-phase demodulation
@@ -59,11 +58,11 @@ phase = rad2deg(atan2(real(filtered_Y), real(filtered_X)));
 figure;
 
 subplot(4, 1, 1);
-plot(t, input_signal);
+plot(t, buffer);
 hold on
-plot(t, 0.3*reference_signal_X);
+plot(t, 0.1*reference_signal_X);
 hold on
-plot(t, 0.3*reference_signal_Y);
+plot(t, 0.1*reference_signal_Y);
 hold off
 xlim([t(1), t(200)])
 title('Input Signal (Square Wave + Noise)');
@@ -83,9 +82,9 @@ ylabel('Amplitude');
 legend('DemodX','DemodY')
 
 subplot(4, 1, 3);
-plot(t, filtered_X);
+plot(t, real(filtered_X));
 hold on
-plot(t, filtered_Y);
+plot(t, real(filtered_Y));
 hold off
 title('Filtered Signal (Lock-In Output)');
 xlabel('Time (s)');
@@ -94,7 +93,7 @@ legend('FilX','FilY')
 
 subplot(4, 1, 4);
 yyaxis left
-plot(t, amplitude);
+plot(t, real(amplitude));
 ylabel('Amplitude');
 hold on
 yyaxis right
@@ -105,7 +104,11 @@ title('Amp. and Phase');
 xlabel('Time (s)');
 legend('Amp.','Phase')
 
+clear demod_X demod_Y demod_X_fft demod_Y_fft filtered_X_fft filtered_Y_fft amplitude phase
+
 fprintf('The X mean is %f\n', mean(filtered_X))
 fprintf('The X std is %f\n', std(filtered_X))
 fprintf('The Y mean is %f\n', mean(filtered_Y))
 fprintf('The Y std is %f\n', std(filtered_Y))
+
+end

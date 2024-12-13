@@ -24,7 +24,7 @@ amp = (max(yf) - min(yf))/2;
 phase = 20;
 dcOffset = mean(yf);
  
-fit = @(b,t)  b(1).*(square(2*pi*t*f_signal + b(2))) + b(3)); % Function to fit
+fit = @(b,t)  b(1).*(square(2*pi*t*f_signal + b(2))) + b(3); % Function to fit
 fcn = @(b) sum((fit(b,t) - yf).^2); % Least-Squares cost function
 s = fminsearch(fcn, [amp; phase; dcOffset]) % Minimise Least-Squares
 % calbrAmp = s(1)

@@ -211,7 +211,7 @@ while ~captureDone
             end
         end
 
-        size(bufferOut.Value)
+        fprintf('Captured %i samples\n', length(bufferOut.Value))
 
         % Convert buffer to volts
         if voltsData
