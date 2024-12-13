@@ -1,37 +1,49 @@
-[result,bufferVolts] = ATS9416AcquireData_NPT(boardHandle, samplesPerSec, postTriggerSamples, recordsPerBuffer, buffersPerAcquisition, channelMask);
+samplesPerSec = 10e6; % Sampling rate -> FFT freq.
+postTriggerSamples = 1000064; % Samples -> FFT resolution
+average = 1; % Records per buffer
+gainAmp = 32*20;
 
-Fs = 20e6; % Sampling frequency
-Ts = 1/Fs; % Time increment
-PSD = false; % Power Spectral Density
+NSD = false; % Noise Spectral Density
 spectrumVolts = true; % Spectrum in volts
-gainAmp = 32*200;
+inputRange_volts = inputRangeIdToVolts(INPUT_RANGE_PM_1_V);
 
-yDat = bufferVolts; % Data
-L = length(yDat); % Data length
+% Configure the board's sample rate, input, and trigger settings
+if ~ATS9416ConfigureBoard(boardHandle,samplesPerSec)
+  fprintf('Error: Board configuration failed\n');
+  return
+end
 
-y = fft(yDat);
-f = (0:(L/2)) * Fs/L; % FFT frequency
+[result,bufferVolts] = ATS9416AcquireData_NPT(boardHandle, samplesPerSec, postTriggerSamples, average, buffersPerAcquisition, channelMask);
+
+y = fftshift(fft(bufferVolts)); % Shift FFT around 0 Hz
+L = length(bufferVolts); % Data length
+y_fft = y(L/2+1:L); % Positive half of FFT
+f = (1:(L/2)) * samplesPerSec/L; % FFT frequency
 
 figure
-if PSD == true
-    P2 = abs(y)*1/(sqrt(Fs)*L);
-    P1 = P2(1:L/2+1);
-    P1(2:end-1) = 2*P1(2:end-1); % (1) and (end) correspond to zero and Nyquist frequencies
-    loglog(f,P1/gainAmp)
+if NSD == true
+    P1 = zeros(1, length(f));
+    for i = 1:length(f)
+        P1(i) = abs(y_fft(i)) * 1/(sqrt(f(i))*L);
+    end
+    P1(1:end-1) = 2 * P1(1:end-1); % (end) corresponds to Nyquist frequencies
+    loglog(f, P1/gainAmp)
     xlabel('Frequency (Hz)')
-    ylabel('PSD (V/\surd{Hz})')
+    ylabel('NSD (V/\surd{Hz})')
+
 elseif spectrumVolts == true
-    P2 = abs(y)*1/L;
-    P1 = P2(1:L/2+1);
-    P1(2:end-1) = 2*P1(2:end-1); % (1) and (end) correspond to zero and Nyquist frequencies
-    loglog(f,P1/gainAmp)
+    P1 = abs(y_fft) * 1/L;
+    P1(1:end-1) = 2 * P1(1:end-1); % (end) corresponds to Nyquist frequencies
+    loglog(f, P1/gainAmp)
     xlabel('Frequency (Hz)')
     ylabel('V')
+    
 else
-    P2 = abs(y)*1/L;
-    P1 = P2(1:L/2+1);
-    P1(2:end-1) = 2*P1(2:end-1); % (1) and (end) correspond to zero and Nyquist frequencies
-    plot(f,P1/gainAmp)
+    P1 = abs(y_fft) * 1/L;
+    P1(1:end-1) = 2 * P1(1:end-1); % (end) corresponds to Nyquist frequencies
+    plot(f, P1/gainAmp)
     xlabel('Frequency (Hz)')
     ylabel('V')
 end
+
+clear bufferVolts y yfft P1 P2
