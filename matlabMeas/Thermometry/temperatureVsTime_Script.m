@@ -16,4 +16,3 @@ Therm = initializeThermometry(thermometerType);
 flush(Thermometer);
 temperatureVsTime(Thermometer,timeBetweenPoints,Therm,figHandle,thermPlot);
 
- 

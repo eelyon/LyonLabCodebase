@@ -17,9 +17,10 @@ SR830 = SR830(port,SR830_Address);
 % DMM_Address = '172.29.117.104';
 % Thermometer = TCPIP_Connect(DMM_Address,1234);
 
-%% Agilent AWGs
-deLeonAWG_Address = '172.29.117.133';
-Ag2Channel = Agilent33622A(1234,deLeonAWG_Address,1); % two-channel AWG
+%% Agilent 33220A Compensate AWG
+AWG_Address = '172.29.117.1';
+AWG = Agilent33220A(1234,AWG_Address,1); % one-channel AWG
+% compensateParasitics(SR830,AWG,AWG,-180,180,5,0.3,0.35,0.010,0)
 
 % DAC
 sigDACPort = 'COM4';
