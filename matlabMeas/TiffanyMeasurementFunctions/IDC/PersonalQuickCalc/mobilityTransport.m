@@ -3,8 +3,8 @@ function [ u ] = mobilityTransport( time, Vtf )
 % INPUTs: time = time to cross transport line
 %         Vtf  =  voltage on transport line  
      
-     length = 3.93e-3;
+     length = 3.9e-3;
      v     = length/time;  % velocity
-     E     = voltageTF(400e3,Vtf)/length;  % Electric Field
+     E     = Vtf/length;  % Electric Field
      u     = v/E; 
 end

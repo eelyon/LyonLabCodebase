@@ -1,6 +1,6 @@
 function [] = amtgas(h)
 %% calculates the amount of gas you need to fill the cell for a certain height 
-%  INPUTS: h = distance of device from He level
+%  INPUTS: h = distance of device from He level in m
 
 Area = pi*(2.15/2)^2;
 H = 8.1; %9.5-(h-4.75);                      % helium level height in cell

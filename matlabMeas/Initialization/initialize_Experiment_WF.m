@@ -9,6 +9,10 @@ SR830 = SR830(port,SR830_Address);
 % first argument only changes the axis names
 % aux port voltages ramp: SR830rampAuxOut(SR830,1,0.2,0.1,0.01)
 
+% 33220A ethernet
+%Address_33220 = '172.29.117.127';
+%AWG = Agilent33220A(1234,Address_33220,1);
+
 % 34401
 % DMM_Address = '172.29.117.104';
 % Thermometer = TCPIP_Connect(DMM_Address,1234);

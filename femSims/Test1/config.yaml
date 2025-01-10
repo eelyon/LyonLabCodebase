@@ -27,7 +27,7 @@ physicalSurfaces:
   TopMetal: 11
   Twiddle: 8
 physicalVolumes:
-  DIELECTRIC: 3
-  HELIUM: 1
-  METAL: 4
-  VACUUM: 2
+  DIELECTRIC: 4
+  HELIUM: 3
+  METAL: 2
+  VACUUM: 1

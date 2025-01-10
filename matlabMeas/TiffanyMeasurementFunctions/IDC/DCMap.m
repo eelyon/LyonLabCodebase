@@ -8,7 +8,7 @@ STIBiasEPort   = 14;
 
 DoorEInPort       = 16;
 TwiddleEPort      = 15;
-SenseEPort        = 3;
+SenseEPort        = 10;
 DoorEOutPort      = 18;
 
 
@@ -25,12 +25,17 @@ SenseCPort       = 12;
 DoorCOutPort     = 19;
 
 %% Thin Film
-TfCPort        = 8; %bused to 13
+TfCPort        = 8; %bussed to 13
 TfEPort        = 5; %tied to sp20
 
 %% Barriers
-BEPort = 1; % bused to 6
+BEPort = 1; % tied to sp17
 BCPort = 7; % tied to sp7
+
+%% other barriers
+BlockPort = 6; % bussed to 23
+
+
 
 %% Supply Voltages
 

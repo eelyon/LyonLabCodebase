@@ -1,7 +1,9 @@
 function [] = HeCurvatureFinger( channelHeight, fingerLength )
 
 %%Constants
+
 fn = 3;
+
 % Physical Conastants
 i  = sqrt(-1);
 epHe = 1.056;
@@ -16,10 +18,12 @@ nm = 1e9;
 pcm = 1e-2;
 
 % Experimental constants
+
 widthStart = 12e-6;
 widthEnd = 28e-6;
 numWidths = 50;
 listH = [6.5e-3];
+
 % channelHeight = 0.620e-6;
 % fingerLength = 55;
 

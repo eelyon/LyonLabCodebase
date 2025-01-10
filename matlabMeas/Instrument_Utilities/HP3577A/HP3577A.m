@@ -13,6 +13,20 @@ classdef HP3577A
             HP3577A.client      = GPIB_Connect(boardIndex,Address);                
             HP3577A.identifier  = '3577A';
         end
+        
+        function [] = initHP357AforRollOff(HP3577A,startFreq,stopFreq)  % upon power up
+            fclose(HP3577A.client);
+            HP3577A.client.InputBufferSize = 50000;
+            HP3577A.client.OutputBufferSize = 50000;
+            fopen(HP3577A.client);
+            query(HP3577A.client,'ID?')
+            
+            set3577ASweepMode(HP3577A,'SING');
+            set3577Attenuation(HP3577A,'R','20dB');
+            set3577Impedance(HP3577A,'R','1Meg');
+            set3577AStartFrequency(HP3577A,startFreq);
+            set3577AStopFrequency(HP3577A,stopFreq);
+        end
 
         function [datArr,freqArr] = pull3577AData(HP3577A,startFreq,stopFreq)
             fprintf(HP3577A.client,'FM1;DT1;');
