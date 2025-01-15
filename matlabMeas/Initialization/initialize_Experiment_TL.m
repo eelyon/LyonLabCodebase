@@ -3,7 +3,7 @@
 port = 1234;
     
 % Anthony's 24 channel DACs
-sigDACPortControl = 'COM6';
+sigDACPortControl = 'COM4';
 sigDACPortSupply  = 'COM8';
 
 % SR830s
