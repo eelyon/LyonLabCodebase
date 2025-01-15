@@ -22,17 +22,67 @@ classdef Agilent33220A
             Agilent33220A.identifier    = '33220A';
         end
 
-        function setAgilent33220APresetConfig(experimentType)
+        function setAgilent33220APresetConfig(Agilent33220A,experimentType)
             % Function to be used to create presets for the Agilent33220A.
             % This way one can program the 33220A for many different
             % configurations with a single function. 
             switch experimentType
-                case 'LED'
                 case 'Filament'
+                    amp_high = 3;
+                    amp_low = 0;
+                    period = 30e-3;
+                    
+                    set33220FunctionType(Agilent33220A,'PULS');
+                    set33220VoltageHigh(Agilent33220A, amp_high);
+                    set33220VoltageLow(Agilent33220A, amp_low);
+                    set33220PulsePeriod(Agilent33220A,period);
+                    set33220PulseDutyCycle(Agilent33220A,60);
+                    set33220PulseRiseTime(Agilent33220A,5e-9);
+                    
+                    set33220OutputLoad(Agilent33220A,'INF');
+                    set33220BurstMode(Agilent33220A,'TRIG');
+                    set33220NumBurstCycles(Agilent33220A,1);
+                    set33220TriggerSource(Agilent33220A,'BUS');
+                    set33220TrigSlope(Agilent33220A,'POS');
+                    set33220BurstStateOn(Agilent33220A,1);
+                    set33220Output(Agilent33220A,0);
+                case 'Compensate'
+                    amplitude = 300e-3;
+                    frequency = 102e3;
+                    voltType = 'VPP';
+                    voltageOffset = 0;
+                    
+                    set33220FunctionType(Agilent33220A,'SIN');
+                    set33220VoltageOffset(Agilent33220A,voltageOffset)
+                    set33220Frequency(Agilent33220A,frequency);
+                    set33220Phase(Agilent33220A,0);
+                    set33220Amplitude(Agilent33220A,amplitude,voltType);
+                    set33220OutputLoad(Agilent33220A, 'INF');
+                    set33220Output(Agilent33220A,0);  % start with output OFF
+                    set33220BurstStateOn(Agilent33220A,0)  % turn burst state off
+                case 'Door'
+                    % initial settings
+                    amp_high = 0;
+                    amp_low  = -1;    
+                    period   = 200e-3;
+                    width    = 100e-3;
+                    
+                    set33220FunctionType(Agilent33220A,'PULS');
+                    set33220VoltageHigh(Agilent33220A,amp_high);
+                    set33220VoltageLow(Agilent33220A,amp_low);
+                    set33220PulsePeriod(Agilent33220A,period);
+                    set33220PulseWidth(Agilent33220A,width);
+                    
+                    set33220OutputLoad(Agilent33220A, 'INF');
+                    set33220BurstMode(Agilent33220A,'TRIG');
+                    set33220NumBurstCycles(Agilent33220A,1);
+                    set33220TriggerSource(Agilent33220A,'BUS');
+                    set33220TrigSlope(Agilent33220A,'POS');
+                    set33220BurstStateOn(Agilent33220A,1);
+                    set33220Output(Agilent33220A,0);  % start with output OFF
                 otherwise
                     disp(['Your experiment type preset ', experimentType, ' is invald!']);
             end
-
         end
 
         function [] = set33220FunctionType(Agilent33220A,type)
@@ -223,7 +273,18 @@ classdef Agilent33220A
             command = ['VOLTAGE:OFFS ', num2str(voltageOffset)];
             fprintf(Agilent33220A.client,command);
         end
-
+        
+        function [] = set33220VoltageHighAndLow(Agilent33220A,lowVoltage,highVoltage)
+            % checks that low and high voltage are the correct way around
+            volts = [lowVoltage,highVoltage];
+            if lowVoltage > highVoltage
+                lowVoltage = volts(2);
+                highVoltage = volts(1);
+            else
+            end
+            set33220VoltageLow(Agilent33220A,lowVoltage);
+            set33220VoltageHigh(Agilent33220A,highVoltage);
+        end
         
         %% QUERYING %%
 
@@ -277,8 +338,7 @@ classdef Agilent33220A
 
         function [output] = query33220OutputOnOff(Agilent33220A)
             output = str2double(query(Agilent33220A.client,'OUTP?'));
-        end
-        
+        end        
     end
 end
 
