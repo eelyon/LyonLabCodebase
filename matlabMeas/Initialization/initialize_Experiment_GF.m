@@ -9,7 +9,7 @@ port = 1234; % for the big glass dewar
 % initializeENA;
 
 %% AJS's 24 channel DACs
-sigDACPortControl = 'COM6'; % 20-bit DAC
+sigDACPortControl = 'COM4'; % 20-bit DAC
 sigDACPortSupply  = 'COM8'; % 18-bit DAC
 controlDAC = sigDAC(sigDACPortControl,24,'controlDAC');
 supplyDAC = sigDAC(sigDACPortSupply,24,'supplyDAC');
