@@ -19,9 +19,9 @@ fprintf(fieldFox, 'FORM:DATA REAL,32\n')
 fprintf(fieldFox, 'TRACE:DATA?')
 myBinData = binblockread(fieldFox,'float');
 xDat = linspace(startFreq,stopFreq,numPoints);
-myBinData = myBinData.*1e9/(10.3*20); % Add x20 Vgain for FEMTO at 20dB
-[handle,myFig] = plotData(xDat,myBinData,'xLabel',"Frequency (Hz)",'yLabel',"nV/Hz",'color',"r-",'type', "loglog");
-annotation('textbox',[0.2 0.5 0.3 0.3],'String',"295K PSD Choked, x10.3 Amp Gain, x20 FEMTO gain",'FitBoxToText','on');
+myBinData = myBinData.*1e9/(10.3*10); % FEMTO voltage gain is x10
+[handle,myFig] = plotData(xDat,myBinData,'xLabel',"Frequency (Hz)",'yLabel',"nV/sqrt(Hz)",'color',"r-",'type', "loglog");
+annotation('textbox',[0.2 0.5 0.3 0.3],'String',"295K PSD Choked, x10.3 Amp Gain, x10 FEMTO gain",'FitBoxToText','on');
 saveData(myFig,'PSD');
 % % There will be a line feed not read, i.e. hanging. Read it to clear
 % %buffer.
