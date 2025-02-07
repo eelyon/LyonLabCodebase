@@ -8,9 +8,8 @@ function [obj1] = TCPIP_VISA_Connect(IP_Address)
 %   IP_Address: string, IP Address of target instrument.
 
 %% Instrument Connection
-
 % Find a VISA-TCPIP object.
-obj1 =  instrfind('Type', 'visa-tcpip', 'RsrcName', IP_Address, 'Tag', '');
+obj1 = instrfind('Type', 'visa-tcpip', 'RsrcName', IP_Address, 'Tag', '');
 
 % Create the visa-tcpip object if it does not exist
 % otherwise use the object that was found.

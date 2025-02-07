@@ -1,63 +1,33 @@
-function [result] = acquireData(boardHandle)
+function [result, bufferVolts] = AlazarAcquireData_TS(boardHandle)
 % Make an AutoDMA acquisition from dual-ported memory.
 
-%---------------------------------------------------------------------------
-%
-% Copyright (c) 2008-2012 AlazarTech, Inc.
-%
-% AlazarTech, Inc. licenses this software under specific terms and
-% conditions. Use of any of the software or derivatives thereof in any
-% product without an AlazarTech digitizer board is strictly prohibited.
-%
-% AlazarTech, Inc. provides this software AS IS, WITHOUT ANY WARRANTY,
-% EXPRESS OR IMPLIED, INCLUDING, WITHOUT LIMITATION, ANY WARRANTY OF
-% MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. AlazarTech makes no
-% guarantee or representations regarding the use of, or the results of the
-% use of, the software and documentation in terms of correctness, accuracy,
-% reliability, currentness, or otherwise; and you rely on the software,
-% documentation and results solely at your own risk.
-%
-% IN NO EVENT SHALL ALAZARTECH BE LIABLE FOR ANY LOSS OF USE, LOSS OF
-% BUSINESS, LOSS OF PROFITS, INDIRECT, INCIDENTAL, SPECIAL OR CONSEQUENTIAL
-% DAMAGES OF ANY KIND. IN NO EVENT SHALL ALAZARTECH%S TOTAL LIABILITY EXCEED
-% THE SUM PAID TO ALAZARTECH FOR THE PRODUCT LICENSED HEREUNDER.
-%
-%---------------------------------------------------------------------------
+% global variable set in configureBoard.m
+samplesPerSec = 20e6;
 
 % set default return code to indicate failure
 result = false;
 
-%call mfile with library definitions
+% call mfile with library definitions
 AlazarDefs
 
-% TODO: Select the number of pre-trigger samples per record 
-preTriggerSamples = 1024;
+% TODO: Select the total acquisition length in seconds
+acquisitionLength_sec = 0.01;
 
-% TODO: Select the number of post-trigger samples per record 
-postTriggerSamples = 1024;
-
-% TODO: Specify the number of records per channel per DMA buffer
-recordsPerBuffer = 100;
-
-% TODO: Specifiy the total number of buffers to capture
-buffersPerAcquisition = 100;			
+% TODO: Select the number of samples in each DMA buffer
+samplesPerBufferPerChannel = 640000;
 
 % TODO: Select which channels to capture (A, B, or both)
-channelMask = CHANNEL_A + CHANNEL_B;
-
-% TODO: Specify a buffer timeout
-% This is the amount of time to wait for for each buffer to be filled
-bufferTimeout_ms = 5000;
+channelMask = CHANNEL_A;
 
 % TODO: Select if you wish to save the sample data to a binary file
 saveData = false;
 
 % TODO: Select if you wish to plot the data to a chart
-drawData = false;
+drawData = true;
 
-% Calculate the number of enabled channels from the channel mask 
+% Calculate the number of enabled channels from the channel mask
 channelCount = 0;
-channelsPerBoard = 2;
+channelsPerBoard = 16;
 for channel = 0:channelsPerBoard - 1
     channelId = 2^channel;
     if bitand(channelId, channelMask)
@@ -71,31 +41,39 @@ if (channelCount < 1) || (channelCount > channelsPerBoard)
 end
 
 % Get the sample and memory size
-[retCode, boardHandle, maxSamplesPerRecord, bitsPerSample] = calllib('ATSApi', 'AlazarGetChannelInfo', boardHandle, 0, 0);
+[retCode, boardHandle, maxSamplesPerRecord, bitsPerSample] = AlazarGetChannelInfo(boardHandle, 0, 0);
 if retCode ~= ApiSuccess
     fprintf('Error: AlazarGetChannelInfo failed -- %s\n', errorToText(retCode));
     return
 end
 
-samplesPerRecord = preTriggerSamples + postTriggerSamples;
-if samplesPerRecord > maxSamplesPerRecord
-    fprintf('Error: Invalid samples per record %u max %u\n', samplesPerRecord, maxSamplesPerRecord);
-    return
-end
-
 % Calculate the size of each buffer in bytes
 bytesPerSample = floor((double(bitsPerSample) + 7) / double(8));
-samplesPerBuffer = samplesPerRecord * recordsPerBuffer * channelCount;
+samplesPerBuffer = samplesPerBufferPerChannel * channelCount;
 bytesPerBuffer = bytesPerSample * samplesPerBuffer;
+
+% Find the number of buffers in the acquisition
+if acquisitionLength_sec > 0
+    samplesPerAcquisition = uint32(floor((samplesPerSec * acquisitionLength_sec + 0.5)));
+    buffersPerAcquisition = uint32(floor((samplesPerAcquisition + samplesPerBufferPerChannel - 1) / samplesPerBufferPerChannel));
+else
+    buffersPerAcquisition = hex2dec('7FFFFFFF');  % acquire until aborted
+end
 
 % TODO: Select the number of DMA buffers to allocate.
 % The number of DMA buffers must be greater than 2 to allow a board to DMA into
 % one buffer while, at the same time, your application processes another buffer.
-bufferCount = uint32(16);
+bufferCount = uint32(4);
 
-% Create an array of DMA buffers 
+% Create an array of DMA buffers
+buffers = cell(1, bufferCount);
 for j = 1 : bufferCount
-    buffers(1, j) = { libpointer('uint16Ptr', 1:samplesPerBuffer) };
+    pbuffer = AlazarAllocBuffer(boardHandle, bytesPerBuffer);
+    if pbuffer == 0
+        fprintf('Error: AlazarAllocBuffer %u samples failed\n', samplesPerBuffer);
+        return
+    end
+    buffers(1, j) = { pbuffer };
 end
 
 % Create a data file if required
@@ -103,25 +81,10 @@ fid = -1;
 if saveData
     fid = fopen('data.bin', 'w');
     if fid == -1
-        fprintf('Error: Unable to create data file\n');        
+        fprintf('Error: Unable to create data file\n');
     end
 end
-
-% Set the record size 
-retCode = calllib('ATSApi', 'AlazarSetRecordSize', boardHandle, preTriggerSamples, postTriggerSamples);
-if retCode ~= ApiSuccess
-    fprintf('Error: AlazarBeforeAsyncRead failed -- %s\n', errorToText(retCode));
-    return
-end
-
-% TODO: Select AutoDMA flags as required
-% ADMA_EXTERNAL_STARTCAPTURE - call AlazarStartCapture to begin the acquisition
-% ADMA_TRADITIONAL_MODE - Acquire multiple records optionally with pretrigger samples and record headers
-admaFlags = ADMA_EXTERNAL_STARTCAPTURE + ADMA_TRADITIONAL_MODE;
-
-% Configure the board to make an AutoDMA acquisition
-recordsPerAcquisition = recordsPerBuffer * buffersPerAcquisition;
-retCode = calllib('ATSApi', 'AlazarBeforeAsyncRead', boardHandle, channelMask, -int32(preTriggerSamples), samplesPerRecord, recordsPerBuffer, recordsPerAcquisition, admaFlags);
+retCode = AlazarBeforeAsyncRead(boardHandle, channelMask, 0, samplesPerBufferPerChannel, 1, hex2dec('7FFFFFFF'), ADMA_EXTERNAL_STARTCAPTURE + ADMA_TRIGGERED_STREAMING);
 if retCode ~= ApiSuccess
     fprintf('Error: AlazarBeforeAsyncRead failed -- %s\n', errorToText(retCode));
     return
@@ -130,11 +93,11 @@ end
 % Post the buffers to the board
 for bufferIndex = 1 : bufferCount
     pbuffer = buffers{1, bufferIndex};
-    retCode = calllib('ATSApi', 'AlazarPostAsyncBuffer', boardHandle, pbuffer, bytesPerBuffer);
+    retCode = AlazarPostAsyncBuffer(boardHandle, pbuffer, bytesPerBuffer);
     if retCode ~= ApiSuccess
         fprintf('Error: AlazarPostAsyncBuffer failed -- %s\n', errorToText(retCode));
         return
-    end        
+    end
 end
 
 % Update status
@@ -145,11 +108,13 @@ else
 end
 
 % Arm the board system to wait for triggers
-retCode = calllib('ATSApi', 'AlazarStartCapture', boardHandle);
+retCode = AlazarStartCapture(boardHandle);
 if retCode ~= ApiSuccess
     fprintf('Error: AlazarStartCapture failed -- %s\n', errorToText(retCode));
-    return;
+    return
 end
+
+% AlazarForceTrigger(boardHandle);
 
 % Create a progress window
 waitbarHandle = waitbar(0, ...
@@ -174,12 +139,12 @@ while ~captureDone
 
     % Wait for the first available buffer to be filled by the board
     [retCode, boardHandle, bufferOut] = ...
-        calllib('ATSApi', 'AlazarWaitAsyncBufferComplete', boardHandle, pbuffer, bufferTimeout_ms);
-    if retCode == ApiSuccess 
+        AlazarWaitAsyncBufferComplete(boardHandle, pbuffer, 5000);
+    if retCode == ApiSuccess
         % This buffer is full
         bufferFull = true;
         captureDone = false;
-    elseif retCode == ApiWaitTimeout 
+    elseif retCode == ApiWaitTimeout
         % The wait timeout expired before this buffer was filled.
         % The board may not be triggering, or the timeout period may be too short.
         fprintf('Error: AlazarWaitAsyncBufferComplete timeout -- Verify trigger!\n');
@@ -196,44 +161,88 @@ while ~captureDone
         % TODO: Process sample data in this buffer.
         %
         % NOTE:
+        %
         % While you are processing this buffer, the board is already
-        % filling the next available DMA buffer.
+        % filling the next available buffer(s).
         %
-        % You must finish processing this buffer before the board fills
-        % all of its available DMA buffers and on-board memory.
+        % You MUST finish processing this buffer and post it back to the
+        % board before the board fills all of its available DMA buffers
+        % and on-board memory.
         %
-        % Records are arranged in the buffer as follows:
-        % R0A, R0B, R1A, R1B, R2A, R2B ...
+        % Samples are arranged in the buffer as follows: S0A, S0B, ..., S1A, S1B, ...
+        % with SXY the sample number X of channel Y.
         %
-        % Samples values are arranged contiguously in each record.
-        % A 16-bit sample code is stored in each 16-bit sample value.
+        % A 14-bit sample code is stored in the most significant bits of
+        % in each 16-bit sample value.
         %
-        % Sample codes are unsigned by default where:
-        % - 0x0000 represents a negative full scale input signal;
-        % - 0x8000 represents a ~0V signal;
-        % - 0xffff represents a positive full scale input signal.
+        % Sample codes are unsigned by default. As a result:
+        % - a sample code of 0x0000 represents a negative full scale input signal.
+        % - a sample code of 0x8000 represents a ~0V signal.
+        % - a sample code of 0xFFFF represents a positive full scale input signal.
 
-        setdatatype(bufferOut, 'uint16Ptr', 1, samplesPerBuffer);        
+        if bytesPerSample == 1
+            setdatatype(bufferOut, 'uint8Ptr', 1, samplesPerBuffer);
+        else
+            setdatatype(bufferOut, 'uint16Ptr', 1, samplesPerBuffer);
+        end
 
         % Save the buffer to file
         if fid ~= -1
-            samplesWritten = fwrite(fid, bufferOut.Value, 'uint16');
+            if bytesPerSample == 1
+                samplesWritten = fwrite(fid, bufferOut.Value, 'uint8');
+            else
+                samplesWritten = fwrite(fid, bufferOut.Value, 'uint16');
+            end
             if samplesWritten ~= samplesPerBuffer
                 fprintf('Error: Write buffer %u failed\n', buffersCompleted);
             end
         end
+        
+        buffer = bufferOut.Value;
+        size(buffer)
 
         % Display the buffer on screen
-        if drawData             
-            plot(bufferOut.Value);
+        if drawData
+            inputRange_volts = inputRangeIdToVolts(INPUT_RANGE_PM_1_V);
+
+            % Right shift 16-bit to get 14-bit
+            bufferShift = bufferOut.Value / 2^(16-double(bitsPerSample));
+            
+            % This 14-bit sample code represents a 0V input
+            codeZero = 2^(double(bitsPerSample) - 1) - 0.5;
+            
+            % This is the range of 14-bit sample codes with respect to 0V level
+            codeRange = 2^(double(bitsPerSample) - 1) - 0.5;
+            
+            % Create an array to store sample data
+            bufferVolts = zeros(channelCount,samplesPerBufferPerChannel);
+            sine = true;
+            
+            for i = 1:channelCount % Each row contains a separate channel
+                col = 1; % Set counter
+                for j = i:channelCount:length(bufferShift) % Channel data is interleaved
+                    bufferVolts(i,col) = inputRange_volts * (double(bufferShift(j)) - codeZero) / codeRange; % Need double or else just have int
+                    col = col + 1;
+                end
+                if sine == true
+                    midPoint = min(bufferVolts(i,:)) + (max(bufferVolts(i,:)) - min(bufferVolts(i,:))) / 2;
+                    bufferVolts(i,:) = bufferVolts(i,:) - midPoint;
+                end
+            end
+            
+%             xaxis = linspace(0, samplesPerBufferPerChannel/samplesPerSec, length(bufferVolts(1,:)));
+%             figure
+%             plot(xaxis, bufferVolts);
+%             figure
+%             plot(buffer);
         end
 
         % Make the buffer available to be filled again by the board
-        retCode = calllib('ATSApi', 'AlazarPostAsyncBuffer', boardHandle, pbuffer, bytesPerBuffer);
+        retCode = AlazarPostAsyncBuffer(boardHandle, pbuffer, bytesPerBuffer);
         if retCode ~= ApiSuccess
             fprintf('Error: AlazarPostAsyncBuffer failed -- %s\n', errorToText(retCode));
             captureDone = true;
-        end        
+        end
 
         % Update progress
         buffersCompleted = buffersCompleted + 1;
@@ -243,15 +252,15 @@ while ~captureDone
         elseif toc(updateTickCount) > updateInterval_sec
             updateTickCount = tic;
 
-            % Update waitbar progress 
+            % Update waitbar progress
             waitbar(double(buffersCompleted) / double(buffersPerAcquisition), ...
                     waitbarHandle, ...
                     sprintf('Completed %u buffers', buffersCompleted));
-                
+
             % Check if waitbar cancel button was pressed
             if getappdata(waitbarHandle,'canceling')
                 break
-            end               
+            end
         end
 
     end % if bufferFull
@@ -265,7 +274,7 @@ transferTime_sec = toc(startTickCount);
 delete(waitbarHandle);
 
 % Abort the acquisition
-retCode = calllib('ATSApi', 'AlazarAbortAsyncRead', boardHandle);
+retCode = AlazarAbortAsyncRead(boardHandle);
 if retCode ~= ApiSuccess
     fprintf('Error: AlazarAbortAsyncRead failed -- %s\n', errorToText(retCode));
 end
@@ -277,30 +286,31 @@ end
 
 % Release the buffers
 for bufferIndex = 1:bufferCount
-    clear buffers{1, bufferIndex};
+    pbuffer = buffers{1, bufferIndex};
+    retCode = AlazarFreeBuffer(boardHandle, pbuffer);
+    if retCode ~= ApiSuccess
+        fprintf('Error: AlazarFreeBuffer failed -- %s\n', errorToText(retCode));
+    end
+    clear pbuffer;
 end
 
 % Display results
-if buffersCompleted > 0 
+if buffersCompleted > 0
     bytesTransferred = double(buffersCompleted) * double(bytesPerBuffer);
-    recordsTransferred = recordsPerBuffer * buffersCompleted;
 
-    if transferTime_sec > 0 
+    if transferTime_sec > 0
         buffersPerSec = buffersCompleted / transferTime_sec;
         bytesPerSec = bytesTransferred / transferTime_sec;
-        recordsPerSec = recordsTransferred / transferTime_sec;
     else
         buffersPerSec = 0;
         bytesPerSec = 0;
-        recordsPerSec = 0.;
     end
 
     fprintf('Captured %u buffers in %g sec (%g buffers per sec)\n', buffersCompleted, transferTime_sec, buffersPerSec);
-    fprintf('Captured %u records (%.4g records per sec)\n', recordsTransferred, recordsPerSec);
-    fprintf('Transferred %u bytes (%.4g bytes per sec)\n', bytesTransferred, bytesPerSec);   
+    fprintf('Transferred %u bytes (%.4g bytes per sec)\n', bytesTransferred, bytesPerSec);
 end
 
-% set return code to indicate success
-result = success;
+                                % set return code to indicate success
 
+result = success;
 end
