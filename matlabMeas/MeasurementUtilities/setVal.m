@@ -96,6 +96,9 @@ elseif contains(name,'SDG5122') || contains(name,'5122')
         elseif contains(Port,'DualModFreq')
             set5122ModFreq(Device, Value, 1);
             set5122ModFreq(Device, Value, 2);
+        elseif contains(Port,'DualFreq')
+            set5122Freq(Device, Value, 1);
+            set5122Freq(Device, Value, 2);
         elseif contains(Port,'DualModAmp')
             set5122ModAmp(Device, Value, 1);
             set5122ModAmp(Device, Value, 2);

@@ -15,7 +15,7 @@ DACGUI = sigDACGUI;
 USBAddress = 'TCPIP0::172.29.117.135::inst0::INSTR';
 %USBAddressOld = 'USB0::0xF4ED::0xEE3A::SDG050D1150018::INSTR'; %old sig
 % USBAddress = 'USB0::0xF4EC::0x1102::SDG2XFBQ7R2639::INSTR';
-%SDG5122 = SDG5122(USBAddress); %new sig
+SDG5122 = SDG5122(USBAddress); %new sig
 
 % powPort = 5025;
 % pow_Address = '172.29.117.136';
