@@ -1,4 +1,4 @@
-function [filtered_X,filtered_Y] = ATS9416GetXY(buffer, samplesPerSec, postTriggerSamples, f_signal, waveForm, phase)
+function [filtered_X,filtered_Y] = ATS9416GetXY(buffer,samplesPerSec,postTriggerSamples,f_signal,waveForm,phase)
 %ATS9416GETXY Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -64,7 +64,7 @@ plot(t, 0.1*reference_signal_X);
 hold on
 plot(t, 0.1*reference_signal_Y);
 hold off
-xlim([t(1), t(200)])
+xlim([t(1), t(2000)])
 title('Input Signal (Square Wave + Noise)');
 xlabel('Time (s)');
 ylabel('Amplitude');
@@ -75,7 +75,7 @@ plot(t, demod_X);
 hold on
 plot(t, demod_Y);
 hold off
-xlim([t(1), t(200)])
+xlim([t(1), t(2000)])
 title('Demodulated Signal');
 xlabel('Time (s)');
 ylabel('Amplitude');
@@ -104,11 +104,11 @@ title('Amp. and Phase');
 xlabel('Time (s)');
 legend('Amp.','Phase')
 
-clear demod_X demod_Y demod_X_fft demod_Y_fft filtered_X_fft filtered_Y_fft amplitude phase
-
 fprintf('The X mean is %f\n', mean(filtered_X))
 fprintf('The X std is %f\n', std(filtered_X))
 fprintf('The Y mean is %f\n', mean(filtered_Y))
 fprintf('The Y std is %f\n', std(filtered_Y))
+
+clear demod_X demod_Y demod_X_fft demod_Y_fft filtered_X_fft filtered_Y_fft amplitude phase
 
 end

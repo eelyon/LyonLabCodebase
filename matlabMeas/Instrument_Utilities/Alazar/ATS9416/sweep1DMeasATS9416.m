@@ -28,7 +28,7 @@ recordsPerBuffer = 1; % Set for averaging
 buffersPerAcquisition = 1; % Set number of buffers
 channelMask = CHANNEL_A; % Select channels to capture, not all combinations are allowed
 
-[~,bufferVolts] = ATS9416AcquireData_NPT(boardHandle, samplesPerSec, postTriggerSamples, recordsPerBuffer, buffersPerAcquisition, channelMask);
+[~,bufferVolts] = ATS9416AcquireData_NPT(boardHandle,postTriggerSamples,recordsPerBuffer,buffersPerAcquisition,channelMask);
 [X,Y] = ATS9416GetXY(bufferVolts, samplesPerSec, postTriggerSamples, f_signal, 'square');
 
 avgX = mean(X);

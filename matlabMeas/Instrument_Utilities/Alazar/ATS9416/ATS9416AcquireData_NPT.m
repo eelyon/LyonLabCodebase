@@ -1,4 +1,4 @@
-function [result,bufferVolts] = ATS9416AcquireData_NPT(boardHandle, samplesPerSec, postTriggerSamples, recordsPerBuffer, buffersPerAcquisition, channelMask)
+function [result,bufferVolts] = ATS9416AcquireData_NPT(boardHandle,postTriggerSamples,recordsPerBuffer,buffersPerAcquisition,channelMask)
 % Make an AutoDMA acquisition from dual-ported memory.
 % param boardHandle
 % param samplesPerSec
@@ -125,16 +125,6 @@ if retCode ~= ApiSuccess
     fprintf('Error: AlazarStartCapture failed -- %s\n', errorToText(retCode));
     return
 end
-
-% Create a progress window
-% waitbarHandle = waitbar(0, ...
-%                         'Captured 0 buffers', ...
-%                         'Name','Capturing ...', ...
-%                         'CreateCancelBtn', 'setappdata(gcbf,''canceling'',1)');
-% setappdata(waitbarHandle, 'canceling', 0);
-
-% TODO: Insert trigger signal here
-% send33622ATrigger(triggerDev);
 
 % Wait for sufficient data to arrive to fill a buffer, process the buffer,
 % and repeat until the acquisition is complete
