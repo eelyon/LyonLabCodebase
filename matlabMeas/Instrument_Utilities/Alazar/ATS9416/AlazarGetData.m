@@ -1,8 +1,9 @@
 %% Acquire data from ATS9416 board and average
-clear xaxis bufferVolts X Y
+tic
+clear xaxis bufferVolts X Y Xerr Yerr
 
 % Set parameters for acquisition
-f_signal = 10e3;
+f_signal = 1e6;
 channelMask = CHANNEL_A; % Select channels to capture, not all combinations are allowed
 
 % NPT parameters
@@ -21,19 +22,20 @@ buffersPerAcquisition = 1; % Set number of buffers
 [result,bufferVolts] = ATS9416AcquireData_NPT(boardHandle,postTriggerSamples,recordsPerBuffer,buffersPerAcquisition,channelMask);
 % [result,bufferVolts] = ATS9416AcquireData_TS(boardHandle, samplesPerSec, acquisitionLength_sec, samplesPerBufferPerChannel, channelMask);
 % [result, bufferVolts] = AlazarAcquireData_TS(boardHandle);
-xaxis = linspace(0, postTriggerSamples/samplesPerSec, length(bufferVolts(1,:)));
+% xaxis = linspace(0, postTriggerSamples*recordsPerBuffer/samplesPerSec, length(bufferVolts(1,:)));
 
-figure()
-plot(xaxis,bufferVolts(1,:))
+% figure()
+% plot(xaxis,bufferVolts(1,:))
 % plot(xaxis,bufferVolts(2,:))
 
-% phase_2chAwgHouck = 140*pi/180; %150*pi/180;
-% phase_1chAwg = 140*pi/180; %-90*pi/180; %60*pi/180;
+stages = 4; % RC filter stages
+fc = 1; % RC filter cut off frequency
+phase = 179.746;
+% 179.746 deg phase offset for two channel AWG (square wave output)
 
-[X,Y] = ATS9416GetXY(bufferVolts, samplesPerSec, postTriggerSamples, f_signal, 'square', clbrPhase); % 2.38+pi
-Xrms = sqrt(mean(X.^2))*1/sqrt(2); fprintf('Xrms %f\n', Xrms)
-Yrms = sqrt(mean(Y.^2))*1/sqrt(2); fprintf('Yrms %f\n', Yrms)
-R = mean(sqrt(X.^2+Y.^2)); fprintf('R (Vpeak) %f\n', R)
-Rrms = sqrt(Xrms.^2+Yrms.^2); fprintf('Rrms %f\n', Rrms)
-XYabsSum = mean(abs(X)+abs(Y)); fprintf('mean(abs(x)+abs(Y)) %f\n', XYabsSum)
-phi = rad2deg(atan2(real(Yrms),real(Xrms))); fprintf('phi %f\n', phi)
+[X,Y,Xerr,Yerr] = ATS9416GetXY(bufferVolts,samplesPerSec,postTriggerSamples,f_signal,phase*pi/180,stages,fc,1);
+fprintf('Xrms %f', X); fprintf(' +- %f\n', Xerr)
+fprintf('Yrms %f', Y); fprintf(' +- %f\n', Yerr)
+Rrms = sqrt(X.^2+Y.^2); fprintf('Rrms %f\n', Rrms)
+phi = rad2deg(atan2(real(Y),real(X))); fprintf('phi %f\n', phi)
+toc

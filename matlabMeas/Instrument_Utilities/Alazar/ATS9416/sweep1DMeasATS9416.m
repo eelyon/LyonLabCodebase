@@ -1,52 +1,95 @@
-function [avgRs,avgXs,avgYs,stdRs,stdXs,stdYs] = sweep1DMeasATS9416(start,stop,deltaParam,timeBetweenPoints,device,ports,doBackAndForth)
-%SWEEP1DATS9416 Summary of this function goes here
+function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = sweep1DMeasATS9416(sweepType,start,stop,deltaParam,timeBetweenPoints,postTriggerSamples,boardHandle,channelMask,device,port,doBackAndForth)
+%sweep1DMeasATS9416 Summary of this function goes here
 %   Detailed explanation goes here
 
-% Just for sign of sweep
+[plotHandles,subPlotFigureHandles] = initializeATS9416Meas1D(sweepType,doBackAndForth);
+
+% Adjust for sign of sweep
 deltaParam = checkDeltaSign(start,stop,deltaParam);
+paramVector = start:deltaParam:stop;
+
 if doBackAndForth
     flippedParam = fliplr(paramVector);
-    paramvector = [paramVector flippedParam];
+    paramVector = [paramVector flippedParam];
 end
 
 %% Create all arrays for data storage. 
-[avgRs,avgXs,avgYs,stdRs,stdXs,stdYs] = deal([]);
+[xvolts,mag,phase,x,y,stdm,stdphase,stdx,stdy] = deal([]);
 
 %% Halfway point in case back and forth is done.
 halfway = length(paramVector)/2;
+index = 1;
 
-%% Set up loop that sweeps the device (i.e. DAC) port and gets data from Alazar
-% Save data from Alazar in above array
-% If the occasional (1/5) phase slip is fixed, then I don't need to average
-% again but can simply increase samplesPerRecord for more points
+%% Main parameter loop
+for value = paramVector
 
-%% Acquire data from ATS9416 board and average
-% Set parameters for acquisition
-f_signal = 1e6;
-postTriggerSamples = 1280000; % Has to be at least 256 and multiple of 128
-recordsPerBuffer = 1; % Set for averaging
-buffersPerAcquisition = 1; % Set number of buffers
-channelMask = CHANNEL_A; % Select channels to capture, not all combinations are allowed
+    setVal(device,port,value);
+    delay(timeBetweenPoints);
 
-[~,bufferVolts] = ATS9416AcquireData_NPT(boardHandle,postTriggerSamples,recordsPerBuffer,buffersPerAcquisition,channelMask);
-[X,Y] = ATS9416GetXY(bufferVolts, samplesPerSec, postTriggerSamples, f_signal, 'square');
+    % Set parameters for acquisition
+    f_signal = 1e6;
+    
+    % NPT parameters
+%     postTriggerSamples = 1000064; % Has to be at least 256 and multiple of 128
+    recordsPerBuffer = 1; % Set for averaging
+    buffersPerAcquisition = 1; % Set number of buffers
+    
+    % Lock-in parameters
+    stages = 4; % RC filter stages
+    fc = 1; % RC filter cut off frequency
+    phaseOffset = 179.746; % Phase adjustment
 
-avgX = mean(X);
-avgY = mean(Y);
-avgR = sqrt(avgX.^2 + avgY.^2);
-avgPhi = rad2deg(atan2(avgY,avgX));
+    global samplesPerSec
+    
+    %% Query ATS9416 for data, calculate X and Y, average, and place in vectors
+    [~,bufferVolts] = ATS9416AcquireData_NPT(boardHandle,postTriggerSamples,recordsPerBuffer,buffersPerAcquisition,channelMask);
+    [Xrms,Yrms,stdXrms,stdYrms] = ATS9416GetXY(bufferVolts,samplesPerSec,postTriggerSamples,f_signal,phaseOffset*pi/180,stages,fc,1);
 
-stdX = std(X);
-stdY = std(Y);
-stdR = sqrt(stdX.^2 + stdY.^2);
-stdPhi = rad2deg(atan2(stdY,stdX));
+    x(index) = Xrms;
+    y(index) = Yrms;
+    stdx(index) = stdXrms;
+    stdy(index) = stdYrms;
+    
+    Rrms = sqrt(Xrms.^2+Yrms.^2); % Magnitude in rms
+    phi = rad2deg(atan2(real(Yrms),real(Xrms))); % Phase in degrees
+    stdRrms = sqrt(stdXrms.^2+stdYrms.^2); % Magnitude error in rms
+    stdPhi = sqrt(1/(Xrms.^2+Yrms.^2).^2*(Yrms.^2*stdXrms.^2+Xrms.^2*stdYrms.^2)); % Phase error in degrees
 
-refreshdata;
-drawnow;
+    xvolts(index) = value;
+    mag(index) = Rrms;
+    phase(index) = phi;
+    stdm(index) = stdRrms;
+    stdphase(index) = stdPhi;
 
-% figure()
-% plot(xaxis,bufferVolts(1,:))
-% plot(xaxis,bufferVolts(2,:))
+    %% Assign all the data properly depending on doing a back and forth scan
+    updateATS9416Plots(plotHandles,xvolts,mag,phase,x,y,stdm,stdphase,stdx,stdy,doBackAndForth,index,halfway);
+    index = index + 1;
+end
+
+function updateATS9416Plots(plotHandles,xvolts,mag,phase,x,y,stdm,stdphase,stdx,stdy,doBackAndForth,index,halfway)
+currentHandleSet = plotHandles{1};
+if doBackAndForth && index > halfway
+    setErrorBarXYData(currentHandleSet{4},xvolts(1:halfway),x(1:halfway),stdx(1:halfway));
+    setErrorBarXYData(currentHandleSet{6},xvolts(1:halfway),y(1:halfway),stdy(1:halfway));
+
+    setErrorBarXYData(currentHandleSet{5},xvolts(halfway+1:end),mag(halfway+1:end),stdm(halfway+1:end));
+    setErrorBarXYData(currentHandleSet{7},xvolts(halfway+1:end),phase(halfway+1:end),stdphase(halfway+1:end));
+elseif doBackAndForth && index <= halfway
+        setErrorBarXYData(currentHandleSet{4},xvolts,x,stdx);
+        setErrorBarXYData(currentHandleSet{6},xvolts,y,stdy);
+else
+    setErrorBarXYData(currentHandleSet{4},xvolts,x,stdx);
+    setErrorBarXYData(currentHandleSet{5},xvolts,y,stdy);
+    setErrorBarXYData(currentHandleSet{6},xvolts,mag,stdm);
+end
+end
+
+function setErrorBarXYData(plotHandle,xDat,yDat,yErr)
+    plotHandle.XData = xDat;
+    plotHandle.YData = yDat;
+    plotHandle.YPositiveDelta = yErr;
+    plotHandle.YNegativeDelta = yErr;
+end
 
 end
 

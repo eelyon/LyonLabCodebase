@@ -6,7 +6,7 @@ function [clbrAmp,clbrPhase] = ATS9416ClbrPhase(boardHandle, samplesPerSec, chan
 postTriggerSamples = 1000064;
 T = postTriggerSamples/samplesPerSec; % Duration of the signal (seconds)
 t = 0:1/samplesPerSec:T-1/samplesPerSec; % Time vector
-t = t(1:1000);
+t = t(1:200);
 
 [~,y] = ATS9416AcquireData_NPT(boardHandle,postTriggerSamples,1,1,channel);
 yf = y; %lowpass(y, f_signal, samplesPerSec); % Filter measured signal
@@ -26,21 +26,21 @@ else
     return
 end
 
-fcn = @(b) sum((fit(b,t) - yf(1:1000)).^2); % Least-Squares cost function
+fcn = @(b) sum((fit(b,t) - yf(1:200)).^2); % Least-Squares cost function
 s = fminsearch(fcn, [amp; phase; dcOffset]); % Minimise Least-Squares
 
 clbrAmp = s(1);
 clbrPhase = round(s(2),2);
-fprintf('-> The amplitude is %.4f V and the phase is %.2f (actual %.4f) radians\n', clbrAmp, clbrPhase, s(2))
+fprintf('-> The amplitude is %.4f V and the phase is %.2f radians (%.2f degrees) \n', clbrAmp, clbrPhase, clbrPhase*180/pi)
 
 plotFit = fit(s,t);
 
 figure
-plot(t, y(1:1000))
+plot(t, y(1:200))
 hold on
 plot(t, plotFit)
 hold off
-xlim([t(1), t(1000)])
+xlim([t(1), t(200)])
 title('Amplitude and Phase Calibration')
 xlabel('Time  (sec)')
 ylabel('Amplitude (V)')
