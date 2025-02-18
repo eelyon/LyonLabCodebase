@@ -1,8 +1,7 @@
-function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = sweep1DMeasATS9416(sweepType,start,stop,deltaParam,timeBetweenPoints,postTriggerSamples,boardHandle,channelMask,device,port,doBackAndForth)
+function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = sweep1DMeasATS9416(sweepType,start,stop,deltaParam,timeBetweenPoints,boardHandle,channelMask,device,port,doBackAndForth)
 %sweep1DMeasATS9416 Summary of this function goes here
 %   Detailed explanation goes here
-
-[plotHandles,subPlotFigureHandles] = initializeATS9416Meas1D(sweepType,doBackAndForth);
+[plotHandles{1},subPlotFigureHandles] = initializeATS9416Meas1D(sweepType{1},doBackAndForth);
 
 % Adjust for sign of sweep
 deltaParam = checkDeltaSign(start,stop,deltaParam);
@@ -27,20 +26,19 @@ for value = paramVector
     delay(timeBetweenPoints);
 
     % Set parameters for acquisition
+    global samplesPerSec
     f_signal = 1e6;
     
     % NPT parameters
-%     postTriggerSamples = 1000064; % Has to be at least 256 and multiple of 128
+    postTriggerSamples = 1000064; % Has to be at least 256 and multiple of 128
     recordsPerBuffer = 1; % Set for averaging
     buffersPerAcquisition = 1; % Set number of buffers
     
     % Lock-in parameters
     stages = 4; % RC filter stages
     fc = 1; % RC filter cut off frequency
-    phaseOffset = 179.746; % Phase adjustment
+    phaseOffset = 179.7; % Phase adjustment
 
-    global samplesPerSec
-    
     %% Query ATS9416 for data, calculate X and Y, average, and place in vectors
     [~,bufferVolts] = ATS9416AcquireData_NPT(boardHandle,postTriggerSamples,recordsPerBuffer,buffersPerAcquisition,channelMask);
     [Xrms,Yrms,stdXrms,stdYrms] = ATS9416GetXY(bufferVolts,samplesPerSec,postTriggerSamples,f_signal,phaseOffset*pi/180,stages,fc,1);
@@ -66,21 +64,32 @@ for value = paramVector
     index = index + 1;
 end
 
+%% Save data
+saveData(subPlotFigureHandles,genSR830PlotName(sweepType{1}));
+
+%% Function for updating plot and setting errorbars
 function updateATS9416Plots(plotHandles,xvolts,mag,phase,x,y,stdm,stdphase,stdx,stdy,doBackAndForth,index,halfway)
 currentHandleSet = plotHandles{1};
-if doBackAndForth && index > halfway
-    setErrorBarXYData(currentHandleSet{4},xvolts(1:halfway),x(1:halfway),stdx(1:halfway));
-    setErrorBarXYData(currentHandleSet{6},xvolts(1:halfway),y(1:halfway),stdy(1:halfway));
+if doBackAndForth && index <= halfway
+    setErrorBarXYData(currentHandleSet{1},xvolts,x,stdx);
+    setErrorBarXYData(currentHandleSet{3},xvolts,y,stdy);
+    setErrorBarXYData(currentHandleSet{5},xvolts,mag,stdm);
+    setErrorBarXYData(currentHandleSet{7},xvolts,phase,stdphase);
+elseif doBackAndForth && index > halfway
+    setErrorBarXYData(currentHandleSet{1},xvolts(1:halfway),x(1:halfway),stdx(1:halfway));
+    setErrorBarXYData(currentHandleSet{3},xvolts(1:halfway),y(1:halfway),stdy(1:halfway));
+    setErrorBarXYData(currentHandleSet{5},xvolts(1:halfway),mag(1:halfway),stdm(1:halfway));
+    setErrorBarXYData(currentHandleSet{7},xvolts(1:halfway),phase(1:halfway),stdphase(1:halfway));
 
-    setErrorBarXYData(currentHandleSet{5},xvolts(halfway+1:end),mag(halfway+1:end),stdm(halfway+1:end));
-    setErrorBarXYData(currentHandleSet{7},xvolts(halfway+1:end),phase(halfway+1:end),stdphase(halfway+1:end));
-elseif doBackAndForth && index <= halfway
-        setErrorBarXYData(currentHandleSet{4},xvolts,x,stdx);
-        setErrorBarXYData(currentHandleSet{6},xvolts,y,stdy);
+    setErrorBarXYData(currentHandleSet{2},xvolts(halfway+1:end),x(halfway+1:end),stdx(halfway+1:end));
+    setErrorBarXYData(currentHandleSet{4},xvolts(halfway+1:end),y(halfway+1:end),stdy(halfway+1:end));
+    setErrorBarXYData(currentHandleSet{6},xvolts(halfway+1:end),mag(halfway+1:end),stdm(halfway+1:end));
+    setErrorBarXYData(currentHandleSet{8},xvolts(halfway+1:end),phase(halfway+1:end),stdphase(halfway+1:end));
 else
-    setErrorBarXYData(currentHandleSet{4},xvolts,x,stdx);
-    setErrorBarXYData(currentHandleSet{5},xvolts,y,stdy);
-    setErrorBarXYData(currentHandleSet{6},xvolts,mag,stdm);
+    setErrorBarXYData(currentHandleSet{1},xvolts,x,stdx);
+    setErrorBarXYData(currentHandleSet{2},xvolts,y,stdy);
+    setErrorBarXYData(currentHandleSet{3},xvolts,mag,stdm);
+    setErrorBarXYData(currentHandleSet{4},xvolts,phase,stdphase);
 end
 end
 
@@ -90,6 +99,4 @@ function setErrorBarXYData(plotHandle,xDat,yDat,yErr)
     plotHandle.YPositiveDelta = yErr;
     plotHandle.YNegativeDelta = yErr;
 end
-
 end
-

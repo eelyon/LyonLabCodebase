@@ -31,11 +31,11 @@ houckAWG_Address = '172.29.117.137';
 Awg2ch_Houck = Agilent33622A(1234,houckAWG_Address,1); % two-channel AWG
 
 %% GUIs
-controlDACGUI = sigDACGUI;
+% controlDACGUI = sigDACGUI;
 % % controlDACGUI.Inst_NameEditField.Value = 'controlDAC';
 % % controlDACGUI.numChanEditField.Value = 24;
 % 
-supplyDACGUI = sigDACGUI;
+% supplyDACGUI = sigDACGUI;
 % % supplyDACGUI.Inst_NameEditField.Value = 'supplyDAC';
 % % supplyDACGUI.numChanEditField.Value = 24;
 

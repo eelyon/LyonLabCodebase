@@ -16,7 +16,7 @@ else
     hold off
 end
 xlabel(voltageAxisName);
-ylabel("Voltage [V_{rms}]");
+ylabel("X [V_{rms}]");
 title("X vs Voltage");
 ax = gca;
 ax.LineWidth = 1;
@@ -33,7 +33,7 @@ else
     hold off
 end
 xlabel(voltageAxisName);
-ylabel("Voltage [V_{rms}]");
+ylabel("Y [V_{rms}]");
 title("Y vs Voltage");
 ax = gca;
 ax.LineWidth = 1;
@@ -50,7 +50,7 @@ else
     hold off
 end
 xlabel(voltageAxisName);
-ylabel("Voltage [V_{rms}]");
+ylabel("Magnitude [V_{rms}]");
 title("Mag vs Voltage");
 ax = gca;
 ax.LineWidth = 1;
@@ -67,7 +67,7 @@ else
     hold off
 end
 xlabel(voltageAxisName);
-ylabel("Voltage [V_{rms}]");
+ylabel("Phase [^{\circ}]");
 title("Phase vs Voltage");
 ax = gca;
 ax.LineWidth = 1;

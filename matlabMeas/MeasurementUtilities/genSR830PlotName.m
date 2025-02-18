@@ -50,7 +50,7 @@ function plotName = genSR830PlotName(targetGate)
             plotName = 'HeatingAmpUnmod';
         case 'HeatAmp'
             plotName = 'HeatingAmp';
-            plotName = 'Vrms';
+%             plotName = 'Vrms';
         case 'CollC'
             plotName = 'Cascode';
         case 'CollE'

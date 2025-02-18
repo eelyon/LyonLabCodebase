@@ -30,17 +30,17 @@ filtered_X = ifft(ifftshift(filtered_X_fft))*N; % Normalize X
 filtered_Y = ifft(ifftshift(filtered_Y_fft))*N; % Normalize Y
 
 if exist('opt','var') % Normalise by 1.273 (amp. of 1st harmonic)
-    Xrms = mean(filtered_X)*2/sqrt(2) / 1.273;
-    Yrms = mean(filtered_Y)*2/sqrt(2) / 1.273;
+    Xrms = mean(real(filtered_X))*2/sqrt(2) / 1.273;
+    Yrms = mean(real(filtered_Y))*2/sqrt(2) / 1.273;
     stdXrms = std(filtered_X)*2/sqrt(2) / 1.273;
     stdYrms = std(filtered_Y)*2/sqrt(2) / 1.273;
 else
-    Xrms = mean(filtered_X)*2/sqrt(2);
-    Yrms = mean(filtered_Y)*2/sqrt(2);
+    Xrms = mean(real(filtered_X))*2/sqrt(2);
+    Yrms = mean(real(filtered_Y))*2/sqrt(2);
     stdXrms = std(filtered_X)*2/sqrt(2);
     stdYrms = std(filtered_Y)*2/sqrt(2);
 end
 
-clear t f demod_X demod_Y demod_X_fft demod_Y_fft filtered_X_fft filtered_Y_fft amplitude phase filtered_X filtered_Y
+clear t f bufferVolts demod_X demod_Y demod_X_fft demod_Y_fft filtered_X_fft filtered_Y_fft amplitude phase filtered_X filtered_Y
 
 end

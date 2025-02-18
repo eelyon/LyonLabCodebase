@@ -3,6 +3,7 @@ tic
 clear xaxis bufferVolts X Y Xerr Yerr
 
 % Set parameters for acquisition
+global samplesPerSec
 f_signal = 1e6;
 channelMask = CHANNEL_A; % Select channels to capture, not all combinations are allowed
 
@@ -30,12 +31,12 @@ buffersPerAcquisition = 1; % Set number of buffers
 
 stages = 4; % RC filter stages
 fc = 1; % RC filter cut off frequency
-phase = 179.746;
+phase = 179.7;
 % 179.746 deg phase offset for two channel AWG (square wave output)
 
 [X,Y,Xerr,Yerr] = ATS9416GetXY(bufferVolts,samplesPerSec,postTriggerSamples,f_signal,phase*pi/180,stages,fc,1);
-fprintf('Xrms %f', X); fprintf(' +- %f\n', Xerr)
-fprintf('Yrms %f', Y); fprintf(' +- %f\n', Yerr)
-Rrms = sqrt(X.^2+Y.^2); fprintf('Rrms %f\n', Rrms)
-phi = rad2deg(atan2(real(Y),real(X))); fprintf('phi %f\n', phi)
+fprintf('X %f', X); fprintf(' +- %f Vrms\n', Xerr)
+fprintf('Y %f', Y); fprintf(' +- %f Vrms\n', Yerr)
+Rrms = sqrt(X.^2+Y.^2); fprintf('R %f Vrms\n', Rrms)
+phi = rad2deg(atan2(real(Y),real(X))); fprintf('phi %f degrees\n', phi)
 toc

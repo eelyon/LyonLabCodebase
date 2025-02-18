@@ -82,7 +82,7 @@ end
 admaFlags = ADMA_NPT + ADMA_EXTERNAL_STARTCAPTURE + ADMA_FIFO_ONLY_STREAMING; %+ ADMA_ALLOC_BUFFERS + ADMA_GET_PROCESSED_DATA 
 
 % Configure the board to make an AutoDMA acquisition
-fprintf('Capturing %i records per buffer ...\n', recordsPerBuffer);
+% fprintf('Capturing %i records per buffer ...\n', recordsPerBuffer);
 recordsPerAcquisition = recordsPerBuffer * buffersPerAcquisition;
 retCode = AlazarBeforeAsyncRead(boardHandle, channelMask, -int32(preTriggerSamples), samplesPerRecord, recordsPerBuffer, recordsPerAcquisition, admaFlags);
 if retCode ~= ApiSuccess
@@ -101,11 +101,11 @@ for bufferIndex = 1 : bufferCount
 end
 
 % Update status
-if buffersPerAcquisition == hex2dec('7FFFFFFF')
-    fprintf('Capturing buffers until aborted...\n');
-else
-    fprintf('Capturing %u buffers ...\n', buffersPerAcquisition);
-end
+% if buffersPerAcquisition == hex2dec('7FFFFFFF')
+%     fprintf('Capturing buffers until aborted...\n');
+% else
+%     fprintf('Capturing %u buffers ...\n', buffersPerAcquisition);
+% end
 
 % Arm the board system to wait for triggers
 retCode = AlazarStartCapture(boardHandle);
@@ -177,7 +177,7 @@ while ~captureDone
             setdatatype(bufferOut, 'uint16Ptr', 1, samplesPerBuffer);
         end
 
-        fprintf('Captured %i samples\n', length(bufferOut.Value))
+%         fprintf('Captured %i samples\n', length(bufferOut.Value))
 %         figure; plot(bufferOut.Value)
 
         % Convert buffer to volts
@@ -250,24 +250,24 @@ for bufferIndex = 1:bufferCount
 end
 
 % Display results
-if buffersCompleted > 0
-    bytesTransferred = double(buffersCompleted) * double(bytesPerBuffer);
-    recordsTransferred = recordsPerBuffer * buffersCompleted;
-
-    if transferTime_sec > 0
-        buffersPerSec = buffersCompleted / transferTime_sec;
-        bytesPerSec = bytesTransferred / transferTime_sec;
-        recordsPerSec = recordsTransferred / transferTime_sec;
-    else
-        buffersPerSec = 0;
-        bytesPerSec = 0;
-        recordsPerSec = 0.;
-    end
-
-    fprintf('Captured %u buffers in %g sec (%g buffers per sec)\n', buffersCompleted, transferTime_sec, buffersPerSec);
-    fprintf('Captured %u records (%.4g records per sec)\n', recordsTransferred, recordsPerSec);
-    fprintf('Transferred %u bytes (%.4g bytes per sec)\n', bytesTransferred, bytesPerSec);
-end
+% if buffersCompleted > 0
+%     bytesTransferred = double(buffersCompleted) * double(bytesPerBuffer);
+%     recordsTransferred = recordsPerBuffer * buffersCompleted;
+% 
+%     if transferTime_sec > 0
+%         buffersPerSec = buffersCompleted / transferTime_sec;
+%         bytesPerSec = bytesTransferred / transferTime_sec;
+%         recordsPerSec = recordsTransferred / transferTime_sec;
+%     else
+%         buffersPerSec = 0;
+%         bytesPerSec = 0;
+%         recordsPerSec = 0.;
+%     end
+% 
+%     fprintf('Captured %u buffers in %g sec (%g buffers per sec)\n', buffersCompleted, transferTime_sec, buffersPerSec);
+%     fprintf('Captured %u records (%.4g records per sec)\n', recordsTransferred, recordsPerSec);
+%     fprintf('Transferred %u bytes (%.4g bytes per sec)\n', bytesTransferred, bytesPerSec);
+% end
 
 % set return code to indicate success
 result = success;
