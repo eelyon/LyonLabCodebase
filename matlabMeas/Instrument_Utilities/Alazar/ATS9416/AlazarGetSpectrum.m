@@ -1,23 +1,17 @@
-% This script performs spectral analysis on data measured with the Alazar
-stopFreq = 10e6; % FFT stop frequency
+%% This script performs spectral analysis on data measured with the Alazar
+% Keep the sampling rate at 10e6 otherwise the data will be shifted!!
+stopFreq = 5e6; % FFT stop frequency
 points = 10112; % 1000064; % Needs to be multiple of 128 and at least 256 points
 average = 1; % Records per buffer
 buffersPerAcquisition = 1; % Set number of buffers
 channelMask = CHANNEL_A; % Set channel to be measured
 
-gainCryo = 9; % Gain of cryogenic amplifier circuit
-gainFEMTO = 100*32/10; % Gain of FEMTO voltage amplifier
+gainCryo = 9.9; % Gain of cryogenic amplifier circuit
+gainFEMTO = 32; % Gain of FEMTO voltage amplifier
 temp = 295; % Temperature in Kelvin
 
 NSD = true; % Noise Spectral Density (nV/sqrt(Hz)
 PSD = false; % Power Spectral Density (nV^2/Hz)
-
-% Configure the board's sample rate, input, and trigger settings
-samplesPerSec = 2*stopFreq; % Sampling rate = 2x FFT freq.
-if ~ATS9416ConfigureBoard(boardHandle,samplesPerSec)
-  fprintf('Error: Board configuration failed\n');
-  return
-end
 
 [result,bufferVolts] = ATS9416AcquireData_NPT(boardHandle,points,average,buffersPerAcquisition,channelMask);
 

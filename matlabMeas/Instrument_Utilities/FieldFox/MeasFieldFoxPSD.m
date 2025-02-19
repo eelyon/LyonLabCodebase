@@ -1,7 +1,8 @@
 startFreq = 100;
 stopFreq = 10e6;
 numPoints = 10000; % 1001;
-gain_hemt = 8.8; % 25.4; % Gain of cryo. amp.
+temp = 295; % Temperature in Kelvin
+gain_hemt = 9.75; % Gain of cryo. amp.
 gain_femto = 10; % Gain of voltage FEMTO
 
 fprintf(fieldFox,'*CLS\n');
@@ -25,7 +26,7 @@ myBinData = binblockread(fieldFox,'float');
 xDat = linspace(startFreq,stopFreq,numPoints);
 myBinData = myBinData.*1e9/(gain_hemt*gain_femto); % FEMTO voltage gain is x10
 [handle,myFig] = plotData(xDat,myBinData,'xLabel',"Frequency (Hz)",'yLabel',"nV/sqrt(Hz)",'color',"r-",'type', "loglog");
-annotation('textbox',[0.2 0.5 0.3 0.3],'String',"295K PSD Choked, x8.8 Amp Gain, x10 FEMTO gain",'FitBoxToText','on');
+annotation('textbox',[0.2 0.5 0.3 0.3],'String',[num2str(temp),'K, x',num2str(gain_hemt),' Amp Gain, x',num2str(gain_femto),' FEMTO Gain'],'FitBoxToText','on');
 saveData(myFig,'PSD');
 
 clear xDat myBinData
