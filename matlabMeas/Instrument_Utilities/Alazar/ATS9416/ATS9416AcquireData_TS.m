@@ -1,4 +1,4 @@
-function [result,bufferVolts] = ATS9416AcquireData_NPT(boardHandle, samplesPerSec, postTriggerSamples, recordsPerBuffer, buffersPerAcquisition, channelMask)
+function [result,bufferVolts] = ATS9416AcquireData_TS(boardHandle, samplesPerSec, acquisitionLength_sec, samplesPerBufferPerChannel, channelMask)
 % Make an AutoDMA acquisition from dual-ported memory.
 % param boardHandle
 % param samplesPerSec
@@ -14,14 +14,12 @@ result = false;
 % call mfile with library definitions
 AlazarDefs
 
-% There are no pre-trigger samples in NPT mode
-preTriggerSamples = 0;
-
-% TODO: Select the number of post-trigger samples per record
-if postTriggerSamples < 256 || mod(postTriggerSamples,128) ~= 0
-    fprintf('Set an acceptable number of samples per record\n')
-    return
-end
+% 
+% % TODO: Select the number of post-trigger samples per record
+% if postTriggerSamples < 256 || mod(postTriggerSamples,128) ~= 0
+%     fprintf('Set an acceptable number of samples per record\n')
+%     return
+% end
 
 inputRange_volts = inputRangeIdToVolts(INPUT_RANGE_PM_1_V);
 
@@ -55,9 +53,16 @@ end
 
 % Calculate the size of each buffer in bytes
 bytesPerSample = floor((double(bitsPerSample) + 7) / double(8));
-samplesPerRecord = preTriggerSamples + postTriggerSamples;
-samplesPerBuffer = samplesPerRecord * recordsPerBuffer * channelCount;
+samplesPerBuffer = samplesPerBufferPerChannel * channelCount;
 bytesPerBuffer = bytesPerSample * samplesPerBuffer;
+
+% Find the number of buffers in the acquisition
+if acquisitionLength_sec > 0
+    samplesPerAcquisition = uint32(floor((samplesPerSec * acquisitionLength_sec + 0.5)));
+    buffersPerAcquisition = uint32(floor((samplesPerAcquisition + samplesPerBufferPerChannel - 1) / samplesPerBufferPerChannel));
+else
+    buffersPerAcquisition = hex2dec('7FFFFFFF');  % acquire until aborted
+end
 
 % TODO: Select the number of DMA buffers to allocate.
 % The number of DMA buffers must be greater than 2 to allow a board to DMA into
@@ -84,19 +89,11 @@ if saveData
     end
 end
 
-% Set the record size
-retCode = AlazarSetRecordSize(boardHandle, preTriggerSamples, postTriggerSamples);
-if retCode ~= ApiSuccess
-    fprintf('Error: AlazarSetRecordSize failed -- %s\n', errorToText(retCode));
-    return
-end
-
 % TODO: Select AutoDMA flags as required
-admaFlags = ADMA_NPT + ADMA_EXTERNAL_STARTCAPTURE + ADMA_FIFO_ONLY_STREAMING; %+ ADMA_ALLOC_BUFFERS + ADMA_GET_PROCESSED_DATA 
+admaFlags = ADMA_EXTERNAL_STARTCAPTURE + ADMA_TRIGGERED_STREAMING; % + ADMA_FIFO_ONLY_STREAMING; %+ ADMA_ALLOC_BUFFERS + ADMA_GET_PROCESSED_DATA 
 
 % Configure the board to make an AutoDMA acquisition
-recordsPerAcquisition = recordsPerBuffer * buffersPerAcquisition;
-retCode = AlazarBeforeAsyncRead(boardHandle, channelMask, -int32(preTriggerSamples), samplesPerRecord, recordsPerBuffer, recordsPerAcquisition, admaFlags);
+retCode = AlazarBeforeAsyncRead(boardHandle, channelMask, 0, samplesPerBufferPerChannel, 1, hex2dec('7FFFFFFF'), admaFlags);
 if retCode ~= ApiSuccess
     fprintf('Error: AlazarBeforeAsyncRead failed -- %s\n', errorToText(retCode));
     return
@@ -125,16 +122,6 @@ if retCode ~= ApiSuccess
     fprintf('Error: AlazarStartCapture failed -- %s\n', errorToText(retCode));
     return
 end
-
-% Create a progress window
-% waitbarHandle = waitbar(0, ...
-%                         'Captured 0 buffers', ...
-%                         'Name','Capturing ...', ...
-%                         'CreateCancelBtn', 'setappdata(gcbf,''canceling'',1)');
-% setappdata(waitbarHandle, 'canceling', 0);
-
-% TODO: Insert trigger signal here
-% send33622ATrigger(triggerDev);
 
 % Wait for sufficient data to arrive to fill a buffer, process the buffer,
 % and repeat until the acquisition is complete
@@ -211,7 +198,7 @@ while ~captureDone
             end
         end
 
-        fprintf('Captured %i samples\n', length(bufferOut.Value))
+        size(bufferOut.Value)
 
         % Convert buffer to volts
         if voltsData
@@ -225,41 +212,24 @@ while ~captureDone
             codeRange = 2^(double(bitsPerSample) - 1) - 0.5;
             
             % Create an array to store sample data
-            bufferVolts = zeros(channelCount,postTriggerSamples);
+            bufferVolts = zeros(channelCount,samplesPerBufferPerChannel);
             sine = true;
             
-            if recordsPerBuffer > 1
-                fprintf('Records per buffer set to %i', recordsPerBuffer)
-                for i = 1:recordsPerBuffer
-                    for j = 1:channelCount
-                        col = 1; % Set counter
-                        for k = j:channelCount:(length(bufferShift)/recordsPerBuffer)
-                            bufferVolts(j,col) = inputRange_volts * (double(bufferShift(k)) - codeZero) / codeRange; % need double or else just have int
-                            col = col + 1;
-                        end
-                        if sine == true
-                            midPoint = min(bufferVolts(j,:)) + (max(bufferVolts(j,:)) - min(bufferVolts(j,:))) / 2;
-                            bufferVolts(j,:) = bufferVolts(j,:) - midPoint;
-                        end
-                    end
+            for i = 1:channelCount % Each row contains a separate channel
+                col = 1; % Set counter
+                for j = i:channelCount:length(bufferShift) % Channel data is interleaved
+                    bufferVolts(i,col) = inputRange_volts * (double(bufferShift(j)) - codeZero) / codeRange; % Need double or else just have int
+                    col = col + 1;
                 end
-            
-            else % For measurements with 1 record only
-                for i = 1:channelCount % Each row contains a separate channel
-                    col = 1; % Set counter
-                    for j = i:channelCount:length(bufferShift) % Channel data is interleaved
-                        bufferVolts(i,col) = inputRange_volts * (double(bufferShift(j)) - codeZero) / codeRange; % Need double or else just have int
-                        col = col + 1;
-                    end
-                    if sine == true
-                        midPoint = min(bufferVolts(i,:)) + (max(bufferVolts(i,:)) - min(bufferVolts(i,:))) / 2;
-                        bufferVolts(i,:) = bufferVolts(i,:) - midPoint;
-                    end
+                if sine == true
+                    midPoint = min(bufferVolts(i,:)) + (max(bufferVolts(i,:)) - min(bufferVolts(i,:))) / 2;
+                    bufferVolts(i,:) = bufferVolts(i,:) - midPoint;
                 end
             end
             
-%             xaxis = linspace(0, postTriggerSamples/samplesPerSec, length(bufferVolts(1,:)));
-%             plot(bufferOut.Value);
+            xaxis = linspace(0, samplesPerBufferPerChannel/samplesPerSec, length(bufferVolts(1,:)));
+            figure
+            plot(xaxis, bufferVolts(1,:));
         end
 
         % Make the buffer available to be filled again by the board
@@ -309,20 +279,16 @@ end
 % Display results
 if buffersCompleted > 0
     bytesTransferred = double(buffersCompleted) * double(bytesPerBuffer);
-    recordsTransferred = recordsPerBuffer * buffersCompleted;
 
     if transferTime_sec > 0
         buffersPerSec = buffersCompleted / transferTime_sec;
         bytesPerSec = bytesTransferred / transferTime_sec;
-        recordsPerSec = recordsTransferred / transferTime_sec;
     else
         buffersPerSec = 0;
         bytesPerSec = 0;
-        recordsPerSec = 0.;
     end
 
     fprintf('Captured %u buffers in %g sec (%g buffers per sec)\n', buffersCompleted, transferTime_sec, buffersPerSec);
-    fprintf('Captured %u records (%.4g records per sec)\n', recordsTransferred, recordsPerSec);
     fprintf('Transferred %u bytes (%.4g bytes per sec)\n', bytesTransferred, bytesPerSec);
 end
 

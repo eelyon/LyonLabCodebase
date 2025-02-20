@@ -19,13 +19,39 @@ classdef Agilent33622A
             Agilent33622A.identifier    = '33622A';
         end
 
-        function setAgilent33622APresetConfig(experimentType)
+        function setAgilent33622APresetConfig(experimentType,Agilent33622A,channel)
             % Function to be used to create presets for the Agilent33622A.
             % This way one can program the 333622A for many different
             % configurations with a single function. 
             switch experimentType
-                case 'LED'
-                case 'Filament'
+                case 'CharacterizeHEMT'
+                    amplitude = 2e-3; 
+                    frequency = 100;
+                    voltType = 'VPP';
+                    voltageOffset = 0;
+                    
+                    set33622AFunctionType(Agilent33622A,channel,'SIN');
+                    set33622AVoltageOffset(Agilent33622A,channel,voltageOffset)
+                    set33622AFrequency(Agilent33622A,channel,frequency);
+                    set33622APhase(Agilent33622A,channel,0);
+                    set33622AAmplitude(Agilent33622A,channel,amplitude,voltType);
+                    set33622AOutputLoad(Agilent33622A,channel,'INF');
+                    set33622AFrequencyCoupling(Agilent33622A,channel,1);
+                    set33622AOutput(Agilent33622A,channel,0);  % start with output OFF
+                case 'Compensation'
+                    amplitude = 300e-3; 
+                    frequency = 102e3;
+                    voltType = 'VPP';
+                    voltageOffset = 0;
+                    
+                    set33622AFunctionType(Agilent33622A,channel,'SIN');
+                    set33622AVoltageOffset(Agilent33622A,channel,voltageOffset)
+                    set33622AFrequency(Agilent33622A,channel,frequency);
+                    set33622APhase(Agilent33622A,channel,0);
+                    set33622AAmplitude(Agilent33622A,channel,amplitude,voltType);
+                    set33622AOutputLoad(Agilent33622A,channel,'INF');
+                    set33622AFrequencyCoupling(Agilent33622A,channel,1);
+                    set33622AOutput(Agilent33622A,channel,0);  % start with output OFF
                 otherwise
                     disp(['Your experiment type preset ', experimentType, ' is invald!']);
             end
@@ -90,19 +116,25 @@ classdef Agilent33622A
             fprintf(Agilent33622A.client,command);
         end
         
+        function [] = set33622AFrequencyCoupling(Agilent33622A,channel,onOrOff)
+            command = ['SOUR',num2str(channel),':FREQ:COUP ',num2str(onOrOff)];
+            fprintf(Agilent33622A.client,command);
+        end
+
+
         %% SET TRIGGER %%
         
         function send33622ATrigger(Agilent33622A)
             fprintf(Agilent33622A.client,'TRIG');
         end
 
-        function [] = set33622ATrigSlope(Agilent33622A,slope)
+        function [] = set33622ATrigSlope(Agilent33622A,channel,slope)
             validSourceTypes = 'POS,NEG';
             if ~contains(validSourceTypes,slope)
                 fprintf([sourceType ' is not a valid trigger slope type. Valid types are:\n'])
                 fprintf([validSourceTypes, '\n']);
             else
-                command = ['TRIG:SLOP ' slope];
+                command = ['TRIG',num2str(channel),':SLOP ' slope];
                 fprintf(Agilent33622A.client,command);
             end
         end
@@ -127,40 +159,40 @@ classdef Agilent33622A
             end
         end
 
-        function [] = set33622ATrigger(Agilent33622A,sourceType)
+        function [] = set33622ATrigger(Agilent33622A,channel,sourceType)
             validSourceTypes = 'IMM,EXT,BUS';
             if ~contains(validSourceTypes,sourceType)
                 fprintf([sourceType ' is not a valid trigger source type. Valid types are:\n'])
                 fprintf([validSourceTypes, '\n']);
             else
-                command = ['TRIG:SOUR ' sourceType '; *TRG'];
+                command = ['TRIG',num2str(channel),':SOUR ' sourceType '; *TRG'];
                 fprintf(Agilent33622A.client,command);
             end
         end
 
         %% SET BURST %%
 
-        function [] = set33622ABurstMode(Agilent33622A,burstType)
+        function [] = set33622ABurstMode(Agilent33622A,channel,burstType)
             validTypes = 'TRIG,GAT';
             if ~contains(validTypes,burstType)
                 fprintf('Invalid burst type, valid types are:\n');
                 fprintf(validTypes);
             else
-                command = ['BURS:MODE ' burstType];
+                command = ['SOUR',num2str(channel),':BURS:MODE ' burstType];
                 fprintf(Agilent33622A.client,command);
             end
         end
 
-        function [] = set33622ANumBurstCycles(Agilent33622A,numCycles)
-            command = ['BURS:NCYC ' num2str(numCycles)];
+        function [] = set33622ANumBurstCycles(Agilent33622A,channel,numCycles)
+            command = ['SOUR',num2str(channel),':BURS:NCYC ' num2str(numCycles)];
             fprintf(Agilent33622A.client,command);
         end
 
         function [] = set33622ABurstStateOn(Agilent33622A,onOrOff)
             if onOrOff
-                command = 'BURS:STAT ON';
+                command = ['SOUR',num2str(channel),':BURS:STAT ON'];
             else
-                command = 'BURS:STAT OFF';
+                command = ['SOUR',num2str(channel),':BURS:STAT OFF'];
             end
 
             fprintf(Agilent33622A.client,command);
@@ -177,19 +209,19 @@ classdef Agilent33622A
         end
 
         function [] = set33622ABurstPhase(Agilent33622A,phaseInDegrees)
-            command = ['BURS:PHAS ' num2str(phaseInDegrees)];
+            command = ['SOUR',num2str(channel),':BURS:PHAS ' num2str(phaseInDegrees)];
             fprintf(Agilent33622A.client,command);
         end
 
-        function [] = set33622APhase(Agilent33622A,phaseInDegrees,channel)
+        function [] = set33622APhase(Agilent33622A,channel,phaseInDegrees)
             % NOTE: Phase Precision in .001 degrees!
-            command = strcat("SOUR",num2str(channel),":PHAS " , num2str(phaseInDegrees));
+            command = ['SOUR',num2str(channel),':PHAS ' , num2str(phaseInDegrees)];
             fprintf(Agilent33622A.client,command);
         end
 
 
         %% SET VOLTAGES %%
-        function [] = set33622AAmplitude(Agilent33622A,amplitude,voltType,channel)
+        function [] = set33622AAmplitude(Agilent33622A,channel,amplitude,voltType)
             validVoltTypes = 'VPP,VRMS,DBM';
             preCommand = strcat('SOUR',num2str(channel),':');
             if amplitude < .001 && strcmp(validVoltTypes,'VPP')
@@ -210,18 +242,18 @@ classdef Agilent33622A
             fprintf(Agilent33622A.client,command2);
         end
 
-        function [] = set33622AVoltageHigh(Agilent33622A,highVoltage)
-            command = ['VOLT:HIGH ', num2str(highVoltage)];
+        function [] = set33622AVoltageHigh(Agilent33622A,channel,highVoltage)
+            command = ['SOUR',num2str(channel),'VOLT:HIGH ', num2str(highVoltage)];
             fprintf(Agilent33622A.client,command);
         end
 
-        function [] = set33622AVoltageLow(Agilent33622A, lowVoltage)
-            command = ['VOLT:LOW ', num2str(lowVoltage)];
+        function [] = set33622AVoltageLow(Agilent33622A,channel,lowVoltage)
+            command = ['SOUR',num2str(channel),'VOLT:LOW ', num2str(lowVoltage)];
             fprintf(Agilent33622A.client,command);
         end
 
-        function [] = set33622AVoltageOffset(Agilent33622A,voltageOffset)
-            command = ['VOLTAGE:OFFS ', num2str(voltageOffset)];
+        function [] = set33622AVoltageOffset(Agilent33622A,channel,voltageOffset)
+            command = ['SOUR',num2str(channel),':VOLTAGE:OFFS ', num2str(voltageOffset)];
             fprintf(Agilent33622A.client,command);
         end
 
@@ -290,9 +322,6 @@ classdef Agilent33622A
             command = strcat('OUTP',num2str(channel),'?');
             output = str2double(query(Agilent33622A.client,command));
         end
-        
     end
-
-
 end
 

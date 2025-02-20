@@ -10,7 +10,7 @@ sigDACRampVoltage(controlDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],
 
 sigDACRampVoltage(controlDAC,[TfCPort,TfEPort,BEPort,BCPort],[-3,0.5,0,-3],numSteps);
 
-sweep1DMeasSR830({'Door'},-1,0,0.05,0.1,10,{SR830Twiddle},controlDAC,{DoorEOutPort},1,1);
+sweep1DMeasSR830({'Door'},-1,0,0.1,0.1,10,{SR830Twiddle},controlDAC,{DoorEOutPort},1,1);
 sigDACRampVoltage(controlDAC,DoorEOutPort,0,numSteps);
 sigDACRampVoltage(controlDAC,BEPort,-2,numSteps);
 sigDACRampVoltage(controlDAC,TfEPort,-0.5,numSteps);
