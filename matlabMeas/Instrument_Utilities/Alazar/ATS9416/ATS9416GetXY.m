@@ -41,6 +41,17 @@ else
     stdYrms = std(filtered_Y)*2/sqrt(2);
 end
 
+% figure
+% plot(t,buffer)
+% hold on
+% plot(t,0.1*reference_signal_X)
+% hold on
+% plot(t,0.1*reference_signal_Y)
+% hold off
+% xlabel('Time (sec)')
+% ylabel('Voltage (V)')
+% xlim([0, t(100)])
+
 clear t f bufferVolts demod_X demod_Y demod_X_fft demod_Y_fft filtered_X_fft filtered_Y_fft amplitude phase filtered_X filtered_Y
 
 end

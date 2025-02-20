@@ -1,39 +1,62 @@
-%% DC pinout for 2019_D_ROIC_QD_ava_DIY die bonded on 30th May, 2024
+%% DC pinout for 2019_D_ROIC_QD_ava_DIY die bonded Dec. 2024
 %% Sommer-Tanner pinout
-STD = pinout(controlDAC,20); % Sommer-Tanner drive
-STS = pinout(controlDAC,13); % Sommer-Tanner sense
-STM = pinout(supplyDAC,18); % Sommer-Tanner middle gate
+STD = pinout(controlDAC,12); % Sommer-Tanner drive
+STS = pinout(controlDAC,17); % Sommer-Tanner sense
+STM = pinout(controlDAC,10); % Sommer-Tanner middle gate
 
-TM = pinout(controlDAC,21); % top metal
-STG = pinout(supplyDAC,5); % Sommer-Tanner (left) door guard
-M2S = pinout(controlDAC,9); % Sommer-Tanner shield on M2
-BPG = pinout(controlDAC,24); % bond pad guard
+TM = pinout(controlDAC,24); % top metal
+M2S = pinout(controlDAC,11); % Sommer-Tanner shield on M2
+BPG = pinout(controlDAC,23); % bond pad guard
 
-filament = pinout(supplyDAC,1); % filament backing plate
+filament = pinout(SIM900,5); % filament backing plate
 
-%% CCD
-d1_ccd = pinout(supplyDAC,17); % 1st door, uneven channels
-d2_ccd = pinout(controlDAC,7); % 1st door, even channels
-d3_ccd = pinout(supplyDAC,4); % 2nd door
-d4_ccd = pinout(controlDAC,11); % 3rd door
+%% 1st twiddle-sense
+d1_odd = pinout(supplyDAC,1); % 1st door, uneven channels
+d1_even = pinout(controlDAC,13); % 1st door, even channels
+d2 = pinout(supplyDAC,4); % 2nd door
+d3 = pinout(controlDAC,22); % 3rd door
 
-ccd1 = pinout(controlDAC,22); % phi 1
-ccd2 = pinout(supplyDAC,9); % phi 2; 6s on PCB, but ch6 is broken on sDAC
-ccd3 = pinout(controlDAC,10); % phi 3
+phi1_1 = pinout(controlDAC,6); % phi 1
+phi1_2 = pinout(controlDAC,9); % phi 2
+phi1_3 = pinout(controlDAC,5); % phi 3
 
-%% Differential measurement/twiddle-sense
-shield = pinout(controlDAC,5); % shield underneath twiddle
-door = pinout(supplyDAC,19); % door after phi1 and before offset gate
-offset = pinout(controlDAC,1); % offset gate left of twiddle
-sense = pinout(controlDAC,2); % sense gate left of twiddle, 3c on PCB but ch3 on cDAC broken
-shieldl = pinout(controlDAC,6); % left shield from twiddle
-twiddle = pinout(controlDAC,18); % twiddle gate
-shieldr = pinout(supplyDAC,22); % right gate from twiddle
+shield = pinout(supplyDAC,7); % shield underneath twiddle
+d4 = pinout(controlDAC,18); % door after phi1 and before offset gate
+d5 = pinout(controlDAC,4); % compensation door for 1st twiddle-sense
+sense1_l = pinout(controlDAC,20); % sense gate left of twiddle
+guard1_l = pinout(supplyDAC,5); % left shield from twiddle
+twiddle1 = pinout(supplyDAC,17); % twiddle gate
+guard1_r = pinout(supplyDAC,18); % right gate from twiddle
+sense1_r = pinout(controlDAC,16);
+d6 = pinout(controlDAC,3);
+
+%% 2nd twiddle-sense
+phi_Vdown_1 = pinout(controlDAC,8);
+phi_Vdown_2 = pinout(controlDAC,21);
+phi_Vdown_3 = pinout(controlDAC,7);
+
+phi_Vup_1 = pinout(supplyDAC,3);
+phi_Vup_2 = pinout(supplyDAC,15);
+phi_Vup_3 = pinout(supplyDAC,16);
+
+d_Vup_1 = pinout(supplyDAC,2);
+d_Vup_2 = pinout(supplyDAC,14);
+d_Vup_3 = pinout(controlDAC,19);
+
+d7 = pinout(controlDAC,15); % compensation door for 2nd twiddle-sense
+sense2_l = pinout(controlDAC,2);
+guard2_l = pinout(supplyDAC,6);
+twiddle2 = pinout(supplyDAC,19);
+guard2_r = pinout(supplyDAC,20);
+sense2_r = pinout(controlDAC,1);
+d8 = pinout(controlDAC,14);
+
+%% Electron trap
+
 
 %% HEMT control lines
-Vbb = pinout(supplyDAC,24); % amplifier base
-Vcc = pinout(supplyDAC,13); % collector of cascode
-Vf = pinout(supplyDAC,7); % emitter follower of cascode
+Vcc = pinout(SIM900,1); % collector of cascode
+Vf = pinout(SIM900,3); % emitter follower of cascode
 
 function gate = pinout(Device,Port)
 % Creating object that contains DAC and channel

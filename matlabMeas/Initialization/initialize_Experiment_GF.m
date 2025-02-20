@@ -14,6 +14,10 @@ sigDACPortSupply  = 'COM8'; % 18-bit DAC
 controlDAC = sigDAC(sigDACPortControl,24,'controlDAC');
 supplyDAC = sigDAC(sigDACPortSupply,24,'supplyDAC');
 
+%% SIM900 for biasing HEMTs
+sim900Port = 'COM5';
+sim900 = SIM900(sim900Port);
+
 %% SR830 Lock-ins
 st_Address = '172.29.117.106'; % top SR830
 twiddle_Address = '172.29.117.103'; % bottom SR830

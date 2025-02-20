@@ -6,8 +6,8 @@ average = 1; % Records per buffer
 buffersPerAcquisition = 1; % Set number of buffers
 channelMask = CHANNEL_A; % Set channel to be measured
 
-gainCryo = 9.9; % Gain of cryogenic amplifier circuit
-gainFEMTO = 32; % Gain of FEMTO voltage amplifier
+gainCryo = 11; % Gain of cryogenic amplifier circuit
+gainFEMTO = 32*10; % Gain of FEMTO voltage amplifier
 temp = 295; % Temperature in Kelvin
 
 NSD = true; % Noise Spectral Density (nV/sqrt(Hz)
