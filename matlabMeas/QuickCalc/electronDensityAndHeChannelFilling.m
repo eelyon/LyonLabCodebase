@@ -1,8 +1,8 @@
 %% solve for electron density (in 1/cm2) and resulting helium film thickness in a channel
 
-Vpinch = -0.2; % pinch off voltage [V]
-h = 6.5e-3;    % distance from bulk helium [m]
-t = 660e-9;    % height of channel [m]
+Vpinch = -0.5; % pinch off voltage [V]
+h = 4.23e-3;    % distance from bulk helium [m]
+t = 650e-9;    % height of channel [m]
 w = 7.5e-6;    % width of channel [m]
 
 rho = 145.4;         % [kg/m3] density of liq He
@@ -17,7 +17,7 @@ syms f(x)
 f(x) = -1 + -1e-4*(Vpinch/x)*er*e0/(e*(t - (sig/(rho*g*h + (x)^2*e^2/(2*er*e0)))*(1-sqrt(1-(w^2/(4*(sig/(rho*g*h + (x)^2*e^2/(2*er*e0)))^2))))));
 density = vpasolve(f);
 
-Rc = radiusOfCurv(h, density);
+Rc = radiusOfCurv(h,density);
 dMin = dmin(Rc,w,t);
 
 Rc_noElect = radiusOfCurv(h);
