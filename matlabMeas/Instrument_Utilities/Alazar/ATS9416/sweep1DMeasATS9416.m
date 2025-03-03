@@ -27,17 +27,16 @@ for value = paramVector
 
     % Set parameters for acquisition
     global samplesPerSec
-%     freq = 2e6;
     
     % NPT parameters
-    postTriggerSamples = 2*1000064; % Has to be at least 256 and multiple of 128
+    postTriggerSamples = 1000064; % Has to be at least 256 and multiple of 128
     recordsPerBuffer = 1; % Set for averaging
     buffersPerAcquisition = 1; % Set number of buffers
     
     % Lock-in parameters
     stages = 5; % RC filter stages
-    fc = 0.1; % RC filter cut off frequency
-    phaseOffset = 179.7; % Phase adjustment
+    fc = 1; % RC filter cut off frequency
+    phaseOffset = 179.7; % Phase offset for Awh2ch_Houck
 
     %% Query ATS9416 for data, calculate X and Y, average, and place in vectors
     [~,bufferVolts] = ATS9416AcquireData_NPT(boardHandle,postTriggerSamples,recordsPerBuffer,buffersPerAcquisition,channelMask);

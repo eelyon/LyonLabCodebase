@@ -1,12 +1,12 @@
 %% Script for removing all electrons from device
 numSteps = 500; % set wait time after each voltage step
-numSteps_RC = 2; % % set steps for slow ramp for filtered lines
-waitTime = 0.5; % set to 5 times time constant
-stopVal = -3; % set stop voltage
+numSteps_RC = 5; % % set steps for slow ramp for filtered lines
+waitTime = 0.1; % set to 5 times time constant
+stopVal = 0; % set stop voltage
 delayTime = 1; % time before next step
 
 %% Set backing plate and top metal positive then sweep ST middle gate
-sigDACRampVoltage(filament.Device,filament.Port,5,numSteps); % make backing plate positive
+rampSIM900Voltage(filament.Device,filament.Port,5,waitTime,0.5) % ramp filament backing plate
 interleavedRamp(TM.Device,TM.Port,1,numSteps_RC,waitTime); % make top metal positive
 delay(10);
 
@@ -14,29 +14,30 @@ delay(10);
 
 %% Set ST gates negative
 sigDACRampVoltage(STD.Device,STD.Port,stopVal,numSteps); % Sommer-Tanner drive
-sigDACRampVoltage(STS.Device,STS.Port,stopVal,numSteps); % Sommer-Tanner sense
+% rampSIM900Voltage(STS.Device,STS.Port,stopVal,waitTime,0.1) % Sommer-Tanner sense
 sigDACRampVoltage(STM.Device,STM.Port,stopVal,numSteps); % Sommer-Tanner middle gate
-sigDACRampVoltage(STG.Device,STG.Port,stopVal,numSteps); % Sommer-Tanner (left) guard
 sigDACRampVoltage(M2S.Device,M2S.Port,-0.5,numSteps); % M2 shield
 sigDACRampVoltage(BPG.Device,BPG.Port,-1,numSteps); % bond pad guard
 
 %% Set CCD gates negative
-sigDACRampVoltage(d1_ccd.Device,d1_ccd.Port,stopVal,numSteps);
-sigDACRampVoltage(d2_ccd.Device,d2_ccd.Port,stopVal,numSteps);
-sigDACRampVoltage(d3_ccd.Device,d3_ccd.Port,stopVal,numSteps);
-sigDACRampVoltage(d4_ccd.Device,d4_ccd.Port,stopVal,numSteps);
+sigDACRampVoltage(d1_odd.Device,d1_odd.Port,stopVal,numSteps);
+sigDACRampVoltage(d1_even.Device,d1_even.Port,stopVal,numSteps);
+sigDACRampVoltage(d2.Device,d2.Port,stopVal,numSteps);
+sigDACRampVoltage(d3.Device,d3.Port,stopVal,numSteps);
 
-sigDACRampVoltage(ccd1.Device,ccd1.Port,stopVal,numSteps);
-sigDACRampVoltage(ccd2.Device,ccd2.Port,stopVal,numSteps);
-sigDACRampVoltage(ccd3.Device,ccd3.Port,stopVal,numSteps);
+sigDACRampVoltage(phi1_1.Device,phi1_1.Port,stopVal,numSteps);
+sigDACRampVoltage(phi1_2.Device,phi1_2.Port,stopVal,numSteps);
+sigDACRampVoltage(phi1_3.Device,phi1_3.Port,stopVal,numSteps);
 
 %% Set twiddle gates negative
-sigDACRampVoltage(door.Device,door.Port,stopVal,numSteps);
-interleavedRamp(offset.Device,offset.Port,stopVal,numSteps_RC,waitTime);
-interleavedRamp(sense.Device,sense.Port,-0.5,numSteps_RC,waitTime);
-interleavedRamp(shieldl.Device,shieldl.Port,stopVal,numSteps_RC,waitTime);
-sigDACRampVoltage(twiddle.Device,twiddle.Port,stopVal,numSteps);
-sigDACRampVoltage(shieldr.Device,shieldr.Port,stopVal,numSteps);
+sigDACRampVoltage(d4.Device,d4.Port,stopVal,numSteps);
+interleavedRamp(d5.Device,d5.Port,stopVal,numSteps_RC,waitTime);
+rampSIM900Voltage(sense1_l.Device,sense1_l.Port,-0.5,waitTime,0.1)
+interleavedRamp(guard1_l.Device,guard1_l.Port,stopVal,numSteps_RC,waitTime);
+sigDACRampVoltage(twiddle1.Device,twiddle1.Port,stopVal,numSteps);
+sigDACRampVoltage(guard1_r.Device,guard1_r.Port,stopVal,numSteps);
+sigDACRampVoltage(sense1_r.Device,sense1_r.Port,stopVal,numSteps)
+sigDACRampVoltage(d6.Device,d6.Port,stopVal,numSteps)
 interleavedRamp(shield.Device,shield.Port,stopVal,numSteps_RC,waitTime);
 delay(1);
 

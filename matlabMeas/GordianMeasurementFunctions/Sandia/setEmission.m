@@ -3,6 +3,7 @@
 numSteps = 500; % sigDACRampVoltage
 numStepsRC = 5; % interleavedRamp
 waitTime = 0.5; % interleavedRamp
+delta = 0.5;
 stopVal = -3;
 
 %% Set Sommer-Tanner
@@ -12,30 +13,56 @@ sigDACRampVoltage(BPG.Device,BPG.Port,-1,numSteps) % ramp bond pad guard
 fprintf('Top metal, M2 shield, and bond pad guard set for emission.\n')
 
 sigDACRampVoltage(STD.Device,STD.Port,+2,numSteps) % ramp ST-Drive
-sigDACRampVoltage(STS.Device,STS.Port,+2,numSteps) % ramp ST-Sense
+% rampSIM900Voltage(STS.Device,STS.Port,+2,waitTime,delta) % ramp ST-Sense
 sigDACRampVoltage(STM.Device,STM.Port,+2,numSteps) % ramp ST-Middle
-sigDACRampVoltage(STG.Device,STG.Port,stopVal,numSteps) % ramp Sommer-Tanner (left) guard
 fprintf('Sommer-Tanner set for emission.\n')
 
-%% Set CCD and twiddle gates
-sigDACRampVoltage(d1_ccd.Device,d1_ccd.Port,stopVal,numSteps)
-sigDACRampVoltage(d2_ccd.Device,d2_ccd.Port,stopVal,numSteps)
-sigDACRampVoltage(d3_ccd.Device,d3_ccd.Port,stopVal,numSteps)
-sigDACRampVoltage(d4_ccd.Device,d4_ccd.Port,stopVal,numSteps)
+%% Set 1st CCD
+sigDACRampVoltage(d1_odd.Device,d1_odd.Port,stopVal,numSteps)
+sigDACRampVoltage(d1_even.Device,d1_even.Port,stopVal,numSteps)
+sigDACRampVoltage(d2.Device,d2.Port,stopVal,numSteps)
+sigDACRampVoltage(d3.Device,d3.Port,stopVal,numSteps)
 
-sigDACRampVoltage(ccd1.Device,ccd1.Port,stopVal,numSteps)
-sigDACRampVoltage(ccd2.Device,ccd2.Port,stopVal,numSteps)
-sigDACRampVoltage(ccd3.Device,ccd3.Port,stopVal,numSteps)
-fprintf('CCDs set for emission.\n')
+sigDACRampVoltage(phi1_1.Device,phi1_1.Port,stopVal,numSteps)
+sigDACRampVoltage(phi1_2.Device,phi1_2.Port,stopVal,numSteps)
+sigDACRampVoltage(phi1_3.Device,phi1_3.Port,stopVal,numSteps)
+fprintf('1st CCD set for emission.\n')
 
-sigDACRampVoltage(door.Device,door.Port,stopVal,numSteps)
-interleavedRamp(offset.Device,offset.Port,stopVal,numStepsRC,waitTime)
-interleavedRamp(sense.Device,sense.Port,-0.5,numStepsRC,waitTime)
-interleavedRamp(shieldl.Device,shieldl.Port,stopVal,numStepsRC,waitTime)
-sigDACRampVoltage(twiddle.Device,twiddle.Port,stopVal,numSteps)
-sigDACRampVoltage(shieldr.Device,shieldr.Port,stopVal,numSteps)
-interleavedRamp(shield.Device,shield.Port,-0.5,numStepsRC,waitTime) % this is the guard underneath twiddle-sense
-fprintf('Twiddle and sense set for emission.\n')
+%% Set 1st twiddle-sense
+interleavedRamp(shield.Device,shield.Port,-0.5,numStepsRC,waitTime) % shield underneath twiddle-sense
+sigDACRampVoltage(d4.Device,d4.Port,stopVal,numSteps) % door for compensation of sense 1
+interleavedRamp(d5.Device,d5.Port,stopVal,numStepsRC,waitTime)
+rampSIM900Voltage(sense1_l.Device,sense1_l.Port,-0.5,waitTime,0.1)
+interleavedRamp(guard1_l.Device,guard1_l.Port,stopVal,numStepsRC,waitTime)
+sigDACRampVoltage(twiddle1.Device,twiddle1.Port,stopVal,numSteps)
+sigDACRampVoltage(guard1_r.Device,guard1_r.Port,stopVal,numSteps)
+sigDACRampVoltage(sense1_r.Device,sense1_r.Port,stopVal,numSteps)
+sigDACRampVoltage(d6.Device,d6.Port,stopVal,numSteps)
+fprintf('1st twiddle-sense set for emission.\n')
 
-sigDACRampVoltage(filament.Device,filament.Port,-1,numSteps) % ramp filament backing plate
+%% Set vertical CCD
+sigDACRampVoltage(phi_Vdown_1.Device,phi_Vdown_1.Port,stopVal,numSteps)
+sigDACRampVoltage(phi_Vdown_2.Device,phi_Vdown_2.Port,stopVal,numSteps)
+sigDACRampVoltage(phi_Vdown_3.Device,phi_Vdown_3.Port,stopVal,numSteps)
+
+sigDACRampVoltage(phi_Vup_1.Device,phi_Vup_1.Port,stopVal,numSteps)
+sigDACRampVoltage(phi_Vup_2.Device,phi_Vup_2.Port,stopVal,numSteps)
+sigDACRampVoltage(phi_Vup_3.Device,phi_Vup_3.Port,stopVal,numSteps)
+
+sigDACRampVoltage(d_Vup_1.Device,d_Vup_1.Port,stopVal,numSteps)
+sigDACRampVoltage(d_Vup_2.Device,d_Vup_2.Port,stopVal,numSteps)
+sigDACRampVoltage(d_Vup_3.Device,d_Vup_3.Port,stopVal,numSteps)
+fprintf('Vertical CCD set for emission.\n')
+
+%% Set 2nd twiddle-sense
+sigDACRampVoltage(d7.Device,d7.Port,stopVal,numSteps) % door for compensation of sense 1
+rampSIM900Voltage(sense2_l.Device,sense2_l.Port,-0.5,waitTime,0.1)
+interleavedRamp(guard2_l.Device,guard2_l.Port,stopVal,numStepsRC,waitTime)
+sigDACRampVoltage(twiddle2.Device,twiddle2.Port,stopVal,numSteps)
+sigDACRampVoltage(guard2_r.Device,guard2_r.Port,stopVal,numSteps)
+sigDACRampVoltage(sense2_r.Device,sense2_r.Port,stopVal,numSteps)
+sigDACRampVoltage(d8.Device,d8.Port,stopVal,numSteps)
+fprintf('2nd twiddle-sense set for emission.\n')
+
+rampSIM900Voltage(filament.Device,filament.Port,-1,waitTime,0.1) % ramp filament backing plate
 fprintf('Backing plate set for emission.\n')

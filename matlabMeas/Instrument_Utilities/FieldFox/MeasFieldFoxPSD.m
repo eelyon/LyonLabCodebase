@@ -1,8 +1,8 @@
 startFreq = 100;
-stopFreq = 10e6;
+stopFreq = 5e6;
 numPoints = 10000; % 1001;
 temp = 295; % Temperature in Kelvin
-gain_hemt = 11; % Gain of cryo. amp.
+gain_hemt = 11.3; % Gain of cryo. amp.
 gain_femto = 10; % Gain of voltage FEMTO
 
 fprintf(fieldFox,'*CLS\n');
@@ -27,7 +27,7 @@ xDat = linspace(startFreq,stopFreq,numPoints);
 myBinData = myBinData.*1e9/(gain_hemt*gain_femto); % FEMTO voltage gain is x10
 [handle,myFig] = plotData(xDat,myBinData,'xLabel',"Frequency (Hz)",'yLabel',"nV/sqrt(Hz)",'color',"r-",'type', "loglog");
 annotation('textbox',[0.2 0.5 0.3 0.3],'String',[num2str(temp),'K, x',num2str(gain_hemt),' Amp Gain, x',num2str(gain_femto),' FEMTO Gain'],'FitBoxToText','on');
-saveData(myFig,'PSD');
+saveData(myFig,'NSD');
 
 clear xDat myBinData
 % % There will be a line feed not read, i.e. hanging. Read it to clear

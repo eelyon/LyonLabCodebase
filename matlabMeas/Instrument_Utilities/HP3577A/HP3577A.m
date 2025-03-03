@@ -56,7 +56,7 @@ classdef HP3577A
             legend('Measured S_{21}','Fit');
             xlabel('Frequency (Hz)');
             ylabel('Voltage Gain (arb. units)');
-            txt = strcat("Fitted Rolloff Frequency = ", num2str(fit.b), " HZ");
+            txt = strcat("Fitted Rolloff Frequency = ", num2str(fit.b), " Hz");
             annotation('textbox',[0.2 0.5 0.3 0.3],'String',txt,'FitBoxToText','on');
             saveData(myFig,'CorrectedRollOff',0);
             [hand2,myFig2] = plotData(freqArr,datArr,'xLabel',"Frequency (Hz)",'yLabel',"S_{21} (dBm)",'type',"semilogx",'color',"r-");
