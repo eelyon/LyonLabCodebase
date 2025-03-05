@@ -6,8 +6,8 @@
 
 numSteps = 500;
 numStepsCCD = 500; % number of steps in ramp
-numStepsRC = 5;
-waitTime = 0.5;
+numStepsRC = 10;
+waitTime = 0.1;
 
 Vload = 0.2; % set voltage on first two doors to control no. of electrons
 Vopen = 0.6; % holding voltage of ccd

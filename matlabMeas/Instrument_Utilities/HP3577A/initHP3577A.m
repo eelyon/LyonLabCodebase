@@ -19,4 +19,4 @@ set3577AStopFrequency(NetworkAnalyzer,80e3)
 % set3577Average(NetworkAnalyzer,'0')
 % set3577Average(NetworkAnalyzer,'128')
 % 
-% pullAndPlot3577ARollOff(NetworkAnalyzer,100,70e3)
+% pullAndPlot3577ARollOff(NetworkAnalyzer,100,80e3)

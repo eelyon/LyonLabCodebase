@@ -1,5 +1,5 @@
 %% Instrument Connection
-clear fieldFox % Clear current fieldFox object
+% clear fieldFox % Clear current fieldFox object
 
 % Find a VISA-TCPIP object.
 fieldFox = instrfind('Type', 'visa-tcpip', 'RsrcName', 'TCPIP0::172.29.117.100::inst0::INSTR', 'Tag', '');

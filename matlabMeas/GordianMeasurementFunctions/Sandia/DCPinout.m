@@ -1,7 +1,7 @@
 %% DC pinout for 2019_D_ROIC_QD_ava_DIY die bonded Dec. 2024
 %% Sommer-Tanner pinout
 STD = pinout(controlDAC,12); % Sommer-Tanner drive
-STS = pinout(sim900,8); % Sommer-Tanner sense
+STS = pinout(controlDAC,17); % Sommer-Tanner sense
 STM = pinout(controlDAC,10); % Sommer-Tanner middle gate
 
 TM = pinout(controlDAC,24); % top metal
@@ -65,8 +65,8 @@ trap5 = pinout(supplyDAC,12);
 trap6 = pinout(supplyDAC,13);
 
 %% HEMT control lines
-Vcc = pinout(sim900,6); % collector of cascode
-Vf = pinout(sim900,7); % emitter follower of cascode
+Vcc = pinout(sim900,7); % collector of cascode
+Vf = pinout(sim900,8); % emitter follower of cascode
 
 function gate = pinout(Device,Port)
 % Creating object that contains DAC and channel
