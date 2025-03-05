@@ -4,7 +4,7 @@ numSteps = 100; % sigDACRampVoltage
 numStepsRC = 10; % interleavedRamp
 waitTime = 0.02; % interleavedRamp
 delta = 0.1; % rampSIM900Voltage
-stopVal = -3;
+stopVal = -4;
 
 %% Set Sommer-Tanner
 interleavedRamp(TM.Device,TM.Port,-3,numStepsRC,waitTime) % ramp top metal
@@ -78,5 +78,5 @@ interleavedRamp(trap5.Device,trap5.Port,stopVal,numStepsRC,waitTime)
 interleavedRamp(trap6.Device,trap6.Port,stopVal,numStepsRC,waitTime)
 fprintf('Electron trap set for emission.\n')
 
-rampSIM900Voltage(filament.Device,filament.Port,-1.5,waitTime,0.1) % ramp filament backing plate
+rampSIM900Voltage(filament.Device,filament.Port,-1,waitTime,0.1) % ramp filament backing plate
 fprintf('Backing plate set for emission.\n')

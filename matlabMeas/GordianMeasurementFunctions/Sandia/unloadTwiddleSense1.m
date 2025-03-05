@@ -26,7 +26,7 @@ rampSIM900Voltage(sense1_l.Device,sense1_l.Port,-0.5,waitTime,delta)
 sigDACRampVoltage(d4.Device,d4.Port,Vopen,numSteps)
 interleavedRamp(d5.Device,d5.Port,Vclose,numStepsRC,waitTime)
 sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vopen,numStepsCCD)
-sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps)
+sigDACRampVoltage(d4.Device,d4.Port,-2,numSteps) % Set d4 to -2V so that electrons in channels parallel cannot escape
 
 %% Move electrons on CCD3 back to ST through CCD
 ccd_units = 63; % number of repeating units in ccd array
