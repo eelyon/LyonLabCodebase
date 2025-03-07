@@ -1,6 +1,6 @@
 %% Script for removing all electrons from device
 DCPinout; % load DC pinout  script
-numSteps = 100; % set wait time after each voltage step
+numSteps = 20; % set wait time after each voltage step
 stopVal = 0;
 
 %% Set backing plate and top metal positive then sweep ST middle gate
@@ -11,6 +11,7 @@ interleavedRamp(TM.Device,TM.Port,stopVal,numSteps_RC,waitTime) % make top metal
 sigDACRampVoltage(STD.Device,STD.Port,stopVal,numSteps) % Sommer-Tanner drive
 sigDACRampVoltage(STS.Device,STS.Port,stopVal,numSteps) % Sommer-Tanner sense
 sigDACRampVoltage(STM.Device,STM.Port,stopVal,numSteps) % Sommer-Tanner middle gate
+sigDACRampVoltage(M2S.Device,M2S.Port,stopVal,numSteps) % ramp M2 shield
 sigDACRampVoltage(BPG.Device,BPG.Port,stopVal,numSteps) % bond pad guard
 
 %% Set CCD gates negative

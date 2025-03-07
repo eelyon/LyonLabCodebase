@@ -1,8 +1,8 @@
 %% Load any electrons left in CCD back into Sommer-Tanner
 % Leaves door (here offset) to sense closed
 % Run DCPinout before running this script
-numSteps = 20;
-waitTime = 0.0011;
+numSteps = 100;
+waitTime = 0.011;
 Vopen = 0.6; % holding voltage of ccd
 Vclose = -0.6; % closing voltage of ccd
 
@@ -24,11 +24,11 @@ end
 fprintf(['Electrons moved ', num2str(ccd_units), ' ccd units\n'])
 
 %% Unload CCD
-sigDACRampVoltage(d3.Device,d3.Port,Vopen,500); % open 3rd door
-sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vclose,500); % close phi1_1
-sigDACRampVoltage(d2.Device,d2.Port,Vopen,500); % open 2nd door
-sigDACRampVoltage(d3.Device,d3.Port,Vclose,500); % close 3rd door
-sigDACRampVoltage(d1_even.Device,d1_even.Port,Vopen,500); % open 1st door
-sigDACRampVoltage(d2.Device,d2.Port,Vclose,500); % close 2nd door
-sigDACRampVoltage(d1_even.Device,d1_even.Port,Vclose,500); % close 1st door
+sigDACRampVoltage(d3.Device,d3.Port,Vopen,numSteps); % open 3rd door
+sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vclose,numSteps); % close phi1_1
+sigDACRampVoltage(d2.Device,d2.Port,Vopen,numSteps); % open 2nd door
+sigDACRampVoltage(d3.Device,d3.Port,Vclose,numSteps); % close 3rd door
+sigDACRampVoltage(d1_even.Device,d1_even.Port,Vopen,numSteps); % open 1st door
+sigDACRampVoltage(d2.Device,d2.Port,Vclose,numSteps); % close 2nd door
+sigDACRampVoltage(d1_even.Device,d1_even.Port,Vclose,numSteps); % close 1st door
 fprintf('Electrons loaded back onto Sommer-Tanner\n')

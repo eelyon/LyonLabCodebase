@@ -1,12 +1,12 @@
 %% Script for removing all electrons from device
-numSteps = 100; % set wait time after each voltage step
+numSteps = 20; % set wait time after each voltage step
 numSteps_RC = 10; % % set steps for slow ramp for filtered lines
-waitTime = 0.1; % set to 5 times time constant
+waitTime = 0.0011; % set to 5 times time constant
 delta = 0.1; % for SIM900 ramp
-stopVal = -3; % set stop voltage
+stopVal = -2; % set stop voltage
 
 %% Set backing plate and top metal positive then sweep ST middle gate
-rampSIM900Voltage(filament.Device,filament.Port,5,waitTime,delta) % ramp filament backing plate
+rampSIM900Voltage(filament.Device,filament.Port,3,waitTime,delta) % ramp filament backing plate
 interleavedRamp(TM.Device,TM.Port,1,numSteps_RC,waitTime) % make top metal positive
 delay(1)
 
@@ -77,5 +77,5 @@ interleavedRamp(trap5.Device,trap5.Port,stopVal,numStepsRC,waitTime)
 interleavedRamp(trap6.Device,trap6.Port,stopVal,numStepsRC,waitTime)
 delay(1)
 
-interleavedRamp(TM.Device,TM.Port,stopVal,numSteps_RC,waitTime) % make top metal negative
+interleavedRamp(TM.Device,TM.Port,-1,numSteps_RC,waitTime) % make top metal negative
 fprintf('Electrons are ejected.\n')

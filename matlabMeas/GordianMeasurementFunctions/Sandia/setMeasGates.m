@@ -4,7 +4,7 @@ numSteps = 20; % sigDACRampVoltage
 numStepsRC = 10; % interleavedRamp
 waitTime = 0.0011; % interleavedRamp
 delta = 0.1; % rampSIM900Voltage
-Vclose = -0.6; % closing voltage of ccd, set below top metal
+Vclose = -1; % closing voltage of ccd, set below top metal
 
 %% Set Sommer-Tanner
 sigDACRampVoltage(STD.Device,STD.Port,0,numSteps) % ramp ST-Drive
@@ -12,23 +12,24 @@ sigDACRampVoltage(STS.Device,STS.Port,0,numSteps) % ramp ST-Sense
 sigDACRampVoltage(STM.Device,STM.Port,0,numSteps) % ramp ST-Middle
 
 %% Set 1st CCD
-sigDACRampVoltage(d1_odd.Device,d1_odd.Port,-2,numSteps)
-sigDACRampVoltage(d1_even.Device,d1_even.Port,-2,numSteps)
-sigDACRampVoltage(d2.Device,d2.Port,-2,numSteps)
-sigDACRampVoltage(d3.Device,d3.Port,-2,numSteps)
+sigDACRampVoltage(d1_odd.Device,d1_odd.Port,Vclose,numSteps)
+sigDACRampVoltage(d1_even.Device,d1_even.Port,Vclose,numSteps)
+sigDACRampVoltage(d2.Device,d2.Port,Vclose,numSteps)
+sigDACRampVoltage(d3.Device,d3.Port,Vclose,numSteps)
 
 sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vclose,numSteps)
 sigDACRampVoltage(phi1_2.Device,phi1_2.Port,Vclose,numSteps)
 sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vclose,numSteps)
 fprintf('1st CCD set for emission.\n')
 
-interleavedRamp(TM.Device,TM.Port,-1,numStepsRC,waitTime) % ramp top metal
-CCDclean % Clean out CCD, in case electrons went in from top metal
+interleavedRamp(TM.Device,TM.Port,-0.7,numStepsRC,waitTime) % ramp top metal
+sigDACRampVoltage(BPG.Device,BPG.Port,-1,numSteps) % set bond pad guard
+% CCDclean % Clean out CCD, in case electrons went in from top metal
 
 %% Set 1st twiddle-sense
-sigDACRampVoltage(d4.Device,d4.Port,-2,numSteps)
+sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps)
 interleavedRamp(d5.Device,d5.Port,-2,numStepsRC,waitTime); % close door
-interleavedRamp(guard1_l.Device,guard1_l.Port,0.2,numStepsRC,waitTime); % set left shield back
+interleavedRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTime); % set left shield back
 sigDACRampVoltage(twiddle1.Device,twiddle1.Port,0,numSteps); % set twiddle to 0V
 sigDACRampVoltage(guard1_r.Device,guard1_r.Port,-2,numSteps); % set right shield to -2V
 sigDACRampVoltage(sense1_r.Device,sense1_r.Port,-2,numSteps) % set right sense gate to -2V
@@ -36,21 +37,21 @@ sigDACRampVoltage(d6.Device,d6.Port,-2,numSteps)
 rampSIM900Voltage(sense1_l.Device,sense1_l.Port,0,waitTime,delta); % set sense to 0V
 fprintf('1st twiddle-sense set for measurement.\n')
 
-%% Set vertical CCD
-sigDACRampVoltage(phi_Vdown_1.Device,phi_Vdown_1.Port,Vclose,numSteps)
-sigDACRampVoltage(phi_Vdown_2.Device,phi_Vdown_2.Port,Vclose,numSteps)
-sigDACRampVoltage(phi_Vdown_3.Device,phi_Vdown_3.Port,Vclose,numSteps)
+% %% Set vertical CCD
+% sigDACRampVoltage(phi_Vdown_1.Device,phi_Vdown_1.Port,Vclose,numSteps)
+% sigDACRampVoltage(phi_Vdown_2.Device,phi_Vdown_2.Port,Vclose,numSteps)
+% sigDACRampVoltage(phi_Vdown_3.Device,phi_Vdown_3.Port,Vclose,numSteps)
+% 
+% sigDACRampVoltage(phi_Vup_1.Device,phi_Vup_1.Port,Vclose,numSteps)
+% sigDACRampVoltage(phi_Vup_2.Device,phi_Vup_2.Port,Vclose,numSteps)
+% sigDACRampVoltage(phi_Vup_3.Device,phi_Vup_3.Port,Vclose,numSteps)
+% 
+% sigDACRampVoltage(d_Vup_1.Device,d_Vup_1.Port,Vclose,numSteps)
+% sigDACRampVoltage(d_Vup_2.Device,d_Vup_2.Port,Vclose,numSteps)
+% sigDACRampVoltage(d_Vup_3.Device,d_Vup_3.Port,Vclose,numSteps)
+% fprintf('Vertical CCD set for measurement.\n')
 
-sigDACRampVoltage(phi_Vup_1.Device,phi_Vup_1.Port,Vclose,numSteps)
-sigDACRampVoltage(phi_Vup_2.Device,phi_Vup_2.Port,Vclose,numSteps)
-sigDACRampVoltage(phi_Vup_3.Device,phi_Vup_3.Port,Vclose,numSteps)
-
-sigDACRampVoltage(d_Vup_1.Device,d_Vup_1.Port,Vclose,numSteps)
-sigDACRampVoltage(d_Vup_2.Device,d_Vup_2.Port,Vclose,numSteps)
-sigDACRampVoltage(d_Vup_3.Device,d_Vup_3.Port,Vclose,numSteps)
-fprintf('Vertical CCD set for measurement.\n')
-
-%% Set 2nd twiddle-sense
+% %% Set 2nd twiddle-sense
 % sigDACRampVoltage(d7.Device,d7.Port,-2,numSteps) % door for compensation of sense 1
 % interleavedRamp(guard2_l.Device,guard2_l.Port,0.2,numStepsRC,waitTime)
 % sigDACRampVoltage(twiddle2.Device,twiddle2.Port,0,numSteps)

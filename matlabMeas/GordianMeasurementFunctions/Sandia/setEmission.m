@@ -2,19 +2,19 @@
 % Run DCPinout before running this script
 numSteps = 100; % sigDACRampVoltage
 numStepsRC = 10; % interleavedRamp
-waitTime = 0.02; % interleavedRamp
+waitTime = 0.011; % interleavedRamp
 delta = 0.1; % rampSIM900Voltage
-stopVal = -4;
+stopVal = -2;
 
 %% Set Sommer-Tanner
-interleavedRamp(TM.Device,TM.Port,-3,numStepsRC,waitTime) % ramp top metal
+interleavedRamp(TM.Device,TM.Port,-1,numStepsRC,waitTime) % ramp top metal
 sigDACRampVoltage(M2S.Device,M2S.Port,-0.5,numSteps) % ramp M2 shield
 sigDACRampVoltage(BPG.Device,BPG.Port,-1,numSteps) % ramp bond pad guard
 fprintf('Top metal, M2 shield, and bond pad guard set for emission.\n')
 
-sigDACRampVoltage(STD.Device,STD.Port,+2,numSteps) % ramp ST-Drive
-sigDACRampVoltage(STS.Device,STS.Port,+2,numSteps) % ramp ST-Sense
-sigDACRampVoltage(STM.Device,STM.Port,+2,numSteps) % ramp ST-Middle
+sigDACRampVoltage(STD.Device,STD.Port,+4,numSteps) % ramp ST-Drive
+sigDACRampVoltage(STS.Device,STS.Port,+4,numSteps) % ramp ST-Sense
+sigDACRampVoltage(STM.Device,STM.Port,+4,numSteps) % ramp ST-Middle
 fprintf('Sommer-Tanner set for emission.\n')
 
 %% Set 1st CCD
@@ -29,7 +29,7 @@ sigDACRampVoltage(phi1_3.Device,phi1_3.Port,stopVal,numSteps)
 fprintf('1st CCD set for emission.\n')
 
 %% Set 1st twiddle-sense
-interleavedRamp(shield.Device,shield.Port,-0.5,numStepsRC,waitTime) % shield underneath twiddle-sense
+interleavedRamp(shield.Device,shield.Port,-0.2,numStepsRC,waitTime) % shield underneath twiddle-sense
 sigDACRampVoltage(d4.Device,d4.Port,stopVal,numSteps)
 interleavedRamp(d5.Device,d5.Port,stopVal,numStepsRC,waitTime) % compensation
 rampSIM900Voltage(sense1_l.Device,sense1_l.Port,-0.5,waitTime,delta)
@@ -78,5 +78,5 @@ interleavedRamp(trap5.Device,trap5.Port,stopVal,numStepsRC,waitTime)
 interleavedRamp(trap6.Device,trap6.Port,stopVal,numStepsRC,waitTime)
 fprintf('Electron trap set for emission.\n')
 
-rampSIM900Voltage(filament.Device,filament.Port,-1,waitTime,0.1) % ramp filament backing plate
+rampSIM900Voltage(filament.Device,filament.Port,-2,waitTime,0.1) % ramp filament backing plate
 fprintf('Backing plate set for emission.\n')
