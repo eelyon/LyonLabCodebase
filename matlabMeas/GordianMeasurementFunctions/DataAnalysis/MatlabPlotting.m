@@ -1,25 +1,27 @@
-whosePath = 'lab';
-tag = 'shield';
+whosePath = 'B124';
+tag = 'Guard';
 
-numEs = [];
-yErrs = [];
-Vloads = 1:-0.05:0; % [-0.1 0 0.1 0.2 0.3 0.4];
+% numEs = [];
+% yErrs = [];
+% Vloads = 1:-0.05:0; % [-0.1 0 0.1 0.2 0.3 0.4];
 
-gain = 26.6; % Enter gain from roll-off plot
-cap = 5.06*1e-12; % Enter approximate HEMT input capacitance
+gain = 26.7; % Enter gain from roll-off plot
+cap = 4.98*1e-12; % Enter approximate HEMT input capacitance
 
 switch whosePath 
     case 'lab'
-        path_home = 'C:\Users\Lyon Lab Simulation\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Presentations\PQI Retreat Feb2025\Images\';
+        path = 'C:\Users\Lyon Lab Simulation\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Presentations\PQI Retreat Feb2025\Images\';
+    case 'B124'
+        path = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\03_06_25\';
     case 'gordian'
-        path_home = 'C:\Users\gordi\Dropbox (Princeton)\GroupDropbox\Gordian\rfReflectometry\VNA measurements\HeLevelMeter_110623\11_10_23\';
+        path = 'C:\Users\gordi\Dropbox (Princeton)\GroupDropbox\Gordian\rfReflectometry\VNA measurements\HeLevelMeter_110623\11_10_23\';
     otherwise
         disp('Error! Choose existing path')
 end
 
 % Try and catch errors in loop
-currentFigNum = 15032;
-figPath = append(path_home,tag,'_',num2str(currentFigNum),'.fig');
+currentFigNum = 17653;
+figPath = append(path,tag,'_',num2str(currentFigNum),'.fig');
 
 fig = openfig(figPath,"invisible");
 ax = get(fig,'Children');
@@ -48,7 +50,7 @@ errorbar(Vshield,mag*1e6,stdm*1e6,'r.','MarkerSize',10)
 set(gca,'FontSize',13)
 xlabel('V_{guard} (V)','FontSize',14)
 ylabel('V_{rms} (\mu V)','FontSize',14)
-xlim([-1.05,0.25])
+% xlim([-1.05,0.25])
 
 function [nE] = calcNumElectrons(cap,Volts,gain)
 % Calc. electron number from measured voltage
