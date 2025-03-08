@@ -13,7 +13,7 @@ figure()
 errorbar(Vloads,numEs,std,'r.');
 set(gca,'FontSize',13)
 xlabel('V_{load} (V)','FontSize',14)
-ylabel('Number of Electrons','FontSize',14)
+ylabel('Total # of Electrons','FontSize',14)
 xlim([-0.12,1.02])
 ylim([-4,280])
 
