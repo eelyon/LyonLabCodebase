@@ -1,15 +1,15 @@
-whosePath = 'B124';
-tag = 'Guard';
+whosePath = 'B417';
+tag = 'shield';
 
 % numEs = [];
 % yErrs = [];
 % Vloads = 1:-0.05:0; % [-0.1 0 0.1 0.2 0.3 0.4];
 
-gain = 26.7; % Enter gain from roll-off plot
-cap = 4.98*1e-12; % Enter approximate HEMT input capacitance
+gain = 26.6; % Enter gain from roll-off plot
+cap = 5.05*1e-12; % Enter approximate HEMT input capacitance
 
 switch whosePath 
-    case 'lab'
+    case 'B417'
         path = 'C:\Users\Lyon Lab Simulation\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Presentations\PQI Retreat Feb2025\Images\';
     case 'B124'
         path = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\03_06_25\';
@@ -20,7 +20,7 @@ switch whosePath
 end
 
 % Try and catch errors in loop
-currentFigNum = 17653;
+currentFigNum = 15032;
 figPath = append(path,tag,'_',num2str(currentFigNum),'.fig');
 
 fig = openfig(figPath,"invisible");
@@ -50,7 +50,8 @@ errorbar(Vshield,mag*1e6,stdm*1e6,'r.','MarkerSize',10)
 set(gca,'FontSize',13)
 xlabel('V_{guard} (V)','FontSize',14)
 ylabel('V_{rms} (\mu V)','FontSize',14)
-% xlim([-1.05,0.25])
+xlim([-1.05,0.25])
+ylim([-0.7,16])
 
 function [nE] = calcNumElectrons(cap,Volts,gain)
 % Calc. electron number from measured voltage
@@ -59,7 +60,7 @@ end
 
 function [corrMag] = correctedMag(real,imag)
 % Correct measured magnitude by background signal
-    corrReal = real;% - real(length(real)); % Subtract background from Re
-    corrImag = imag;% - imag(length(imag)); % Subtract background from Imag
+    corrReal = real - real(length(real)); % Subtract background from Re
+    corrImag = imag  - imag(length(imag)); % Subtract background from Imag
     corrMag = sqrt(corrReal.^2 + corrImag.^2); % Calc. magnitude
 end
