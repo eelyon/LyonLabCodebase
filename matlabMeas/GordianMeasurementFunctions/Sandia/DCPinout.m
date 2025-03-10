@@ -1,4 +1,4 @@
-%% DC pinout for 2019_D_ROIC_QD_ava_DIY die bonded Dec. 2024
+%% DC pinout for 2019_D_ROIC_QD die bonded Dec. 2024
 %% Sommer-Tanner pinout
 STD = pinout(controlDAC,12); % Sommer-Tanner drive
 STS = pinout(controlDAC,17); % Sommer-Tanner sense

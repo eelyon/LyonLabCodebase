@@ -1,20 +1,20 @@
 %% This script sets all gate voltages for emission
 % Run DCPinout before running this script
-numSteps = 100; % sigDACRampVoltage
+numSteps = 20; % sigDACRampVoltage
 numStepsRC = 10; % interleavedRamp
-waitTime = 0.011; % interleavedRamp
+waitTime = 0.0011; % interleavedRamp
 delta = 0.1; % rampSIM900Voltage
-stopVal = -2;
+stopVal = -3;
 
 %% Set Sommer-Tanner
-interleavedRamp(TM.Device,TM.Port,-1,numStepsRC,waitTime) % ramp top metal
+interleavedRamp(TM.Device,TM.Port,-3,numStepsRC,waitTime) % ramp top metal
 sigDACRampVoltage(M2S.Device,M2S.Port,-0.5,numSteps) % ramp M2 shield
 sigDACRampVoltage(BPG.Device,BPG.Port,-1,numSteps) % ramp bond pad guard
 fprintf('Top metal, M2 shield, and bond pad guard set for emission.\n')
 
-sigDACRampVoltage(STD.Device,STD.Port,+4,numSteps) % ramp ST-Drive
-sigDACRampVoltage(STS.Device,STS.Port,+4,numSteps) % ramp ST-Sense
-sigDACRampVoltage(STM.Device,STM.Port,+4,numSteps) % ramp ST-Middle
+sigDACRampVoltage(STD.Device,STD.Port,+2,numSteps) % ramp ST-Drive
+sigDACRampVoltage(STS.Device,STS.Port,+2,numSteps) % ramp ST-Sense
+sigDACRampVoltage(STM.Device,STM.Port,+2,numSteps) % ramp ST-Middle
 fprintf('Sommer-Tanner set for emission.\n')
 
 %% Set 1st CCD

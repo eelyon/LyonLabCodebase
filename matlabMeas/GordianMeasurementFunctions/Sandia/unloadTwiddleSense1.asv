@@ -1,4 +1,4 @@
-%% Move electrons from phi_Vdown_2 to Somer-Tanner
+%% Move electrons out of 1st twiddle sense back to Sommer-Tanner
 sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vopen,numStepsCCD)
 sigDACRampVoltage(phi_Vdown_2.Device,phi_Vdown_2.Port,Vclose,numSteps)
 sigDACRampVoltage(d4.Device,d4.Port,Vopen,numSteps)
@@ -74,6 +74,4 @@ sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vclose,numSteps)
 ssigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vopen,numSteps)
 sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps)
 sigDACRampVoltage(phi_Vdown_2.Device,phi_Vdown_2.Port,Vopen,numSteps)
-sigDACRampVoltage(phi_Vup_2.Device,phi_Vup_2.Port,Vopen,numSteps)
-sigDACRampVoltage(d_Vup_2.Device,d_Vup_2.Port,Vopen,numSteps)
-sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vclose,numSteps)
+sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vclose,numSteps) % Electrons on vertical CCD

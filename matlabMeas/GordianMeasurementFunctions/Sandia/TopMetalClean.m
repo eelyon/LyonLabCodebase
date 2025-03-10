@@ -1,6 +1,6 @@
 %% Script for sweeping the top metal negative to get rid of electrons
 Vclean = 2;
-numSteps = 100;
+numSteps = 20;
 
 %% Set Sommer-Tanner gates positive
 sigDACRampVoltage(STM.Device,STM.Port,Vclean,numSteps);
@@ -12,12 +12,12 @@ sigDACRampVoltage(STD.Device,STD.Port,Vclean,numSteps);
 % sigDACRampVoltage(phi1_2.Device,phi1_2.Port,Vclean,numSteps); % open phi2
 % sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vclean,numSteps); % open phi3
 
-interleavedRamp(TM.Device,TM.Port,-0.6,numStepsRC,waitTime); % make top metal less negative
+% interleavedRamp(TM.Device,TM.Port,-0.8,numStepsRC,waitTime); % make top metal less negative
 % sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vclean,numSteps)
 
 %% Loop top metal sweep and unload electrons
 for n = 1:5
-    sweep1DMeasSR830({'TM'},-0.6,-1.6,0.2,3,5,{SR830Twiddle},TM.Device,{TM.Port},1,1);
+    sweep1DMeasSR830({'TM'},-0.8,-1.6,0.2,3,5,{SR830Twiddle},TM.Device,{TM.Port},1,1);
     TwiddleUnload_Full;
 end
 

@@ -4,7 +4,7 @@ numSteps = 20; % sigDACRampVoltage
 numStepsRC = 10; % interleavedRamp
 waitTime = 0.0011; % interleavedRamp
 delta = 0.1; % rampSIM900Voltage
-Vclose = -1; % closing voltage of ccd, set below top metal
+Vclose = -0.7; % closing voltage of ccd, set below top metal
 
 %% Set Sommer-Tanner
 sigDACRampVoltage(STD.Device,STD.Port,0,numSteps) % ramp ST-Drive
@@ -22,9 +22,9 @@ sigDACRampVoltage(phi1_2.Device,phi1_2.Port,Vclose,numSteps)
 sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vclose,numSteps)
 fprintf('1st CCD set for emission.\n')
 
-interleavedRamp(TM.Device,TM.Port,-0.7,numStepsRC,waitTime) % ramp top metal
+interleavedRamp(TM.Device,TM.Port,-0.8,numStepsRC,waitTime) % ramp top metal
 sigDACRampVoltage(BPG.Device,BPG.Port,-1,numSteps) % set bond pad guard
-% CCDclean % Clean out CCD, in case electrons went in from top metal
+CCDclean % Clean out 1st CCD
 
 %% Set 1st twiddle-sense
 sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps)
@@ -32,32 +32,32 @@ interleavedRamp(d5.Device,d5.Port,-2,numStepsRC,waitTime); % close door
 interleavedRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTime); % set left shield back
 sigDACRampVoltage(twiddle1.Device,twiddle1.Port,0,numSteps); % set twiddle to 0V
 sigDACRampVoltage(guard1_r.Device,guard1_r.Port,-2,numSteps); % set right shield to -2V
-sigDACRampVoltage(sense1_r.Device,sense1_r.Port,-2,numSteps) % set right sense gate to -2V
-sigDACRampVoltage(d6.Device,d6.Port,-2,numSteps)
+sigDACRampVoltage(sense1_r.Device,sense1_r.Port,Vclose,numSteps) % set right sense gate to -2V
+sigDACRampVoltage(d6.Device,d6.Port,Vclose,numSteps)
 rampSIM900Voltage(sense1_l.Device,sense1_l.Port,0,waitTime,delta); % set sense to 0V
 fprintf('1st twiddle-sense set for measurement.\n')
 
-% %% Set vertical CCD
-% sigDACRampVoltage(phi_Vdown_1.Device,phi_Vdown_1.Port,Vclose,numSteps)
-% sigDACRampVoltage(phi_Vdown_2.Device,phi_Vdown_2.Port,Vclose,numSteps)
-% sigDACRampVoltage(phi_Vdown_3.Device,phi_Vdown_3.Port,Vclose,numSteps)
-% 
-% sigDACRampVoltage(phi_Vup_1.Device,phi_Vup_1.Port,Vclose,numSteps)
-% sigDACRampVoltage(phi_Vup_2.Device,phi_Vup_2.Port,Vclose,numSteps)
-% sigDACRampVoltage(phi_Vup_3.Device,phi_Vup_3.Port,Vclose,numSteps)
-% 
-% sigDACRampVoltage(d_Vup_1.Device,d_Vup_1.Port,Vclose,numSteps)
-% sigDACRampVoltage(d_Vup_2.Device,d_Vup_2.Port,Vclose,numSteps)
-% sigDACRampVoltage(d_Vup_3.Device,d_Vup_3.Port,Vclose,numSteps)
-% fprintf('Vertical CCD set for measurement.\n')
+%% Set vertical CCD
+sigDACRampVoltage(phi_Vdown_1.Device,phi_Vdown_1.Port,Vclose,numSteps)
+sigDACRampVoltage(phi_Vdown_2.Device,phi_Vdown_2.Port,Vclose,numSteps)
+sigDACRampVoltage(phi_Vdown_3.Device,phi_Vdown_3.Port,Vclose,numSteps)
+
+sigDACRampVoltage(phi_Vup_1.Device,phi_Vup_1.Port,Vclose,numSteps)
+sigDACRampVoltage(phi_Vup_2.Device,phi_Vup_2.Port,Vclose,numSteps)
+sigDACRampVoltage(phi_Vup_3.Device,phi_Vup_3.Port,Vclose,numSteps)
+
+sigDACRampVoltage(d_Vup_1.Device,d_Vup_1.Port,Vclose,numSteps)
+sigDACRampVoltage(d_Vup_2.Device,d_Vup_2.Port,Vclose,numSteps)
+sigDACRampVoltage(d_Vup_3.Device,d_Vup_3.Port,Vclose,numSteps)
+fprintf('Vertical CCD set for measurement.\n')
 
 % %% Set 2nd twiddle-sense
 % sigDACRampVoltage(d7.Device,d7.Port,-2,numSteps) % door for compensation of sense 1
 % interleavedRamp(guard2_l.Device,guard2_l.Port,0.2,numStepsRC,waitTime)
 % sigDACRampVoltage(twiddle2.Device,twiddle2.Port,0,numSteps)
 % sigDACRampVoltage(guard2_r.Device,guard2_r.Port,-2,numSteps)
-% sigDACRampVoltage(sense2_r.Device,sense2_r.Port,-2,numSteps)
-% sigDACRampVoltage(d8.Device,d8.Port,-2,numSteps)
+% sigDACRampVoltage(sense2_r.Device,sense2_r.Port,Vclose,numSteps)
+% sigDACRampVoltage(d8.Device,d8.Port,Vclose,numSteps)
 % rampSIM900Voltage(sense2_l.Device,sense2_l.Port,0,waitTime,delta)
 % fprintf('2nd twiddle-sense set for measurement.\n')
 

@@ -1,3 +1,4 @@
+%% Script for measuring electrons in 1st twiddle-sense as function of different loading voltages
 %% Necessary Constants. Update this from cooldown to cooldown
 gain = 26.6; % Enter gain from roll-off plot
 capacitance = 5.05*1e-12; % Enter approximate HEMT input capacitance
