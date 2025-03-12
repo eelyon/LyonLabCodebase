@@ -3,8 +3,8 @@
 channels = [1, 2, 3, 4, 5, 6, 7, 8];
 numSteps = 100;
 
-voltsEmittMeas = [-0.4,...  %DAC 1
-        -0.10,...   %DAC 2
+voltsEmittMeas = [-0.1,...  %DAC 1
+        -0.20,...   %DAC 2
         -0.20,...   %DAC 3
         -0.0,...   %DAC 4
         -0.0,...   %DAC 5
@@ -40,8 +40,8 @@ voltsSucc = [8,...  %DAC 1
         succer,...   %DAC 7
         succer];     %DAC 8
 
-voltUse = voltsEmittMeas;
-%voltUse = voltsEmittTest;
+%voltUse = voltsEmittMeas;
+voltUse = voltsEmittTest;
 %voltUse = voltsSucc;
 %voltUse = voltsGnd;
 
