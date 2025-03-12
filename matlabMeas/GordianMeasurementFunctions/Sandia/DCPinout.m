@@ -36,11 +36,11 @@ phi_Vdown_2 = pinout(controlDAC,21);
 phi_Vdown_3 = pinout(controlDAC,7);
 
 phi_Vup_1 = pinout(supplyDAC,3);
-phi_Vup_2 = pinout(supplyDAC,15);
+phi_Vup_2 = pinout(supplyDAC,24);
 phi_Vup_3 = pinout(supplyDAC,16);
 
 d_Vup_1 = pinout(supplyDAC,2);
-d_Vup_2 = pinout(supplyDAC,14);
+d_Vup_2 = pinout(supplyDAC,23);
 d_Vup_3 = pinout(controlDAC,19);
 
 d7 = pinout(controlDAC,15); % compensation door for 2nd twiddle-sense

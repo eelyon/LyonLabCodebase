@@ -1,10 +1,10 @@
 %% Load any electrons left in CCD back into Sommer-Tanner
 % Leaves door (here offset) to sense closed
 % Run DCPinout before running this script
-numSteps = 20;
-waitTime = 0.0011;
-Vopen = 1; % holding voltage of ccd
-Vclose = -0.7; % closing voltage of ccd
+% numSteps = 20;
+% waitTime = 0.0011;
+% Vopen = 1; % holding voltage of ccd
+% Vclose = -0.7; % closing voltage of ccd
 
 interleavedRamp(d4.Device,d4.Port,0.8,numSteps,waitTime); % open d4
 sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vopen,numSteps); % open phi1_1

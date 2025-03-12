@@ -1,11 +1,11 @@
 %% Script for sweeping the top metal negative to get rid of electrons
+% numSteps = 20;
 Vclean = 2;
-numSteps = 20;
 
 %% Set Sommer-Tanner gates positive
 sigDACRampVoltage(STM.Device,STM.Port,Vclean,numSteps);
 sigDACRampVoltage(STD.Device,STD.Port,Vclean,numSteps);
-sigDACRampVoltage(STD.Device,STD.Port,Vclean,numSteps);
+sigDACRampVoltage(STS.Device,STS.Port,Vclean,numSteps);
 
 %% Open all CCD gates
 % sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vclean,numSteps); % open phi1
@@ -17,7 +17,7 @@ sigDACRampVoltage(STD.Device,STD.Port,Vclean,numSteps);
 
 %% Loop top metal sweep and unload electrons
 for n = 1:5
-    sweep1DMeasSR830({'TM'},-0.8,-1.6,0.2,3,5,{SR830Twiddle},TM.Device,{TM.Port},1,1);
+    sweep1DMeasSR830({'TM'},-0.4,-0.8,0.1,10,10,{SR830Twiddle},TM.Device,{TM.Port},1,1);
     TwiddleUnload_Full;
 end
 

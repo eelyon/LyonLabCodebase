@@ -1,12 +1,12 @@
 %% Script for moving electrons from Sommer-Tanner to phi1 before door of 1st twiddle-sense
 % Run DCPinout before running this script
-numSteps = 500;
-numStepsCCD = 500; % number of steps in ramp
-numStepsRC = 5;
-waitTime = 0.5;
+% numSteps = 500;
+% numStepsCCD = 500; % number of steps in ramp
+% numStepsRC = 5;
+% waitTime = 0.5;
+% Vopen = 0.6; % holding voltage of ccd
+% Vclose = -0.6; % closing voltage of ccd
 Vload = 0.5; % set voltage on first two doors to control no. of electrons
-Vopen = 0.6; % holding voltage of ccd
-Vclose = -0.6; % closing voltage of ccd
 
 %% Open first three doors to CCD - using sigDACRampVoltage function
 sigDACRampVoltage(d1_even.Device,d1_even.Port,Vload,numSteps); % open 1st door

@@ -5,33 +5,33 @@
 %% Device parameters
 t = 0.96e-6+250e-9+20e-9; % channel height
 w = 3e-6; % ST channel width
-V_pinch = -0.4; % pinch off voltage
+V_pinch = -0.35; % pinch off voltage
 
 %% Bulk LHe
 T = 1.8; % measurement temperature in K
-P_atm = 1; % atmospheres of He gas fed into cell
+P_atm = 2; % atmospheres of He gas fed into cell
 fprintf(['For ',num2str(P_atm),' atm of He gas:\n'])
 
 r_cell = 2.7305e-2; % in m
-V_panel = (18.44+3.213)*2.54^3/1e6; % gas manifold + T-KF volume from in^3 to m^3
+V_panel = (18.44+3.213)*2.54^3/1e6; % gas manifold + Tee-KF volume from in^3 to m^3
 A_cell = pi*(r_cell)^2; % bottom area of cell
 cell_depth = 1.6e-3+0.630e-3+10.16e-3+0e-3; % PCB, device, height from cell bottom to PCB bottom
 
 LHe = P_atm*V_panel/757; % volume of LHe in cell in m^3
 h_bulk = cell_depth-LHe/A_cell; % in m
-fprintf(['Height from LHe bulk = ', num2str(h_bulk*1e3, '%.1f'), ' mm\n'])
+fprintf(['-> Height from LHe bulk = ', num2str(h_bulk*1e3, '%.1f'), ' mm\n'])
 
 t_vdW = vdWThick(h_bulk*1e2,"thin"); % output in nm
-fprintf(['van der Waals film thickness = ',num2str(t_vdW,'%.1f'),'nm\n'])
+fprintf(['-> van der Waals film thickness = ',num2str(t_vdW,'%.1f'),' nm\n'])
 
 %% Sommer-Tanner
-fprintf(['Given a channel width of ', num2str(w*1e6),'um:\n'])
+fprintf(['Given a channel width of ', num2str(w*1e6),' um:\n'])
 sig = surfaceT(T); % surface tension at TK
 rc = Rc(sig,h_bulk); % radius of curvature with no electrons
 d = ch_depth(rc,w,t); % LHe height in channel
-fprintf(['He height in channel = ', num2str(d*1e6),'um\n'])
+fprintf(['-> He height in channel = ', num2str(d*1e6,'%.3f'),' um\n'])
 ne = eD_ST(V_pinch,d);
-fprintf(['Electron density from Sommer-Tanner = ', num2str(ne, '%.3e'), ' cm^-2\n'])
+fprintf(['-> Electron density from Sommer-Tanner = ', num2str(ne, '%.3e'), ' cm^-2\n'])
 
 %% Plot channel depth vs. electron density
 n = linspace(1e8,3e10,1e6); % electron density

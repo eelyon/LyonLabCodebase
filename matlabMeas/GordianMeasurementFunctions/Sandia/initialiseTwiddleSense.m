@@ -1,9 +1,8 @@
-numSteps = 500; % sigDACRampVoltage
-numStepsCCD = 500; % sigDACRampVoltage
-numStepsRC = 2; % interleavedRamp
-waitTime = 0.02; % 5 times time constant
-
-Vclose = -0.6; % closing voltage of ccd
+% numSteps = 500; % sigDACRampVoltage
+% numStepsCCD = 500; % sigDACRampVoltage
+% numStepsRC = 2; % interleavedRamp
+% waitTime = 0.02; % 5 times time constant 
+% Vclose = -0.6; % closing voltage of ccd
 
 sigDACRampVoltage(STD.Device,STD.Port,0,numSteps) % ramp ST-Drive
 sigDACRampVoltage(STS.Device,STS.Port,0,numSteps) % ramp ST-Sense

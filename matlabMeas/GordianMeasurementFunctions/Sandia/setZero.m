@@ -1,5 +1,5 @@
 %% Set all gates to 0V
-numSteps = 20; % set wait time after each voltage step
+% numSteps = 20; % set wait time after each voltage step
 stopVal = 0;
 
 sigDACSetChannels(controlDAC,stopVal)
