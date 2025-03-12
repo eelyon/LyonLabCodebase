@@ -11,6 +11,8 @@ classdef SIM900
             pause(1);
             SIM900.comPort = comPort;
             SIM900.identifier = query(SIM900.client,"*IDN?");
+%             SIM900.client.InputBufferSize = 4096; % set buffer for 8 modules
+%             SIM900.client.OutputBufferSize = 4096; % set buffer for 8 modules
         end
 
        function [] = setSIM900Voltage(SIM900,port,voltage)
