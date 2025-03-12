@@ -4,30 +4,31 @@ dielectric_constants:
   METAL: 1.0
   VACUUM: 1.0
 extract_opt:
-- additional_name: twiddleSense
+- additional_name: Sandia
   coordinate1:
-  - -10
-  - 10
+  - -695
+  - -662
   - 301
   coordinate2:
-  - 2100
-  - 2175
+  - 135
+  - 140
   - 1001
-  coordinate3: 0.675
+  coordinate3: 2.13
   plane: xy
   quantity: phi
 ff_polynomial: 2
-meshfile: twiddleSense
+meshfile: Sandia
 physicalSurfaces:
-  Reservoir: 10
-  STDoor: 6
-  Sense: 9
-  TFDoor: 7
-  ThinFilm: 5
-  TopMetal: 11
-  Twiddle: 8
+  CCD1: 7
+  CCD2: 6
+  CCD3: 5
+  DR2: 9
+  DR3: 8
+  Dr1: 10
+  Reservoir: 11
+  TopMetal: 12
 physicalVolumes:
-  DIELECTRIC: 3
+  DIELECTRIC: 4
   HELIUM: 1
-  METAL: 4
-  VACUUM: 2
+  METAL: 2
+  VACUUM: 3

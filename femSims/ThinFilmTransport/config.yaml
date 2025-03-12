@@ -1,0 +1,35 @@
+dielectric_constants:
+  DIELECTRIC: 11.0
+  HELIUM: 1.057
+  METAL: 1.0
+  VACUUM: 1.0
+extract_opt:
+- additional_name: twiddleSense
+  coordinate1:
+  - -20
+  - 20
+  - 301
+  coordinate2:
+  - 1995
+  - 2175
+  - 1001
+  coordinate3: 0.675
+  plane: xy
+  quantity: phi
+ff_polynomial: 2
+meshfile: twiddleSense
+physicalSurfaces:
+  Barriers: 11
+  Blocks: 12
+  Reservoir: 10
+  STDoor: 6
+  Sense: 9
+  TFDoor: 7
+  ThinFilm: 5
+  TopMetal: 13
+  Twiddle: 8
+physicalVolumes:
+  DIELECTRIC: 2
+  HELIUM: 1
+  METAL: 3
+  VACUUM: 4

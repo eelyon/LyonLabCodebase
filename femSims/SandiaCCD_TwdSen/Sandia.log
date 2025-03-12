@@ -1,0 +1,29 @@
+ GC:  converge in  127 g=1.14984e-09 rho= 1.44788 gamma= 0.698688
+  -- Solve :
+          min -0.00781969  max 1
+calculations are finished, saving data
+I'm on iteration 8/11
+ GC:  converge in  141 g=7.82897e-09 rho= 1.5403 gamma= 0.804185
+  -- Solve :
+          min 4.03856e-06  max 1.00013
+calculations are finished, saving data
+I'm on iteration 9/11
+ GC:  converge in  140 g=7.97868e-09 rho= 1.62058 gamma= 0.842451
+  -- Solve :
+          min -0.0587399  max 1
+calculations are finished, saving data
+I'm on iteration 10/11
+ GC:  converge in  147 g=7.65522e-10 rho= 1.47112 gamma= 0.777874
+  -- Solve :
+          min -5.69879e-05  max 1
+calculations are finished, saving data
+I'm on iteration 11/11
+ GC:  converge in  55 g=1.11874e-10 rho= 1.47829 gamma= 0.696628
+  -- Solve :
+          min -0.000332787  max 1
+calculations are finished, saving data
+times: compile 0.204s, execution 14.352s,  mpirank:0
+ ######## We forget of deleting   -39 Nb pointer,   0Bytes  ,  mpirank 0, memory leak =0
+ CodeAlloc : nb ptr  4061,  size :498216 mpirank: 0
+Ok: Normal End
+ try getConsole C:\Users\LyonLab\Documents\GitHub\LyonLabCodebase\femSims\SandiaCCD\Sandia.edp

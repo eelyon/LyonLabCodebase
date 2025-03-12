@@ -1,0 +1,37 @@
+dielectric_constants:
+  DIELECTRIC: 11.0
+  HELIUM: 1.057
+  METAL: 1.0
+  VACUUM: 1.0
+extract_opt:
+- additional_name: Sandia
+  coordinate1:
+  - -36
+  - -9
+  - 301
+  coordinate2:
+  - 25
+  - 30
+  - 1001
+  coordinate3: 2.13
+  plane: xy
+  quantity: phi
+ff_polynomial: 2
+meshfile: Sandia
+physicalSurfaces:
+  Dr1: 12
+  Dr2: 11
+  Dr3: 10
+  Guard1: 8
+  Guard2: 6
+  Sense1: 9
+  Sense2: 5
+  TopMetal: 15
+  Twiddle: 7
+  Via1: 13
+  Via2: 14
+physicalVolumes:
+  DIELECTRIC: 4
+  HELIUM: 1
+  METAL: 3
+  VACUUM: 2
