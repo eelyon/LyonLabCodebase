@@ -8,21 +8,21 @@
 % Vclose = -0.7; % closing voltage of ccd
 
 startShield = 0.2;
-stopShield = -1;
+stopShield = -1.6;
 shieldSteps = stopShield-startShield;
-Vload = 0.1; % set voltage on d1 and d2
+Vload = 0.2; % set voltage on d1 and d2
 
 %% Open first three doors to CCD - using sigDACRampVoltage function
-sigDACRampVoltage(d1_even.Device,d1_even.Port,Vload,numSteps); % open 1st door
-sigDACRampVoltage(d2.Device,d2.Port,Vload,numSteps); % open 2nd door
-sigDACRampVoltage(d1_even.Device,d1_even.Port,Vclose,numSteps); % close 1st door
-sigDACRampVoltage(d3.Device,d3.Port,Vopen,numSteps); % open 3rd door
-sigDACRampVoltage(d2.Device,d2.Port,Vclose,numSteps); % close 2nd door
-fprintf('Electrons loaded onto third door\n');
+sigDACRampVoltage(d1_even.Device,d1_even.Port,Vload,numSteps) % open 1st door
+sigDACRampVoltage(d2.Device,d2.Port,Vload,numSteps) % open 2nd door
+sigDACRampVoltage(d1_even.Device,d1_even.Port,Vclose,numSteps);% close 1st door
+sigDACRampVoltage(d3.Device,d3.Port,Vopen,numSteps) % open 3rd door
+sigDACRampVoltage(d2.Device,d2.Port,Vclose,numSteps) % close 2nd door
+fprintf('Electrons loaded onto third door\n')
 
-sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vopen,numSteps); % open phi1
-sigDACRampVoltage(d3.Device,d3.Port,Vclose,numSteps); % close 3rd door
-fprintf('Electrons loaded onto ccd1\n');
+sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vopen,numSteps) % open phi1
+sigDACRampVoltage(d3.Device,d3.Port,Vclose,numSteps) % close 3rd door
+fprintf('Electrons loaded onto ccd1\n')
 
 %% Run CCD gates
 ccd_units = 63; % number of repeating units in ccd array
@@ -43,7 +43,7 @@ fprintf('\nElectrons loaded onto door gate\n')
 
 %% Set sense, guard and twiddle
 sigDACRampVoltage(guard1_r.Device,guard1_r.Port,-2,numSteps) % close door right of twiddle
-rampSIM900Voltage(sense1_l.Device,sense1_l.Port,0,waitTime,0.1) % open sense
+% rampSIM900Voltage(sense1_l.Device,sense1_l.Port,0,waitTime,0.1) % open sense
 interleavedRamp(guard1_l.Device,guard1_l.Port,startShield,numStepsRC,waitTime) % open guard
 sigDACRampVoltage(twiddle1.Device,twiddle1.Port,0,numSteps) % open twiddle
 fprintf('Sense, twiddle, and both guard gate voltages set\n')

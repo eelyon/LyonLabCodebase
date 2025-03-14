@@ -42,6 +42,8 @@ Awg2ch = Agilent33622A(1234,Awg2chHouck_Address,1); % two-channel AWG
 % AwgComp_Address = '172.29.117.17';
 % AwgComp = Agilent33220A(1234,AwgComp_Address,1); % 1-channel AWG
 
+AwgFilament = Agilent33220A(port,'172.29.117.127',1);
+
 %% GUIs
 controlDACGUI = sigDACGUI;
 % % controlDACGUI.Inst_NameEditField.Value = 'controlDAC';
