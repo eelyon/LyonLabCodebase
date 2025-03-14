@@ -1,9 +1,11 @@
 %% Acquire data from ATS9416 board and average
-clear bufferVolts
+tic
+clear xaxis bufferVolts X Y Xerr Yerr
 
 % Set parameters for acquisition
+global samplesPerSec
 f_signal = 1e6;
-channelMask = CHANNEL_B; % Select channels to capture, not all combinations are allowed
+channelMask = CHANNEL_A; % Select channels to capture, not all combinations are allowed
 
 % NPT parameters
 postTriggerSamples = 1000064; % Has to be at least 256 and multiple of 128
@@ -14,19 +16,27 @@ buffersPerAcquisition = 1; % Set number of buffers
 % acquisitionLength_sec = 0.01;
 % samplesPerBufferPerChannel = 640000;
 
-[result,bufferVolts] = ATS9416AcquireData_NPT(boardHandle, samplesPerSec, postTriggerSamples, recordsPerBuffer, buffersPerAcquisition, channelMask);
+% Calibrate phase to get ref. signal's phase in sync with Agilent
+% [clbrAmp,clbrPhase] = ATS9416ClbrPhase(boardHandle, samplesPerSec, channelMask, 'square', f_signal);
+% display(clbrPhase);
+
+[result,bufferVolts] = ATS9416AcquireData_NPT(boardHandle,postTriggerSamples,recordsPerBuffer,buffersPerAcquisition,channelMask);
 % [result,bufferVolts] = ATS9416AcquireData_TS(boardHandle, samplesPerSec, acquisitionLength_sec, samplesPerBufferPerChannel, channelMask);
 % [result, bufferVolts] = AlazarAcquireData_TS(boardHandle);
+% xaxis = linspace(0, postTriggerSamples*recordsPerBuffer/samplesPerSec, length(bufferVolts(1,:)));
 
 % figure()
 % plot(xaxis,bufferVolts(1,:))
 % plot(xaxis,bufferVolts(2,:))
 
-phase_2chAwgHouck = 140*pi/180; %150*pi/180;
-phase_1chAwg = 140*pi/180; %-90*pi/180; %60*pi/180;
+stages = 4; % RC filter stages
+fc = 1; % RC filter cut off frequency
+phase = 179.7; % Phase offset for square wave from Awg2ch_Houck
+% 179.746 deg phase offset for two channel AWG (square wave output)
 
-[X,Y] = ATS9416GetXY(bufferVolts, samplesPerSec, postTriggerSamples, f_signal, 'square', 2.38+pi);
-% Xrms = sqrt(mean(X.^2))
-% Yrms = sqrt(mean(Y.^2))
-% R = mean(sqrt(X.^2+Y.^2)) %sqrt(Xrms.^2+Yrms.^2)
-% phi = rad2deg(atan2(real(Yrms),real(Xrms)))
+[X,Y,Xerr,Yerr] = ATS9416GetXY(bufferVolts,samplesPerSec,postTriggerSamples,f_signal,phase*pi/180,stages,fc,1);
+fprintf('X %f', X); fprintf(' +- %f Vrms\n', Xerr)
+fprintf('Y %f', Y); fprintf(' +- %f Vrms\n', Yerr)
+Rrms = sqrt(X.^2+Y.^2); fprintf('R %f Vrms\n', Rrms)
+phi = rad2deg(atan2(real(Y),real(X))); fprintf('phi %f degrees\n', phi)
+toc

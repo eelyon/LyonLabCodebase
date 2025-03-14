@@ -1,14 +1,14 @@
-function [clbrAmp,clbrPhase] = ATS9416CalbrPhase(boardHandle, samplesPerSec, channel, waveForm, f_signal)
+function [clbrAmp,clbrPhase] = ATS9416ClbrPhase(boardHandle, samplesPerSec, channel, waveForm, f_signal)
 %ATS9416CALBRPHASE Fit cosine to AWG signal measured with Alazar
 %   Detailed explanation goes here
 
 % Parameters
-postTriggerSamples = 1280000;
+postTriggerSamples = 1000064;
 T = postTriggerSamples/samplesPerSec; % Duration of the signal (seconds)
 t = 0:1/samplesPerSec:T-1/samplesPerSec; % Time vector
 t = t(1:200);
 
-[~,y] = ATS9416AcquireData_NPT(boardHandle, samplesPerSec, postTriggerSamples, 1, 1, channel);
+[~,y] = ATS9416AcquireData_NPT(boardHandle,postTriggerSamples,1,1,channel);
 yf = y; %lowpass(y, f_signal, samplesPerSec); % Filter measured signal
 
 % TODO - Adjust the phase fit parameter if needed
@@ -31,7 +31,7 @@ s = fminsearch(fcn, [amp; phase; dcOffset]); % Minimise Least-Squares
 
 clbrAmp = s(1);
 clbrPhase = round(s(2),2);
-fprintf('-> The amplitude is %.4f V and the phase is %.2f (actual %.4f) radians\n', clbrAmp, clbrPhase, s(2))
+fprintf('-> The amplitude is %.4f V and the phase is %.2f radians (%.2f degrees) \n', clbrAmp, clbrPhase, clbrPhase*180/pi)
 
 plotFit = fit(s,t);
 
@@ -46,5 +46,5 @@ xlabel('Time  (sec)')
 ylabel('Amplitude (V)')
 legend('AWG Signal', 'Fit')
 
-clear y plotFit
+clear t y plotFit
 end

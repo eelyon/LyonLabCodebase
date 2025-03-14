@@ -22,6 +22,7 @@ if boardHandle.Value == 0
   return
 end
 
+global samplesPerSec
 samplesPerSec = 10e6;
 inputRange_volts = inputRangeIdToVolts(INPUT_RANGE_PM_1_V);
 

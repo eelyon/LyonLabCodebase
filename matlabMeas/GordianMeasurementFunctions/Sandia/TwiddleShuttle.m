@@ -1,8 +1,8 @@
 %% Shuttle electron from twiddle-sense onto door and back
-numSteps = 2;
-waitTime = 0.5; % 5 times time constant
-Vopen = 0.6; % holding voltage of ccd
-Vclose = -0.6; % closing voltage of ccd
+% numSteps = 2;
+% waitTime = 0.5; % 5 times time constant
+% Vopen = 0.6; % holding voltage of ccd
+% Vclose = -0.6; % closing voltage of ccd
 
 interleavedRamp(TM.Device,TM.Port,-0.67,5,0.1); % make top metal less negative
 

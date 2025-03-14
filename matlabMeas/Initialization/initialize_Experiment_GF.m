@@ -8,11 +8,18 @@ port = 1234; % for the big glass dewar
 %% Keysight VNA E5071
 % initializeENA;
 
+%% DC pinout script
+% DCPinout;
+
 %% AJS's 24 channel DACs
 sigDACPortControl = 'COM4'; % 20-bit DAC
 sigDACPortSupply  = 'COM8'; % 18-bit DAC
 controlDAC = sigDAC(sigDACPortControl,24,'controlDAC');
 supplyDAC = sigDAC(sigDACPortSupply,24,'supplyDAC');
+
+%% SIM900 for biasing HEMTs
+sim900Port = 'COM5';
+sim900 = SIM900(sim900Port);
 
 %% SR830 Lock-ins
 st_Address = '172.29.117.106'; % top SR830
@@ -27,8 +34,15 @@ SR830Twiddle = SR830(port,twiddle_Address); % for twiddle
 %% Agilent AWGs
 % deLeonAWG_Address = '172.29.117.133';
 % Awg2ch_deLeon = Agilent33622A(1234,deLeonAWG_Address,1); % two-channel AWG
-houckAWG_Address = '172.29.117.137';
-Awg2ch_Houck = Agilent33622A(1234,houckAWG_Address,1); % two-channel AWG
+Awg2chHouck_Address = '172.29.117.137';
+Awg2ch = Agilent33622A(1234,Awg2chHouck_Address,1); % two-channel AWG
+
+% AwgTwiddle_Address = '172.29.117.16';
+% AwgTwiddle = Agilent33220A(1234,AwgTwiddle_Address,1); % 1-channel AWG
+% AwgComp_Address = '172.29.117.17';
+% AwgComp = Agilent33220A(1234,AwgComp_Address,1); % 1-channel AWG
+
+AwgFilament = Agilent33220A(port,'172.29.117.127',1);
 
 %% GUIs
 controlDACGUI = sigDACGUI;
