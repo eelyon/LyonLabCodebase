@@ -1,7 +1,7 @@
 %% Script for measuring electrons in 1st twiddle-sense as function of different loading voltages
 %% Necessary Constants. Update this from cooldown to cooldown
-gain = 26.6; % Enter gain from roll-off plot
-capacitance = 5.05*1e-12; % Enter approximate HEMT input capacitance
+gain = 25.2; % Enter gain from roll-off plot
+capacitance = 4.85*1e-12; % Enter approximate HEMT input capacitance
 
 %% Parameters for the shield sweep in the twiddle unload function. It will only take 2 points!
 sweepNum = 1; % counter for no. of unloading runs
@@ -15,11 +15,11 @@ startShield = 0;
 stopShield = -2;
 
 startVload = -0.1;
-stopVload = -0.2;
-VloadStep = -0.05; % set Vload step size
+stopVload = 0.3;
+VloadStep = 0.05; % set Vload step size
 array = startVload:VloadStep:stopVload;
 
-numRepeats = 10; % points averaged over for each sweep point
+% numRepeats = 10; % points averaged over for each sweep point
 
 TwiddleUnload_Full;
 
@@ -29,8 +29,8 @@ for n = 1:length(array)
     shieldVals = 0.15:-0.05:-0.15;
     startShield = shieldVals(find(avg_real==min(avg_real))); % Update startShield
     
-    [avgMag,avgReal,avgImag,stdReal,stdImag] = sweep1DMeasSR830Fast({'Load'},startShield,stopShield,stopShield-startShield,10,10,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1);
-    interleavedRamp(shieldl.Device,shieldl.Port,startShield,numStepsRC,waitTime) % open shield
+    [avgMag,avgReal,avgImag,stdReal,stdImag] = sweep1DMeasSR830({'Load'},startShield,stopShield,stopShield-startShield,10,10,{SR830Twiddle},guard1_l.Device,{guard1_l.Port},0,1);
+    interleavedRamp(guard1_l.Device,guard1_l.Port,startShield,numStepsRC,waitTime) % open shield
 
     mag = correctedMag(avgReal,avgImag); % Get corrected magnitude
     delta = max(mag) - min(mag); % Calc. change in signal
@@ -55,7 +55,7 @@ for n = 1:length(array)
     
     %% Do full shield gate sweep every 5 sweeps or when there are 6 electrons less than before
 %     if sweepNum == 1 || mod(sweepNum,5) == 0 || abs(currentNumEs-numEs) > 6 
-%         [avg_mag,avg_real,avg_imag,std_real,std_imag] = sweep1DMeasSR830Fast({'Shield'},0.2,-0.1,0.05,10,numRepeats,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1);
+%         [avg_mag,avg_real,avg_imag,std_real,std_imag] = sweep1DMeasSR830Fast({'Shield'},0.2,-0.1,0.05,10,numRepeats,{SR830Twiddle},guard1_l.Device,{guard1_l.Port},0,1);
 %         shieldVals = 0.2:-0.05:-0.1;
 %         startShield = shieldVals(find(avg_real==min(avg_real))); % Update startShield
 %     end
