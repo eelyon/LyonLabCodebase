@@ -14,7 +14,7 @@ classdef HP3577A
             HP3577A.identifier  = '3577A';
         end
         
-        function [] = initHP357AforRollOff(HP3577A,startFreq,stopFreq)  % upon power up
+        function [] = initHP3577AforRollOff(HP3577A,startFreq,stopFreq)  % upon power up
             fclose(HP3577A.client);
             HP3577A.client.InputBufferSize = 50000;
             HP3577A.client.OutputBufferSize = 50000;
