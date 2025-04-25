@@ -1,3 +1,4 @@
+
 %% Function to bulk set voltages on the DAC
 
 channels = [1, 2, 3, 4, 5, 6, 7, 8];
