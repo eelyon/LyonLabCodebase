@@ -1,4 +1,4 @@
-%% Script for decreasing number of electrons in twiddle-sense
+%% Turnstile-like script for decreasing number of electrons in twiddle-sense
 % Run DCPinout before running this script
 numSteps = 1000;
 numSteps_ccd = 100;

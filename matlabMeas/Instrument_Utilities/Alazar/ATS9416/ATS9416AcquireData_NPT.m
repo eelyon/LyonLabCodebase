@@ -1,9 +1,11 @@
-function [result] = ATS9416AcquireData_NPT(boardHandle, postTriggerSamples, averages)
+function [result,bufferVolts] = ATS9416AcquireData_NPT(boardHandle,postTriggerSamples,recordsPerBuffer,buffersPerAcquisition,channelMask)
 % Make an AutoDMA acquisition from dual-ported memory.
-
-% global variable set in configureBoard.m
-global samplesPerSec;
-global inputRangeIdChA;
+% param boardHandle
+% param postTriggerSamples
+% param recordsPerBuffer
+% param buffersPerAcquisition
+% param channelMask
+% return result, bufferVolts
 
 % set default return code to indicate failure
 result = false;
@@ -15,22 +17,15 @@ AlazarDefs
 preTriggerSamples = 0;
 
 % TODO: Select the number of post-trigger samples per record
-% postTriggerSamples = postTriggerSamples; % 2048
+if postTriggerSamples < 256 || mod(postTriggerSamples,128) ~= 0
+    fprintf('Set an acceptable number of samples per record\n')
+    return
+end
 
-% TODO: Specify the number of records per channel per DMA buffer
-recordsPerBuffer = 1;
-
-% TODO: Specifiy the total number of buffers to capture
-buffersPerAcquisition = 1;
-
-% TODO: Select which channels to capture (A, B, or both)
-channelMask = CHANNEL_A;
-
-% TODO: Select if you wish to save the sample data to a binary file
-saveData = false;
+inputRange_volts = inputRangeIdToVolts(INPUT_RANGE_PM_1_V);
 
 % TODO: Select if you wish to plot the data to a chart
-drawData = true;
+voltsData = true;
 
 % Calculate the number of enabled channels from the channel mask
 channelCount = 0;
@@ -76,15 +71,6 @@ for j = 1 : bufferCount
     buffers(1, j) = { pbuffer };
 end
 
-% Create a data file if required
-fid = -1;
-if saveData
-    fid = fopen('data.bin', 'w');
-    if fid == -1
-        fprintf('Error: Unable to create data file\n');
-    end
-end
-
 % Set the record size
 retCode = AlazarSetRecordSize(boardHandle, preTriggerSamples, postTriggerSamples);
 if retCode ~= ApiSuccess
@@ -93,9 +79,10 @@ if retCode ~= ApiSuccess
 end
 
 % TODO: Select AutoDMA flags as required
-admaFlags = ADMA_EXTERNAL_STARTCAPTURE + ADMA_NPT + ADMA_FIFO_ONLY_STREAMING;
+admaFlags = ADMA_NPT + ADMA_EXTERNAL_STARTCAPTURE + ADMA_FIFO_ONLY_STREAMING; %+ ADMA_ALLOC_BUFFERS + ADMA_GET_PROCESSED_DATA 
 
 % Configure the board to make an AutoDMA acquisition
+% fprintf('Capturing %i records per buffer ...\n', recordsPerBuffer);
 recordsPerAcquisition = recordsPerBuffer * buffersPerAcquisition;
 retCode = AlazarBeforeAsyncRead(boardHandle, channelMask, -int32(preTriggerSamples), samplesPerRecord, recordsPerBuffer, recordsPerAcquisition, admaFlags);
 if retCode ~= ApiSuccess
@@ -114,11 +101,11 @@ for bufferIndex = 1 : bufferCount
 end
 
 % Update status
-if buffersPerAcquisition == hex2dec('7FFFFFFF')
-    fprintf('Capturing buffers until aborted...\n');
-else
-    fprintf('Capturing %u buffers ...\n', buffersPerAcquisition);
-end
+% if buffersPerAcquisition == hex2dec('7FFFFFFF')
+%     fprintf('Capturing buffers until aborted...\n');
+% else
+%     fprintf('Capturing %u buffers ...\n', buffersPerAcquisition);
+% end
 
 % Arm the board system to wait for triggers
 retCode = AlazarStartCapture(boardHandle);
@@ -126,16 +113,6 @@ if retCode ~= ApiSuccess
     fprintf('Error: AlazarStartCapture failed -- %s\n', errorToText(retCode));
     return
 end
-
-% Create a progress window
-waitbarHandle = waitbar(0, ...
-                        'Captured 0 buffers', ...
-                        'Name','Capturing ...', ...
-                        'CreateCancelBtn', 'setappdata(gcbf,''canceling'',1)');
-setappdata(waitbarHandle, 'canceling', 0);
-
-% TODO: Insert trigger signal here
-% send33622ATrigger(triggerDev);
 
 % Wait for sufficient data to arrive to fill a buffer, process the buffer,
 % and repeat until the acquisition is complete
@@ -200,50 +177,37 @@ while ~captureDone
             setdatatype(bufferOut, 'uint16Ptr', 1, samplesPerBuffer);
         end
 
-        % Save the buffer to file
-        if fid ~= -1
-            if bytesPerSample == 1
-                samplesWritten = fwrite(fid, bufferOut.Value, 'uint8');
-            else
-                samplesWritten = fwrite(fid, bufferOut.Value, 'uint16');
+%         fprintf('Captured %i samples\n', length(bufferOut.Value))
+%         figure; plot(bufferOut.Value)
+
+        % Convert buffer to volts
+        if voltsData
+            % Right shift 16-bit to get 14-bit
+            bufferShift = bufferOut.Value / 2^(16-double(bitsPerSample));
+            
+            % This 14-bit sample code represents a 0V input
+            codeZero = 2^(double(bitsPerSample) - 1) - 0.5;
+            
+            % This is the range of 14-bit sample codes with respect to 0V level
+            codeRange = 2^(double(bitsPerSample) - 1) - 0.5;
+            
+            % Create an array to store sample data
+            bufferVolts = zeros(channelCount,postTriggerSamples);
+            sine = true;
+            
+            for i = 1:recordsPerBuffer
+                for j = 1:channelCount
+                    col = 1+(i-1)*postTriggerSamples; % Set counter
+                    for k = (j+(i-1)*postTriggerSamples*channelCount):channelCount:(i*postTriggerSamples*channelCount)
+                        bufferVolts(j,col) = inputRange_volts * (double(bufferShift(k)) - codeZero) / codeRange; % need double or else just have int
+                        col = col + 1;
+                    end
+                    if sine == true
+                        midPoint = min(bufferVolts(j,:)) + (max(bufferVolts(j,:)) - min(bufferVolts(j,:))) / 2;
+                        bufferVolts(j,:) = bufferVolts(j,:) - midPoint;
+                    end
+                end
             end
-            if samplesWritten ~= samplesPerBuffer
-                fprintf('Error: Write buffer %u failed\n', buffersCompleted);
-            end
-        end
-
-        % Display the buffer on screen
-        if drawData
-            % TODO: Convert bytes into voltage
-            inputRangeInVolts = inputRangeIdToVolts(inputRangeIdChA);
-
-            % This 16-bit sample code represents a 0V input
-            codeZero = 2 ^ (double(bitsPerSample) - 1) - 0.5;
-
-            % This is the range of 16-bit sample codes with respect to 0V level
-            codeRange = 2 ^ (double(bitsPerSample) - 1) - 0.5;
-
-            % Subtract this amount from a 16-bit sample value to remove the 0V offset
-            offsetValue = codeZero;
-
-            % Multiply a 16-bit sample value by this factor to convert it to volts
-            scaleValue = inputRangeInVolts / codeRange;
-
-            % create an array to store sample data     
-            % bufferVolts = zeros(channelCount, samplesPerBuffer);
-            bufferVolts = zeros(1, samplesPerRecord);
-
-            % Convert sample values to volts and store for display
-            for i = 1:samplesPerRecord
-                bufferVolts(i) = scaleValue * (double(bufferOut.Value(i)) - offsetValue); % need double or else just have int
-            end
-
-            midPoint = min(bufferVolts) + (max(bufferVolts) - min(bufferVolts)) / 2;  % just for sine wave
-            bufferVolts = bufferVolts - midPoint;
-            xaxis = linspace(0, postTriggerSamples / samplesPerSec, length(bufferVolts));
-            plot(xaxis, bufferVolts);
-            % outB = bufferVolts;
-            % plot(bufferOut.Value);
         end
 
         % Make the buffer available to be filled again by the board
@@ -260,16 +224,6 @@ while ~captureDone
             success = true;
         elseif toc(updateTickCount) > updateInterval_sec
             updateTickCount = tic;
-
-            % Update waitbar progress
-            waitbar(double(buffersCompleted) / double(buffersPerAcquisition), ...
-                    waitbarHandle, ...
-                    sprintf('Completed %u buffers', buffersCompleted));
-
-            % Check if waitbar cancel button was pressed
-            if getappdata(waitbarHandle,'canceling')
-                break
-            end
         end
 
     end % if bufferFull
@@ -279,18 +233,10 @@ end % while ~captureDone
 % Save the transfer time
 transferTime_sec = toc(startTickCount);
 
-% Close progress window
-delete(waitbarHandle);
-
 % Abort the acquisition
 retCode = AlazarAbortAsyncRead(boardHandle);
 if retCode ~= ApiSuccess
     fprintf('Error: AlazarAbortAsyncRead failed -- %s\n', errorToText(retCode));
-end
-
-% Close the data file
-if fid ~= -1
-    fclose(fid);
 end
 
 % Release the buffers
@@ -304,24 +250,24 @@ for bufferIndex = 1:bufferCount
 end
 
 % Display results
-if buffersCompleted > 0
-    bytesTransferred = double(buffersCompleted) * double(bytesPerBuffer);
-    recordsTransferred = recordsPerBuffer * buffersCompleted;
-
-    if transferTime_sec > 0
-        buffersPerSec = buffersCompleted / transferTime_sec;
-        bytesPerSec = bytesTransferred / transferTime_sec;
-        recordsPerSec = recordsTransferred / transferTime_sec;
-    else
-        buffersPerSec = 0;
-        bytesPerSec = 0;
-        recordsPerSec = 0.;
-    end
-
-    fprintf('Captured %u buffers in %g sec (%g buffers per sec)\n', buffersCompleted, transferTime_sec, buffersPerSec);
-    fprintf('Captured %u records (%.4g records per sec)\n', recordsTransferred, recordsPerSec);
-    fprintf('Transferred %u bytes (%.4g bytes per sec)\n', bytesTransferred, bytesPerSec);
-end
+% if buffersCompleted > 0
+%     bytesTransferred = double(buffersCompleted) * double(bytesPerBuffer);
+%     recordsTransferred = recordsPerBuffer * buffersCompleted;
+% 
+%     if transferTime_sec > 0
+%         buffersPerSec = buffersCompleted / transferTime_sec;
+%         bytesPerSec = bytesTransferred / transferTime_sec;
+%         recordsPerSec = recordsTransferred / transferTime_sec;
+%     else
+%         buffersPerSec = 0;
+%         bytesPerSec = 0;
+%         recordsPerSec = 0.;
+%     end
+% 
+%     fprintf('Captured %u buffers in %g sec (%g buffers per sec)\n', buffersCompleted, transferTime_sec, buffersPerSec);
+%     fprintf('Captured %u records (%.4g records per sec)\n', recordsTransferred, recordsPerSec);
+%     fprintf('Transferred %u bytes (%.4g bytes per sec)\n', bytesTransferred, bytesPerSec);
+% end
 
 % set return code to indicate success
 result = success;

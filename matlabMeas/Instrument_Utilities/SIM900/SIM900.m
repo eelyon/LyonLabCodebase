@@ -8,9 +8,14 @@ classdef SIM900
     methods
         function SIM900 = SIM900(comPort)
             SIM900.client = serial_Connect(comPort);
-            pause(1);
+            pause(1); % pause for connection to be established
             SIM900.comPort = comPort;
             SIM900.identifier = query(SIM900.client,"*IDN?");
+
+            flcose(SIM900.client)
+            SIM900.client.InputBufferSize = 4096; % 512 per module
+            SIM900.client.OutputBufferSize = 4096; % 512 per module
+            fopen(SIM900.client);
         end
 
        function [] = setSIM900Voltage(SIM900,port,voltage)
@@ -34,18 +39,21 @@ classdef SIM900
            end
        end
 
-       function [] = rampSIM900Voltage(SIM900,port,voltage, pauser, delta)
+       function [] = rampSIM900Voltage(SIM900,port,voltage,pauser,delta)
            voltageResolution = .001;
            currentVoltage = str2double(querySIM900Voltage(SIM900, port));
            
            if abs(voltage - currentVoltage) < voltageResolution
-               fprintf('Voltage step is too small for SIM900\n');
+               fprintf('Voltage step is too small for SIM928\n');
            else
                connectSIM900Port(SIM900,port);
                for volts = currentVoltage:sign(voltage - currentVoltage)*delta:voltage
                    command = ['VOLT ' num2str(volts)];
                    fprintf(SIM900.client,command);
-                   pause(0.01+pauser);
+                   while str2double(query(SIM900.client,'*OPC?')) == 0
+                       continue % OPC flag writes 1 when operation complete
+                   end
+                   pause(pauser)
                end
                disconnectSIM900Port(SIM900);
            end
@@ -73,6 +81,19 @@ classdef SIM900
        function [] = disconnectSIM900Port(SIM900)
            command = 'XYZ';
            sendCommand(SIM900.client,command);
+       end
+
+       function [] = setOutputSIM900Port(SIM900,port,onOff)
+           % Turn port output on or off
+           connectSIM900Port(SIM900,port)
+           if strcmp(onOff,'ON')
+               command = 'OPON';
+               fprintf(SIM900.client,command);
+           elseif strcmp(onOff,'OFF')
+               command = 'OPOF';
+               fprintf(SIM900.client,command);
+           end
+           disconnectSIM900Port(SIM900)
        end
     end
 end

@@ -22,8 +22,12 @@ if boardHandle.Value == 0
   return
 end
 
+global samplesPerSec
+samplesPerSec = 10e6;
+inputRange_volts = inputRangeIdToVolts(INPUT_RANGE_PM_1_V);
+
 % Configure the board's sample rate, input, and trigger settings
-if ~configureBoard(boardHandle)
+if ~ATS9416ConfigureBoard(boardHandle,samplesPerSec)
   fprintf('Error: Board configuration failed\n');
   return
 end

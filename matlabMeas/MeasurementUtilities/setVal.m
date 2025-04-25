@@ -70,9 +70,9 @@ elseif contains(name,'33622A')
     % passed in but I'm just going to assume port 2 is the one that will
     % vary......
     if Port == 3
-        Device.set33622APhase(Value,2);
+        Device.set33622APhase(2,Value);
     elseif Port == 4
-        Device.set33622AAmplitude(Value,'VPP',2)
+        Device.set33622AAmplitude(2,Value,'VPP')
     end
 elseif contains(name,'SDG5122') || contains(name,'5122')
     if isstring(Port) || ischar(Port)
@@ -96,6 +96,9 @@ elseif contains(name,'SDG5122') || contains(name,'5122')
         elseif contains(Port,'DualModFreq')
             set5122ModFreq(Device, Value, 1);
             set5122ModFreq(Device, Value, 2);
+        elseif contains(Port,'DualFreq')
+            set5122Freq(Device, Value, 1);
+            set5122Freq(Device, Value, 2);
         elseif contains(Port,'DualModAmp')
             set5122ModAmp(Device, Value, 1);
             set5122ModAmp(Device, Value, 2);

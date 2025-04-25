@@ -15,7 +15,7 @@ cleanTwiddleSense = 1; % Condition for exiting while loop
 [sweepNumFig,sweepNumHandle] = plotData(sweepNumber,numElectrons,'color',"r.",'xLabel',"Sweep #",'yLabel',"Total # of electrons",'type',"errorbar",'yError',yErrElectrons);
 
 %% Run an initial shield sweep and determine startShield
-[avg_mag,avg_real,avg_imag,std_real,std_imag] = sweep1DMeasSR830({'Shield'},0.14,0,0.02,10,10,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1);
+[avg_mag,avg_real,avg_imag,std_real,std_imag] = sweep1DMeasSR830({'Guard'},0.14,0,0.02,10,10,{SR830Twiddle},shieldl.Device,{shieldl.Port},0,1);
 corrMag = correctedMag(avg_real,avg_imag); % Get corrected magnitude
 shieldVals = 0.14:-0.02:0; % Set array of shield sweep values
 startShield = shieldVals(find(corrMag==max(corrMag)));

@@ -1,4 +1,4 @@
-function [result] = ATS9416ConfigureBoard(boardHandle)
+function [result] = ATS9416ConfigureBoard(boardHandle, samplesPerSec)
 % Configure sample rate, input, and trigger settings
 
 % Call mfile with library definitions
@@ -9,25 +9,27 @@ result = false;
 
 % TODO: Select clock parameters as required to generate this sample rate.
 %
-% For example: if samplesPerSec is 100.e6 (100 MS/s), then:
-% - select clock source INTERNAL_CLOCK and sample rate SAMPLE_RATE_100MSPS
-% - select clock source FAST_EXTERNAL_CLOCK, sample rate SAMPLE_RATE_USER_DEF,
-%   and connect a 100 MHz signalto the EXT CLK BNC connector.
+% A 10 MHz reference procudes a 100 MHz. Set a lower sampling frequency by
+% specifying a decimation value.
 
-% global variable used in acquireData.m
-global samplesPerSec;
-global inputRangeIdChA;
+% Configure sample rate, input, and trigger settings
+allowedSampleRates = [100e6,50e6,20e6,10e6,5e6,2e6,1e6,500e3,200e3,100e3];
 
-inputRangeIdChA = INPUT_RANGE_PM_1_V;
-samplesPerSec = 10e6;
+if ismember(samplesPerSec,allowedSampleRates) == 0
+    fprintf('Sample rate %i is not allowed!\n', samplesPerSec)
+    return
+end
+
+% clockDecimation = 100e6/samplesPerSec; % Set clock decimation value
+% fprintf('Clock decimation is %i\n', clockDecimation)
 
 retCode = ...
     AlazarSetCaptureClock(  ...
         boardHandle,        ... % HANDLE -- board handle
-        EXTERNAL_CLOCK_10MHZ_REF,     ... % U32 -- clock source id
-        SAMPLE_RATE_10MSPS, ... % U32 -- sample rate id
+        EXTERNAL_CLOCK_10MHz_REF,     ... % U32 -- clock source id
+        10e6, ... % U32 -- sample rate id
         CLOCK_EDGE_RISING,  ... % U32 -- clock edge id
-        10                   ... % U32 -- clock decimation
+        1                   ... % U32 -- clock decimation
         );
 if retCode ~= ApiSuccess
     fprintf('Error: AlazarSetCaptureClock failed -- %s\n', errorToText(retCode));
@@ -41,7 +43,7 @@ retCode = ...
         boardHandle,                  ... % HANDLE -- board handle
         CHANNEL_A,     ... % U32 -- input channel
         DC_COUPLING,    ... % U32 -- input coupling id
-        inputRangeIdChA, ... % U32 -- input range id
+        INPUT_RANGE_PM_1_V, ... % U32 -- input range id
         IMPEDANCE_50_OHM    ... % U32 -- input impedance id
         );
 if retCode ~= ApiSuccess
@@ -245,9 +247,9 @@ if retCode ~= ApiSuccess
 end
 
 %% Trigger
-inputRange_volts = 1.; % +- range
-triggerLevelJ_volts = .5; % trigger level
-triggerLevelJ = (128 + 128 * triggerLevelJ_volts / inputRange_volts);
+inputRange_volts = 3.3; % +- range
+triggerLevelJ_volts = 1; % trigger level
+triggerLevelJ = 128 + 127 * triggerLevelJ_volts / inputRange_volts;
 
 % TODO: Select trigger inputs and levels as required
 retCode = ...
@@ -255,7 +257,7 @@ retCode = ...
         boardHandle,        ... % HANDLE -- board handle
         TRIG_ENGINE_OP_J,   ... % U32 -- trigger operation
         TRIG_ENGINE_J,      ... % U32 -- trigger engine id
-        TRIG_CHAN_A,        ... % U32 -- trigger source id
+        TRIG_EXTERNAL,        ... % U32 -- trigger source id - TRIG_CHAN_A
         TRIGGER_SLOPE_POSITIVE, ... % U32 -- trigger slope id
         triggerLevelJ,                ... % U32 -- trigger level from 0 (-range) to 255 (+range)
         TRIG_ENGINE_K,      ... % U32 -- trigger engine id

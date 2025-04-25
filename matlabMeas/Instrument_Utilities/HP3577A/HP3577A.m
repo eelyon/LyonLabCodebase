@@ -38,7 +38,7 @@ classdef HP3577A
         function [freqArr,datArr,voltageGain,fit] = pull3577ARollOff(HP3577A,startFreq,stopFreq)
             [datArr,freqArr] = pull3577AData(HP3577A,startFreq,stopFreq);
             correctY = [];
-            [correctionX,correctionY] = getXYData('C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\07_10_24\Background_S21.fig');
+            [correctionX,correctionY] = getXYData('Background_S21.fig');
             for i = 1:length(correctionY)
                 correctY(i) = datArr(i)+ 76;
             end
@@ -56,7 +56,7 @@ classdef HP3577A
             legend('Measured S_{21}','Fit');
             xlabel('Frequency (Hz)');
             ylabel('Voltage Gain (arb. units)');
-            txt = strcat("Fitted Rolloff Frequency = ", num2str(fit.b), " HZ");
+            txt = strcat("Fitted Rolloff Frequency = ", num2str(fit.b), " Hz");
             annotation('textbox',[0.2 0.5 0.3 0.3],'String',txt,'FitBoxToText','on');
             saveData(myFig,'CorrectedRollOff',0);
             [hand2,myFig2] = plotData(freqArr,datArr,'xLabel',"Frequency (Hz)",'yLabel',"S_{21} (dBm)",'type',"semilogx",'color',"r-");

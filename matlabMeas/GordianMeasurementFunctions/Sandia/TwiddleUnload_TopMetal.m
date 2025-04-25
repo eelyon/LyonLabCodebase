@@ -1,11 +1,11 @@
 %% Script for unloading electron in twiddle-sense
 % Run DCPinout before running this script
-numSteps = 500; % sigDACRampVoltage
-numStepsCCD = 500; % sigDACRampVoltage
-numStepsRC = 5; % interleavedRamp
-waitTime = 0.5; % interleavedRamp
-Vopen = 3; % holding voltage of ccd
-Vclose = -0.75; % closing voltage of ccd
+% numSteps = 500; % sigDACRampVoltage
+% numStepsCCD = 500; % sigDACRampVoltage
+% numStepsRC = 5; % interleavedRamp
+% waitTime = 0.5; % interleavedRamp
+% Vopen = 3; % holding voltage of ccd
+% Vclose = -0.75; % closing voltage of ccd
 
 %% Set potential gradient across twiddle-sense and unload electrons
 sigDACRampVoltage(ccd2.Device,ccd2.Port,Vopen,numStepsCCD); % open ccd2

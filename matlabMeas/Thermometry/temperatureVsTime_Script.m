@@ -4,6 +4,7 @@ timeBetweenPoints = 10;
 
 %thermometerType = 'X117656'; %Big Glass Dewar
 %thermometerType = 'X189328'; %Small Glass Dewar
+%thermometerType = 'X204446'; %Dunking Thermometer
 thermometerType = 'X189327'; %CIA Stick
 
 Thermometer;
