@@ -16,4 +16,3 @@ Therm = initializeThermometry(thermometerType);
 [thermPlot,figHandle] = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"rx");
 flush(Thermometer);
 temperatureVsTime(Thermometer,timeBetweenPoints,Therm,figHandle,thermPlot);
-

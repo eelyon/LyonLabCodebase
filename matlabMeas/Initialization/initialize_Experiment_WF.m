@@ -4,18 +4,18 @@ port = 1234;
 
 % SR830
 SR830_Address = '172.29.117.102';
-SR830 = SR830(port,SR830_Address);
+SR830 = SR830(1234,SR830_Address);
 % sweep1DMeasSR830Fast({'SM'},
 % first argument only changes the axis names
 % aux port voltages ramp: SR830rampAuxOut(SR830,1,0.2,0.1,0.01)
 
-% 336220 2 chan ethernet
-%Address_33622 = '172.29.117.140';
-%AWG = Agilent33622A(1234,Address_33622,1);
+% 33220A 2 chan ethernet
+% Address_33622 = '172.29.117.140';
+% AWG = Agilent33622A(1234,Address_33622,1);
 
 % 34401
-%DMM_Address = '172.29.117.104';
-%Thermometer = TCPIP_Connect(DMM_Address,1234);
+DMM_Address = '172.29.117.104';
+Thermometer = TCPIP_Connect(DMM_Address,1234);
 
 %% Agilent 33220A Compensate AWG
 AWG_Address = '172.29.29.6';
