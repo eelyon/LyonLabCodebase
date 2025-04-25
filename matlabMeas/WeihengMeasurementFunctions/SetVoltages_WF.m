@@ -4,9 +4,9 @@ Gates_no_st = [1,2,3,4,5,7,8,9,10,11]; % gates other than sommer tanner l,m,r an
 Gates_st = [12,16,14];
 
 % for emission
-backing_voltage = -2;
-gates_voltage = -0.7;
-st_voltage = 1;
+backing_voltage = -1.5;
+gates_voltage = -3;
+st_voltage = 0;
 tm_voltage = -0.7;
 sigDACRampVoltage(DAC,Filament_backing,backing_voltage,200);
 sigDACRampVoltage(DAC,Top_metal,tm_voltage,200);
@@ -36,7 +36,7 @@ pause(5);
 sigDACRampVoltage(DAC,Top_metal,negative_bias,200);
 
 % for ccding electrons from twiddle sense to sommer tanner
-sigDACRampVoltage(DAC,[6,12,13,14],[-1.5,0.5,0.3,0.1],200);
+sigDACRampVoltage(DAC,[6,12,13,14],[-0.7,0.5,0.3,0.1],200);
 sigDACRampVoltage(DAC,[1,2,3],[0,0,0],200);
 pause(0.5);
 sigDACRampVoltage(DAC,[1,2,3],[0,0,-1],200);

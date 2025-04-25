@@ -3,8 +3,8 @@ timeBetweenPoints = 10;
 %% Initialize Thermometer type (this is related to your thermometer you have)
 
 %thermometerType = 'X117656'; %Big Glass Dewar
-thermometerType = 'X189328'; %Small Glass Dewar
-%thermometerType = 'X189327'; %CIA Stick
+%thermometerType = 'X189328'; %Small Glass Dewar
+thermometerType = 'X189327'; %CIA Stick
 
 Thermometer;
 Therm = initializeThermometry(thermometerType);
@@ -15,4 +15,3 @@ Therm = initializeThermometry(thermometerType);
 [thermPlot,figHandle] = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"rx");
 flush(Thermometer);
 temperatureVsTime(Thermometer,timeBetweenPoints,Therm,figHandle,thermPlot);
-
