@@ -1,21 +1,21 @@
 %% Script used to initialize an experiment.
 
-port = 1234;
+% 34401
+DMM_Address = '172.29.117.104';
+Thermometer = TCPIP_Connect(DMM_Address,1234);
+
+% Define DAC Channels
+Filament_backing = [15];
+Top_metal = [6];
+Gates_no_st = [1,2,3,4,5,7,8,9,10,11]; % gates other than sommer tanner l,m,r and top metal and backing
+Gates_st = [12,16,14];
 
 % SR830
 SR830_Address = '172.29.117.102';
 SR830 = SR830(1234,SR830_Address);
-% sweep1DMeasSR830Fast({'SM'},
+% sweep1DMeasSR830Fast({'SM'}, 'TM' 'TWW' 'Door'
 % first argument only changes the axis names
 % aux port voltages ramp: SR830rampAuxOut(SR830,1,0.2,0.1,0.01)
-
-% 33220A 2 chan ethernet
-% Address_33622 = '172.29.117.140';
-% AWG = Agilent33622A(1234,Address_33622,1);
-
-% 34401
-DMM_Address = '172.29.117.104';
-Thermometer = TCPIP_Connect(DMM_Address,1234);
 
 %% Agilent 33220A Compensate AWG
 AWG_Address = '172.29.29.6';
@@ -29,6 +29,16 @@ DAC = sigDAC(sigDACPort,16,'DAC');
 DACGUI = sigDACGUI;
 % sample code to change voltage: sigDACSetVoltage(DAC,3,0);   sigDACSetChannels(DAC,0)
 % sigDACSetChannels(DAC,0)
+
+
+
+
+
+
+
+% 33220A 2 chan ethernet
+% Address_33622 = '172.29.117.140';
+% AWG = Agilent33622A(1234,Address_33622,1);
 
 % SIM900
 % connect to SIM900 via RS232

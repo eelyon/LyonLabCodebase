@@ -37,15 +37,16 @@ sigDACRampVoltage(DAC,Top_metal,negative_bias,200);
 
 % for ccding electrons from twiddle sense to sommer tanner
 sigDACRampVoltage(DAC,[6,12,13,14],[-0.7,0.5,0.3,0.1],200);
-sigDACRampVoltage(DAC,[1,2,3],[0,0,0],200);
-pause(0.5);
-sigDACRampVoltage(DAC,[1,2,3],[0,0,-1],200);
-pause(0.5);
-sigDACRampVoltage(DAC,[1,2,3],[0,-1,-1],200);
-pause(0.5);
-sigDACRampVoltage(DAC,[1,2,3],[-1,-1,-1],200);
-pause(0.5);
-sigDACRampVoltage(DAC,[1,2,3],[-1,0,0],200);
+sigDACRampVoltage(DAC,[1,2,3,4],[1,1,0,-1],200);
+pause(1);
+sigDACRampVoltage(DAC,[1,2,3,4],[1,0,-1,-1],200);
+pause(1);
+sigDACRampVoltage(DAC,[1,2,3,4],[0,-1,-1,-1],200);
+pause(1);
+sigDACRampVoltage(DAC,[1,2,3,4],[-1,-1,-1,-1],200);
+pause(1);
+sigDACRampVoltage(DAC,[1,2,3,4],[-1,0,0,-1],200);
+pause(1);
 
 % for ccding electrons from twiddle sense to channel
 sigDACRampVoltage(DAC,[5,6,7],[1,-1.5,0.3],200);
@@ -109,7 +110,7 @@ end
 % for ccding electrons from twiddle sense to sommer tanner
 loop_var = 0;
 while (loop_var <= 20)
-    sigDACRampVoltage(DAC,[6,12,13,14],[-1.5,0.5,0.3,0.1],200);
+    sigDACRampVoltage(DAC,[6,12,13,14],[-0.7,0.5,0.3,0.1],200);
     sigDACRampVoltage(DAC,[4,5,7],[0,-0.2,-1],200);
     pause(0.5);
     sigDACRampVoltage(DAC,[1,2,3,4],[0,0,0,-1],200);
