@@ -18,10 +18,10 @@ voltsSucc = [8,...  %DAC 1
         succer];     %DAC 8
 
 for j = 1:10
-    for i = 1:length(voltsSucc)
+    for i = 1:3
         setVal(DAC,i,voltsSucc(i));
     end
-    for i = 1:length(voltsGnd)
+    for i = 1:3
         setVal(DAC,i,voltsGnd(i));
     end
 end
