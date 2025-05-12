@@ -18,3 +18,12 @@ SetAgilentDoorWidth(AwgTwiddle,AwgComp,Tau1,Tau2)
 
 % send trigger
 send33220Trigger(AwgTwiddle)
+
+%% thin film door pulse
+% set door voltage parameters
+set33220InvertOutput(AwgTwiddle,1);           % invert the output so high is the default state
+
+set33220VoltageHighAndLow(AwgTwiddle,-3,2)    % TfC gate
+set33220VoltageHighAndLow(AwgComp,-1,0.3)     % DoorEOut gate
+
+
