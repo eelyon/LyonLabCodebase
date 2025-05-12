@@ -8,7 +8,7 @@ STIBiasEPort   = 14;
 
 DoorEInPort       = 16;
 TwiddleEPort      = 15;
-SenseEPort        = 10;
+SenseEPort        = 23;  % DAC boards 1-16 are too noisy
 DoorEOutPort      = 18;
 
 
@@ -25,16 +25,15 @@ SenseCPort       = 12;
 DoorCOutPort     = 19;
 
 %% Thin Film
-TfCPort        = 8; %bussed to 13
-TfEPort        = 5; %tied to sp20
+TfCPort        = 13;
+TfEPort        = 20; %careful, supplyDAC
 
 %% Barriers
-BEPort = 1; % tied to sp17
-BCPort = 7; % tied to sp7
+BEPort = 1; % bussed to 5
+BCPort = 8; % tied to SP7
 
 %% other barriers
 BlockPort = 6; % bussed to 23
-
 
 
 %% Supply Voltages

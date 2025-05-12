@@ -117,6 +117,16 @@ classdef Agilent33220A
             fprintf(Agilent33220A.client,command);
         end
 
+        function [] = set33220InvertOutput(Agilent33220A,OnOff)
+            if OnOff
+                cmdStr = 'INV';
+            else
+                cmdStr = 'NORM';
+            end
+            command = ['OUTP:POL ' cmdStr];
+            fprintf(Agilent33220A.client,command);
+        end
+
         %% SET FREQUENCY/PERIOD %%
         function [] = set33220Frequency(Agilent33220A,frequencyInHz)
             command = ['FREQ ' num2str(frequencyInHz)];
