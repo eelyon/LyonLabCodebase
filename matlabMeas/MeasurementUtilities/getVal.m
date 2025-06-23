@@ -10,7 +10,7 @@ if contains(name,'SR830')
         Value = Device.SR830queryAuxOut(Port);
     end
     
-elseif contains(name,'AP24')
+elseif contains(name,'AP24') || contains(name,'DAC')
 
     Value = Device.sigDACQueryVoltage(Port);
 

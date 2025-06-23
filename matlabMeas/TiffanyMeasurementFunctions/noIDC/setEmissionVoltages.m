@@ -3,7 +3,7 @@
 DCMap;
 numSteps = 5000;
 setVal(supplyDAC,BackMetalPort,0);
-setVal(controlDAC,BlockPort,0.5);
+setVal(controlDAC,BlockPort,-3);
 
 
 %% Compensation voltages
@@ -21,8 +21,8 @@ compensateParasitics(SR830Twiddle,Awg2Ch,Awg2Ch,-180,180,10,0.2,0.4,0.010,0)   %
 compensateParasitics(SR830TwiddleC,AwgComp,AwgTwiddle,-180,180,10,0.2,0.4,0.010,0)   % HEMT2
 
 % finer sweep
-compensateParasitics(SR830Twiddle,Awg2Ch,Awg2Ch,-50,-48,0.1,0.3,0.32,0.005,0)   % HEMT1
-compensateParasitics(SR830TwiddleC,AwgComp,AwgTwiddle,-58,-56,0.1,0.3,0.31,0.005,0)  %HEMT2
+compensateParasitics(SR830Twiddle,Awg2Ch,Awg2Ch,-147,-146,0.1,0.3,0.31,0.005,0)   % HEMT1
+compensateParasitics(SR830TwiddleC,AwgComp,AwgTwiddle,-146.5,-144.5,0.1,0.3,0.31,0.005,0)  %HEMT2
 
 %% EMISSION VOLTAGES
 % emission to HEMT2 side
@@ -62,8 +62,8 @@ sigDACRampVoltage(supplyDAC,TfEPort,-3,numSteps);
 sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830Twiddle},controlDAC,{StmEPort},1);
 sweep1DMeasSR830({'ST'},0,-0.3,-0.05,0.1,10,{SR830TwiddleC},controlDAC,{StmCPort},1);
 
-sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830TwiddleC},controlDAC,{StmEPort},1);
-sweep1DMeasSR830({'ST'},0,-0.15,-0.01,0.1,10,{SR830TwiddleC},controlDAC,{StmEPort},1);
+sweep1DMeasSR830({'ST'},0,-0.3,-0.05,0.1,10,{SR830Twiddle},controlDAC,{StmEPort},1);
+sweep1DMeasSR830({'ST'},0,-0.2,-0.01,0.1,10,{SR830Twiddle},controlDAC,{StmEPort},1);
 sweep1DMeasSR830({'ST'},0,-0.2,-0.01,0.1,10,{SR830TwiddleC},controlDAC,{StmCPort},1);
 
 

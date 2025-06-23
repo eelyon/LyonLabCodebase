@@ -213,8 +213,8 @@ sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[2.5,-1,0.5],numSteps);
 
 
 
-sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[-1,-1,-2.5],numSteps);
-sigDACRampVoltage(supplyDAC,TfEPort,0,numSteps);
+sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[2,0.4,1.9],numSteps);
+sigDACRampVoltage(supplyDAC,TfEPort,0.5,numSteps);
 
 sigDACRampVoltage(controlDAC,DoorEInPort,0,numSteps);
 sigDACRampVoltage(controlDAC,DoorEInPort,-1,numSteps);
@@ -329,3 +329,42 @@ sigDACRampVoltage(controlDAC,TwiddleEPort,0.5,numSteps);
 sigDACRampVoltage(controlDAC,SenseEPort,0.5,numSteps);
 set33220VoltageHighAndLow(AwgComp,-0.5,1);
 send33220Trigger(AwgTwiddle)
+
+
+
+Vbias = 2.5;
+sigDACRampVoltage(controlDAC,[STOBiasCPort,StmCPort,STIBiasCPort],[Vbias+0.5,Vbias+0.5,Vbias+0.5],numSteps);
+sigDACRampVoltage(controlDAC,[STOBiasCPort,StmCPort,STIBiasCPort],[Vbias-0.3,Vbias-0.2,Vbias-0.1],numSteps);
+
+sigDACRampVoltage(controlDAC,DoorCInPort,Vbias-1,numSteps);
+sigDACRampVoltage(controlDAC,DoorCInPort,Vbias,numSteps);
+sigDACRampVoltage(controlDAC,DoorCOutPort,Vbias,numSteps);
+
+sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[2,0.4,1.9],numSteps);
+sigDACRampVoltage(supplyDAC,TfEPort,0.5,numSteps);
+
+sigDACRampVoltage(controlDAC,DoorCOutPort,Vbias-1,numSteps);
+sigDACRampVoltage(controlDAC,DoorCOutPort,Vbias,numSteps);
+sigDACRampVoltage(controlDAC,DoorEOutPort,0,numSteps);
+sigDACRampVoltage(controlDAC,DoorEOutPort,-1,numSteps);
+
+
+sigDACRampVoltage(controlDAC,DoorEInPort,0,numSteps);
+sigDACRampVoltage(controlDAC,DoorEInPort,-1,numSteps);
+
+sigDACRampVoltage(controlDAC,DoorCInPort,Vbias,numSteps);
+sigDACRampVoltage(controlDAC,DoorCInPort,Vbias-1,numSteps);
+sigDACRampVoltage(controlDAC,DoorCOutPort,Vbias,numSteps);
+delay(1)
+sigDACRampVoltage(controlDAC,DoorCOutPort,Vbias-1,numSteps);
+
+
+
+sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[2,0.4,1.9],numSteps);
+sigDACRampVoltage(supplyDAC,TfEPort,0.5,numSteps);
+sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[-2,-1,-1],numSteps);
+sigDACRampVoltage(supplyDAC,TfEPort,-1,numSteps);
+sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[-2,-2,-2],numSteps);
+sigDACRampVoltage(supplyDAC,TfEPort,0.5,numSteps);
+
+sigDACRampVoltage(controlDAC,DoorCOutPort,2,numSteps);

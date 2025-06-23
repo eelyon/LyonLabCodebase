@@ -8,7 +8,7 @@ STIBiasEPort   = 14;
 
 DoorEInPort       = 16;
 TwiddleEPort      = 15;
-SenseEPort        = 23;  % DAC boards 1-16 are too noisy
+SenseEPort        = 3; 
 DoorEOutPort      = 18;
 
 
