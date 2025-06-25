@@ -9,13 +9,13 @@ V_pinch = -0.35; % pinch off voltage
 
 %% Bulk LHe
 T = 1.8; % measurement temperature in K
-P_atm = 2; % atmospheres of He gas fed into cell
+P_atm = 1; % atmospheres of He gas fed into cell
 fprintf(['For ',num2str(P_atm),' atm of He gas:\n'])
 
 r_cell = 2.7305e-2; % in m
 V_panel = (18.44+3.213)*2.54^3/1e6; % gas manifold + Tee-KF volume from in^3 to m^3
 A_cell = pi*(r_cell)^2; % bottom area of cell
-cell_depth = 1.6e-3+0.630e-3+10.16e-3+0e-3; % PCB, device, height from cell bottom to PCB bottom
+cell_depth = 1.6e-3+0.730e-3+10e-3; % PCB, device, height from cell bottom to PCB bottom
 
 LHe = P_atm*V_panel/757; % volume of LHe in cell in m^3
 h_bulk = cell_depth-LHe/A_cell; % in m
