@@ -8,18 +8,18 @@
 % Vopen = 1; % holding voltage of ccd
 % Vclose = -0.7; % closing voltage of ccd
 
-startShield = 0.2; % sets start value for shield sweep
-stopShield = -2; % sets stop value for shield sweep
+startShield = 0.4; % sets start value for shield sweep
+stopShield = -1; % sets stop value for shield sweep
 shieldStep = stopShield-startShield;
 
 %% Unload twiddle-sense
 sigDACRampVoltage(twiddle1.Device,twiddle1.Port,Vclose,numSteps) % close twiddle
 interleavedRamp(guard1_l.Device,guard1_l.Port,Vclose,numStepsRC,waitTime) % close shield
-interleavedRamp(d5.Device,d5.Port,0.8,numStepsRC,waitTime) % open door
+interleavedRamp(d5.Device,d5.Port,0.4,numStepsRC,waitTime) % open door
 setSIM900Voltage(sense1_l.Device,sense1_l.Port,-0.5); delay(2); % rampSIM900Voltage(sense1_l.Device,sense1_l.Port,-0.5,waitTime,delta); % close sense
-sigDACRampVoltage(d4.Device,d4.Port,1.2,numSteps) % open d4
+sigDACRampVoltage(d4.Device,d4.Port,0.8,numSteps) % open d4
 interleavedRamp(d5.Device,d5.Port,-2,numStepsRC,waitTime) % close door
-sigDACRampVoltage(phi1_1.Device,phi1_1.Port,1.6,numSteps) % open ccd1
+sigDACRampVoltage(phi1_1.Device,phi1_1.Port,1.2,numSteps) % open ccd1
 sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps) % close door
 
 %% Move electrons on CCD3 back to ST through CCD
@@ -42,7 +42,7 @@ sigDACRampVoltage(d3.Device,d3.Port,Vclose,numSteps) % close 3rd door
 sigDACRampVoltage(d1_even.Device,d1_even.Port,Vopen,numSteps) % open 1st door
 sigDACRampVoltage(d2.Device,d2.Port,Vclose,numSteps) % close 2nd door
 sigDACRampVoltage(d1_even.Device,d1_even.Port,Vclose,numSteps) % close 1st door
-fprintf('Electrons loaded back onto Sommer-Tanner\n')
+% fprintf('Electrons loaded back onto Sommer-Tanner\n')
 
 %% Reset twiddle-sense, move stray electrons from d4 back to sense1_l
 % interleavedRamp(d5.Device,d5.Port,Vopen,numStepsRC,waitTime) % open door

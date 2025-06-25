@@ -16,12 +16,14 @@ sigDACRampVoltage(STS.Device,STS.Port,Vclean,numSteps)
 % sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vclean,numSteps)
 
 %% Loop top metal sweep and unload electrons
-for n = 1:10
-%     sweep1DMeasSR830({'TM'},-0.8,-1.4,-0.6,10,10,{SR830Twiddle},TM.Device,{TM.Port},1,1);
+for cleanTM = 1:10
+    sweep1DMeasSR830({'TM'},-0.7,-1.5,-0.2,3,5,{SR830Twiddle},TM.Device,{TM.Port},1,1);
     TwiddleUnload_Full;
+    fprintf([num2str(cleanTM),' ']);
 end
+fprintf('\n');
 
 %% Set Sommer-Tanner gates back to 0V
-sigDACRampVoltage(STM.Device,STM.Port,0,numSteps)
-sigDACRampVoltage(STD.Device,STD.Port,0,numSteps)
-sigDACRampVoltage(STD.Device,STD.Port,0,numSteps)
+% sigDACRampVoltage(STM.Device,STM.Port,0,numSteps)
+% sigDACRampVoltage(STD.Device,STD.Port,0,numSteps)
+% sigDACRampVoltage(STD.Device,STD.Port,0,numSteps)

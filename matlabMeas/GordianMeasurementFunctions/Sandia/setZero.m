@@ -4,7 +4,7 @@ stopVal = 0;
 
 sigDACSetChannels(controlDAC,stopVal)
 sigDACSetChannels(supplyDAC,stopVal)
-rampSIM900Voltage(filament.Device,filament.Port,stopVal,waitTime,delta)
+rampSIM900Voltage(filament.Device,filament.Port,0,waitTime,delta)
 rampSIM900Voltage(sense1_l.Device,sense1_l.Port,0,waitTime,delta)
 rampSIM900Voltage(sense2_l.Device,sense2_l.Port,0,waitTime,delta)
 fprintf('All gates set to 0V.\n')
