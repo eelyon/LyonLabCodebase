@@ -1,8 +1,8 @@
 %% Script for unloading electrons from 1st twiddle-sense and clean top metal
 % Run DCPinout before running this script
-numSteps = 4; % sigDACRampVoltage
-numStepsRC = 2; % interleavedRamp
-waitTime = 0.0011; % 5 times time constant
+numSteps = 5; % sigDACRampVoltage
+numStepsRC = 5; % interleavedRamp
+waitTime = 0.002; % 5 times time constant
 % delta = 0.25; % voltage step for sim900
 % Vopen = 1; % holding voltage of ccd
 % Vclose = -0.7; % closing voltage of ccd
@@ -15,9 +15,9 @@ waitTime = 0.0011; % 5 times time constant
 % sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vopen,numSteps)
 % sigDACRampVoltage(d4.Device,d4.Port,Vopen,numSteps)
 % interleavedRamp(d5.Device,d5.Port,Vopen,numStepsRC,waitTime)
-setSIM900Voltage(sense1_l.Device,sense1_l.Port,0); delay(2) % rampSIM900Voltage(sense1_l.Device,sense1_l.Port,0,waitTime,delta)
+interleavedRamp(sense1_l.Device,sense1_l.Port,0,numStepsRC,waitTime) % rampSIM900Voltage(sense1_l.Device,sense1_l.Port,0,waitTime,delta)
 interleavedRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTime)
-sigDACRampVoltage(twiddle1.Device,twiddle1.Port,0,numSteps)
+interleavedRamp(twiddle1.Device,twiddle1.Port,0,numStepsRC,waitTime)
 % sigDACRampVoltage(guard1_r.Device,guard1_r.Port,Vopen,numSteps)
 % sigDACRampVoltage(sense1_r.Device,sense1_r.Port,Vopen,numSteps)
 % sigDACRampVoltage(d6.Device,d6.Port,Vopen,numSteps)
@@ -35,15 +35,15 @@ TwiddleUnload_Full; % Empty out 6 open channels
 % interleavedRamp(d5.Device,d5.Port,Vclose,numStepsRC,waitTime)
 sigDACRampVoltage(guard1_r.Device,guard1_r.Port,0,numSteps)
 sigDACRampVoltage(sense1_r.Device,sense1_r.Port,0.2,numSteps)
-setSIM900Voltage(sense1_l.Device,sense1_l.Port,-0.5); delay(2) % rampSIM900Voltage(sense1_l.Device,sense1_l.Port,-0.5,waitTime,delta)
+interleavedRamp(sense1_l.Device,sense1_l.Port,Vclose,numStepsRC,waitTime)
 interleavedRamp(guard1_l.Device,guard1_l.Port,Vclose,numStepsRC,waitTime)
-sigDACRampVoltage(twiddle1.Device,twiddle1.Port,Vclose,numSteps)
+interleavedRamp(twiddle1.Device,twiddle1.Port,Vclose,numStepsRC,waitTime)
 sigDACRampVoltage(d6.Device,d6.Port,0.4,numSteps)
 sigDACRampVoltage(guard1_r.Device,guard1_r.Port,Vclose,numSteps)
 sigDACRampVoltage(sense1_r.Device,sense1_r.Port,Vclose,numSteps)
-sigDACRampVoltage(d4.Device,d4.Port,0.8,numSteps)
+sigDACRampVoltage(d4.Device,d4.Port,0.6,numSteps)
 sigDACRampVoltage(d6.Device,d6.Port,Vclose,numSteps)
-sigDACRampVoltage(phi1_3.Device,phi1_3.Port,1.2,numSteps)
+sigDACRampVoltage(phi1_3.Device,phi1_3.Port,0.8,numSteps)
 sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps)
 sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vopen,numSteps)
 sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vclose,numSteps)
@@ -118,7 +118,7 @@ unloadTwiddleSense1 % Move electrons out of twiddle-sense
 %% Reset twiddle-sense1
 interleavedRamp(d5.Device,d5.Port,-2,numStepsRC,waitTime) % close door
 interleavedRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTime) % set left shield back
-sigDACRampVoltage(twiddle1.Device,twiddle1.Port,0,numSteps) % set twiddle to 0V
+interleavedRamp(twiddle1.Device,twiddle1.Port,0,numStepsRC,waitTime) % set twiddle to 0V
 sigDACRampVoltage(guard1_r.Device,guard1_r.Port,-2,numSteps) % set right shield to -2V
-setSIM900Voltage(sense1_l.Device,sense1_l.Port,0); delay(2)
+interleavedRamp(sense1_l.Device,sense1_l.Port,0,numStepsRC,waitTime)
 TwiddleUnload_Full;

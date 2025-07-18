@@ -13,10 +13,10 @@ stopShield = -1; % sets stop value for shield sweep
 shieldStep = stopShield-startShield;
 
 %% Unload twiddle-sense
-sigDACRampVoltage(twiddle1.Device,twiddle1.Port,Vclose,numSteps) % close twiddle
+interleavedRamp(twiddle1.Device,twiddle1.Port,Vclose,numStepsRC,waitTime) % close twiddle
 interleavedRamp(guard1_l.Device,guard1_l.Port,Vclose,numStepsRC,waitTime) % close shield
 interleavedRamp(d5.Device,d5.Port,0.4,numStepsRC,waitTime) % open door
-setSIM900Voltage(sense1_l.Device,sense1_l.Port,-0.5); delay(2); % rampSIM900Voltage(sense1_l.Device,sense1_l.Port,-0.5,waitTime,delta); % close sense
+interleavedRamp(sense1_l.Device,sense1_l.Port,Vclose,numStepsRC,waitTime) % rampSIM900Voltage(sense1_l.Device,sense1_l.Port,-0.5,waitTime,delta); % close sense
 sigDACRampVoltage(d4.Device,d4.Port,0.8,numSteps) % open d4
 interleavedRamp(d5.Device,d5.Port,-2,numStepsRC,waitTime) % close door
 sigDACRampVoltage(phi1_1.Device,phi1_1.Port,1.2,numSteps) % open ccd1
@@ -47,11 +47,11 @@ sigDACRampVoltage(d1_even.Device,d1_even.Port,Vclose,numSteps) % close 1st door
 %% Reset twiddle-sense, move stray electrons from d4 back to sense1_l
 % interleavedRamp(d5.Device,d5.Port,Vopen,numStepsRC,waitTime) % open door
 % sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps) % close door
-setSIM900Voltage(sense1_l.Device,sense1_l.Port,0); delay(2) % rampSIM900Voltage(sense1_l.Device,sense1_l.Port,0,waitTime,delta) % set sense back to 0V
-interleavedRamp(guard1_l.Device,guard1_l.Port,startShield,numStepsRC,waitTime) % set left shield back
-sigDACRampVoltage(twiddle1.Device,twiddle1.Port,0,numSteps) % set twiddle back to 0V
+interleavedRamp(sense1_l.Device,sense1_l.Port,0,numStepsRC,waitTime) % rampSIM900Voltage(sense1_l.Device,sense1_l.Port,0,waitTime,delta) % set sense back to 0V
+interleavedRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTime) % set left shield back
+interleavedRamp(twiddle1.Device,twiddle1.Port,0,numStepsRC,waitTime) % set twiddle back to 0V
 interleavedRamp(d5.Device,d5.Port,-2,numStepsRC,waitTime) % close d5
 
 %% Sweep shield to check for electrons in twiddle
-[avg_Mag,avg_Real,avg_Imag,std_Real,std_Imag] = sweep1DMeasSR830({'Guard'},startShield,stopShield,shieldStep,10,10,{SR830Twiddle},guard1_l.Device,{guard1_l.Port},0,1); % sweep shield
-interleavedRamp(guard1_l.Device,guard1_l.Port,startShield,numStepsRC,waitTime) % set left shield back
+% [avg_Mag,avg_Real,avg_Imag,std_Real,std_Imag] = sweep1DMeasSR830({'Guard'},startShield,stopShield,shieldStep,10,10,{SR830Twiddle},guard1_l.Device,{guard1_l.Port},0,1); % sweep shield
+% interleavedRamp(guard1_l.Device,guard1_l.Port,startShield,numStepsRC,waitTime) % set left shield back

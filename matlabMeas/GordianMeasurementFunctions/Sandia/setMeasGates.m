@@ -3,13 +3,13 @@
 
 %% Initialise ramp parameters
 numSteps = 100; % sigDACRampVoltage
-numStepsRC = 5; % interleavedRamp
-waitTime = 0.0011; % interleavedRamp
+numStepsRC = 10; % interleavedRamp
+waitTime = 0.1; % interleavedRamp
 delta = 0.5; % rampSIM900Voltage
 Vopen = 1; % opening voltage of CCD
 Vclose = -0.6; % closing voltage of CCD, set below top metal
 
-setSIM900Voltage(filament.Device,filament.Port,0); delay(1) % ramp filament backing plate
+setSIM900Voltage(filament.Device,filament.Port,-2); delay(1) % ramp filament backing plate
 
 %% Set Sommer-Tanner
 sigDACRampVoltage(STD.Device,STD.Port,0,numSteps) % ramp ST-Drive
@@ -39,7 +39,7 @@ sigDACRampVoltage(twiddle1.Device,twiddle1.Port,0,numSteps) % set twiddle to 0V
 sigDACRampVoltage(guard1_r.Device,guard1_r.Port,-2,numSteps) % set right shield to -2V
 sigDACRampVoltage(sense1_r.Device,sense1_r.Port,Vclose,numSteps) % set right sense gate
 sigDACRampVoltage(d6.Device,d6.Port,Vclose,numSteps)
-setSIM900Voltage(sense1_l.Device,sense1_l.Port,0); delay(1) % rampSIM900Voltage(sense1_l.Device,sense1_l.Port,0,waitTime,delta); % set sense to 0V
+interleavedRamp(sense1_l.Device,sense1_l.Port,0,numStepsRC,waitTime); % setSIM900Voltage(sense1_l.Device,sense1_l.Port,0); delay(1) % rampSIM900Voltage(sense1_l.Device,sense1_l.Port,0,waitTime,delta); % set sense to 0V
 % fprintf('1st twiddle-sense set for measurement\n'); delay(1)
 
 %% Set vertical CCD
@@ -56,26 +56,26 @@ sigDACRampVoltage(d_Vup_2.Device,d_Vup_2.Port,Vclose,numSteps)
 sigDACRampVoltage(d_Vup_3.Device,d_Vup_3.Port,Vclose,numSteps)
 % fprintf('Vertical CCD set for measurement\n'); delay(1)
 
-% %% Set 2nd twiddle-sense
-% sigDACRampVoltage(d7.Device,d7.Port,-2,numSteps) % door for compensation of sense 1
-% interleavedRamp(guard2_l.Device,guard2_l.Port,0.2,numStepsRC,waitTime)
-% sigDACRampVoltage(twiddle2.Device,twiddle2.Port,0,numSteps)
-% sigDACRampVoltage(guard2_r.Device,guard2_r.Port,-2,numSteps)
-% sigDACRampVoltage(sense2_r.Device,sense2_r.Port,Vclose,numSteps)
-% sigDACRampVoltage(d8.Device,d8.Port,Vclose,numSteps)
-% rampSIM900Voltage(sense2_l.Device,sense2_l.Port,0,waitTime,delta)
-% fprintf('2nd twiddle-sense set for measurement.\n')
+%% Set 2nd twiddle-sense
+sigDACRampVoltage(d7.Device,d7.Port,-2,numSteps) % door for compensation of sense 1
+interleavedRamp(guard2_l.Device,guard2_l.Port,0,numStepsRC,waitTime)
+sigDACRampVoltage(twiddle2.Device,twiddle2.Port,0,numSteps)
+sigDACRampVoltage(guard2_r.Device,guard2_r.Port,-2,numSteps)
+sigDACRampVoltage(sense2_r.Device,sense2_r.Port,Vclose,numSteps)
+sigDACRampVoltage(d8.Device,d8.Port,Vclose,numSteps)
+interleavedRamp(sense2_l.Device,sense2_l.Port,0,numStepsRC,waitTime); % rampSIM900Voltage(sense2_l.Device,sense2_l.Port,0,waitTime,delta)
+fprintf('2nd twiddle-sense set for measurement.\n')
 
-% %% Set electron trap
-% sigDACRampVoltage(d9.Device,d9.Port,-2,numSteps)
-% sigDACRampVoltage(phi2_1.Device,phi2_1.Port,Vclose,numSteps)
-% sigDACRampVoltage(phi2_2.Device,phi2_2.Port,Vclose,numSteps)
-% sigDACRampVoltage(phi2_3.Device,phi2_3.Port,Vclose,numSteps)
-% 
-% interleavedRamp(trap1.Device,trap1.Port,stopVal,numStepsRC,waitTime)
-% interleavedRamp(trap2.Device,trap2.Port,stopVal,numStepsRC,waitTime)
-% interleavedRamp(trap3.Device,trap3.Port,stopVal,numStepsRC,waitTime)
-% interleavedRamp(trap4.Device,trap4.Port,stopVal,numStepsRC,waitTime)
-% interleavedRamp(trap5.Device,trap5.Port,stopVal,numStepsRC,waitTime)
-% interleavedRamp(trap6.Device,trap6.Port,stopVal,numStepsRC,waitTime)
-% fprintf('Electron trap set for measurement.\n')
+%% Set electron trap
+sigDACRampVoltage(d9.Device,d9.Port,-2,numSteps)
+sigDACRampVoltage(phi2_1.Device,phi2_1.Port,Vclose,numSteps)
+sigDACRampVoltage(phi2_2.Device,phi2_2.Port,Vclose,numSteps)
+sigDACRampVoltage(phi2_3.Device,phi2_3.Port,Vclose,numSteps)
+
+interleavedRamp(trap1.Device,trap1.Port,stopVal,numStepsRC,waitTime)
+interleavedRamp(trap2.Device,trap2.Port,stopVal,numStepsRC,waitTime)
+interleavedRamp(trap3.Device,trap3.Port,stopVal,numStepsRC,waitTime)
+interleavedRamp(trap4.Device,trap4.Port,stopVal,numStepsRC,waitTime)
+interleavedRamp(trap5.Device,trap5.Port,stopVal,numStepsRC,waitTime)
+interleavedRamp(trap6.Device,trap6.Port,stopVal,numStepsRC,waitTime)
+fprintf('Electron trap set for measurement.\n')
