@@ -31,7 +31,7 @@ buffersPerAcquisition = 1; % Set number of buffers
 
 stages = 4; % RC filter stages
 fc = 1; % RC filter cut off frequency
-phase = 179.7; % Phase offset for square wave from Awg2ch_Houck
+phase = -163.64; % Phase offset for square wave from Awg2ch_Houck
 % 179.746 deg phase offset for two channel AWG (square wave output)
 
 [X,Y,Xerr,Yerr] = ATS9416GetXY(bufferVolts,samplesPerSec,postTriggerSamples,f_signal,phase*pi/180,stages,fc,1);

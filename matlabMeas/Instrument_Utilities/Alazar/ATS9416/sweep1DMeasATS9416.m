@@ -36,7 +36,7 @@ for value = paramVector
     % Lock-in parameters
     stages = 5; % RC filter stages
     fc = 1; % RC filter cut off frequency
-    phaseOffset = 179.7; % Phase offset for Awh2ch_Houck
+    phaseOffset = -163.64; % Phase offset for single channel twiddle AWG; 179.7; % Phase offset for Awh2ch_Houck
 
     %% Query ATS9416 for data, calculate X and Y, average, and place in vectors
     [~,bufferVolts] = ATS9416AcquireData_NPT(boardHandle,postTriggerSamples,recordsPerBuffer,buffersPerAcquisition,channelMask);
