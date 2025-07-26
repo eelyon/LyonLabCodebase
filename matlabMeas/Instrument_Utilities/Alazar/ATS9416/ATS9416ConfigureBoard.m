@@ -27,7 +27,7 @@ retCode = ...
     AlazarSetCaptureClock(  ...
         boardHandle,        ... % HANDLE -- board handle
         EXTERNAL_CLOCK_10MHz_REF,     ... % U32 -- clock source id
-        10e6, ... % U32 -- sample rate id
+        samplesPerSec, ... % U32 -- sample rate id
         CLOCK_EDGE_RISING,  ... % U32 -- clock edge id
         1                   ... % U32 -- clock decimation
         );

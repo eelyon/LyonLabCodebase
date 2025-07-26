@@ -4,13 +4,13 @@ stopFreq = 5e6; % FFT stop frequency
 points = 10112; % 1000064; % Needs to be multiple of 128 and at least 256 points
 average = 1; % Records per buffer
 buffersPerAcquisition = 1; % Set number of buffers
-channelMask = CHANNEL_A; % Set channel to be measured
+channelMask = CHANNEL_B; % Set channel to be measured
 
-gainCryo = 20; % Gain of cryogenic amplifier circuit
+gainCryo = 9.8; % Gain of cryogenic amplifier circuit
 gainFEMTO = 100; % Gain of FEMTO voltage amplifier
 temp = 1.8; % Temperature in Kelvin
 
-NSD = true; % Noise Spectral Density (nV/sqrt(Hz)
+NSD = true; % Noise Spectral Density (nV/sqrt(Hz))
 PSD = false; % Power Spectral Density (nV^2/Hz)
 
 [result,bufferVolts] = ATS9416AcquireData_NPT(boardHandle,points,average,buffersPerAcquisition,channelMask);

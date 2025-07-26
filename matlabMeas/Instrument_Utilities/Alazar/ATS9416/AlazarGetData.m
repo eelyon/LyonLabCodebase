@@ -31,10 +31,10 @@ buffersPerAcquisition = 1; % Set number of buffers
 
 stages = 4; % RC filter stages
 fc = 1; % RC filter cut off frequency
-phase = -163.64; % Phase offset for square wave from Awg2ch_Houck
-% 179.746 deg phase offset for two channel AWG (square wave output)
+% phase = -192.61; % Phase offset for square wave from Awg2ch_Houck
+phase = -16.6; % deg phase offset for two channel AWG (square wave output)
 
-[X,Y,Xerr,Yerr] = ATS9416GetXY(bufferVolts,samplesPerSec,postTriggerSamples,f_signal,phase*pi/180,stages,fc,1);
+[X,Y,Xerr,Yerr] = ATS9416GetXY(bufferVolts,samplesPerSec,postTriggerSamples,f_signal,phase*pi/180,stages,fc);
 fprintf('X %f', X); fprintf(' +- %f Vrms\n', Xerr)
 fprintf('Y %f', Y); fprintf(' +- %f Vrms\n', Yerr)
 Rrms = sqrt(X.^2+Y.^2); fprintf('R %f Vrms\n', Rrms)

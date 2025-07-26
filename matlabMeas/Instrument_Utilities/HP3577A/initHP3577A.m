@@ -13,7 +13,7 @@ set3577Impedance(NetworkAnalyzer,'R','1Meg')
 set3577Attenuation(NetworkAnalyzer,'R','20dB')
 
 set3577AStartFrequency(NetworkAnalyzer,100)
-set3577AStopFrequency(NetworkAnalyzer,50e3)
+set3577AStopFrequency(NetworkAnalyzer,60e3)
 
 % set3577ASweepMode(NetworkAnalyzer,'CONT')
 set3577Average(NetworkAnalyzer,'0')

@@ -1,11 +1,11 @@
-numSteps = 100; % sigDACRampVoltage
-numStepsRC = 20; % sigDACRamp
-waitTimeRC = 2000; % 5 times time constant
-Vopen = 1;
-Vclose = -0.8;
+numSteps = 5; % sigDACRampVoltage
+numStepsRC = 5; % sigDACRamp
+waitTimeRC = 1100; % 5 times time constant
+Vopen = 3;
+Vclose = -1;
 Vload = 0;
 
-%% Open first three doors to CCD - using sigDACRampVoltage function
+% Open first three doors to CCD - using sigDACRampVoltage function
 sigDACRampVoltage(d1_even.Device,d1_even.Port,Vload,numSteps) % open 1st door
 sigDACRampVoltage(d2.Device,d2.Port,Vopen,numSteps) % open 2nd door
 sigDACRampVoltage(d1_even.Device,d1_even.Port,Vclose,numSteps);% close 1st door
@@ -30,10 +30,16 @@ sigDACRampVoltage(d4.Device,d4.Port,Vopen,numSteps) % open door
 sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vclose,numSteps) % close phi1
 sigDACRamp(d5.Device,d5.Port,Vopen,numStepsRC,waitTimeRC)
 sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps)
-sigDACRamp(sense1_l.Device,sense1_l.Port,0.2,numStepsRC,waitTimeRC)
-sigDACRamp(d5.Device,d5.Port,Vclose,numStepsRC,waitTimeRC)
-sigDACRamp(guard1_l.Device,guard1_l.Port,0.2,numStepsRC,waitTimeRC)
-sigDACRamp(twiddle1.Device,twiddle1.Port,0.2,numStepsRC,waitTimeRC)
+sigDACRamp(sense1_l.Device,sense1_l.Port,0,numStepsRC,waitTimeRC)
+sigDACRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTimeRC)
+sigDACRamp(twiddle1.Device,twiddle1.Port,0,numStepsRC,waitTimeRC)
+sigDACRamp(d5.Device,d5.Port,-2,numStepsRC,waitTimeRC)
+sigDACRampVoltage(guard1_r.Device,guard1_r.Port,-2,numSteps)
+delay(1)
+
+sweep1DMeasSR830({'Guard1'},0.2,-2,-0.2,3,5,{SR830ST},guard1_l.Device,{guard1_l.Port},0,1);
+sigDACRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTimeRC) % reset guard
+
 sigDACRampVoltage(guard1_r.Device,guard1_r.Port,0.2,numSteps)
 sigDACRamp(sense1_l.Device,sense1_l.Port,Vclose,numStepsRC,waitTimeRC)
 sigDACRampVoltage(sense1_r.Device,sense1_r.Port,0.2,numSteps)
@@ -97,5 +103,6 @@ sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vclose,numSteps); delay(1)
 sigDACRamp(d7.Device,d7.Port,Vclose,numStepsRC,waitTimeRC)
 delay(1)
 
-sweep1DMeasSR830({'Guard'},0.2,-2,-0.2,10,10,{SR830Twiddle},guard2_l.Device,{guard2_l.Port},0,1);
+% sweep1DMeasATS9416({'Guard'},1e6,100,0,-2,-0.1,1,boardHandle,CHANNEL_B,guard2_l.Device,guard2_l.Port,0);
+sweep1DMeasSR830({'Guard2'},0.2,-2,-0.2,3,5,{SR830Twiddle},guard2_l.Device,{guard2_l.Port},0,1);
 sigDACRamp(guard2_l.Device,guard2_l.Port,0,numStepsRC,waitTimeRC)

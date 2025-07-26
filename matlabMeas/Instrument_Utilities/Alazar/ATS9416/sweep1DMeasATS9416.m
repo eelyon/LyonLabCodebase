@@ -1,4 +1,4 @@
-function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = sweep1DMeasATS9416(sweepType,start,stop,deltaParam,timeBetweenPoints,freq,boardHandle,channelMask,device,port,doBackAndForth)
+function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = sweep1DMeasATS9416(sweepType,freq,gain,start,stop,deltaParam,timeBetweenPoints,boardHandle,channelMask,device,port,doBackAndForth)
 %sweep1DMeasATS9416 Summary of this function goes here
 %   Detailed explanation goes here
 [plotHandles,subPlotFigureHandles] = initializeATS9416Meas1D(sweepType{1},doBackAndForth);
@@ -36,12 +36,12 @@ for value = paramVector
     % Lock-in parameters
     stages = 5; % RC filter stages
     fc = 1; % RC filter cut off frequency
-    phaseOffset = -163.64; % Phase offset for single channel twiddle AWG; 179.7; % Phase offset for Awh2ch_Houck
+    phaseOffset = -192.61; %-163.64; % Phase offset for single channel twiddle AWG; 179.7; % Phase offset for Awh2ch_Houck
 
     %% Query ATS9416 for data, calculate X and Y, average, and place in vectors
     [~,bufferVolts] = ATS9416AcquireData_NPT(boardHandle,postTriggerSamples,recordsPerBuffer,buffersPerAcquisition,channelMask);
     delay(0.01);
-    [Xrms,Yrms,stdXrms,stdYrms] = ATS9416GetXY(bufferVolts,samplesPerSec,postTriggerSamples,freq,phaseOffset*pi/180,stages,fc,1);
+    [Xrms,Yrms,stdXrms,stdYrms] = ATS9416GetXY(bufferVolts/gain,samplesPerSec,postTriggerSamples,freq,phaseOffset*pi/180,stages,fc);
 
     x(index) = Xrms;
     y(index) = Yrms;
@@ -101,4 +101,6 @@ function setErrorBarXYData(plotHandle,xDat,yDat,yErr)
     plotHandle.YData = yDat;
     plotHandle.YPositiveDelta = yErr;
     plotHandle.YNegativeDelta = yErr;
+    refreshdata;
+    drawnow;
 end

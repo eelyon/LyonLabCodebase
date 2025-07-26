@@ -1,28 +1,28 @@
 %% Script for shuttling electrons from twiddle-sense 2 to twiddle-sense 1
 % Purpose is to see if I can retain the number of electrons I start out with
-numSteps = 100; % sigDACRampVoltage
-numStepsRC = 10; % sigDACRamp
-waitTimeRC = 2000; % 5 times time constant
-Vopen = 1;
-Vclose = -0.8;
-Vload = -0.3;
+numSteps = 5; % sigDACRampVoltage
+numStepsRC = 5; % sigDACRamp
+waitTimeRC = 1100; % 5 times time constant
+Vopen = 3;
+Vclose = -1;
+Vload = -0.01;
 
 % Check electron signal in twiddle-sense 2
-% sweep1DMeasSR830({'Guard'},0.2,-2,-0.2,3,5,{SR830Twiddle},guard2_l.Device,{guard2_l.Port},0,1);
-% sigDACRamp(guard2_l.Device,guard2_l.Port,0,numStepsRC,waitTimeRC)
-% delay(1)
-
+sweep1DMeasSR830({'Guard2'},0.2,-1,-0.1,3,5,{SR830Twiddle},guard2_l.Device,{guard2_l.Port},0,1);
+sigDACRamp(guard2_l.Device,guard2_l.Port,0,numStepsRC,waitTimeRC)
+delay(1)
+ 
 %% Move electrons out of twiddle-sense 2
-sigDACRamp(sense2_l.Device,sense2_l.Port,0.2,numStepsRC,waitTimeRC)
+sigDACRamp(sense2_l.Device,sense2_l.Port,0.4,numStepsRC,waitTimeRC)
 sigDACRamp(twiddle2.Device,twiddle2.Port,Vclose,numStepsRC,waitTimeRC)
 sigDACRamp(guard2_l.Device,guard2_l.Port,Vclose,numStepsRC,waitTimeRC)
-sigDACRamp(d7.Device,d7.Port,0.2,numStepsRC,waitTimeRC) % door for compensation of sense 1
+sigDACRamp(d7.Device,d7.Port,0.4,numStepsRC,waitTimeRC) % door for compensation of sense 1
 sigDACRamp(sense2_l.Device,sense2_l.Port,Vclose,numStepsRC,waitTimeRC)
-sigDACRampVoltage(phi1_3.Device,phi1_3.Port,0.4,numSteps)
+sigDACRampVoltage(phi1_3.Device,phi1_3.Port,0.8,numSteps)
 sigDACRamp(d7.Device,d7.Port,Vclose,numStepsRC,waitTimeRC) % door for compensation of sense 1
-sigDACRampVoltage(d4.Device,d4.Port,0.6,numSteps)
+sigDACRampVoltage(d4.Device,d4.Port,1.2,numSteps)
 sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vclose,numSteps)
-sigDACRampVoltage(phi1_1.Device,phi1_1.Port,0.8,numSteps)
+sigDACRampVoltage(phi1_1.Device,phi1_1.Port,1.6,numSteps)
 sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps)
 sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vopen,numSteps)
 sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vclose,numSteps)
@@ -38,7 +38,7 @@ sigDACRamp(d7.Device,d7.Port,-2,numStepsRC,waitTimeRC)
 delay(1)
 
 % Check if twiddle-sense 2 is truly empty
-sweep1DMeasSR830({'Guard'},0.2,-2,-0.2,3,5,{SR830Twiddle},guard2_l.Device,{guard2_l.Port},0,1);
+sweep1DMeasSR830({'Guard2'},0.2,-1,-0.1,3,5,{SR830Twiddle},guard2_l.Device,{guard2_l.Port},0,1);
 sigDACRamp(guard2_l.Device,guard2_l.Port,0,numStepsRC,waitTimeRC)
 
 % Move electrons through vertical CCD
@@ -78,23 +78,33 @@ sigDACRampVoltage(d4.Device,d4.Port,Vopen,numSteps)
 sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vclose,numSteps)
 sigDACRampVoltage(d6.Device,d6.Port,Vopen,numSteps)
 sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps)
-sigDACRampVoltage(sense1_r.Device,sense1_r.Port,0.2,numSteps)
+sigDACRampVoltage(sense1_r.Device,sense1_r.Port,0.4,numSteps)
 sigDACRampVoltage(d6.Device,d6.Port,Vclose,numSteps)
-sigDACRampVoltage(guard1_r.Device,guard1_r.Port,0.2,numSteps)
-sigDACRamp(twiddle1.Device,twiddle1.Port,0.2,numStepsRC,waitTimeRC)
-sigDACRamp(guard1_l.Device,guard1_l.Port,0.2,numStepsRC,waitTimeRC)
+sigDACRampVoltage(guard1_r.Device,guard1_r.Port,0.4,numSteps)
+sigDACRamp(twiddle1.Device,twiddle1.Port,0.4,numStepsRC,waitTimeRC)
+sigDACRamp(guard1_l.Device,guard1_l.Port,0.4,numStepsRC,waitTimeRC)
 sigDACRampVoltage(sense1_r.Device,sense1_r.Port,Vclose,numSteps)
-sigDACRamp(sense1_l.Device,sense1_l.Port,0.2,numStepsRC,waitTimeRC)
-sigDACRampVoltage(guard1_r.Device,guard1_r.Port,Vclose,numSteps)
+sigDACRamp(sense1_l.Device,sense1_l.Port,0.4,numStepsRC,waitTimeRC)
+
+sigDACRampVoltage(guard1_r.Device,guard1_r.Port,-2,numSteps)
+sigDACRamp(d5.Device,d5.Port,-2,numStepsRC,waitTimeRC)
+sigDACRamp(twiddle1.Device,twiddle1.Port,0,numStepsRC,waitTimeRC)
+sigDACRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTimeRC)
+sigDACRamp(sense1_l.Device,sense1_l.Port,0,numStepsRC,waitTimeRC)
+delay(1)
+
+sweep1DMeasSR830({'Guard1'},0.2,-1,-0.1,3,5,{SR830ST},guard1_l.Device,{guard1_l.Port},0,1);
+sigDACRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTimeRC) % reset guard
+
 sigDACRamp(twiddle1.Device,twiddle1.Port,Vclose,numStepsRC,waitTimeRC)
 sigDACRamp(guard1_l.Device,guard1_l.Port,Vclose,numStepsRC,waitTimeRC)
 
 % Move electrons from sense 1 to Sommer-Tanner
-sigDACRamp(d5.Device,d5.Port,0.4,numStepsRC,waitTimeRC) % open door
+sigDACRamp(d5.Device,d5.Port,0.8,numStepsRC,waitTimeRC) % open door
 sigDACRamp(sense1_l.Device,sense1_l.Port,Vclose,numStepsRC,waitTimeRC)
-sigDACRampVoltage(d4.Device,d4.Port,0.6,numSteps) % open d4
+sigDACRampVoltage(d4.Device,d4.Port,1.2,numSteps) % open d4
 sigDACRamp(d5.Device,d5.Port,Vclose,numStepsRC,waitTimeRC) % close door
-sigDACRampVoltage(phi1_1.Device,phi1_1.Port,0.8,numSteps) % open ccd1
+sigDACRampVoltage(phi1_1.Device,phi1_1.Port,1.6,numSteps) % open ccd1
 sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps) % close door
 
 % Move electrons through horizontal CCD
@@ -143,21 +153,26 @@ sigDACRampVoltage(d4.Device,d4.Port,Vopen,numSteps) % open door
 sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vclose,numSteps) % close phi1
 sigDACRamp(d5.Device,d5.Port,Vopen,numStepsRC,waitTimeRC)
 sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps)
-sigDACRamp(sense1_l.Device,sense1_l.Port,0.2,numStepsRC,waitTimeRC)
-sigDACRamp(d5.Device,d5.Port,Vclose,numStepsRC,waitTimeRC)
-sigDACRamp(guard1_l.Device,guard1_l.Port,0.2,numStepsRC,waitTimeRC)
-sigDACRamp(twiddle1.Device,twiddle1.Port,0.2,numStepsRC,waitTimeRC)
-sigDACRampVoltage(guard1_r.Device,guard1_r.Port,0.2,numSteps)
+sigDACRamp(sense1_l.Device,sense1_l.Port,0,numStepsRC,waitTimeRC)
+sigDACRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTimeRC)
+sigDACRamp(twiddle1.Device,twiddle1.Port,0,numStepsRC,waitTimeRC)
+sigDACRamp(d5.Device,d5.Port,-2,numStepsRC,waitTimeRC)
+sigDACRampVoltage(guard1_r.Device,guard1_r.Port,-2,numSteps)
+
+sweep1DMeasSR830({'Guard1'},0.2,-1,-0.1,3,5,{SR830ST},guard1_l.Device,{guard1_l.Port},0,1);
+sigDACRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTimeRC) % reset guard
+
+sigDACRampVoltage(guard1_r.Device,guard1_r.Port,0.4,numSteps)
 sigDACRamp(sense1_l.Device,sense1_l.Port,Vclose,numStepsRC,waitTimeRC)
-sigDACRampVoltage(sense1_r.Device,sense1_r.Port,0.2,numSteps)
+sigDACRampVoltage(sense1_r.Device,sense1_r.Port,0.4,numSteps)
 sigDACRamp(guard1_l.Device,guard1_l.Port,Vclose,numStepsRC,waitTimeRC)
 sigDACRamp(twiddle1.Device,twiddle1.Port,Vclose,numStepsRC,waitTimeRC)
 sigDACRampVoltage(guard1_r.Device,guard1_r.Port,Vclose,numSteps)
-sigDACRampVoltage(d6.Device,d6.Port,0.4,numSteps)
+sigDACRampVoltage(d6.Device,d6.Port,0.8,numSteps)
 sigDACRampVoltage(sense1_r.Device,sense1_r.Port,Vclose,numSteps)
-sigDACRampVoltage(d4.Device,d4.Port,0.6,numSteps)
+sigDACRampVoltage(d4.Device,d4.Port,1.2,numSteps)
 sigDACRampVoltage(d6.Device,d6.Port,Vclose,numSteps)
-sigDACRampVoltage(phi1_3.Device,phi1_3.Port,0.8,numSteps)
+sigDACRampVoltage(phi1_3.Device,phi1_3.Port,1.6,numSteps)
 sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps)
 sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vopen,numSteps)
 sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vclose,numSteps)
@@ -207,5 +222,5 @@ sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vclose,numSteps)
 sigDACRamp(d7.Device,d7.Port,-2,numStepsRC,waitTimeRC)
 delay(1)
 
-sweep1DMeasSR830({'Guard'},0.3,-1,-0.1,10,10,{SR830Twiddle},guard2_l.Device,{guard2_l.Port},0,1);
+sweep1DMeasSR830({'Guard2'},0.2,-1,-0.1,3,5,{SR830Twiddle},guard2_l.Device,{guard2_l.Port},0,1);
 sigDACRamp(guard2_l.Device,guard2_l.Port,0,numStepsRC,waitTimeRC)

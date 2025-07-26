@@ -42,7 +42,7 @@ else
 end
 
 % figure
-% plot(t,buffer)
+% plot(t,buffer*5)
 % hold on
 % plot(t,0.1*reference_signal_X)
 % hold on

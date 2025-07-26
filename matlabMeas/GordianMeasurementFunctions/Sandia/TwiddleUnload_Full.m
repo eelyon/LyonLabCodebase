@@ -17,9 +17,9 @@ sigDACRamp(twiddle1.Device,twiddle1.Port,Vclose,numStepsRC,waitTimeRC) % close t
 sigDACRamp(guard1_l.Device,guard1_l.Port,Vclose,numStepsRC,waitTimeRC) % close shield
 sigDACRamp(d5.Device,d5.Port,0.4,numStepsRC,waitTimeRC) % open door
 sigDACRamp(sense1_l.Device,sense1_l.Port,Vclose,numStepsRC,waitTimeRC)
-sigDACRampVoltage(d4.Device,d4.Port,0.6,numSteps) % open d4
-sigDACRamp(d5.Device,d5.Port,-2,numStepsRC,waitTimeRC) % close door
-sigDACRampVoltage(phi1_1.Device,phi1_1.Port,0.8,numSteps) % open ccd1
+sigDACRampVoltage(d4.Device,d4.Port,0.8,numSteps) % open d4
+sigDACRamp(d5.Device,d5.Port,Vclose,numStepsRC,waitTimeRC) % close door
+sigDACRampVoltage(phi1_1.Device,phi1_1.Port,1.2,numSteps) % open ccd1
 sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps) % close door
 
 %% Move electrons on CCD3 back to ST through CCD
@@ -51,5 +51,5 @@ sigDACRamp(twiddle1.Device,twiddle1.Port,0,numStepsRC,waitTimeRC) % set twiddle 
 sigDACRamp(d5.Device,d5.Port,-2,numStepsRC,waitTimeRC) % close d5
 
 %% Sweep shield to check for electrons in twiddle
-% [avg_Mag,avg_Real,avg_Imag,std_Real,std_Imag] = sweep1DMeasSR830({'Guard'},startShield,stopShield,shieldStep,10,10,{SR830Twiddle},guard1_l.Device,{guard1_l.Port},0,1); % sweep shield
-% sigDACRamp(guard1_l.Device,guard1_l.Port,startShield,numStepsRC,waitTimeRC) % set left shield back
+sweep1DMeasSR830({'Guard1'},0.2,-2,-0.2,3,5,{SR830ST},guard1_l.Device,{guard1_l.Port},0,1); % sweep shield
+sigDACRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTimeRC) % set left shield back
