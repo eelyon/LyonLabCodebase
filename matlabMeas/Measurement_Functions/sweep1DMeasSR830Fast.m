@@ -22,7 +22,7 @@ function [avgmags,avgxs,avgys,stdx,stdy] = sweep1DMeasSR830Fast(sweepType,start,
 %           value.
 %           opt - 0 (Current) or 1 (Voltage) measurement. 
 
-flush(readSR830{1}.client);
+% flush(readSR830{1}.client);
 for srIndex = 1:length(readSR830)
     if exist('opt','var') 
         [plotHandles{srIndex},subPlotFigureHandles{srIndex}] = initializeSR830Meas1D(sweepType{srIndex},doBackAndForth,opt);
@@ -55,12 +55,20 @@ halfway = length(paramVector)/2;
 %% Index for time axis.
 currentTimeIndex = 1;
 currentAvgIndex = 1;
+
 %% 95% confidence interval vector.
 CIVector = tinv([0.025 0.975], repeat-1); 
 errorType = 'CI';
 
 %% Define a cleanup function that will save data on user interrupt.
 startTime = now();
+
+%% Query time constant and set sampling rate
+currentSR830 = readSR830{1};
+tc = SR830queryTimeConstant(currentSR830);
+sratInd = floor(log2(1 / (0.0625 * tc)));
+fprintf(currentSR830.client,"SRAT" + num2str(sratInd)); % Set sampling rate
+sratRate = (2^sratInd) * 0.0625
 
 %% Main parameter loop.
 for value = paramVector
@@ -70,26 +78,24 @@ for value = paramVector
         if pIndex == 1
             setVal(device,port,value);
         else
-            setVal(device,port,value+deltaGateParam);
+            setVal(device,port,value + deltaGateParam);
         end
-        
     end
     
     
     % Update the DAC gui - this is sort of hard coded in maybe I need to
     % make an update function that updates all GUIs present.
     %evalin("base","DACGUI.updateDACGUI");
-    drawnow;
-    
     delay(timeBetweenPoints);
-%     %% Initialize average vectors that gets reset for the repeating for loop
+
+    %% Initialize average vectors that gets reset for the repeating for loop
     magVectorRepeat = [];
     xVectorRepeat = [];
     yVectorRepeat = [];
-    %% Repeating for loop - changing repeat increases the number of averages to perform per point.
 
     %% Query SR830 for Real/Imag data, calculate Magnitude and place in vector
-    [Real,Imag,Mag,time] = getSR830Data(Real,Imag,time,startTime,readSR830,repeat);
+    [Real,Imag,Mag,time] = getSR830Data(Real,Imag,time,startTime,readSR830,repeat,sratRate);
+
     %% Place data in repeat vectors that get averaged and error bars get calculated.
     for srIndex = 1:numSR830s
         arrLength = length(Mag);
@@ -97,13 +103,16 @@ for value = paramVector
         xVectorRepeat   = Real(arrLength-repeat+1:arrLength);
         yVectorRepeat    = Imag(arrLength-repeat+1:arrLength);
     end
+
     %% Increase timeIndex by 1.
     currentTimeIndex = currentTimeIndex + 1;
     updateSR830TimePlots(plotHandles,Real,Imag,Mag,time,numSR830s);
+
     %% Average all data and place in average arrays.
     magVectorMeans = mean(magVectorRepeat,2);
     xVectorMeans = mean(xVectorRepeat,2);
     yVectorMeans = mean(yVectorRepeat,2);
+
     for srIndex = 1:numSR830s
         avgParam(srIndex,currentAvgIndex)   = value;
         avgmags(srIndex,currentAvgIndex)    = magVectorMeans(srIndex);
@@ -118,12 +127,9 @@ for value = paramVector
         stdy(srIndex,currentAvgIndex)   = calculateErrorBar(errorType,CIVector,yVectorRepeat(srIndex,:),repeat);
     end
 
-
     %% Assign all the data properly depending on doing a back and forth scan.
-    
     updateSR830AveragePlots(plotHandles,avgParam,avgmags,avgxs,avgys,stdm,stdx,stdy,doBackAndForth,currentAvgIndex,halfway,numSR830s);
     currentAvgIndex = currentAvgIndex + 1;
-    
 end
 
 for i = 1:numSR830s
@@ -131,39 +137,37 @@ for i = 1:numSR830s
 end
 end
 
-
 function updateSR830TimePlots(plotHandles,Real,Imag,Mag,time,numSR830s)
-for srIndex = 1:numSR830s
-    currentHandleSet = plotHandles{srIndex};
-    setPlotXYData(currentHandleSet{1},time,Real);
-    setPlotXYData(currentHandleSet{2},time,Imag);
-    setPlotXYData(currentHandleSet{3},time,Mag);
-    axis tight;
-end
-    
+    for srIndex = 1:numSR830s
+        currentHandleSet = plotHandles{srIndex};
+        setPlotXYData(currentHandleSet{1},time,Real);
+        setPlotXYData(currentHandleSet{2},time,Imag);
+        setPlotXYData(currentHandleSet{3},time,Mag);
+        axis tight;
+    end
 end
 
 function updateSR830AveragePlots(plotHandles,avgParam,avgmags,avgxs,avgys,stdm,stdx,stdy,doBackAndForth,currentIndex,halfway,numSR830s)
-for srIndex = 1:numSR830s
-    currentHandleSet = plotHandles{srIndex};
-    if doBackAndForth && currentIndex > halfway
-        setErrorBarXYData(currentHandleSet{4},avgParam(srIndex,1:halfway),avgxs(srIndex,1:halfway),stdx(srIndex,1:halfway));
-        setErrorBarXYData(currentHandleSet{6},avgParam(srIndex,1:halfway),avgys(srIndex,1:halfway),stdy(srIndex,1:halfway));
-        setErrorBarXYData(currentHandleSet{8},avgParam(srIndex,1:halfway),avgmags(srIndex,1:halfway),stdm(srIndex,1:halfway));
-
-        setErrorBarXYData(currentHandleSet{5},avgParam(srIndex,halfway+1:end),avgxs(srIndex,halfway+1:end),stdx(srIndex,halfway+1:end));
-        setErrorBarXYData(currentHandleSet{7},avgParam(srIndex,halfway+1:end),avgys(srIndex,halfway+1:end),stdy(srIndex,halfway+1:end));
-        setErrorBarXYData(currentHandleSet{9},avgParam(srIndex,halfway+1:end),avgmags(srIndex,halfway+1:end),stdm(srIndex,halfway+1:end));
-    elseif doBackAndForth && currentIndex <= halfway
+    for srIndex = 1:numSR830s
+        currentHandleSet = plotHandles{srIndex};
+        if doBackAndForth && currentIndex > halfway
+            setErrorBarXYData(currentHandleSet{4},avgParam(srIndex,1:halfway),avgxs(srIndex,1:halfway),stdx(srIndex,1:halfway));
+            setErrorBarXYData(currentHandleSet{6},avgParam(srIndex,1:halfway),avgys(srIndex,1:halfway),stdy(srIndex,1:halfway));
+            setErrorBarXYData(currentHandleSet{8},avgParam(srIndex,1:halfway),avgmags(srIndex,1:halfway),stdm(srIndex,1:halfway));
+    
+            setErrorBarXYData(currentHandleSet{5},avgParam(srIndex,halfway+1:end),avgxs(srIndex,halfway+1:end),stdx(srIndex,halfway+1:end));
+            setErrorBarXYData(currentHandleSet{7},avgParam(srIndex,halfway+1:end),avgys(srIndex,halfway+1:end),stdy(srIndex,halfway+1:end));
+            setErrorBarXYData(currentHandleSet{9},avgParam(srIndex,halfway+1:end),avgmags(srIndex,halfway+1:end),stdm(srIndex,halfway+1:end));
+        elseif doBackAndForth && currentIndex <= halfway
+                setErrorBarXYData(currentHandleSet{4},avgParam(srIndex,:),avgxs(srIndex,:),stdx(srIndex,:));
+                setErrorBarXYData(currentHandleSet{6},avgParam(srIndex,:),avgys(srIndex,:),stdy(srIndex,:));
+                setErrorBarXYData(currentHandleSet{8},avgParam(srIndex,:),avgmags(srIndex,:),stdm(srIndex,:));
+        else
             setErrorBarXYData(currentHandleSet{4},avgParam(srIndex,:),avgxs(srIndex,:),stdx(srIndex,:));
-            setErrorBarXYData(currentHandleSet{6},avgParam(srIndex,:),avgys(srIndex,:),stdy(srIndex,:));
-            setErrorBarXYData(currentHandleSet{8},avgParam(srIndex,:),avgmags(srIndex,:),stdm(srIndex,:));
-    else
-        setErrorBarXYData(currentHandleSet{4},avgParam(srIndex,:),avgxs(srIndex,:),stdx(srIndex,:));
-        setErrorBarXYData(currentHandleSet{5},avgParam(srIndex,:),avgys(srIndex,:),stdy(srIndex,:));
-        setErrorBarXYData(currentHandleSet{6},avgParam(srIndex,:),avgmags(srIndex,:),stdm(srIndex,:));
+            setErrorBarXYData(currentHandleSet{5},avgParam(srIndex,:),avgys(srIndex,:),stdy(srIndex,:));
+            setErrorBarXYData(currentHandleSet{6},avgParam(srIndex,:),avgmags(srIndex,:),stdm(srIndex,:));
+        end
     end
-end
 end
 
 function setErrorBarXYData(plotHandle,xDat,yDat,yErr)
@@ -173,44 +177,39 @@ function setErrorBarXYData(plotHandle,xDat,yDat,yErr)
     plotHandle.YNegativeDelta = yErr;
 end
 
-
-function [x,y,mag,t] = getSR830Data(x,y,t,startTime,readSR830,numPointsToRead)
+function [x,y,mag,t] = getSR830Data(x,y,t,startTime,readSR830,numPointsToRead,sratRate)
 % Function pulls the x,y,magnitude, and time data for each point from the
 % targetSR830. IMPORTANT: readSR830 needs to be a cell array of SR830
 % objects!!!.
     currentSR830 = readSR830{1};
-    tc = SR830queryTimeConstant(currentSR830);
-    sratInd = floor(log2(1 / (0.0625 * tc)));
-    fprintf(currentSR830.client,"SRAT" + num2str(sratInd));
+    fprintf(currentSR830.client,"REST"); % Reset buffer
+%     fprintf(currentSR830.client,"FAST2;STRD"); % Start scan
+    fprintf(currentSR830.client,"STRT"); % Start scan
+    delay(0.5 + (numPointsToRead/sratRate));
+    fprintf(currentSR830.client,"PAUS"); % Pause buffer
+%     delay(0.01)
 
-    sratRate = (2^sratInd) * 0.0625;
+    str2num(query(currentSR830.client,"SPTS?"))
+%     fprintf('SPTS %i\n', numPointsBuffer);
 
-    %disp(sratRate);
-
-    fprintf(currentSR830.client,"REST");
-    fprintf(currentSR830.client,'STRD'); % starts scanning after 0.5sec
-    delay(1 + (numPointsToRead/sratRate));
-    fprintf(currentSR830.client,'PAUS');
     x = [x,currentSR830.SR830queryXFast(numPointsToRead)];
     y = [y,currentSR830.SR830queryYFast(numPointsToRead)];
-    t = [t,(now() - startTime)*86400 - linspace(0,numPointsToRead/sratRate,numPointsToRead)];
     mag = sqrt(x.^2 + y.^2);
+    % time needs fixing - it's not accurate
+    t = [t,(now() - startTime)*86400 - linspace(0,numPointsToRead/sratRate,numPointsToRead) - 1];
 end
 
 function [x,y,mag,t] = getSR830DataCapacitance(x,y,mag,t,currentTimeIndex,startTime,readSR830)
 % Function pulls the x,y,magnitude, and time data for each point from the
 % targetSR830. IMPORTANT: readSR830 needs to be a cell array of SR830
 % objects!!!.
-for i = 1:length(readSR830)
-    currentSR830 = readSR830{i};
-    Igain = 1e12.*-1/(2*pi*SR830queryAmplitude(currentSR830)*SR830queryFreq(currentSR830));
-    x(i,currentTimeIndex) = currentSR830.SR830queryX()*Igain;
-    y(i,currentTimeIndex) = currentSR830.SR830queryY()*Igain;
-    t(i,currentTimeIndex) = (now()-startTime)*86400;
-    mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
-    delay(.005);
+    for i = 1:length(readSR830)
+        currentSR830 = readSR830{i};
+        Igain = 1e12.*-1/(2*pi*SR830queryAmplitude(currentSR830)*SR830queryFreq(currentSR830));
+        x(i,currentTimeIndex) = currentSR830.SR830queryX()*Igain;
+        y(i,currentTimeIndex) = currentSR830.SR830queryY()*Igain;
+        t(i,currentTimeIndex) = (now()-startTime)*86400;
+        mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
+        delay(.005);
+    end
 end
-end
-
-
-

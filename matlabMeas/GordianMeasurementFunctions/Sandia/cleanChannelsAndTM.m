@@ -25,8 +25,8 @@ sigDACRampVoltage(d6.Device,d6.Port,0.2,numSteps)
 sigDACRampVoltage(phi1_3.Device,phi1_3.Port,0.2,numSteps)
 
 % sweep1DMeasSR830({'TM'},-0.8,-1.6,0.2,3,5,{SR830Twiddle},TM.Device,{TM.Port},1,1);
-sigDACRamp(TM.Device,TM.Port,-1.4,numStepsRC,15000); delay(1)
-sigDACRamp(TM.Device,TM.Port,1,numStepsRC,waitTimeRC)
+sigDACRamp(TM.Device,TM.Port,-1.6,numStepsRC,15000); delay(1)
+sigDACRamp(TM.Device,TM.Port,-1.2,numStepsRC,waitTimeRC)
 
 % TwiddleUnload_Full; % Empty out 6 open channels
 
@@ -82,9 +82,9 @@ sigDACRamp(guard2_l.Device,guard2_l.Port,0,numStepsRC,waitTimeRC)
 sigDACRamp(sense2_l.Device,sense2_l.Port,0,numStepsRC,waitTimeRC)
 sigDACRamp(d7.Device,d7.Port,-2,numStepsRC,waitTimeRC)
 
-sweep1DMeasSR830({'Guard2'},0,-2,-0.2,3,5,{SR830Twiddle},guard2_l.Device,{guard2_l.Port},0,1);
-sigDACRamp(guard2_l.Device,guard2_l.Port,0,numStepsRC,waitTimeRC)
-delay(1)
+% sweep1DMeasSR830({'Guard2'},0,-2,-0.2,3,5,{SR830Twiddle},guard2_l.Device,{guard2_l.Port},0,1);
+% sigDACRamp(guard2_l.Device,guard2_l.Port,0,numStepsRC,waitTimeRC)
+% delay(1)
 
 %% Move electrons up
 for j = 1:76
@@ -154,6 +154,6 @@ sigDACRamp(sense1_l.Device,sense1_l.Port,0,numStepsRC,waitTimeRC)
 TwiddleUnload_Full % Unload twiddle-sense 1
 
 % Reset Sommer-Tanner
-sigDACRampVoltage(STM.Device,STM.Port,0,numSteps)
-sigDACRampVoltage(STD.Device,STD.Port,0,numSteps)
-sigDACRampVoltage(STS.Device,STS.Port,0,numSteps)
+sigDACRampVoltage(STM.Device,STM.Port,+1,numSteps)
+sigDACRampVoltage(STD.Device,STD.Port,+1,numSteps)
+sigDACRampVoltage(STS.Device,STS.Port,+1,numSteps)

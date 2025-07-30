@@ -5,8 +5,8 @@
 numSteps = 100; % sigDACRampVoltage
 numStepsRC = 10; % sigDACRamp
 waitTimeRC = 1100; % in microseconds
-Vopen = 1; % opening voltage of CCD
-Vclose = -0.8; % closing voltage of CCD, set below top metal
+Vopen = 3; % opening voltage of CCD
+Vclose = -1; % closing voltage of CCD, set below top metal
 
 setSIM900Voltage(filament.Device,filament.Port,-2) % set back filament backing plate
 delay(1)
@@ -83,4 +83,4 @@ sigDACRamp(trap6.Device,trap6.Port,Vclose,numStepsRC,waitTimeRC)
 % fprintf('Electron trap set for measurement.\n')
 delay(1)
 
-sigDACRamp(TM.Device,TM.Port,-0.8,numStepsRC,waitTimeRC) % ramp top metal
+sigDACRamp(TM.Device,TM.Port,-1,numStepsRC,waitTimeRC) % ramp top metal

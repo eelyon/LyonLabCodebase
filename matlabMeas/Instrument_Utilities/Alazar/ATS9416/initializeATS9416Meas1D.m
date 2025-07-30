@@ -106,6 +106,10 @@ switch targetGate
         xAxisName = "Dot Potential Voltage [V]";
     case 'Guard'
         xAxisName = "Guard Voltage [V]";
+    case 'Guard1'
+        xAxisName = "Guard 1 Voltage [V]";
+    case 'Guard2'
+        xAxisName = "Guard 2 Voltage [V]";
     case 'Freq'
         xAxisName = "SR830 Frequency [Hz]";
     case 'ThermoFreq'

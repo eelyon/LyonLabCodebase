@@ -2,11 +2,11 @@
 % Channels parallel to the 6 used ones are emptied by lifting electrons
 % onto top metal through d4 and phi1_1
 % Run DCPinout before running this script
-% numSteps = 20; % sigDACRampVoltage
-% numStepsRC = 10; % sigDACRamp
-% waitTimeRC = 1000; % in microseconds
-% Vopen = 1; % holding voltage of ccd
-% Vclose = -0.7; % closing voltage of ccd
+numSteps = 5; % sigDACRampVoltage
+numStepsRC = 5; % sigDACRamp
+waitTimeRC = 1100; % in microseconds
+Vopen = 3; % holding voltage of ccd
+Vclose = -1; % closing voltage of ccd
 
 % startShield = 0.4; % sets start value for shield sweep
 % stopShield = -1; % sets stop value for shield sweep
@@ -51,5 +51,9 @@ sigDACRamp(twiddle1.Device,twiddle1.Port,0,numStepsRC,waitTimeRC) % set twiddle 
 sigDACRamp(d5.Device,d5.Port,-2,numStepsRC,waitTimeRC) % close d5
 
 %% Sweep shield to check for electrons in twiddle
-sweep1DMeasSR830({'Guard1'},0.2,-2,-0.2,3,5,{SR830ST},guard1_l.Device,{guard1_l.Port},0,1); % sweep shield
+sweep1DMeasSR830({'Guard1'},0.2,-1,-0.1,3,5,{SR830ST},guard1_l.Device,{guard1_l.Port},0,1); % sweep shield
 sigDACRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTimeRC) % set left shield back
+delay(1)
+
+% sweep1DMeasATS9416({'Guard1'},102e3,32,0.2,-1,-0.1,0.01,boardHandle,CHANNEL_A,guard1_l.Device,guard1_l.Port,0);
+% sigDACRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTimeRC) % set left shield back

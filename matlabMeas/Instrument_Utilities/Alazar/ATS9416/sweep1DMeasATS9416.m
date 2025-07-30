@@ -29,19 +29,19 @@ for value = paramVector
     global samplesPerSec
     
     % NPT parameters
-    postTriggerSamples = 1000064; % Has to be at least 256 and multiple of 128
+    postTriggerSamples = 10240000; % Has to be at least 256 and multiple of 128
     recordsPerBuffer = 1; % Set for averaging
     buffersPerAcquisition = 1; % Set number of buffers
     
     % Lock-in parameters
-    stages = 5; % RC filter stages
-    fc = 1; % RC filter cut off frequency
-    phaseOffset = -192.61; %-163.64; % Phase offset for single channel twiddle AWG; 179.7; % Phase offset for Awh2ch_Houck
+    stages = 4; % RC filter stages
+    tc = 0.2; % RC filter time constant
+    phaseOffset = -90; % -192.61; %-163.64; % Phase offset for single channel twiddle AWG; 179.7; % Phase offset for Awh2ch_Houck
 
     %% Query ATS9416 for data, calculate X and Y, average, and place in vectors
     [~,bufferVolts] = ATS9416AcquireData_NPT(boardHandle,postTriggerSamples,recordsPerBuffer,buffersPerAcquisition,channelMask);
     delay(0.01);
-    [Xrms,Yrms,stdXrms,stdYrms] = ATS9416GetXY(bufferVolts/gain,samplesPerSec,postTriggerSamples,freq,phaseOffset*pi/180,stages,fc);
+    [Xrms,Yrms,stdXrms,stdYrms] = ATS9416GetXY(bufferVolts/gain,samplesPerSec,postTriggerSamples,freq,phaseOffset*pi/180,stages,tc);
 
     x(index) = Xrms;
     y(index) = Yrms;

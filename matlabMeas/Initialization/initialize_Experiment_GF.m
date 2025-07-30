@@ -9,8 +9,8 @@ port = 1234; % for the big glass dewar
 % initializeENA;
 
 %% AJS's 24 channel DACs
-sigDACPortControl = 'COM4'; % 20-bit DAC
-sigDACPortSupply  = 'COM8'; % 18-bit DAC
+sigDACPortControl = 'COM8'; % 20-bit DAC
+sigDACPortSupply  = 'COM4'; % 18-bit DAC
 controlDAC = sigDAC(sigDACPortControl,24,'controlDAC');
 supplyDAC = sigDAC(sigDACPortSupply,24,'supplyDAC');
 
@@ -23,9 +23,9 @@ sim900 = SIM900(sim900Port);
 
 %% SR830 Lock-ins
 st_Address = '172.29.117.106'; % top SR830
-twiddle_Address = '172.29.117.103'; % bottom SR830
+% twiddle_Address = '172.29.117.103'; % bottom SR830
 SR830ST = SR830(port,st_Address); % for Sommer-Tanner
-SR830Twiddle = SR830(port,twiddle_Address); % for twiddle
+% SR830Twiddle = SR830(port,twiddle_Address); % for twiddle
 
 %% Filament
 % DMM_Address = '172.29.117.107'; % Keysight DMM

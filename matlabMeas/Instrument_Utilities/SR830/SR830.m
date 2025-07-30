@@ -35,6 +35,7 @@ classdef SR830 < handle
             SR830.Aux4          = 0;%SR830queryAuxOut(SR830.client,4);
             getSR830State(SR830);
         end
+
         %% Get the instrument configuration
         function SR830Config = getSR830State(SR830)
             SR830Config = ['SR830, Amp, Freq, Sens, TC, Aux1, Aux2, Aux3, Aux4',"","","","","","","",""];
@@ -47,6 +48,7 @@ classdef SR830 < handle
             SR830Config(8) = num2str(SR830queryAuxOut(SR830,3));
             SR830Config(9) = num2str(SR830queryAuxOut(SR830,4));
         end
+
         function [targetSensArrNum] = getSensitivityArrNumFromTargetSens(SR830,targetSens,isCurrent)
             voltSensArr = [2e-9, 5e-9, 1e-8, 2e-8, 5e-8, 1e-7, 2e-7,5e-7, 1e-6,2e-6,5e-6,1e-5,2e-5, 5e-5,1e-4,2e-4,5e-4,1e-3,2e-3,5e-3,.01,.02,.05,.1,.2,.5,1];
             currentSensArr = voltSensArr.*1e-6;
@@ -58,8 +60,8 @@ classdef SR830 < handle
 
             incSens = interp1(sensArr,sensArr,targetSens,'nearest');
             targetSensArrNum = find(sensArr==incSens);
-            
         end
+
         function [] = adjustSensitivity(device,mag,isCurrentMeas)
 
             while mag == 0
@@ -107,8 +109,8 @@ classdef SR830 < handle
             mag = device.SR830queryY();
             end
         end
-        %% Getter functions for the SR830 instrument
 
+        %% Getter functions for the SR830 instrument
         function freq = SR830queryFreq(SR830)
             freq = str2double(query(SR830.client, 'FREQ ?'));
             SR830.freq = freq;
@@ -163,7 +165,6 @@ classdef SR830 < handle
             SR830.sensitivity = sensVal;
         end
         
-
         function sensitivity = SR830querySensitivityArrNum(SR830)
 
             sensArr = [2e-9, 5e-9, 1e-8, 2e-8, 5e-8, 1e-7, 2e-7,5e-7, 1e-6,2e-6,5e-6,1e-5,2e-5, 5e-5,1e-4,2e-4,5e-4,1e-3,2e-3,5e-3,.01,.02,.05,.1,.2,.5,1];
@@ -177,8 +178,9 @@ classdef SR830 < handle
             tc = tcArr(str2double(query(SR830.client, 'OFLT ?'))+1);
             SR830.timeConstant = tc;
         end
+        
         function [x,y] = SR830queryXY(SR830)
-            output = query(SR830.client,'SNAP? 1,2');
+            output = query(SR830.client,'SNAP ? 1, 2');
             output = split(output,',');
             x = str2double(output(1));
             y = str2double(output(2));
@@ -194,6 +196,7 @@ classdef SR830 < handle
                 SR830.freq = freq;
             end
         end
+
         function SR830setAmplitude(SR830, amplitude)
             % 2 mV precision (rounds to closest 2mV). Range of .004 to 5V
 
@@ -277,6 +280,7 @@ classdef SR830 < handle
         end
 
         function SR830setTimeConstant(SR830,timeConstant)
+            % I don't think this works - need to convert from tc to index
             tcArr = [1e-5,3e-5,1e-4,3e-4,1e-3,3e-3,1e-2,3e-2,.1,.3,1,3,10,30,100,300,1000,3000,10000,30000];
             if timeConstant < 0 || timeConstant > 19
                 disp('Time Constant must be between 0 (10us) and 19 (30000s)\n');
@@ -289,7 +293,7 @@ classdef SR830 < handle
         end
 
         function xDat = SR830queryXFast(SR830,numPoints)
-            command = ['TRCA? 1, 1 ,' num2str(numPoints)];
+            command = ['TRCA ? 1, 0, ' num2str(numPoints)];
             xDat = query(SR830.client,command);
             xDat = split(xDat,',');
             xDat = xDat(1:numPoints);
@@ -298,13 +302,14 @@ classdef SR830 < handle
         end
 
         function yDat = SR830queryYFast(SR830,numPoints)
-            command = ['TRCA? 2, 1,' num2str(numPoints)];
+            command = ['TRCA ? 2, 0, ' num2str(numPoints)];
             yDat = query(SR830.client,command);
             yDat = split(yDat,',');
             yDat = yDat(1:numPoints);
             yDat = str2double(yDat);
             yDat = yDat';
         end
+
         function capacitance = SR830MeasureCapacitance(SR830, amplification)
             % Ensure the SR830 is set to voltage mode
             fprintf('Make sure lockin is set to voltage mode with appropriate sensitivity\n');
