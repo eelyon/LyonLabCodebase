@@ -20,7 +20,13 @@ function [avgmags,avgxs,avgys,stdx,stdy] = sweep1DMeasSR830Fast(sweepType,start,
 %           doBackAndForth - 0 (False) or 1 (True). Boolean to determine
 %           whether or not to sweep the parameter back to its original
 %           value.
-%           opt - 0 (Current) or 1 (Voltage) measurement. 
+%           opt - 0 (Current) or 1 (Voltage) measurement.
+
+
+%% Query time constant and set sampling rate
+sampleRate = 512; % Set sample rate
+currentSR830 = readSR830{1};
+SR830setSampleRate(currentSR830,sampleRate)
 
 % flush(readSR830{1}.client);
 for srIndex = 1:length(readSR830)
@@ -30,8 +36,8 @@ for srIndex = 1:length(readSR830)
         [plotHandles{srIndex},subPlotFigureHandles{srIndex}] = initializeSR830Meas1D(sweepType{srIndex},doBackAndForth);
     end
 end
-%% Parameters to probe
 
+%% Parameters to probe
 deltaParam = checkDeltaSign(start,stop,deltaParam);
 
 paramVector = start:deltaParam:stop;
@@ -63,13 +69,6 @@ errorType = 'CI';
 %% Define a cleanup function that will save data on user interrupt.
 startTime = now();
 
-%% Query time constant and set sampling rate
-currentSR830 = readSR830{1};
-tc = SR830queryTimeConstant(currentSR830);
-sratInd = floor(log2(1 / (0.0625 * tc)));
-fprintf(currentSR830.client,"SRAT" + num2str(sratInd)); % Set sampling rate
-sratRate = (2^sratInd) * 0.0625
-
 %% Main parameter loop.
 for value = paramVector
     
@@ -81,7 +80,6 @@ for value = paramVector
             setVal(device,port,value + deltaGateParam);
         end
     end
-    
     
     % Update the DAC gui - this is sort of hard coded in maybe I need to
     % make an update function that updates all GUIs present.
@@ -183,17 +181,15 @@ function [x,y,mag,t] = getSR830Data(x,y,t,startTime,readSR830,numPointsToRead,sr
 % objects!!!.
     currentSR830 = readSR830{1};
     fprintf(currentSR830.client,"REST"); % Reset buffer
-%     fprintf(currentSR830.client,"FAST2;STRD"); % Start scan
+%     fprintf(currentSR830.client,"FAST2;STRD"); % Start fast scan
     fprintf(currentSR830.client,"STRT"); % Start scan
     delay(0.5 + (numPointsToRead/sratRate));
     fprintf(currentSR830.client,"PAUS"); % Pause buffer
-%     delay(0.01)
 
-    str2num(query(currentSR830.client,"SPTS?"))
-%     fprintf('SPTS %i\n', numPointsBuffer);
+%     str2num(query(currentSR830.client,"SPTS?"))
 
-    x = [x,currentSR830.SR830queryXFast(numPointsToRead)];
-    y = [y,currentSR830.SR830queryYFast(numPointsToRead)];
+    x = [x,currentSR830.SR830queryXBuffer(numPointsToRead)];
+    y = [y,currentSR830.SR830queryYBuffer(numPointsToRead)];
     mag = sqrt(x.^2 + y.^2);
     % time needs fixing - it's not accurate
     t = [t,(now() - startTime)*86400 - linspace(0,numPointsToRead/sratRate,numPointsToRead) - 1];

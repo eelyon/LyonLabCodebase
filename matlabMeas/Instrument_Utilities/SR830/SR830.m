@@ -186,6 +186,28 @@ classdef SR830 < handle
             y = str2double(output(2));
         end
 
+        function xDat = SR830queryXBuffer(SR830,numPoints)
+            % Queries points stored in channel 1 buffer
+            % Values are returned as ASCII floating point numbers
+            command = ['TRCA ? 1, 0, ' num2str(numPoints)];
+            xDat = query(SR830.client,command);
+            xDat = split(xDat,',');
+            xDat = xDat(1:numPoints);
+            xDat = str2double(xDat);
+            xDat = xDat';
+        end
+
+        function yDat = SR830queryYBuffer(SR830,numPoints)
+            % Queries points stored in channel 2 buffer
+            % Values are returned as ASCII floating point numbers
+            command = ['TRCA ? 2, 0, ' num2str(numPoints)];
+            yDat = query(SR830.client,command);
+            yDat = split(yDat,',');
+            yDat = yDat(1:numPoints);
+            yDat = str2double(yDat);
+            yDat = yDat';
+        end
+
         %% Setter functions for the SR830 instrument
         function SR830setFreq(SR830,freq)
             if freq < .001 || freq > 102000
@@ -281,33 +303,25 @@ classdef SR830 < handle
 
         function SR830setTimeConstant(SR830,timeConstant)
             % I don't think this works - need to convert from tc to index
-            tcArr = [1e-5,3e-5,1e-4,3e-4,1e-3,3e-3,1e-2,3e-2,.1,.3,1,3,10,30,100,300,1000,3000,10000,30000];
-            if timeConstant < 0 || timeConstant > 19
-                disp('Time Constant must be between 0 (10us) and 19 (30000s)\n');
+            allowedTc = [1e-5,3e-5,1e-4,3e-4,1e-3,3e-3,1e-2,3e-2,.1,.3,1,3,10,30,100,300,1000,3000,10000,30000];
+            if ismember(timeConstant,allowedTC) == 0
+                fprintf('Time constant %.1e Hz is not allowed!\n', timeConstant)
             else
-                tc = tcArr(timeConstant+1);
+                tc = allowedTc(timeConstant+1);
                 command = ['OFLT ' num2str(timeConstant)];
                 fprintf(SR830.client,command);
                 SR830.timeConstant = tc;
             end
         end
 
-        function xDat = SR830queryXFast(SR830,numPoints)
-            command = ['TRCA ? 1, 0, ' num2str(numPoints)];
-            xDat = query(SR830.client,command);
-            xDat = split(xDat,',');
-            xDat = xDat(1:numPoints);
-            xDat = str2double(xDat);
-            xDat = xDat';
-        end
-
-        function yDat = SR830queryYFast(SR830,numPoints)
-            command = ['TRCA ? 2, 0, ' num2str(numPoints)];
-            yDat = query(SR830.client,command);
-            yDat = split(yDat,',');
-            yDat = yDat(1:numPoints);
-            yDat = str2double(yDat);
-            yDat = yDat';
+        function SR830setSampleRate(SR830,sampleRate)
+            allowedSampleRates = [62.5e-3,125e-3,250e-3,500e-3,1,2,4,8,16,32,64,128,256,512];
+            if ismember(sampleRate,allowedSampleRates) == 0
+                fprintf('Data sample rate %.1e Hz is not allowed!\n', sampleRate)
+                return
+            end
+            sratInd = log2(sampleRate/0.0625);
+            fprintf(SR830.client,"SRAT" + num2str(sratInd)); % Set sampling rate
         end
 
         function capacitance = SR830MeasureCapacitance(SR830, amplification)
