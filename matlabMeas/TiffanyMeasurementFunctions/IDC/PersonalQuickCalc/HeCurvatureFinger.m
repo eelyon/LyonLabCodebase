@@ -22,7 +22,7 @@ pcm = 1e-2;
 widthStart = 11e-6;
 widthEnd = 36e-6;
 numWidths = 50;
-listH = [5e-3];
+listH = [3.86e-3];
 
 % channelHeight = 0.620e-6;
 % fingerLength = 55;
@@ -32,6 +32,7 @@ centerHeights = zeros([1 numWidths]);
 channelXs = linspace(0,fingerLength*1e-6,numWidths);
 
 ci=0;
+
 % collectx = [];  
 % collecty = [];
 

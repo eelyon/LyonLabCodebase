@@ -6,7 +6,7 @@
 stopVal = -2; % set stop voltage
 
 %% Set backing plate and top metal positive then sweep ST middle gate
-rampSIM900Voltage(filament.Device,filament.Port,5,0.5,0.5) % ramp filament backing plate
+setSIM900Voltage(filament.Device,filament.Port,3); delay(1) % ramp filament backing plate
 interleavedRamp(TM.Device,TM.Port,1,numStepsRC,waitTime) % make top metal positive
 delay(1)
 

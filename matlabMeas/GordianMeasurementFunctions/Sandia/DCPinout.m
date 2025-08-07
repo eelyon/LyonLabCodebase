@@ -65,8 +65,8 @@ trap5 = pinout(supplyDAC,12);
 trap6 = pinout(supplyDAC,13);
 
 %% HEMT control lines
-Vcc = pinout(sim900,7); % collector of cascode
-Vf = pinout(sim900,8); % emitter follower of cascode
+Vcc = pinout(sim900,6); % collector of cascode
+Vf = pinout(sim900,7); % emitter follower of cascode
 
 function gate = pinout(Device,Port)
 % Creating object that contains DAC and channel

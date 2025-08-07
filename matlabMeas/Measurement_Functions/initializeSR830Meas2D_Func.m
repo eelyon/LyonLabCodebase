@@ -127,6 +127,10 @@ switch targetGate
         axisName = "Cascode Collector [V]";
     case 'CollE'
         axisName = "Emitter Collector [V]";
+    case 'BE'
+        axisName = "Emitter Barrier [V]";
+    case 'BC'
+        axisName = "Collector Barrier [V]";
     otherwise
         axisName = 'unknown';
 end

@@ -1,11 +1,17 @@
 %% Frequency of temperature querying in seconds.
-timeBetweenPoints = 10;
+timeBetweenPoints = 3;
+
 %% Initialize Thermometer type (this is related to your thermometer you have)
 
+<<<<<<< Updated upstream
 %thermometerType = 'X117656'; %Big Glass Dewar
+thermometerType = 'X189328'; %Small Glass Dewar
+=======
+thermometerType = 'X117656'; %Big Glass Dewar
 %thermometerType = 'X189328'; %Small Glass Dewar
+>>>>>>> Stashed changes
 %thermometerType = 'X204446'; %Dunking Thermometer
-thermometerType = 'X189327'; %CIA Stick
+%thermometerType = 'X189327'; %CIA Stick
 
 Thermometer;
 Therm = initializeThermometry(thermometerType);
@@ -16,4 +22,3 @@ Therm = initializeThermometry(thermometerType);
 [thermPlot,figHandle] = plotData(time,temperature,'xLabel',"Time (minutes)",'yLabel',"Temperature (K)",'color',"rx");
 flush(Thermometer);
 temperatureVsTime(Thermometer,timeBetweenPoints,Therm,figHandle,thermPlot);
-
