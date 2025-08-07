@@ -1,4 +1,4 @@
-whosePath = 'B417';
+whosePath = 'gordian';
 tag = 'shield';
 
 % numEs = [];
@@ -14,7 +14,7 @@ switch whosePath
     case 'B124'
         path = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\03_06_25\';
     case 'gordian'
-        path = 'C:\Users\gordi\Dropbox (Princeton)\GroupDropbox\Gordian\rfReflectometry\VNA measurements\HeLevelMeter_110623\11_10_23\';
+        path = 'C:\Users\gordi\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Presentations\PQI Retreat Feb2025\Images\';
     otherwise
         disp('Error! Choose existing path')
 end
