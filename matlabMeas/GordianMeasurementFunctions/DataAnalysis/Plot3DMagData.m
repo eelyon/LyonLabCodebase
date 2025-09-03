@@ -99,7 +99,7 @@ for i = 0:2:numFigs
     end
 end
 
-LHe_cc = currentPatm.*(18.44+3.213)*2.54^3/757;
+LHe_cc = currentPatm.*(18.44+3.213)*2.54^3/757
 
 figure
 

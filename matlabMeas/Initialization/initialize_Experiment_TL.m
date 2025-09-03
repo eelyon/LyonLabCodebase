@@ -3,8 +3,8 @@
 port = 1234;
     
 % Anthony's 24 channel DACs
-sigDACPortControl = 'COM4';
-sigDACPortSupply  = 'COM8';
+sigDACPortControl = 'COM8';
+sigDACPortSupply  = 'COM4';
 
 % SR830s
 VmeasTop_Address    = '172.29.117.106';    

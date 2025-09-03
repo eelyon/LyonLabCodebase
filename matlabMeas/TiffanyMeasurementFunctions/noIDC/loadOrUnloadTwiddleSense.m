@@ -14,8 +14,8 @@ sigDACRampVoltage(controlDAC,DoorEInPort,-1,numSteps);
 sigDACRampVoltage(controlDAC,[STOBiasEPort,StmEPort,STIBiasEPort],[0,0,0],numSteps);
 
 % let in electrons
-sigDACRampVoltage(controlDAC,[STOBiasEPort,StmEPort,STIBiasEPort],[-0.5,-0.4,-0.4],numSteps);
-sweep1DMeasSR830({'Door'},-1,0.2,0.05,0.1,10,{SR830Twiddle},controlDAC,{DoorEInPort},1,1);
+sigDACRampVoltage(controlDAC,[STOBiasEPort,StmEPort,STIBiasEPort],[-0.4,-0.3,-0.3],numSteps);
+sweep1DMeasSR830({'Door'},-1,0,0.05,0.1,10,{SR830Twiddle},controlDAC,{DoorEInPort},1,1);
 delay(3)
 sweep1DMeasSR830({'Door'},0,-1,0.1,0.1,10,{SR830Twiddle},controlDAC,{DoorEInPort},0,1);
 sigDACRampVoltage(controlDAC,[STOBiasEPort,StmEPort,STIBiasEPort],[0,0,0],numSteps);
@@ -35,7 +35,7 @@ sweep1DMeasSR830({'Door'},-1,0.2,0.1,0.1,10,{SR830TwiddleC},controlDAC,{DoorCInP
 sigDACRampVoltage(controlDAC,[STOBiasCPort,StmCPort,STIBiasCPort],[0,0,0],numSteps);
 
 % let in electrons
-sigDACRampVoltage(controlDAC,[STOBiasCPort,StmCPort,STIBiasCPort],[-0.4,-0.3,-0.2],numSteps);
+sigDACRampVoltage(controlDAC,[STOBiasCPort,StmCPort,STIBiasCPort],[-0.5,-0.4,-0.4],numSteps);
 sweep1DMeasSR830({'Door'},-1,0,0.1,0.1,10,{SR830TwiddleC},controlDAC,{DoorCInPort},1,1);
 sigDACRampVoltage(controlDAC,DoorCInPort,0,numSteps);
 sigDACRampVoltage(controlDAC,DoorCInPort,-1,numSteps);
