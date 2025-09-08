@@ -13,8 +13,8 @@ for i=0:numFigs-1
     figPathCell = findFigNumPath(currentFigNum);
     figPath = figPathCell{1};
     [xDat,yDat] = getXYData(figPath,'Type','line','FieldNum',2);
-    [pks,loc] = findpeaks(yDat,'MinPeakProminence',1);
-    peaks(i+1) = xDat(loc);
+    [pks,loc] = findpeaks(-yDat,'MinPeakProminence',1);
+    peaks(i+1) = xDat(loc)
 end
 
 r_small = 4.064; % in mmm
