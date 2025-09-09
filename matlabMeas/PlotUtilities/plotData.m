@@ -1,4 +1,4 @@
-function [fig,myFig] = plotData(xData,yData,varargin)
+function [fig,myFig] = plotData(xData, yData, varargin)
     defaultXLabel = 'x axis (arb)';
     defaultYLabel = 'y axis (arb)';
     defaultLegend = '';

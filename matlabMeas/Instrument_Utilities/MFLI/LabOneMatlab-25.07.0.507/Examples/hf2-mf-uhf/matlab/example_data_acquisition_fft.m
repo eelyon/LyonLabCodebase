@@ -82,7 +82,7 @@ in_c = '0'; % signal input channel
 osc_c = '0'; % oscillator
 
 time_constant = 8e-5; % [s]
-demod_rate = 10e3;
+demod_rate = 100e3;
 
 % Create a base configuration: Disable all available outputs, awgs,
 % demods, scopes,...
