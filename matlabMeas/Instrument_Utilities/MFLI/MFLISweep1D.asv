@@ -1,4 +1,4 @@
-function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = MFLISweep1D(sweepType,start,stop,deltaParam,timeBetweenPoints,device,doBackAndForth)
+function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = MFLISweep1D(sweepType,start,stop,deltaParam,timeBetweenPoints,mfli_id,device,port,doBackAndForth)
 %sweep1DMeasATS9416 Summary of this function goes here
 %   Detailed explanation goes here
 % To change the digital lock in parameters like filter stages or tc, you
@@ -28,10 +28,7 @@ for value = paramVector
     setVal(device,port,value);
     delay(timeBetweenPoints);
 
-    % Set parameters for acquisition
-    global samplesPerSec
-    
-    % NPT parameters
+    % Set parameters for acquisition    
     postTriggerSamples = samples; % 10240000; % Has to be at least 256 and multiple of 128
     recordsPerBuffer = 1; % Set for averaging
     buffersPerAcquisition = 1; % Set number of buffers
