@@ -1,7 +1,8 @@
 function data = MFLIFreqSweep(device_id, varargin)
 % MFLIFREQSWEEP Perform a frequency sweep using ziDAQ's sweep module
 %
-% USAGE FREQS, DATA = MFLIFREQSWEEP(DEVICE_ID)
+% USAGE DATA = MFLIFREQSWEEP(DEVICE_ID)
+% Call data.device_id.demods.sample{1}.r to get r data
 %
 % Perform a frequency sweep and gather demodulator data. DEVICE_ID should be a string,
 % e.g., 'dev1000' or 'uhf-dev1000'.
@@ -114,10 +115,8 @@ ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/range'], 1);
 ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/amplitudes/*'], 0);
 ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/amplitudes/' out_mixer_c], p.Results.amplitude);
 ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/enables/' out_mixer_c], 1);
-if strfind(props.devicetype, 'HF2')
-    ziDAQ('setInt', ['/' device '/sigins/' in_c '/diff'], 0);
-    ziDAQ('setInt', ['/' device '/sigouts/' out_c '/add'], 0);
-end
+ziDAQ('setInt', ['/' device '/sigins/' in_c '/diff'], 0);
+ziDAQ('setInt', ['/' device '/sigouts/' out_c '/add'], 0);
 ziDAQ('setDouble', ['/' device '/demods/*/phaseshift'], 0);
 ziDAQ('setInt', ['/' device '/demods/*/order'], p.Results.order);
 ziDAQ('setDouble', ['/' device '/demods/' demod_c '/rate'], p.Results.demod_rate);
@@ -243,7 +242,7 @@ if ziCheckPathInData(tmp, ['/' device '/demods/' demod_c '/sample'])
     end
 end
 
-if p.Results.saveData == 1
+if p.Results.savedata == 1
     saveData(fig, 'MFLIFreqSweep');
 end
 
