@@ -57,8 +57,6 @@ phi2_1 = pinout(supplyDAC,2);
 phi2_2 = pinout(supplyDAC,14);
 phi2_3 = pinout(supplyDAC,1);
 
-d10 = pinout(supplyDAC,22); % Same as 1st door, uneven channels next to ST
-
 trap1_2 = pinout(controlDAC,13);
 trap1_1 = pinout(controlDAC,12);
 trap2_2 = pinout(controlDAC,24);
