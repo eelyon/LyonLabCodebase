@@ -49,7 +49,7 @@ if ~any(strcmpi([branches], 'DEMODS'))
   return
 end
 
-% Define parameters relevant to this example. Default values specified by the
+% Define parameters. Default values specified by the
 % inputParser below are overwritten if specified as name-value pairs via the
 % `varargin` input argument.
 p = inputParser;
