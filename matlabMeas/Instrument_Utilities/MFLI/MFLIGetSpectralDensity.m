@@ -40,7 +40,7 @@ apilevel_example = 6;
 % This example can't run with HF2 Instruments.
 required_devtype = 'UHF|MF'; % Regular expression of supported instruments.
 required_options = {}; % No special options required.
-required_err_msg = ['This example is incompatible with HF2 Instruments: The ' ...
+required_err_msg = ['This script is incompatible with HF2 Instruments: The ' ...
                     'HF2 Data Server does not support API Levels > 1, which ' ...
                     'is required to use the extended scope data structure. ' ...
                     'See hf2_example_scope().'];
@@ -67,15 +67,17 @@ isnonnegscalar = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 
 % The PSD start frequency is always 0 Hz and its stop frequency is half
 % the scope's sample rate.
-p.addParameter('scope_samplerate', 0, isnonnegscalar);
+p.addParameter('scope_samplerate', 4, isnonnegscalar);
 p.addParameter('scope_lengthpts', 16384, @isnumeric);
 p.addParameter('min_num_records', 1, @isnumeric);
 p.addParameter('temp', 1.8, @isnumeric);
-p.addParameter('gainCryo', 20, @isnumeric);
-p.addParameter('gainFEMTO', 10, @isnumeric);
+p.addParameter('gainCryo', 23.6, @isnumeric);
+p.addParameter('gainFEMTO', 1, @isnumeric);
 p.addParameter('saveData', 0, @isnumeric)
 
 p.parse(varargin{:});
+
+gain = p.Results.gainCryo*p.Results.gainFEMTO;
 
 in_channel = '0';        % signal input channel
 scope_in_channel = '0';    % scope input channel
@@ -83,6 +85,7 @@ scope_in_channel = '0';    % scope input channel
 % Configure the signal inputs
 ziDAQ('setInt', ['/' device '/sigins/' in_channel '/imp50'], 0);
 ziDAQ('setInt', ['/' device '/sigins/' in_channel '/ac'], 1);
+ziDAQ('setInt',    ['/' device '/sigins/' in_channel '/autorange'], 1);
 % Perform a global synchronisation between the device and the data server:
 % Ensure that the signal input configuration has taken effect before
 % calculating the signal input autorange.
@@ -164,7 +167,7 @@ ziDAQ('subscribe', scopeModule, wave_nodepath);
 % Set the Scope Module's mode to return frequency domain data.
 ziDAQ('set', scopeModule, 'mode', 3);
 % Use a Hann window function.
-ziDAQ('set', scopeModule, 'fft/window', 1);
+ziDAQ('set', scopeModule, 'fft/window', 0);
 % Set power correction
 ziDAQ('set', scopeModule, 'fft/powercompensation', 1);
 % Enable Spectral Density
@@ -198,13 +201,13 @@ num_records_fft = 0;
 if ziCheckPathInData(data_fft, ['/' device '/scopes/0/wave'])
   records_fft = data_fft.(device).scopes(1).wave;
   num_records_fft = length(records_fft);
-  plotScopeRecords(records_fft, str2num(scope_in_channel), scope_time, clockbase);
+  plotScopeRecords(records_fft, str2num(scope_in_channel), scope_time, clockbase, gain);
 end
-annotation('textbox',[0.2 0.5 0.3 0.3],'String',[num2str(p.Results.temp),'K, x',num2str(p.Results.gainCryo),' Amp Gain, x',num2str(p.Results.gainFEMTO),' FEMTO gain'],'FitBoxToText','on');
-title('\bf Raw Spectral Density of Scope records');
+annotation('textbox',[0.2 0.5 0.3 0.3],'String',[num2str(p.Results.temp),'K, x',num2str(gain),' total gain'],'FitBoxToText','on');
+title('\bf Spectral Density of Scope records');
 grid on;
 box on;
-xlabel('Frequency (MHz)');
+xlabel('Frequency (Hz)');
 fprintf('Number of scope records with triggering disabled (and FFT''d): %d.\n', num_records_fft);
 
 if p.Results.saveData == 1
@@ -265,7 +268,7 @@ function data = getScopeRecords(device, scopeModule, num_records)
 
 end
 
-function plotScopeRecords(scope_records, scope_in_channel, scope_time, clockbase)
+function plotScopeRecords(scope_records, scope_in_channel, scope_time, clockbase, gain)
 % plotScopeRecords Plot the scope records.
   num_records = length(scope_records);
   c = hsv(num_records);
@@ -284,11 +287,11 @@ function plotScopeRecords(scope_records, scope_in_channel, scope_time, clockbase
     elseif bitand(scope_records{ii}.channelmath(scope_in_channel+1), 2)
       scope_rate = double(clockbase)/2^scope_time;
       f = linspace(0, scope_rate/2, totalsamples);
-      semilogy(f/1e6, scope_records{ii}.wave(:, scope_in_channel+1), 'color', c(ii, :));
+      loglog(f, scope_records{ii}.wave(:, scope_in_channel+1)/gain*1e9, 'color', c(ii, :));
       hold on;
     end
   end
-  ylabel('Spectral Density (V/\surd{Hz})');
+  ylabel('Spectral Density (nV/\surd{Hz})');
 end
 
 function checkScopeRecordFlags(scope_records)

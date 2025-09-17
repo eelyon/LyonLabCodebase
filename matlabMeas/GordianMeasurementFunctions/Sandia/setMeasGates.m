@@ -74,13 +74,13 @@ sigDACRampVoltage(phi2_1.Device,phi2_1.Port,Vclose,numSteps)
 sigDACRampVoltage(phi2_2.Device,phi2_2.Port,Vclose,numSteps)
 sigDACRampVoltage(phi2_3.Device,phi2_3.Port,Vclose,numSteps)
 
-sigDACRamp(trap1.Device,trap1.Port,Vclose,numStepsRC,waitTimeRC)
-sigDACRamp(trap2.Device,trap2.Port,Vclose,numStepsRC,waitTimeRC)
-sigDACRamp(trap3.Device,trap3.Port,Vclose,numStepsRC,waitTimeRC)
-sigDACRamp(trap4.Device,trap4.Port,Vclose,numStepsRC,waitTimeRC)
+sigDACRamp(trap1_2.Device,trap1_2.Port,Vclose,numStepsRC,waitTimeRC)
+sigDACRamp(trap1_1.Device,trap1_1.Port,Vclose,numStepsRC,waitTimeRC)
+sigDACRamp(trap2_2.Device,trap2_2.Port,Vclose,numStepsRC,waitTimeRC)
+sigDACRamp(trap2_1.Device,trap2_1.Port,Vclose,numStepsRC,waitTimeRC)
 sigDACRamp(trap5.Device,trap5.Port,Vclose,numStepsRC,waitTimeRC)
 sigDACRamp(trap6.Device,trap6.Port,Vclose,numStepsRC,waitTimeRC)
 % fprintf('Electron trap set for measurement.\n')
 delay(1)
 
-sigDACRamp(TM.Device,TM.Port,-1,numStepsRC,waitTimeRC) % ramp top metal
+sigDACRamp(TM.Device,TM.Port,-1.2,numStepsRC,waitTimeRC) % ramp top metal

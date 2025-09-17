@@ -24,27 +24,28 @@ sigDACRampVoltage(sense1_r.Device,sense1_r.Port,0.2,numSteps)
 sigDACRampVoltage(d6.Device,d6.Port,0.2,numSteps)
 sigDACRampVoltage(phi1_3.Device,phi1_3.Port,0.2,numSteps)
 
+MFLISweep1D({'TM'},-1.2,-2,0.1,'dev32021',TM.Device,TM.Port,1,'time_constant',0.03,'demod_rate',20e3,'poll_duration',0.2);
 % sweep1DMeasSR830({'TM'},-0.8,-1.6,0.2,3,5,{SR830Twiddle},TM.Device,{TM.Port},1,1);
-sigDACRamp(TM.Device,TM.Port,-1.6,numStepsRC,15000); delay(1)
-sigDACRamp(TM.Device,TM.Port,-1.2,numStepsRC,waitTimeRC)
+% sigDACRamp(TM.Device,TM.Port,-2,numStepsRC,15000); delay(1)
+% sigDACRamp(TM.Device,TM.Port,-1.2,numStepsRC,waitTimeRC)
 
-% TwiddleUnload_Full; % Empty out 6 open channels
+TwiddleUnload_Full; % Empty out 6 open channels
 
 %% Move electrons onto vertical CCD
 sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vclose,numSteps)
 sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps)
 sigDACRamp(d5.Device,d5.Port,Vclose,numStepsRC,waitTimeRC)
-% sigDACRampVoltage(guard1_r.Device,guard1_r.Port,0.2,numSteps)
-sigDACRampVoltage(sense1_r.Device,sense1_r.Port,0.4,numSteps)
+sigDACRampVoltage(guard1_r.Device,guard1_r.Port,0,numSteps)
+sigDACRampVoltage(sense1_r.Device,sense1_r.Port,0,numSteps)
 sigDACRamp(sense1_l.Device,sense1_l.Port,Vclose,numStepsRC,waitTimeRC)
 sigDACRamp(guard1_l.Device,guard1_l.Port,Vclose,numStepsRC,waitTimeRC)
 sigDACRamp(twiddle1.Device,twiddle1.Port,Vclose,numStepsRC,waitTimeRC)
 sigDACRampVoltage(guard1_r.Device,guard1_r.Port,Vclose,numSteps)
 sigDACRampVoltage(d6.Device,d6.Port,0.4,numSteps)
 sigDACRampVoltage(sense1_r.Device,sense1_r.Port,Vclose,numSteps)
-sigDACRampVoltage(d4.Device,d4.Port,0.6,numSteps)
+sigDACRampVoltage(d4.Device,d4.Port,0.8,numSteps)
 sigDACRampVoltage(d6.Device,d6.Port,Vclose,numSteps)
-sigDACRampVoltage(phi1_3.Device,phi1_3.Port,0.8,numSteps)
+sigDACRampVoltage(phi1_3.Device,phi1_3.Port,1.2,numSteps)
 sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps)
 sigDACRampVoltage(phi1_1.Device,phi1_1.Port,Vopen,numSteps)
 sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vclose,numSteps)
@@ -82,6 +83,7 @@ sigDACRamp(guard2_l.Device,guard2_l.Port,0,numStepsRC,waitTimeRC)
 sigDACRamp(sense2_l.Device,sense2_l.Port,0,numStepsRC,waitTimeRC)
 sigDACRamp(d7.Device,d7.Port,-2,numStepsRC,waitTimeRC)
 
+% MFLISweep1D({'Guard2'},0.2,-1,0.1,'dev32061',guard2_l.Device,guard2_l.Port,0,'time_constant',0.1,'demod_rate',20e3,'poll_duration',0.2);
 % sweep1DMeasSR830({'Guard2'},0,-2,-0.2,3,5,{SR830Twiddle},guard2_l.Device,{guard2_l.Port},0,1);
 % sigDACRamp(guard2_l.Device,guard2_l.Port,0,numStepsRC,waitTimeRC)
 % delay(1)

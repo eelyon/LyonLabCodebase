@@ -61,7 +61,7 @@ p.addParameter('savedata', 0, @isnumeric);
 % The value used for the Sweeper's 'samplecount' parameter: This
 % specifies the number of points that will be swept (i.e., the number of
 % frequencies swept in a frequency sweep).
-p.addParameter('sweep_samplecount', 100, isnonnegscalar);
+p.addParameter('sweep_samplecount', 200, isnonnegscalar);
 
 % The value used for the Sweeper's 'settling/inaccuracy' parameter: This
 % defines the settling time the sweeper should wait before changing a sweep
@@ -73,11 +73,11 @@ p.addParameter('sweep_samplecount', 100, isnonnegscalar);
 p.addParameter('sweep_inaccuracy', 0.001, @isnumeric);
 
 % The signal output mixer amplitude, [V].
-p.addParameter('amplitude', 0.1, @isnumeric);
+p.addParameter('amplitude', 0.002, @isnumeric);
 % Set the sweep's start frequency
 p.addParameter('sweep_startfreq', 1e3, @isnumeric);
 % Set the sweep's stop frequency
-p.addParameter('sweep_stopfreq', 2e6, @isnumeric);
+p.addParameter('sweep_stopfreq', 5e6, @isnumeric);
 % Set the demodulator time constant [s]
 p.addParameter('tc', 0.007, @isnumeric);
 % Set the demodulation rate
@@ -107,11 +107,11 @@ osc_c = '0'; % oscillator
 ziDisableEverything(device);
 
 %% Configure the device ready for this experiment.
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 1);
+ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 0);
 ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 1);
-ziDAQ('setDouble', ['/' device '/sigins/' in_c '/range'], 2);
+ziDAQ('setInt',    ['/' device '/sigins/' in_c '/autorange'], 1);
 ziDAQ('setInt', ['/' device '/sigouts/' out_c '/on'], 1);
-ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/range'], 1);
+ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/range'], 0.01);
 ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/amplitudes/*'], 0);
 ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/amplitudes/' out_mixer_c], p.Results.amplitude);
 ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/enables/' out_mixer_c], 1);
@@ -162,7 +162,7 @@ ziDAQ('set', h, 'averaging/tc', 50);
 % Minimal number of samples that we want to record and average is 100. Note,
 % the number of samples used for averaging will be the maximum number of
 % samples specified by either averaging/tc or averaging/sample.
-ziDAQ('set', h, 'averaging/sample', 100);
+ziDAQ('set', h, 'averaging/sample', 20);
 % Use automatic bandwidth control for each measurement.
 ziDAQ('set', h, 'bandwidthcontrol', 2);
 % For fixed bandwidth, set bandwidthcontrol to 1 and specify a bandwidth.
@@ -207,7 +207,7 @@ while ~ziDAQ('finished', h)
             % Frequency values at which measurement points were taken
             frequencies = sample.grid;
             valid = ~isnan(frequencies);
-            plot_data(frequencies(valid), r(valid), theta(valid), p.Results.amplitude, '.-')
+            plot_data(frequencies(valid), r(valid), theta(valid), '.-')
             drawnow;
         end
     end
@@ -238,7 +238,7 @@ if ziCheckPathInData(tmp, ['/' device '/demods/' demod_c '/sample'])
         % Frequency values at which measurement points were taken
         frequencies = sample.grid;
         % Plot the final result
-        plot_data(frequencies, r, theta, p.Results.amplitude, '-')
+        plot_data(frequencies, r, theta, '-')
     end
 end
 
@@ -280,16 +280,16 @@ ziDAQ('clear', h);
 
 end
 
-function plot_data(frequencies, r, theta, amplitude, style)
+function plot_data(frequencies, r, theta, style)
 % Plot data
 clf
 subplot(2, 1, 1)
-s = semilogx(frequencies, 20*log10(r*2*sqrt(2)/amplitude), style);
+s = semilogx(frequencies, r*2*sqrt(2), style);
 set(s, 'LineWidth', 1.5)
 set(s, 'Color', 'black');
 grid on
 xlabel('Frequency [Hz]')
-ylabel('Amplitude [dBV]')
+ylabel('Amplitude [V]')
 subplot(2, 1, 2)
 s = semilogx(frequencies, theta*180/pi, style);
 set(s, 'LineWidth', 1.5)

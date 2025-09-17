@@ -32,10 +32,10 @@ SR830ST = SR830(port,st_Address); % for Sommer-Tanner
 % Fil_Address = '172.29.117.127'; % Agilent for Filament
 
 %% Agilent AWGs
-ch2AWG_Address = '172.29.117.24';
-Awg2ch_2 = Agilent33622A(1234,ch2AWG_Address,1); % two-channel AWG
-Awg2chHouck_Address = '172.29.117.137';
-Awg2ch_1 = Agilent33622A(1234,Awg2chHouck_Address,1); % two-channel AWG
+awg1_Address = '172.29.117.24';
+Awg2ch_1 = Agilent33622A(1234,awg1_Address,1); % two-channel AWG
+awg2Houck_Address = '172.29.117.137';
+Awg2ch_2 = Agilent33622A(1234,awg2Houck_Address,1); % two-channel AWG
 
 % AwgTwiddle_Address = '172.29.117.16';
 % AwgTwiddle = Agilent33220A(1234,AwgTwiddle_Address,1); % 1-channel AWG

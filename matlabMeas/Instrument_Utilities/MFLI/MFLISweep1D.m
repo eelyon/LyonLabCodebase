@@ -76,11 +76,17 @@ ziDAQ('setInt', ['/' device '/demods/*/adcselect'], str2double(in_c));
 ziDAQ('setDouble', ['/' device '/demods/*/timeconstant'], time_constant);
 ziDAQ('setInt', ['/' device '/demods/1/adcselect'], str2double(extref_c));
 ziDAQ('setInt', ['/' device '/extrefs/0/enable'], 1);
-delay(0.2); % Wait for external reference to settle
+delay(0.5); % Wait for external reference to settle
 
 %% Set up figure and start sweep loop
-% Set up plot figure
-[plotHandles,subPlotFigureHandles] = initializeATS9416Meas1D(sweepType{1},doBackAndForth);
+% Set up plot figure and meta data
+[plotHandles,subPlotFigureHandle] = initializeATS9416Meas1D(sweepType{1},doBackAndForth);
+
+metadata_struct.time_constant = time_constant;
+metadata_struct.filter_order = p.Results.filter_order;
+metadata_struct.poll_duration = poll_duration;
+metadata_struct.demod_rate = p.Results.demod_rate;
+subPlotFigureHandle.UserData = metadata_struct;
 
 % Adjust for sign of sweep
 step = checkDeltaSign(start,stop,step);
@@ -158,7 +164,7 @@ end
 
 % Save data
 if ~strcmp(sweepType,'PHAS') && ~strcmp(sweepType,'Vpp')
-    saveData(subPlotFigureHandles, genSR830PlotName(sweepType{1}));
+    saveData(subPlotFigureHandle, genSR830PlotName(sweepType{1}));
 end
 end
 

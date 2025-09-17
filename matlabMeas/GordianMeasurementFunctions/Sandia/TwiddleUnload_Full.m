@@ -51,9 +51,10 @@ sigDACRamp(twiddle1.Device,twiddle1.Port,0,numStepsRC,waitTimeRC) % set twiddle 
 sigDACRamp(d5.Device,d5.Port,-2,numStepsRC,waitTimeRC) % close d5
 
 %% Sweep shield to check for electrons in twiddle
-sweep1DMeasSR830({'Guard1'},0.2,-1,-0.1,3,5,{SR830ST},guard1_l.Device,{guard1_l.Port},0,1); % sweep shield
-sigDACRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTimeRC) % set left shield back
-delay(1)
+% MFLISweep1D({'Guard1'},0.2,-1,0.1,'dev32021',guard1_l.Device,guard1_l.Port,0,'time_constant',0.1,'demod_rate',20e3,'poll_duration',0.2);
+% sweep1DMeasSR830({'Guard1'},0.2,-1,-0.1,3,5,{SR830ST},guard1_l.Device,{guard1_l.Port},0,1); % sweep shield
+% sigDACRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTimeRC) % set left shield back
+% delay(1)
 
 % sweep1DMeasATS9416({'Guard1'},102e3,32,0.2,-1,-0.1,0.01,boardHandle,CHANNEL_A,guard1_l.Device,guard1_l.Port,0);
 % sigDACRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTimeRC) % set left shield back

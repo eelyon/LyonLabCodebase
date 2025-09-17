@@ -76,6 +76,7 @@ function [fig,myFig] = plotData(xData, yData, varargin)
     metadata_struct.time= datestr(now(),figDateFormat);
     metadata_struct.metaData = p.Results.metaData;
     instrumentList = parseInstrumentList();
+
     if ~isempty(instrumentList) > 0
         for i = 1:length(instrumentList)
             if contains(instrumentList{i},"SR830")
@@ -91,7 +92,8 @@ function [fig,myFig] = plotData(xData, yData, varargin)
             end
         end
         % Insert metadata structure into figure and save in data.
-    end 
+    end
+    
     myFig.UserData = metadata_struct;
     
 end

@@ -8,7 +8,7 @@ TM = pinout(supplyDAC,11); % top metal
 M2S = pinout(supplyDAC,24); % Sommer-Tanner shield on M2
 BPG = pinout(supplyDAC,12); % bond pad guard
 
-filament = pinout(sim900,2); % filament backing plate
+filament = pinout(sim900,4); % filament backing plate
 
 %% 1st twiddle-sense
 d1_odd = pinout(supplyDAC,22); % 1st door, uneven channels
@@ -67,12 +67,12 @@ trap5 = pinout(controlDAC,23);
 trap6 = pinout(controlDAC,10);
 
 %% HEMT control lines
-Vg1 = pinout(sim900,7);
-Vc1 = pinout(sim900,6);
-Vf1 = pinout(sim900,4);
+Vg1 = pinout(sim900,3);
+Vc1 = pinout(sim900,2);
+Vf1 = pinout(sim900,1);
 
-Vg2 = pinout(sim900,3);
-Vc2 = pinout(sim900,1); % collector of cascode
+Vg2 = pinout(sim900,6);
+Vc2 = pinout(sim900,7); % collector of cascode
 Vf2 = pinout(sim900,8); % emitter follower of cascode
 
 function gate = pinout(Device,Port)
