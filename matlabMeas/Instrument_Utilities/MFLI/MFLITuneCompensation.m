@@ -1,21 +1,14 @@
-% channelMask = CHANNEL_A;
-% doorDevice = Awg2ch; % Default channel 2
-% twiddleDevice = Awg2ch; % Default channel 1
-% startPhase = -180;
-% stopPhase = 180;
-% deltaPhase = 10;
-% startAmp = 0.002;
-% stopAmp = 0.005;
-% deltaAmp = 0.0002;
-
 doorDevice = Awg2ch_2; % Default channel 2
 mfli_id = 'dev32061'; % 'dev32061'
-startPhase = 22;
-stopPhase = 32;
-deltaPhase = 1;
+startPhase = 26;
+stopPhase = 28;
+deltaPhase = 0.2;
 startAmp = 0.003;
 stopAmp = 0.004;
 deltaAmp = 0.00002;
+
+% set33622AOutput(Awg2ch_2, 1, 1)
+% set33622AOutput(Awg2ch_2, 1, 2)
 
 % gainFEMTO = 100;
 % gainHEMT = 11;
@@ -24,8 +17,8 @@ deltaAmp = 0.00002;
 % turnDevOn(doorDevice); % Turn on doesn't work! Fix!
 % turnDevOn(twiddleDevice); % Twiddle gate
 
-if deltaPhase < .001
-    error('Minimum phase step size is 1e-3! Exiting compensation function!')
+if deltaPhase < .001 || deltaAmp < .000001
+    error('Too small of a step size. Check deltaPhase and/or deltaAmp.')
 end
 
 setVal(doorDevice,3,startPhase); % Set phase

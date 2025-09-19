@@ -41,13 +41,13 @@ end
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 % Filter order
-p.addParameter('filter_order', 3, isnonneg);
+p.addParameter('filter_order', 4, isnonneg);
 % Filter time constant
 p.addParameter('time_constant', 0.010, @isnumeric);
 % Demodulation/sampling rate of demodulated data
 p.addParameter('demod_rate', 2e3, @isnumeric);
 % The length of time we'll record data (synchronously) [s].
-p.addParameter('poll_duration', 0.1, isnonneg);
+p.addParameter('poll_duration', 0.2, isnonneg);
 % The length of time to accumulate subscribed data (by sleeping) before polling a second time [s].
 % p.addParameter('sleep_duration', 1.0, isnonneg);
 p.parse(varargin{:});
@@ -76,7 +76,7 @@ ziDAQ('setInt', ['/' device '/demods/*/adcselect'], str2double(in_c));
 ziDAQ('setDouble', ['/' device '/demods/*/timeconstant'], time_constant);
 ziDAQ('setInt', ['/' device '/demods/1/adcselect'], str2double(extref_c));
 ziDAQ('setInt', ['/' device '/extrefs/0/enable'], 1);
-delay(0.5); % Wait for external reference to settle
+delay(1); % Wait for external reference to settle
 
 %% Set up figure and start sweep loop
 % Set up plot figure and meta data
@@ -84,8 +84,16 @@ delay(0.5); % Wait for external reference to settle
 
 metadata_struct.time_constant = time_constant;
 metadata_struct.filter_order = p.Results.filter_order;
-metadata_struct.poll_duration = poll_duration;
 metadata_struct.demod_rate = p.Results.demod_rate;
+metadata_struct.poll_duration = poll_duration;
+
+% if exist('controlDAC', 'var') == 1
+    metadata_struct.controlDAC = evalin('base','controlDAC.channelVoltages;');
+% end
+% if exist('supplyDAC', 'var') == 1
+    metadata_struct.supplyDAC = evalin('base','supplyDAC.channelVoltages;');
+% end
+
 subPlotFigureHandle.UserData = metadata_struct;
 
 % Adjust for sign of sweep
@@ -134,7 +142,7 @@ for value = paramVector
     else
         sample = [];
     end
-
+    
     Xrms = mean(sample.x);
     Yrms = mean(sample.y);
     stdXrms = std(sample.x);

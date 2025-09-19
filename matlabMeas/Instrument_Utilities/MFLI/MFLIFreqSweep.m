@@ -83,7 +83,7 @@ p.addParameter('tc', 0.007, @isnumeric);
 % Set the demodulation rate
 p.addParameter('demod_rate', 13e3, @isnumeric);
 % Set the filter order
-p.addParameter('order', 3, @isnumeric);
+p.addParameter('order', 4, @isnumeric);
 % Settling time
 p.addParameter('settlingtime', 0.001, @isnumeric);
 
@@ -162,7 +162,7 @@ ziDAQ('set', h, 'averaging/tc', 50);
 % Minimal number of samples that we want to record and average is 100. Note,
 % the number of samples used for averaging will be the maximum number of
 % samples specified by either averaging/tc or averaging/sample.
-ziDAQ('set', h, 'averaging/sample', 20);
+ziDAQ('set', h, 'averaging/sample', 10);
 % Use automatic bandwidth control for each measurement.
 ziDAQ('set', h, 'bandwidthcontrol', 2);
 % For fixed bandwidth, set bandwidthcontrol to 1 and specify a bandwidth.
@@ -284,12 +284,14 @@ function plot_data(frequencies, r, theta, style)
 % Plot data
 clf
 subplot(2, 1, 1)
-s = semilogx(frequencies, r*2*sqrt(2), style);
+s = semilogx(frequencies, r/max(r), style);
+% s = semilogx(frequencies, r*2*sqrt(2), style);
 set(s, 'LineWidth', 1.5)
 set(s, 'Color', 'black');
 grid on
 xlabel('Frequency [Hz]')
-ylabel('Amplitude [V]')
+ylabel('Amplitude [V_{pp}/max(V_{pp}]')
+% ylabel('Amplitude [V_{pp}]')
 subplot(2, 1, 2)
 s = semilogx(frequencies, theta*180/pi, style);
 set(s, 'LineWidth', 1.5)

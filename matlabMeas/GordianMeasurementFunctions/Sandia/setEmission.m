@@ -4,7 +4,7 @@
 numSteps = 100; % sigDACRampVoltage
 numStepsRC = 10; % sigDACRamp
 waitTimeRC = 1100; % in microseconds
-stopVal = -4; % set gate voltage during emission
+stopVal = -6; % set gate voltage during emission
 
 %% Set Sommer-Tanner
 sigDACRamp(TM.Device,TM.Port,-3.4,numStepsRC,waitTimeRC) % ramp top metal

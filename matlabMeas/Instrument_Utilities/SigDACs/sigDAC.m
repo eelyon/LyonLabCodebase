@@ -41,8 +41,7 @@ classdef sigDAC
         function sigDACSetVoltage(sigDAC,channels,voltages)
                 for i=1:length(channels)
                     fprintf(sigDAC.client,['CH ' num2str(channels(i))])
-
-                    pause(.1);
+                    pause(0.1);
                     fprintf(sigDAC.client,['VOLT ' num2str(voltages(i))])
                     pause(0.1);
                     %sigDAC.channelVoltages(24) = voltages(i);
@@ -114,11 +113,9 @@ classdef sigDAC
         function sigDACRamp(sigDAC,channel,voltage,numSteps,wait)
             % Wait time is in microseconds!
             if wait < 40 % Min. time for ramp is 40e-6 set by Arduino
-                fprintf('Error: Wait time cannot be less than 40 microseconds!\n')
-                return
+                error('Error: Wait time cannot be less than 40 microseconds!\n')
             elseif wait > 16383 % Max. accurate delay
-                fprintf('Error: Wait time is inaccurate if larger than 16383 microseconds!\n')
-                return
+                error('Error: Wait time is inaccurate if larger than 16383 microseconds!\n')
             end
             fprintf(sigDAC.client,['RAMPGF ' num2str([channel,voltage,numSteps,wait-40])]);
             delay((1.5*40e-6 + wait*1e-6 - 40e-6)*numSteps); % Give Arduino/Matlab time for communication

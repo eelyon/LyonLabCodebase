@@ -3,7 +3,7 @@
 % numStepsRC = 10; % % set steps for slow ramp for filtered lines
 % waitTimeRC = 0.0011; % set to 5 times time constant
 % delta = 0.1; % for SIM900 ramp
-stopVal = -3; % set stop voltage
+stopVal = -4; % set stop voltage
 
 %% Set backing plate and top metal positive then sweep ST middle gate
 setSIM900Voltage(filament.Device,filament.Port,4); delay(1) % ramp filament backing plate

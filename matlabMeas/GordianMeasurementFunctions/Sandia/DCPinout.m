@@ -71,9 +71,9 @@ Vg1 = pinout(sim900,3);
 Vc1 = pinout(sim900,2);
 Vf1 = pinout(sim900,1);
 
-Vg2 = pinout(sim900,6);
+Vg2 = pinout(sim900,8);
 Vc2 = pinout(sim900,7); % collector of cascode
-Vf2 = pinout(sim900,8); % emitter follower of cascode
+Vf2 = pinout(sim900,6); % emitter follower of cascode
 
 function gate = pinout(Device,Port)
 % Creating object that contains DAC and channel

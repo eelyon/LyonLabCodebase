@@ -8,7 +8,7 @@ waitTimeRC = 1100; % in microseconds
 Vopen = 3; % opening voltage of CCD
 Vclose = -1; % closing voltage of CCD, set below top metal
 
-setSIM900Voltage(filament.Device,filament.Port,-2) % set back filament backing plate
+setSIM900Voltage(filament.Device,filament.Port,0) % set back filament backing plate
 delay(1)
 
 %% Set Sommer-Tanner
@@ -27,7 +27,7 @@ sigDACRampVoltage(phi1_2.Device,phi1_2.Port,Vclose,numSteps)
 sigDACRampVoltage(phi1_3.Device,phi1_3.Port,Vclose,numSteps)
 delay(1)
 
-sigDACRampVoltage(BPG.Device,BPG.Port,-1,numSteps) % set bond pad guard
+sigDACRampVoltage(BPG.Device,BPG.Port,-2,numSteps) % set bond pad guard
 % CCDclean % Clean out 1st CCD
 
 %% Set 1st twiddle-sense
