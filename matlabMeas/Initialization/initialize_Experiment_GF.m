@@ -24,7 +24,7 @@ sim900 = SIM900(sim900Port);
 %% SR830 Lock-ins
 st_Address = '172.29.117.106'; % top SR830
 % twiddle_Address = '172.29.117.103'; % bottom SR830
-SR830ST = SR830(port,st_Address); % for Sommer-Tanner
+SR830ST = SR830(port,'172.29.117.106'); % for Sommer-Tanner
 % SR830Twiddle = SR830(port,twiddle_Address); % for twiddle
 
 %% Filament

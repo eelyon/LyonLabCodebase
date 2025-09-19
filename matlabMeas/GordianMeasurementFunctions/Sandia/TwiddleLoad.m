@@ -9,7 +9,7 @@ Vclose = -1; % closing voltage of ccd
 % startShield = 0.4;
 % stopShield = -1;
 % shieldStep = stopShield-startShield;
-Vload = 0.2; % set voltage on d1 and d2
+Vload = -0.5; % set voltage on d1 and d2
 
 % Open first three doors to CCD - using sigDACRampVoltage function
 sigDACRampVoltage(d1_even.Device,d1_even.Port,Vload,numSteps) % open 1st door
