@@ -82,7 +82,6 @@ delay(1); % Wait for external reference to settle
 % Set up plot figure and meta data
 [plotHandles,subPlotFigureHandle] = initializeATS9416Meas1D(sweepType{1},doBackAndForth);
 
-
 % Adjust for sign of sweep
 step = checkDeltaSign(start,stop,step);
 paramVector = start:step:stop;
@@ -157,18 +156,14 @@ for value = paramVector
     index = index + 1;
 end
 
+% Set up metadata to be saved with figure
 metadata_struct.time_constant = ziDAQ('getDouble', ['/' device '/demods/*/timeconstant']);
 metadata_struct.filter_order = p.Results.filter_order;
 metadata_struct.demod_rate = ziDAQ('getDouble', ['/' device '/demods/' demod_c '/rate']);
 metadata_struct.poll_duration = poll_duration;
 metadata_struct.length = length(sample.x);
-
-% if exist('controlDAC', 'var') == 1
-    metadata_struct.controlDAC = evalin('base','controlDAC.channelVoltages;');
-% end
-% if exist('supplyDAC', 'var') == 1
-    metadata_struct.supplyDAC = evalin('base','supplyDAC.channelVoltages;');
-% end
+metadata_struct.controlDAC = evalin('base','controlDAC.channelVoltages;');
+metadata_struct.supplyDAC = evalin('base','supplyDAC.channelVoltages;');
 
 subPlotFigureHandle.UserData = metadata_struct;
 
