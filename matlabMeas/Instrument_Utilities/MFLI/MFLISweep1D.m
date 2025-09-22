@@ -1,4 +1,4 @@
-function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = MFLISweep1D(sweepType, start, stop, step, mfli_id, device_id, port, doBackAndForth, varargin)
+function [data] = MFLISweep1D(sweepType, start, stop, step, mfli_id, device_id, port, doBackAndForth, varargin)
 %sweep1DMeasATS9416 Summary of this function goes here
 %   Detailed explanation goes here
 % To change the digital lock in parameters like filter stages or tc, you
@@ -92,7 +92,7 @@ if doBackAndForth
 end
 
 % Create arrays for data storage. 
-[xvolts,mag,phase,x,y,stdm,stdphase,stdx,stdy] = deal([]);
+[xvals,mag,phase,x,y,stdm,stdphase,stdx,stdy] = deal([]);
 
 % Halfway point in case back and forth is done.
 halfway = length(paramVector)/2;
@@ -134,24 +134,26 @@ for value = paramVector
     stdXrms = std(sample.x);
     stdYrms = std(sample.y);
 
-    x(index) = Xrms;
-    y(index) = Yrms;
-    stdx(index) = stdXrms;
-    stdy(index) = stdYrms;
+    data = [];
+
+    data.x(index) = Xrms;
+    data.y(index) = Yrms;
+    data.stdx(index) = stdXrms;
+    data.stdy(index) = stdYrms;
     
     Rrms = sqrt(Xrms.^2+Yrms.^2); % Magnitude in rms
     phi = rad2deg(atan2(real(Yrms),real(Xrms))); % Phase in degrees
     stdRrms = sqrt(stdXrms.^2+stdYrms.^2); % Magnitude error in rms
     stdPhi = sqrt(1/(Xrms.^2+Yrms.^2).^2*(Yrms.^2*stdXrms.^2+Xrms.^2*stdYrms.^2)); % Phase error in degrees
 
-    xvolts(index) = value;
+    data.xvals(index) = value;
     mag(index) = Rrms;
     phase(index) = phi;
     stdm(index) = stdRrms;
     stdphase(index) = stdPhi;
 
     % Assign all the data properly depending on doing a back and forth scan
-    updatePlots(plotHandles,xvolts,mag,phase,x,y,stdm,stdphase,stdx,stdy,doBackAndForth,index,halfway);
+    updatePlots(plotHandles,xvals,mag,phase,x,y,stdm,stdphase,stdx,stdy,doBackAndForth,index,halfway);
     drawnow;
     index = index + 1;
 end
@@ -174,27 +176,27 @@ end
 end
 
 %% Function for updating plot and setting errorbars
-function updatePlots(plotHandles,xvolts,mag,phase,x,y,stdm,stdphase,stdx,stdy,doBackAndForth,index,halfway)
+function updatePlots(plotHandles,xvals,mag,phase,x,y,stdm,stdphase,stdx,stdy,doBackAndForth,index,halfway)
     if doBackAndForth && index <= halfway
-        setErrorBarXYData(plotHandles{1},xvolts,x,stdx);
-        setErrorBarXYData(plotHandles{3},xvolts,y,stdy);
-        setErrorBarXYData(plotHandles{5},xvolts,mag,stdm);
-        setErrorBarXYData(plotHandles{7},xvolts,phase,stdphase);
+        setErrorBarXYData(plotHandles{1},xvals,x,stdx);
+        setErrorBarXYData(plotHandles{3},xvals,y,stdy);
+        setErrorBarXYData(plotHandles{5},xvals,mag,stdm);
+        setErrorBarXYData(plotHandles{7},xvals,phase,stdphase);
     elseif doBackAndForth && index > halfway
-        setErrorBarXYData(plotHandles{1},xvolts(1:halfway),x(1:halfway),stdx(1:halfway));
-        setErrorBarXYData(plotHandles{3},xvolts(1:halfway),y(1:halfway),stdy(1:halfway));
-        setErrorBarXYData(plotHandles{5},xvolts(1:halfway),mag(1:halfway),stdm(1:halfway));
-        setErrorBarXYData(plotHandles{7},xvolts(1:halfway),phase(1:halfway),stdphase(1:halfway));
+        setErrorBarXYData(plotHandles{1},xvals(1:halfway),x(1:halfway),stdx(1:halfway));
+        setErrorBarXYData(plotHandles{3},xvals(1:halfway),y(1:halfway),stdy(1:halfway));
+        setErrorBarXYData(plotHandles{5},xvals(1:halfway),mag(1:halfway),stdm(1:halfway));
+        setErrorBarXYData(plotHandles{7},xvals(1:halfway),phase(1:halfway),stdphase(1:halfway));
     
-        setErrorBarXYData(plotHandles{2},xvolts(halfway+1:end),x(halfway+1:end),stdx(halfway+1:end));
-        setErrorBarXYData(plotHandles{4},xvolts(halfway+1:end),y(halfway+1:end),stdy(halfway+1:end));
-        setErrorBarXYData(plotHandles{6},xvolts(halfway+1:end),mag(halfway+1:end),stdm(halfway+1:end));
-        setErrorBarXYData(plotHandles{8},xvolts(halfway+1:end),phase(halfway+1:end),stdphase(halfway+1:end));
+        setErrorBarXYData(plotHandles{2},xvals(halfway+1:end),x(halfway+1:end),stdx(halfway+1:end));
+        setErrorBarXYData(plotHandles{4},xvals(halfway+1:end),y(halfway+1:end),stdy(halfway+1:end));
+        setErrorBarXYData(plotHandles{6},xvals(halfway+1:end),mag(halfway+1:end),stdm(halfway+1:end));
+        setErrorBarXYData(plotHandles{8},xvals(halfway+1:end),phase(halfway+1:end),stdphase(halfway+1:end));
     else
-        setErrorBarXYData(plotHandles{1},xvolts,x,stdx);
-        setErrorBarXYData(plotHandles{2},xvolts,y,stdy);
-        setErrorBarXYData(plotHandles{3},xvolts,mag,stdm);
-        setErrorBarXYData(plotHandles{4},xvolts,phase,stdphase);
+        setErrorBarXYData(plotHandles{1},xvals,x,stdx);
+        setErrorBarXYData(plotHandles{2},xvals,y,stdy);
+        setErrorBarXYData(plotHandles{3},xvals,mag,stdm);
+        setErrorBarXYData(plotHandles{4},xvals,phase,stdphase);
     end
 end
 
