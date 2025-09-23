@@ -11,10 +11,12 @@ classdef SIM900
             pause(1); % pause for connection to be established
             SIM900.comPort = comPort;
             SIM900.identifier = query(SIM900.client,"*IDN?");
+        end
 
-            flcose(SIM900.client)
-            SIM900.client.InputBufferSize = 4096; % 512 per module
-            SIM900.client.OutputBufferSize = 4096; % 512 per module
+        function [] = setBuffer(SIM900,bufferSize)
+            fclose(SIM900.client);
+            SIM900.client.InputBufferSize = bufferSize; % 512 per module
+            SIM900.client.OutputBufferSize = bufferSize; % 512 per module
             fopen(SIM900.client);
         end
 

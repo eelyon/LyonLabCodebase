@@ -1,8 +1,8 @@
 startFreq = 100;
 stopFreq = 5e6;
 numPoints = 10000; % 1001;
-temp = 1.87; % Temperature in Kelvin
-gain_hemt = 17; % Gain of cryo. amp.
+temp = 1.75; % Temperature in Kelvin
+gain_hemt = 14; % Gain of cryo. amp.
 gain_femto = 10; % Gain of voltage FEMTO
 
 fprintf(fieldFox,'*CLS\n');

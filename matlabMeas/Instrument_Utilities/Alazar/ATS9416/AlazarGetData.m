@@ -4,7 +4,7 @@ clear xaxis bufferVolts X Y Xerr Yerr
 
 % Set parameters for acquisition
 global samplesPerSec
-f_signal = 1e6;
+f_signal = 102e3;
 channelMask = CHANNEL_A; % Select channels to capture, not all combinations are allowed
 
 % NPT parameters
@@ -30,11 +30,11 @@ buffersPerAcquisition = 1; % Set number of buffers
 % plot(xaxis,bufferVolts(2,:))
 
 stages = 4; % RC filter stages
-fc = 1; % RC filter cut off frequency
-phase = 179.7; % Phase offset for square wave from Awg2ch_Houck
-% 179.746 deg phase offset for two channel AWG (square wave output)
+tc = 0.1; % RC filter cut off frequency
+% phase = -192.61; % Phase offset for square wave from Awg2ch_Houck
+phase = -172; % deg phase offset for two channel AWG (square wave output)
 
-[X,Y,Xerr,Yerr] = ATS9416GetXY(bufferVolts,samplesPerSec,postTriggerSamples,f_signal,phase*pi/180,stages,fc,1);
+[X,Y,Xerr,Yerr] = ATS9416GetXY(bufferVolts,samplesPerSec,postTriggerSamples,f_signal,phase*pi/180,stages,tc);
 fprintf('X %f', X); fprintf(' +- %f Vrms\n', Xerr)
 fprintf('Y %f', Y); fprintf(' +- %f Vrms\n', Yerr)
 Rrms = sqrt(X.^2+Y.^2); fprintf('R %f Vrms\n', Rrms)

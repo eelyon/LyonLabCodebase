@@ -22,7 +22,7 @@ function [avgmags,avgxs,avgys,stdx,stdy] = sweep1DMeasSR830(sweepType,start,stop
 %           value.
 %           opt - 0 (Current) or 1 (Voltage) measurement. 
 
-flush(readSR830{1}.client);
+% flush(readSR830{1}.client);
 for srIndex = 1:length(readSR830)
     if exist('opt','var') 
         [plotHandles{srIndex},subPlotFigureHandles{srIndex}] = initializeSR830Meas1D(sweepType{srIndex},doBackAndForth,opt);
@@ -46,7 +46,6 @@ if strcmp(sweepType{1},'Pair')
     deltaGateParam = DPVoltage - TMVoltage;
 end
 
-
 numSR830s = length(readSR830);
 
 %% Create all arrays for data storage. 
@@ -58,6 +57,7 @@ halfway = length(paramVector)/2;
 %% Index for time axis.
 currentTimeIndex = 1;
 currentAvgIndex = 1;
+
 %% 95% confidence interval vector.
 CIVector = tinv([0.025 0.975], repeat-1); 
 errorType = 'CI';
@@ -91,6 +91,7 @@ for value = paramVector
 %     drawnow;
 %     
     delay(timeBetweenPoints);
+
     %% Initialize average vectors that gets reset for the repeating for loop
     magVectorRepeat = [];
     xVectorRepeat = [];
@@ -197,28 +198,28 @@ function [x,y,mag,t] = getSR830Data(x,y,mag,t,currentTimeIndex,startTime,readSR8
 % Function pulls the x,y,magnitude, and time data for each point from the
 % targetSR830. IMPORTANT: readSR830 needs to be a cell array of SR830
 % objects!!!.
-for i = 1:length(readSR830)
-    currentSR830 = readSR830{i};
-    [x(i,currentTimeIndex),y(i,currentTimeIndex)] = currentSR830.SR830queryXY();
-    t(i,currentTimeIndex) = (now()-startTime)*86400;
-    mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
-    delay(.01);
-end
+    for i = 1:length(readSR830)
+        currentSR830 = readSR830{i};
+        [x(i,currentTimeIndex),y(i,currentTimeIndex)] = currentSR830.SR830queryXY();
+        t(i,currentTimeIndex) = (now()-startTime)*86400;
+        mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
+        delay(.01);
+    end
 end
 
 function [x,y,mag,t] = getSR830DataCapacitance(x,y,mag,t,currentTimeIndex,startTime,readSR830)
 % Function pulls the x,y,magnitude, and time data for each point from the
 % targetSR830. IMPORTANT: readSR830 needs to be a cell array of SR830
 % objects!!!.
-for i = 1:length(readSR830)
-    currentSR830 = readSR830{i};
-    Igain = 1e12.*-1/(2*pi*SR830queryAmplitude(currentSR830)*SR830queryFreq(currentSR830));
-    [xVal,yVal] = SR830queryXY(currentSR830);
-    xyVals = [xVal,yVal].*Igain;
-    x(i,currentTimeIndex) = xyVals(1);
-    y(i,currentTimeIndex) = xyVals(2);
-    t(i,currentTimeIndex) = (now()-startTime)*86400;
-    mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
-    pause(.01);
-end
+    for i = 1:length(readSR830)
+        currentSR830 = readSR830{i};
+        Igain = 1e12.*-1/(2*pi*SR830queryAmplitude(currentSR830)*SR830queryFreq(currentSR830));
+        [xVal,yVal] = SR830queryXY(currentSR830);
+        xyVals = [xVal,yVal].*Igain;
+        x(i,currentTimeIndex) = xyVals(1);
+        y(i,currentTimeIndex) = xyVals(2);
+        t(i,currentTimeIndex) = (now()-startTime)*86400;
+        mag(i,currentTimeIndex) = sqrt(x(currentTimeIndex)^2 + y(currentTimeIndex)^2);
+        pause(.01);
+    end
 end
