@@ -83,8 +83,8 @@ in_channel = '0';        % signal input channel
 scope_in_channel = '0';    % scope input channel
 
 % Configure the signal inputs
-ziDAQ('setInt', ['/' device '/sigins/' in_channel '/imp50'], 0);
-ziDAQ('setInt', ['/' device '/sigins/' in_channel '/ac'], 1);
+ziDAQ('setInt', ['/' device '/sigins/' in_channel '/imp50'], 1);
+ziDAQ('setInt', ['/' device '/sigins/' in_channel '/ac'], 0);
 ziDAQ('setInt',    ['/' device '/sigins/' in_channel '/autorange'], 1);
 % Perform a global synchronisation between the device and the data server:
 % Ensure that the signal input configuration has taken effect before
@@ -122,7 +122,7 @@ ziDAQ('setInt',    ['/' device '/scopes/0/channels/' scope_in_channel '/inputsel
 scope_time = p.Results.scope_samplerate;
 ziDAQ('setInt',  ['/' device '/scopes/0/time'], scope_time);
 % 'single' : only get a single scope record.
-ziDAQ('setInt',    ['/' device '/scopes/0/single'], 1);
+ziDAQ('setInt',    ['/' device '/scopes/0/single'], 0);
 % 'trigenable' : enable the scope's trigger (boolean).
 ziDAQ('setInt',    ['/' device '/scopes/0/trigenable'], 0);
 % 'trigholdoff' : the scope hold off time inbetween acquiring triggers (still
@@ -148,13 +148,13 @@ ziDAQ('set', scopeModule, 'mode', 1);
 % 'averager/method' : Averaging method to use.
 %   0 - exponential averaging using the weight specified by 'averager/weight'.
 %   1 - uniform averaging. The 'averager/weight' value has no effect but must be greater than 1 to enable everaging.
-ziDAQ('set', scopeModule, 'averager/method', 0)
+ziDAQ('set', scopeModule, 'averager/method', 1)
 % 'averager/weight' : Averager behaviour for exponential averaging method.
 %   weight=1 - don't average.
 %   weight>1 - average the scope record segments using an exponentially weighted moving average.
 ziDAQ('set', scopeModule, 'averager/weight', 10);
 % 'averager/enable' : Activate averaging
-ziDAQ('set', scopeModule, 'averager/enable', 0);
+ziDAQ('set', scopeModule, 'averager/enable', 1);
 % 'historylength' : The number of scope records to keep in
 %   the Scope Module's memory, when more records arrive in the Module
 %   from the device the oldest records are overwritten.
@@ -272,7 +272,7 @@ function plotScopeRecords(scope_records, scope_in_channel, scope_time, clockbase
 % plotScopeRecords Plot the scope records.
   num_records = length(scope_records);
   c = hsv(num_records);
-  for ii=1:num_records
+  for ii=num_records  % ii = 1:num_records
     totalsamples = double(scope_records{ii}.totalsamples);
     if ~bitand(scope_records{ii}.channelmath(scope_in_channel+1), 2)
       dt = scope_records{ii}.dt;
@@ -287,7 +287,7 @@ function plotScopeRecords(scope_records, scope_in_channel, scope_time, clockbase
     elseif bitand(scope_records{ii}.channelmath(scope_in_channel+1), 2)
       scope_rate = double(clockbase)/2^scope_time;
       f = linspace(0, scope_rate/2, totalsamples);
-      loglog(f, scope_records{ii}.wave(:, scope_in_channel+1)/gain*1e9, 'color', c(ii, :));
+      loglog(f, scope_records{ii}.wave(:, scope_in_channel+1)/gain*1e9, 'color', 'r'); % c(ii,:)
       hold on;
     end
   end

@@ -1,7 +1,7 @@
 %% Script for moving electrons from Sommer-Tanner to 1st twiddle-sense
 % Run DCPinout before running this script
-numSteps = 10;
-numStepsRC = 10;
+numSteps = 100;
+numStepsRC = 100;
 waitTimeRC = 1100;
 Vopen = 3; % holding voltage of ccd
 Vclose = -1; % closing voltage of ccd
@@ -9,7 +9,7 @@ Vclose = -1; % closing voltage of ccd
 % startShield = 0.4;
 % stopShield = -1;
 % shieldStep = stopShield-startShield;
-Vload = -0.5; % set voltage on d1 and d2
+Vload = 1; % set voltage on d1 and d2
 
 % Open first three doors to CCD - using sigDACRampVoltage function
 sigDACRampVoltage(d1_even.Device,d1_even.Port,Vload,numSteps) % open 1st door
@@ -49,7 +49,7 @@ sigDACRampVoltage(d4.Device,d4.Port,Vclose,numSteps) % close door
 sigDACRamp(d5.Device,d5.Port,-2,numStepsRC,waitTimeRC) % close offset
 delay(1)
 
-MFLISweep1D({'Guard1'},0.5,-0.8,0.1,'dev32021',guard1_l.Device,guard1_l.Port,0,'time_constant',0.1,'demod_rate',100,'poll_duration',0.1);
+MFLISweep1D({'Guard1'},0.4,-1.2,0.1,'dev32021',guard1_l.Device,guard1_l.Port,0,'time_constant',0.1,'demod_rate',1e3,'poll_duration',0.1);
 % sweep1DMeasSR830({'Guard1'},0.2,-1,-0.1,3,5,{SR830ST},guard1_l.Device,{guard1_l.Port},0,1);
 sigDACRamp(guard1_l.Device,guard1_l.Port,0,numStepsRC,waitTimeRC) % reset guard
 

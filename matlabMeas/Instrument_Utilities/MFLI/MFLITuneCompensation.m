@@ -3,9 +3,9 @@ mfli_id = 'dev32061'; % 'dev32061'
 startPhase = 26;
 stopPhase = 28;
 deltaPhase = 0.2;
-startAmp = 0.003;
-stopAmp = 0.004;
-deltaAmp = 0.00002;
+startAmp = 0.00337;
+stopAmp = 0.00338;
+deltaAmp = 0.000001;
 
 % set33622AOutput(Awg2ch_2, 1, 1)
 % set33622AOutput(Awg2ch_2, 1, 2)

@@ -1,4 +1,4 @@
-function [data] = MFLISweep1D(sweepType, start, stop, step, mfli_id, device_id, port, doBackAndForth, varargin)
+function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = MFLISweep1D(sweepType, start, stop, step, mfli_id, device_id, port, doBackAndForth, varargin)
 %sweep1DMeasATS9416 Summary of this function goes here
 %   Detailed explanation goes here
 % To change the digital lock in parameters like filter stages or tc, you
@@ -65,7 +65,8 @@ extref_c = '8'; % external reference channel - 8 for Aux In 1
 ziDisableEverything(device);
 
 % Configure the device for this experiment.
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 1);
+ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 1);
+ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 0);
 % ziDAQ('setInt', ['/' device '/sigins/' in_c '/autorange'], 1);
 % ziDAQ('setDouble', ['/' device '/sigins/' in_c '/range'], 2.0*amplitude);
 ziDAQ('setInt', ['/' device '/demods/*/order'], p.Results.filter_order);
@@ -134,19 +135,17 @@ for value = paramVector
     stdXrms = std(sample.x);
     stdYrms = std(sample.y);
 
-    data = [];
-
-    data.x(index) = Xrms;
-    data.y(index) = Yrms;
-    data.stdx(index) = stdXrms;
-    data.stdy(index) = stdYrms;
+    x(index) = Xrms;
+    y(index) = Yrms;
+    stdx(index) = stdXrms;
+    stdy(index) = stdYrms;
     
     Rrms = sqrt(Xrms.^2+Yrms.^2); % Magnitude in rms
     phi = rad2deg(atan2(real(Yrms),real(Xrms))); % Phase in degrees
     stdRrms = sqrt(stdXrms.^2+stdYrms.^2); % Magnitude error in rms
     stdPhi = sqrt(1/(Xrms.^2+Yrms.^2).^2*(Yrms.^2*stdXrms.^2+Xrms.^2*stdYrms.^2)); % Phase error in degrees
 
-    data.xvals(index) = value;
+    xvals(index) = value;
     mag(index) = Rrms;
     phase(index) = phi;
     stdm(index) = stdRrms;
@@ -159,9 +158,9 @@ for value = paramVector
 end
 
 % Set up metadata to be saved with figure
-metadata_struct.time_constant = ziDAQ('getDouble', ['/' device '/demods/*/timeconstant']);
+metadata_struct.time_constant = time_constant; % ziDAQ('getDouble', ['/' device '/demods/*/timeconstant']);
 metadata_struct.filter_order = p.Results.filter_order;
-metadata_struct.demod_rate = ziDAQ('getDouble', ['/' device '/demods/' demod_c '/rate']);
+metadata_struct.demod_rate = p.Results.demod_rate; % ziDAQ('getDouble', ['/' device '/demods/' demod_c '/rate']);
 metadata_struct.poll_duration = poll_duration;
 metadata_struct.length = length(sample.x);
 metadata_struct.controlDAC = evalin('base','controlDAC.channelVoltages;');

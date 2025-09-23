@@ -4,8 +4,8 @@ numSteps = 10; % sigDACRampVoltage
 numStepsRC = 10; % sigDACRamp
 waitTimeRC = 1100; % in microseconds
 % delta = 0.25; % voltage step for sim900
-Vopen = 3; % holding voltage of ccd
-Vclose = -1; % closing voltage of ccd
+Vopen = 7; % holding voltage of ccd
+Vclose = -2; % closing voltage of ccd
 
 % Set Sommer-Tanner positive to suck in electrons
 sigDACRampVoltage(STM.Device,STM.Port,+2,numSteps)
@@ -96,9 +96,9 @@ sigDACRamp(guard2_l.Device,guard2_l.Port,0,numStepsRC,waitTimeRC)
 sigDACRamp(sense2_l.Device,sense2_l.Port,0,numStepsRC,waitTimeRC)
 sigDACRamp(d7.Device,d7.Port,-2,numStepsRC,waitTimeRC)
 
-MFLISweep1D({'Guard2'},0.2,-1,0.1,'dev32061',guard2_l.Device,guard2_l.Port,0,'time_constant',0.1,'demod_rate',20e3,'poll_duration',0.2);
+% MFLISweep1D({'Guard2'},0.2,-1,0.1,'dev32061',guard2_l.Device,guard2_l.Port,0,'time_constant',0.1,'demod_rate',20e3,'poll_duration',0.2);
 % sweep1DMeasSR830({'Guard2'},0,-2,-0.2,3,5,{SR830Twiddle},guard2_l.Device,{guard2_l.Port},0,1);
-sigDACRamp(guard2_l.Device,guard2_l.Port,0,numStepsRC,waitTimeRC)
+% sigDACRamp(guard2_l.Device,guard2_l.Port,0,numStepsRC,waitTimeRC)
 
 %% Move electrons up
 for j = 1:76
@@ -171,3 +171,10 @@ TwiddleUnload_Full % Unload twiddle-sense 1
 sigDACRampVoltage(STM.Device,STM.Port,0,numSteps)
 sigDACRampVoltage(STD.Device,STD.Port,0,numSteps)
 sigDACRampVoltage(STS.Device,STS.Port,0,numSteps)
+
+% Check if any electrons remain in either twiddle-sense
+% MFLISweep1D({'Guard1'}, 0.2, -1, 0.1, 'dev32021', pinout.guard1_l.device, pinout.guard1_l.port, 0, 'time_constant', 0.1, 'demod_rate', 1e3, 'poll_duration', 0.1);
+% sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC); delay(1)
+% 
+% MFLISweep1D({'Guard2'}, 0.2, -1, 0.1, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, 'time_constant', 0.1, 'demod_rate', 1e3, 'poll_duration', 0.1);
+% sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)

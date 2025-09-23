@@ -45,7 +45,7 @@ for repeats = 1:clean_repeats
     sigDACRampVoltage(pinout.sense1_r.device, pinout.sense1_r.port, Vclose, numSteps)
     sigDACRampVoltage(pinout.guard1_r.device, pinout.guard1_r.port, Vclose, numSteps)
     
-    emptyTwiddleSense1(numSteps,  numStepsRC,  waitTimeRC,  Vopen,  Vclose); % Empty 6x twiddle-sense 1
+    emptyTwiddleSense1(pinout, numSteps, numStepsRC, waitTimeRC, Vopen, Vclose); % Empty 6x twiddle-sense 1
     
     %% Move electrons onto vertical CCD
 %     sigDACRampVoltage(phi1_1.device, phi1_1.port, Vclose, numSteps)
@@ -93,7 +93,7 @@ for repeats = 1:clean_repeats
     sigDACRampVoltage(pinout.phi1_3.device, pinout.phi1_3.port, Vopen, numSteps)
     sigDACRampVoltage(pinout.phi1_1.device, pinout.phi1_1.port, Vclose, numSteps)
     sigDACRampVoltage(pinout.d4.device, pinout.d4.port, Vopen, numSteps)
-    sigDACRampVoltage(phi1_3.device, phi1_3.port, Vclose, numSteps)
+    sigDACRampVoltage(pinout.phi1_3.device, pinout.phi1_3.port, Vclose, numSteps)
     sigDACRampVoltage(pinout.d_Vup_2.device, pinout.d_Vup_2.port, Vopen, numSteps)
     sigDACRampVoltage(pinout.d4.device, pinout.d4.port, Vclose, numSteps)
     
@@ -115,7 +115,7 @@ for repeats = 1:clean_repeats
         sigDACRampVoltage(pinout.phi_Vdown_3.device, pinout.phi_Vdown_3.port, Vclose, numSteps)
         sigDACRampVoltage(pinout.phi_Vdown_2.device, pinout.phi_Vdown_2.port, Vopen, numSteps)
         sigDACRampVoltage(pinout.phi_Vdown_1.device, pinout.phi_Vdown_1.port, Vclose, numSteps)
-        emptyCCD1(numSteps,  numStepsRC,  waitTimeRC,  Vopen,  Vclose)
+        emptyCCD1(pinout, numSteps,  numStepsRC,  waitTimeRC,  Vopen,  Vclose)
         fprintf([num2str(j), ' '])
     end
     fprintf('\n')
@@ -129,7 +129,7 @@ for repeats = 1:clean_repeats
         sigDACRampVoltage(pinout.phi_Vup_1.device, pinout.phi_Vup_1.port, Vclose, numSteps)
         sigDACRampVoltage(pinout.phi_Vdown_2.device, pinout.phi_Vdown_2.port, Vopen, numSteps)
         sigDACRampVoltage(pinout.phi_Vdown_3.device, pinout.phi_Vdown_3.port, Vclose, numSteps)
-        emptyCCD1(numSteps,  numStepsRC,  waitTimeRC,  Vopen,  Vclose)
+        emptyCCD1(pinout, numSteps,  numStepsRC,  waitTimeRC,  Vopen,  Vclose)
     
         % Move electrons from phi_Vup_3 to phi_Vup_2
         sigDACRampVoltage(pinout.phi_Vup_2.device, pinout.phi_Vup_2.port, Vopen, numSteps)
@@ -163,7 +163,7 @@ for repeats = 1:clean_repeats
     sigDACRampVoltage(pinout.phi_Vdown_2.device, pinout.phi_Vdown_2.port, Vopen, numSteps)
     sigDACRampVoltage(pinout.phi_Vdown_3.device, pinout.phi_Vdown_3.port, Vclose, numSteps)
     
-    emptyCCD1(numSteps,  numStepsRC,  waitTimeRC,  Vopen,  Vclose)
+    emptyCCD1(pinout, numSteps, numStepsRC, waitTimeRC, Vopen, Vclose)
     
     %% Reset twiddle-sense1
     sigDACRampVoltage(pinout.guard1_r.device, pinout.guard1_r.port, -2, numSteps) % set right shield to -2V
@@ -172,7 +172,7 @@ for repeats = 1:clean_repeats
     sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, 0, numStepsRC, waitTimeRC)
     sigDACRamp(pinout.d5.device, pinout.d5.port, -2, numStepsRC, waitTimeRC) % close door
 
-    emptyTwiddleSense1(numSteps,  numStepsRC,  waitTimeRC,  Vopen,  Vclose)
+    emptyTwiddleSense1(pinout, numSteps, numStepsRC, waitTimeRC, Vopen, Vclose)
     
     % Reset Sommer-Tanner
     sigDACRampVoltage(pinout.stm.device, pinout.stm.port, 0, numSteps)
@@ -238,11 +238,11 @@ sigDACRamp(pinout.twiddle1.device, pinout.twiddle1.port, 0, numStepsRC, waitTime
 sigDACRampVoltage(pinout.guard1_r.device, pinout.guard1_r.port, -2, numSteps)
 sigDACRamp(pinout.d5.device, pinout.d5.port, -2, numStepsRC, waitTimeRC) % close d5
 
-MFLISweep1D({'Guard1'}, 0.2, -1, 0.1, 'dev32021', pinout.guard1_l.device, pinout.guard1_l.port, 0, 'time_constant', 0.1, 'demod_rate', 1e3, 'poll_duration', 0.1);
-sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC) % set left shield back
+% MFLISweep1D({'Guard1'}, 0.2, -1, 0.1, 'dev32021', pinout.guard1_l.device, pinout.guard1_l.port, 0, 'time_constant', 0.1, 'demod_rate', 1e3, 'poll_duration', 0.1);
+% sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC) % set left shield back
 
-MFLISweep1D({'Guard2'}, 0.2, -1, 0.1, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, 'time_constant', 0.1, 'demod_rate', 1e3, 'poll_duration', 0.1);
-sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC) % set left shield back
+% MFLISweep1D({'Guard2'}, 0.2, -1, 0.1, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, 'time_constant', 0.1, 'demod_rate', 1e3, 'poll_duration', 0.1);
+% sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC) % set left shield back
 % delay(1)
 end
 

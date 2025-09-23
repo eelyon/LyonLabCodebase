@@ -72,7 +72,7 @@ pinout.phi_Vup_1.port = 20;
 pinout.phi_Vup_2.device = supplyDAC;
 pinout.phi_Vup_2.port = 8;
 pinout.phi_Vup_3.device = supplyDAC;
-pinout.phi_Vup_3.device = 7;
+pinout.phi_Vup_3.port = 7;
 
 pinout.d_Vup_1.device = supplyDAC;
 pinout.d_Vup_1.port = 21;
