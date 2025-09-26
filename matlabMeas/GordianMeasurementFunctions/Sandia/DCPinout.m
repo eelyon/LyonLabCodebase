@@ -31,17 +31,17 @@ sense1_r = pinout(controlDAC,7);
 d6 = pinout(controlDAC,20);
 
 %% 2nd twiddle-sense
-phi_Vdown_1 = pinout(controlDAC,3);
+phi_Vdown_1 = pinout(controlDAC,16);
 phi_Vdown_2 = pinout(controlDAC,15);
-phi_Vdown_3 = pinout(controlDAC,16);
+phi_Vdown_3 = pinout(controlDAC,3);
 
-phi_Vup_1 = pinout(supplyDAC,20);
+phi_Vup_1 = pinout(supplyDAC,7);
 phi_Vup_2 = pinout(supplyDAC,8);
-phi_Vup_3 = pinout(supplyDAC,7);
+phi_Vup_3 = pinout(supplyDAC,20);
 
-d_Vup_1 = pinout(supplyDAC,21);
+d_Vup_1 = pinout(supplyDAC,4);
 d_Vup_2 = pinout(supplyDAC,9);
-d_Vup_3 = pinout(controlDAC,4);
+d_Vup_3 = pinout(controlDAC,21);
 
 d7 = pinout(controlDAC,8); % compensation door for 2nd twiddle-sense
 sense2_l = pinout(controlDAC,22);

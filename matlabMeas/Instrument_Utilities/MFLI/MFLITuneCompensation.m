@@ -7,15 +7,8 @@ startAmp = 0.00337;
 stopAmp = 0.00338;
 deltaAmp = 0.000001;
 
-% set33622AOutput(Awg2ch_2, 1, 1)
-% set33622AOutput(Awg2ch_2, 1, 2)
-
-% gainFEMTO = 100;
-% gainHEMT = 11;
-% set33622AOutput(Awg2ch_Houck,1,1);
-% set33622AOutput(Awg2ch_Houck,2,1);
-% turnDevOn(doorDevice); % Turn on doesn't work! Fix!
-% turnDevOn(twiddleDevice); % Twiddle gate
+% fprintf(doorDevice.client, ['OUTP', num2str(1), ' ON'])
+% fprintf(doorDevice.client, ['OUTP', num2str(2), ' ON'])
 
 if deltaPhase < .001 || deltaAmp < .000001
     error('Too small of a step size. Check deltaPhase and/or deltaAmp.')
