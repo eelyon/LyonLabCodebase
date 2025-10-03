@@ -31,14 +31,14 @@ figure()
 plot_electrons(figPath1,1,2,cap,gain,0.121)
 plot_electrons(figPath2,1,2,cap,gain,0.122)
 plot_electrons(figPath3,1,2,cap,gain,0.125)
-plot_electrons(figPath4,3,4,cap,gain,0.2)
+% plot_electrons(figPath4,3,4,cap,gain,0.2)
 hold off
 
 set(gca,'FontSize',13)
 xlabel('V_{guard} (V)','FontSize',14)
 ylabel('V_{rms} (\mu V)','FontSize',14)
-% xlim([-0.6,0.3])
-% ylim([0,0.6])
+xlim([-0.6,0.3])
+ylim([0,0.6])
 legend;
 
 % xlim([-1.05,0.25])
@@ -67,7 +67,7 @@ function plot_electrons(figPath,ax1,ax2,cap,gain,Vload)
     
     display(numE);
     display(yErr);
-    errorbar(Vshield,mag*1e6,stdm*1e6,'.-','MarkerSize',14,'DisplayName',['n=',num2str(round(numE),'%d'),' (V_{Dr1,Dr2}=',num2str(Vload),'V)'])
+    errorbar(Vshield,mag*1e6,stdm*1e6,'.-','MarkerSize',14,'DisplayName',['n=',num2str(round(numE),'%d'),' (V_{doors}=',num2str(Vload),'V)'])
 %     ['n = ',num2str(numE,'%.1f'),' ',177, ' ', num2str(yErr,'%.1f')]
 %     legend('n = %i', numE);
     hold on

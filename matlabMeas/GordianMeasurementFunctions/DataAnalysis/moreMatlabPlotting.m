@@ -37,5 +37,5 @@ set(gca,'FontSize',14)
 % legend('296 K','1.8 K')
 
 xlabel('Frequency (Hz)','FontSize',15)
-ylabel('NSD (nV/\surd{Hz})','FontSize',15)
+ylabel('Noise (nV/\surd{Hz})','FontSize',15)
 xlim([1e3,xDat_new(end)])
