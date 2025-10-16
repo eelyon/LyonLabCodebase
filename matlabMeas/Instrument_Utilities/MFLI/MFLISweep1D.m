@@ -1,8 +1,9 @@
 function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = MFLISweep1D(sweepType, start, stop, step, mfli_id, device_id, port, doBackAndForth, varargin)
-%sweep1DMeasATS9416 Summary of this function goes here
+%MFLISweep1D Sweep function using ziDAQ poll function to return data for
+%certain duration.
 %   Detailed explanation goes here
 % To change the digital lock in parameters like filter stages or tc, you
-% need to change these in the code itself
+% need to change these in the varargin parameters
 
 %% Configure MFLI
 clear ziDAQ;
@@ -45,9 +46,9 @@ p.addParameter('filter_order', 4, isnonneg);
 % Filter time constant
 p.addParameter('time_constant', 0.010, @isnumeric);
 % Demodulation/sampling rate of demodulated data
-p.addParameter('demod_rate', 2e3, @isnumeric);
+p.addParameter('demod_rate', 1e3, @isnumeric);
 % The length of time we'll record data (synchronously) [s].
-p.addParameter('poll_duration', 0.2, isnonneg);
+p.addParameter('poll_duration', 0.1, isnonneg);
 % The length of time to accumulate subscribed data (by sleeping) before polling a second time [s].
 % p.addParameter('sleep_duration', 1.0, isnonneg);
 p.parse(varargin{:});
@@ -107,7 +108,7 @@ for value = paramVector
 
 %     sigDACRamp(device,port,value,5,1100);
     setVal(device_id, port, value);
-    delay(10*time_constant);
+    pause(10*time_constant); % pause to get a settled lowpass filter
 
     % Perform a global synchronisation between the device and the data server:
     % Ensure that the settings have taken effect on the device before issuing the
@@ -121,7 +122,7 @@ for value = paramVector
     ziDAQ('subscribe', ['/' device '/demods/' demod_c '/sample']);
     
     % Poll data for poll_duration seconds.
-    poll_timeout = 500;
+    poll_timeout = 10; % timeout in [ms]
     data = ziDAQ('poll', poll_duration, poll_timeout);
     
     if ziCheckPathInData(data, ['/' device '/demods/' demod_c '/sample'])
@@ -156,6 +157,9 @@ for value = paramVector
     updatePlots(plotHandles,xvals,mag,phase,x,y,stdm,stdphase,stdx,stdy,doBackAndForth,index,halfway);
     drawnow;
     index = index + 1;
+    
+    % Unsubscribe from all paths.
+    ziDAQ('unsubscribe', '*');
 end
 
 % Set up metadata to be saved with figure

@@ -69,7 +69,7 @@ p.addParamValue('poll_duration', 1.0, isnonneg);
 % The length of time to accumulate subscribed data (by sleeping) before polling a second time [s].
 p.addParamValue('sleep_duration', 1.0, isnonneg);
 % The signal output mixer amplitude, [V].
-p.addParamValue('amplitude', 0.5, @isnumeric);
+p.addParamValue('amplitude', 0.1, @isnumeric);
 p.parse(varargin{:});
 poll_duration = p.Results.poll_duration;
 sleep_duration = p.Results.sleep_duration;
@@ -130,8 +130,8 @@ ziDAQ('sync');
 ziDAQ('subscribe', ['/' device '/demods/' demod_c '/sample']);
 
 % Poll data for poll_duration seconds.
-poll_timeout = 500;
-data = ziDAQ('poll', poll_duration, poll_timeout);
+poll_timeout = 10;
+data = ziDAQ('pollEvent', poll_duration, poll_timeout);
 
 figure(1); clf;
 grid on; box on; hold on;

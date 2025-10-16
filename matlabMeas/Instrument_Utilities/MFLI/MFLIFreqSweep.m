@@ -77,7 +77,7 @@ p.addParameter('amplitude', 0.002, @isnumeric);
 % Set the sweep's start frequency
 p.addParameter('sweep_startfreq', 1e3, @isnumeric);
 % Set the sweep's stop frequency
-p.addParameter('sweep_stopfreq', 5e6, @isnumeric);
+p.addParameter('sweep_stopfreq', 4e6, @isnumeric);
 % Set the demodulator time constant [s]
 p.addParameter('tc', 0.007, @isnumeric);
 % Set the demodulation rate
