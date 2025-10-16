@@ -131,6 +131,7 @@ for value = paramVector
     end
     
     Xrms = mean(sample.x);
+%     length(sample.x)
     Yrms = mean(sample.y);
     stdXrms = std(sample.x);
     stdYrms = std(sample.y);

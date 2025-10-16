@@ -4,7 +4,7 @@
 for i = 1:3
  setGatesEject(pinout); delay(5)
  setGatesMeas(pinout); delay(5)
- sweep1DMeasSR830({'ST'},0,-0.8,-0.1,1,5,{SR830ST},pinout.tm.device,{pinout.tm.port},1);
+ sweep1DMeasSR830({'ST'},0,-0.8,-0.1,1,5,{SR830ST},pinout.stm.device,{pinout.stm.port},1);
  fprintf([num2str(i), ' '])
 end
 fprintf('\n')

@@ -5,7 +5,7 @@ isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 p.addParameter('numSteps', 10, isnonneg);
 p.addParameter('numStepsRC', 10, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
-p.addParameter('Vclose', -4, @(x) isnumeric(x) && isscalar(x) && (x < 0));
+p.addParameter('Vclose', -2, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
 
 numSteps = p.Results.numSteps; % sigDACRampVoltage
@@ -22,7 +22,7 @@ delay(1)
 %% Set ST gates negative
 sigDACRampVoltage(pinout.std.device,pinout.std.port,Vclose,numSteps) % Sommer-Tanner drive
 sigDACRampVoltage(pinout.sts.device,pinout.sts.port,Vclose,numSteps) % Sommer-Tanner sense
-sigDACRampVoltage(pinout.tm.device,pinout.tm.port,Vclose,numSteps) % Sommer-Tanner middle gate
+sigDACRampVoltage(pinout.stm.device,pinout.stm.port,Vclose,numSteps) % Sommer-Tanner middle gate
 sigDACRampVoltage(pinout.bpg.device,pinout.bpg.port,Vclose,numSteps) % bond pad guard
 
 %% Set CCD gates negative
@@ -84,7 +84,7 @@ sigDACRamp(pinout.trap5.device,pinout.trap5.port,Vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap6.device,pinout.trap6.port,Vclose,numStepsRC,waitTimeRC)
 delay(1)
 
-sigDACRamp(pinout.tm.device,pinout.tm.port,-2,numStepsRC,waitTimeRC) % make top metal negative
+sigDACRamp(pinout.tm.device,pinout.tm.port,-1,numStepsRC,waitTimeRC) % make top metal negative
 fprintf('Electrons are ejected.\n')
 end
 

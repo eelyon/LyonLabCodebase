@@ -78,7 +78,7 @@ pinout.d_Vup_1.device = controlDAC;
 pinout.d_Vup_1.port = 4;
 pinout.d_Vup_2.device = supplyDAC;
 pinout.d_Vup_2.port = 9;
-pinout.d_Vup_3.device = controlDAC;
+pinout.d_Vup_3.device = supplyDAC;
 pinout.d_Vup_3.port = 21;
 
 pinout.d7.device = controlDAC;

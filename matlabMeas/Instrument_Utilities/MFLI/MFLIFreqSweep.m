@@ -284,14 +284,14 @@ function plot_data(frequencies, r, theta, style)
 % Plot data
 clf
 subplot(2, 1, 1)
-s = semilogx(frequencies, r/max(r), style);
-% s = semilogx(frequencies, r*2*sqrt(2), style);
+% s = semilogx(frequencies, r/max(r), style);
+s = semilogx(frequencies, r*2*sqrt(2), style);
 set(s, 'LineWidth', 1.5)
 set(s, 'Color', 'black');
 grid on
 xlabel('Frequency [Hz]')
-ylabel('Amplitude [V_{pp}/max(V_{pp}]')
-% ylabel('Amplitude [V_{pp}]')
+% ylabel('Amplitude [V_{pp}/max(V_{pp}]')
+ylabel('Amplitude [V_{pp}]')
 subplot(2, 1, 2)
 s = semilogx(frequencies, theta*180/pi, style);
 set(s, 'LineWidth', 1.5)
