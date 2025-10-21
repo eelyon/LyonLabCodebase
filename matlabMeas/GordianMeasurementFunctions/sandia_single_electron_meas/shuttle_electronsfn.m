@@ -1,21 +1,18 @@
-function [] = shuttleElectrons(pinout, varargin)
+function [] = shuttle_electronsfn(pinout,vload,varargin)
 %SHUTTLEELECTRONS Script for shuttling electrons
 %   Detailed explanation goes here
-
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 p.addParameter('numSteps', 5, isnonneg);
 p.addParameter('numStepsRC', 5, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
-p.addParameter('vload', 0, @isnumeric)
-p.addParameter('vopen', 3, isnonneg);
+p.addParameter('vopen', 1, isnonneg);
 p.addParameter('vclose', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
 
 numSteps = p.Results.numSteps; % sigDACRampVoltage
 numStepsRC = p.Results.numStepsRC; % sigDACRamp
 waitTimeRC = p.Results.waitTimeRC; % in microseconds
-vload = p.Results.vload;
 vopen = p.Results.vopen; % holding voltage of ccd
 vclose = p.Results.vclose; % closing voltage of ccd
 

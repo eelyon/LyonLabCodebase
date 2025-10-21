@@ -45,16 +45,14 @@ for i = 1:6
     num_elec = calc_electrons(x,y,cap1,gain1,alpha); % Calc. tot. no. of electrons
     
     if round(num_elec,0) == 0 % Not entirely sure about the margin here
-        fprintf('Exiting loop. Electron is parked.\n')
+        fprintf('Exiting loop. Electron is parked.')
         return
     elseif i == 6
-        fprintf('Exiting loop. Electron should be in topmost sense 2. Measure...\n')
+        fprintf('Exiting loop. Electron should be in topmost sense 2. Measure...')
             MFLISweep1D({'Guard2'},start_vgd,stop_vgd,step_vgd,'dev32061',pinout.guard2_l.device,pinout.guard2_l.port,0, ...
         'time_constant',tc,'demod_rate',drat,'poll_duration',poll);
         sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,0,numStepsRC,waitTimeRC)
-        return
     end
 
     shuttle_nextsense2(pinout, numSteps, numStepsRC, waitTimeRC, vopen, vclose)
-    fprintf([num2str(i), '\n'])
 end

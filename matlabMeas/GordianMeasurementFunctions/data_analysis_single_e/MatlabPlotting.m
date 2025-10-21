@@ -1,6 +1,6 @@
 clear all
 whosePath = 'B417';
-tag = 'Guard2';
+tag = 'Guard1';
 
 % numEs = [];
 % yErrs = [];
@@ -21,25 +21,20 @@ switch whosePath
 end
 
 % Try and catch errors in loop
-% currentFigNum = 20456; %20483;
-% figPath4 = append(path,tag,'_',num2str(20456),'.fig');
-% figPath3 = append(path,tag,'_',num2str(20474),'.fig');
-% figPath2 = append(path,tag,'_',num2str(20476),'.fig');
-% figPath1 = append(path,tag,'_',num2str(20480),'.fig');
-figPath1 = append(path,tag,'_',num2str(20834),'.fig');
-figPath2 = append(path,tag,'_',num2str(20835),'.fig');
-figPath3 = append(path,tag,'_',num2str(20836),'.fig');
-figPath4 = append(path,tag,'_',num2str(20837),'.fig');
-figPath5 = append(path,tag,'_',num2str(20838),'.fig');
-figPath6 = append(path,tag,'_',num2str(20839),'.fig');
+figPath1 = append(path,tag,'_',num2str(20940),'.fig');
+% figPath2 = append(path,tag,'_',num2str(20835),'.fig');
+% figPath3 = append(path,tag,'_',num2str(20836),'.fig');
+% figPath4 = append(path,tag,'_',num2str(20837),'.fig');
+% figPath5 = append(path,tag,'_',num2str(20838),'.fig');
+% figPath6 = append(path,tag,'_',num2str(20839),'.fig');
 
 figure()
-plot_electrons(figPath1,1,2,cap,gain,0.4)
-plot_electrons(figPath2,1,2,cap,gain,0.2)
-plot_electrons(figPath3,1,2,cap,gain,0.1)
-plot_electrons(figPath4,1,2,cap,gain,0.05)
-plot_electrons(figPath5,1,2,cap,gain,0.01)
-plot_electrons(figPath6,1,2,cap,gain,-0.28)
+plot_electrons(figPath1,1,2,cap,gain,-0.285)
+% plot_electrons(figPath2,1,2,cap,gain,0.2)
+% plot_electrons(figPath3,1,2,cap,gain,0.1)
+% plot_electrons(figPath4,1,2,cap,gain,0.05)
+% plot_electrons(figPath5,1,2,cap,gain,0.01)
+% plot_electrons(figPath6,1,2,cap,gain,0.005)
 
 hold off
 
@@ -76,7 +71,7 @@ function plot_electrons(figPath,ax1,ax2,cap,gain,Vload)
     
     display(numE);
     display(yErr);
-    errorbar(Vshield,mag*1e6,stdm*1e6,'.-','MarkerSize',14,'DisplayName',['n=',num2str(round(numE),'%d'),' (tc=',num2str(Vload),'s)'])% ' (V_{Dr1,Dr2}=',num2str(Vload),'V)'])
+    errorbar(Vshield,mag*1e6,stdm*1e6,'.-','MarkerSize',14,'DisplayName',['n=',num2str(round(numE),'%d'),' (V_{Dr1,Dr2}=',num2str(Vload),'V)']) % ' (tc=',num2str(Vload),'s)'])
 %     ['n = ',num2str(numE,'%.1f'),' ',177, ' ', num2str(yErr,'%.1f')]
 %     legend('n = %i', numE);
     hold on

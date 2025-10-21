@@ -44,7 +44,7 @@ isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 % Filter order
 p.addParameter('filter_order', 4, isnonneg);
 % Filter time constant
-p.addParameter('time_constant', 0.010, @isnumeric);
+p.addParameter('time_constant', 0.020, @isnumeric);
 % Demodulation/sampling rate of demodulated data
 p.addParameter('demod_rate', 1e3, @isnumeric);
 % The length of time we'll record data (synchronously) [s].
@@ -107,7 +107,7 @@ for value = paramVector
     ziDAQ('unsubscribe', '*');
 
 %     sigDACRamp(device,port,value,5,1100);
-    setVal(device_id, port, value);
+    setVal(device_id, port, value)
     pause(10*time_constant); % pause to get a settled lowpass filter
 
     % Perform a global synchronisation between the device and the data server:

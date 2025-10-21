@@ -1,15 +1,13 @@
-function cleanSandiaROIC(pinout, varargin)
-%% Script for unloading electrons from 1st twiddle-sense and clean top metal
-% Run DCPinout before running this script
-
+function clean_channels(pinout,repeats,varargin)
+% Script for cleaning all channels
+% Run pinout before running this script
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
-p.addParameter('numSteps', 10, isnonneg);
-p.addParameter('numStepsRC', 10, isnonneg);
+p.addParameter('numSteps', 5, isnonneg);
+p.addParameter('numStepsRC', 5, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
-p.addParameter('Vopen', 3, isnonneg);
+p.addParameter('Vopen', 1, isnonneg);
 p.addParameter('Vclose', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
-p.addParameter('clean_repeats', 1, isnonneg);
 p.parse(varargin{:});
 
 numSteps = p.Results.numSteps; % sigDACRampVoltage
@@ -17,9 +15,8 @@ numStepsRC = p.Results.numStepsRC; % sigDACRamp
 waitTimeRC = p.Results.waitTimeRC; % in microseconds
 Vopen = p.Results.Vopen; % holding voltage of ccd
 Vclose = p.Results.Vclose; % closing voltage of ccd
-clean_repeats = p.Results.clean_repeats;
 
-for repeats = 1:clean_repeats
+for repeats = 1:repeats
 
     % Set Sommer-Tanner positive to suck in electrons
     sigDACRampVoltage(pinout.stm.device, pinout.stm.port, +2, numSteps)
