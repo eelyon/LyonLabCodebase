@@ -4,8 +4,8 @@
 
 %% Device parameters
 t = 0.96e-6+250e-9+20e-9; % channel height
-w = 3e-6; % ST channel width
-V_pinch = -0.35; % pinch off voltage
+w = 4e-6; % ST channel width
+V_pinch = -0.6; % pinch off voltage
 
 %% Bulk LHe
 T = 1.8; % measurement temperature in K

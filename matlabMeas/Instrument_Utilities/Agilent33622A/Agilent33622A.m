@@ -77,8 +77,7 @@ classdef Agilent33622A
             else
                 cmdStr = ' OFF';
             end
-            command = ['OUTP',num2str(channel), cmdStr];
-            fprintf(Agilent33622A.client,command);
+            fprintf(Agilent33622A.client, ['OUTP', num2str(channel), cmdStr]);
         end
 
         function [] = set33622AOutputLoad(Agilent33622A, channel, Ohms)

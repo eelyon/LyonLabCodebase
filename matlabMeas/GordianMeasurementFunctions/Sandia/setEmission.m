@@ -4,10 +4,10 @@
 numSteps = 100; % sigDACRampVoltage
 numStepsRC = 10; % sigDACRamp
 waitTimeRC = 1100; % in microseconds
-stopVal = -4; % set gate voltage during emission
+stopVal = -5; % set gate voltage during emission
 
 %% Set Sommer-Tanner
-sigDACRamp(TM.Device,TM.Port,-3.3,numStepsRC,waitTimeRC) % ramp top metal
+sigDACRamp(TM.Device,TM.Port,-3.2,numStepsRC,waitTimeRC) % ramp top metal
 sigDACRampVoltage(M2S.Device,M2S.Port,-0.5,numSteps) % ramp M2 shield
 sigDACRampVoltage(BPG.Device,BPG.Port,stopVal,numSteps) % ramp bond pad guard
 % fprintf('Top metal, M2 shield, and bond pad guard set for emission.\n')
@@ -75,10 +75,10 @@ sigDACRampVoltage(phi2_1.Device,phi2_1.Port,stopVal,numSteps)
 sigDACRampVoltage(phi2_2.Device,phi2_2.Port,stopVal,numSteps)
 sigDACRampVoltage(phi2_3.Device,phi2_3.Port,stopVal,numSteps)
 
-sigDACRamp(trap1.Device,trap1.Port,stopVal,numStepsRC,waitTimeRC)
-sigDACRamp(trap2.Device,trap2.Port,stopVal,numStepsRC,waitTimeRC)
-sigDACRamp(trap3.Device,trap3.Port,stopVal,numStepsRC,waitTimeRC)
-sigDACRamp(trap4.Device,trap4.Port,stopVal,numStepsRC,waitTimeRC)
+sigDACRamp(trap1_2.Device,trap1_2.Port,stopVal,numStepsRC,waitTimeRC)
+sigDACRamp(trap1_1.Device,trap1_1.Port,stopVal,numStepsRC,waitTimeRC)
+sigDACRamp(trap2_2.Device,trap2_2.Port,stopVal,numStepsRC,waitTimeRC)
+sigDACRamp(trap2_1.Device,trap2_1.Port,stopVal,numStepsRC,waitTimeRC)
 sigDACRamp(trap5.Device,trap5.Port,stopVal,numStepsRC,waitTimeRC)
 sigDACRamp(trap6.Device,trap6.Port,stopVal,numStepsRC,waitTimeRC)
 % fprintf('Electron trap set for emission.\n')
