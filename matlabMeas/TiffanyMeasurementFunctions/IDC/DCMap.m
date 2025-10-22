@@ -14,7 +14,6 @@ DoorEOutPort      = 18;
 
 %% Collector
 TopCPort        = 21;
-
 STOBiasCPort    = 24;
 StmCPort        = 9;
 STIBiasCPort    = 11;

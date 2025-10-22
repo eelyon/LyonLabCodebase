@@ -3,9 +3,11 @@
 DCMap;
 numSteps = 5000;
 setVal(supplyDAC,BackMetalPort,0);
-setVal(controlDAC,BlockPort,-3);
+setVal(controlDAC,BlockPort,-2);
 
 setVal(controlDAC,BlockPort,-1);
+setVal(controlDAC,BlockPort,0.5);
+
 
 %% Compensation voltages
 sigDACRampVoltage(controlDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-0.7,0,0,0],numSteps);
@@ -21,12 +23,12 @@ sigDACRampVoltage(supplyDAC,TfEPort,-2,numSteps);
 
 % compensateParasitics(SR830Twiddle,Ag2Nat,Ag2Nat,-180,180,10,0.2,0.3,0.010,0)    % HEMT1
 compensateParasitics(SR830Twiddle,Awg2Ch,Awg2Ch,-180,180,10,0.2,0.4,0.010,0)   % HEMT1
-compensateParasitics(SR830TwiddleC,AwgComp,AwgTwiddle,-180,180,10,0.2,0.4,0.010,0)   % HEMT2
+compensateParasitics(SR830TwiddleC,Awg2Nat,Awg2Nat,-180,180,10,0.2,0.4,0.010,0)   % HEMT2
 
 compensateParasitics(SR830Twiddle,Awg2Ch,Awg2Ch,-180,180,10,0.4,0.6,0.010,0)   % HEMT1
 
 % finer sweep
-compensateParasitics(SR830Twiddle,Awg2Ch,Awg2Ch,166,168,0.1,0.3,0.31,0.005,0)   % HEMT1
+compensateParasitics(SR830Twiddle,Awg2Ch,Awg2Ch,26,28,0.1,0.3,0.31,0.005,0)   % HEMT1
 compensateParasitics(SR830TwiddleC,AwgComp,AwgTwiddle,46,48,0.1,0.3,0.31,0.005,0)  %HEMT2
 
 %% EMISSION VOLTAGES
@@ -67,8 +69,7 @@ sigDACRampVoltage(supplyDAC,TfEPort,-3,numSteps);
 sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830Twiddle},controlDAC,{StmEPort},1);
 sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830TwiddleC},controlDAC,{StmCPort},1);
 
-
-
+sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830Twiddle},controlDAC,{StmCPort},1);
 
 sweep1DMeasSR830({'ST'},0,-0.3,-0.05,0.1,10,{SR830Twiddle},controlDAC,{StmEPort},1);
 sweep1DMeasSR830({'ST'},0,-0.2,-0.01,0.1,10,{SR830Twiddle},controlDAC,{StmEPort},1);
@@ -80,7 +81,7 @@ sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830TwiddleC},controlDAC,{StmEPort
 
 % sweep top metal 
 sweep1DMeasSR830({'TE'},-0.7,-1.1,-0.05,0.1,10,{SR830Twiddle},controlDAC,{TopEPort},1);
-sweep1DMeasSR830({'TC'},-0.7,-1.2,-0.05,0.1,10,{SR830TwiddleC},controlDAC,{TopCPort},1);
+sweep1DMeasSR830({'TC'},-0.7,-1.2,-0.05,0.1,10,{SR830TwiddleC},controlDAC, {TopCPort},1);
 sweep1DMeasSR830({'TC'},-2.7,-2.7-0.3,-0.05,0.1,10,{SR830TwiddleC},controlDAC,{TopCPort},1);
 
 % sweep twiddle sense or door

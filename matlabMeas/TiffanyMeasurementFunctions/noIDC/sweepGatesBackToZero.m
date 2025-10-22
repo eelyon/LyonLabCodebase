@@ -15,7 +15,7 @@ if sign == 'Pos'
         else
         end
         sigDACRampVoltage(device,[STOuterPort,STMidPort,STInnerPort],[volt-0.5,volt-0.5,volt-0.5],numSteps*5);
-        sigDACRampVoltage(device,[DoorInPort,TwidPort,SensPort,DoorOutPort],[volt-1.5,volt-0.5,volt-0.5,doorOutVolt],numSteps*5);
+        sigDACRampVoltage(device,[DoorInPort,TwidPort,SensPort,DoorOutPort],[volt-1.5,volt-0.5,volt-0.5,volt-1.5],numSteps*5);
         sigDACRampVoltage(device,TopPort,TopVoltage-(0.5*i),numSteps*5);
     end
 else
