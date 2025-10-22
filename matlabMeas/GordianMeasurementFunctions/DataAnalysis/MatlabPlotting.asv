@@ -1,17 +1,17 @@
 clear all
-whosePath = 'gordian';
-tag = 'Guard1';
+whosePath = 'B417';
+tag = 'Guard2';
 
 % numEs = [];
 % yErrs = [];
 % Vloads = 1:-0.05:0; % [-0.1 0 0.1 0.2 0.3 0.4];
 
-gain = 23.8*0.9; % Enter gain from roll-off plot
-cap = 3.3*1e-12; % Enter approximate HEMT input capacitance
+gain = 24.3*0.915*100; % Enter gain from roll-off plot
+cap = 3.55*1e-12; % Enter approximate HEMT input capacitance
 
 switch whosePath 
     case 'B417'
-        path = 'C:\Users\Lyon Lab Simulation\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensitivity\Data_SingleElectronShuttling\09_18_25\';
+        path = 'C:\Users\Lyon Lab Simulation\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\single_electron_sensitivity\data_single_electron_shuttling\10_15_25\';
     case 'B124'
         path = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\03_06_25\';
     case 'gordian'
@@ -22,23 +22,32 @@ end
 
 % Try and catch errors in loop
 % currentFigNum = 20456; %20483;
-figPath4 = append(path,tag,'_',num2str(20456),'.fig');
-figPath3 = append(path,tag,'_',num2str(20474),'.fig');
-figPath2 = append(path,tag,'_',num2str(20476),'.fig');
-figPath1 = append(path,tag,'_',num2str(20480),'.fig');
+% figPath4 = append(path,tag,'_',num2str(20456),'.fig');
+% figPath3 = append(path,tag,'_',num2str(20474),'.fig');
+% figPath2 = append(path,tag,'_',num2str(20476),'.fig');
+% figPath1 = append(path,tag,'_',num2str(20480),'.fig');
+figPath1 = append(path,tag,'_',num2str(20834),'.fig');
+figPath2 = append(path,tag,'_',num2str(20835),'.fig');
+figPath3 = append(path,tag,'_',num2str(20836),'.fig');
+figPath4 = append(path,tag,'_',num2str(20837),'.fig');
+figPath5 = append(path,tag,'_',num2str(20838),'.fig');
+figPath6 = append(path,tag,'_',num2str(20839),'.fig');
 
 figure()
-plot_electrons(figPath1,1,2,cap,gain,0.121)
-plot_electrons(figPath2,1,2,cap,gain,0.122)
-plot_electrons(figPath3,1,2,cap,gain,0.125)
-% plot_electrons(figPath4,3,4,cap,gain,0.2)
+plot_electrons(figPath1,1,2,cap,gain,0.4)
+plot_electrons(figPath2,1,2,cap,gain,0.2)
+plot_electrons(figPath3,1,2,cap,gain,0.1)
+plot_electrons(figPath4,1,2,cap,gain,0.05)
+plot_electrons(figPath5,1,2,cap,gain,0.01)
+plot_electrons(figPath6,1,2,cap,gain,-0.28)
+
 hold off
 
 set(gca,'FontSize',13)
 xlabel('V_{guard} (V)','FontSize',14)
 ylabel('V_{rms} (\mu V)','FontSize',14)
-xlim([-0.6,0.3])
-ylim([0,0.6])
+% xlim([-0.6,0.3])
+% ylim([0,0.6])
 legend;
 
 % xlim([-1.05,0.25])
@@ -67,7 +76,7 @@ function plot_electrons(figPath,ax1,ax2,cap,gain,Vload)
     
     display(numE);
     display(yErr);
-    errorbar(Vshield,mag*1e6,stdm*1e6,'.-','MarkerSize',14,'DisplayName',['n=',num2str(round(numE),'%d'),' (V_{doors}=',num2str(Vload),'V)'])
+    errorbar(Vshield,mag*1e6,stdm*1e6,'.-','MarkerSize',14,'DisplayName',['n=',num2str(round(numE),'%d'),' (tc=',num2str(Vload),'s)'])% ' (V_{Dr1,Dr2}=',num2str(Vload),'V)'])
 %     ['n = ',num2str(numE,'%.1f'),' ',177, ' ', num2str(yErr,'%.1f')]
 %     legend('n = %i', numE);
     hold on

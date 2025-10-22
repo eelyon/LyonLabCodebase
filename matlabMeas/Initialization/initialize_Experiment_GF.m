@@ -24,7 +24,7 @@ sim900 = SIM900(sim900Port);
 %% SR830 Lock-ins
 st_Address = '172.29.117.106'; % top SR830
 % twiddle_Address = '172.29.117.103'; % bottom SR830
-SR830ST = SR830(port,st_Address); % for Sommer-Tanner
+SR830ST = SR830(port,'172.29.117.106'); % for Sommer-Tanner
 % SR830Twiddle = SR830(port,twiddle_Address); % for twiddle
 
 %% Filament
@@ -32,15 +32,15 @@ SR830ST = SR830(port,st_Address); % for Sommer-Tanner
 % Fil_Address = '172.29.117.127'; % Agilent for Filament
 
 %% Agilent AWGs
-% deLeonAWG_Address = '172.29.117.133';
-% Awg2ch_deLeon = Agilent33622A(1234,deLeonAWG_Address,1); % two-channel AWG
-Awg2chHouck_Address = '172.29.117.137';
-Awg2ch = Agilent33622A(1234,Awg2chHouck_Address,1); % two-channel AWG
+awg1_Address = '172.29.117.24';
+Awg2ch_1 = Agilent33622A(1234,awg1_Address,1); % two-channel AWG
+awg2Houck_Address = '172.29.117.137';
+Awg2ch_2 = Agilent33622A(1234,awg2Houck_Address,1); % two-channel AWG
 
-AwgTwiddle_Address = '172.29.117.16';
-AwgTwiddle = Agilent33220A(1234,AwgTwiddle_Address,1); % 1-channel AWG
-AwgComp_Address = '172.29.117.17';
-AwgComp = Agilent33220A(1234,AwgComp_Address,1); % 1-channel AWG
+% AwgTwiddle_Address = '172.29.117.16';
+% AwgTwiddle = Agilent33220A(1234,AwgTwiddle_Address,1); % 1-channel AWG
+% AwgComp_Address = '172.29.117.17';
+% AwgComp = Agilent33220A(1234,AwgComp_Address,1); % 1-channel AWG
 
 % AwgFilament = Agilent33220A(port,'172.29.117.127',1);
 

@@ -3,7 +3,7 @@
 % numStepsRC = 10; % % set steps for slow ramp for filtered lines
 % waitTimeRC = 0.0011; % set to 5 times time constant
 % delta = 0.1; % for SIM900 ramp
-stopVal = -2; % set stop voltage
+stopVal = -4; % set stop voltage
 
 %% Set backing plate and top metal positive then sweep ST middle gate
 setSIM900Voltage(filament.Device,filament.Port,4); delay(1) % ramp filament backing plate
@@ -69,10 +69,10 @@ sigDACRampVoltage(phi2_1.Device,phi2_1.Port,stopVal,numSteps)
 sigDACRampVoltage(phi2_2.Device,phi2_2.Port,stopVal,numSteps)
 sigDACRampVoltage(phi2_3.Device,phi2_3.Port,stopVal,numSteps)
 
-sigDACRamp(trap1.Device,trap1.Port,stopVal,numStepsRC,waitTimeRC)
-sigDACRamp(trap2.Device,trap2.Port,stopVal,numStepsRC,waitTimeRC)
-sigDACRamp(trap3.Device,trap3.Port,stopVal,numStepsRC,waitTimeRC)
-sigDACRamp(trap4.Device,trap4.Port,stopVal,numStepsRC,waitTimeRC)
+sigDACRamp(trap1_2.Device,trap1_2.Port,stopVal,numStepsRC,waitTimeRC)
+sigDACRamp(trap1_1.Device,trap1_1.Port,stopVal,numStepsRC,waitTimeRC)
+sigDACRamp(trap2_2.Device,trap2_2.Port,stopVal,numStepsRC,waitTimeRC)
+sigDACRamp(trap2_1.Device,trap2_1.Port,stopVal,numStepsRC,waitTimeRC)
 sigDACRamp(trap5.Device,trap5.Port,stopVal,numStepsRC,waitTimeRC)
 sigDACRamp(trap6.Device,trap6.Port,stopVal,numStepsRC,waitTimeRC)
 delay(1)

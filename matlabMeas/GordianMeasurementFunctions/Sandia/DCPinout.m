@@ -8,7 +8,7 @@ TM = pinout(supplyDAC,11); % top metal
 M2S = pinout(supplyDAC,24); % Sommer-Tanner shield on M2
 BPG = pinout(supplyDAC,12); % bond pad guard
 
-filament = pinout(sim900,2); % filament backing plate
+filament = pinout(sim900,4); % filament backing plate
 
 %% 1st twiddle-sense
 d1_odd = pinout(supplyDAC,22); % 1st door, uneven channels
@@ -31,17 +31,17 @@ sense1_r = pinout(controlDAC,7);
 d6 = pinout(controlDAC,20);
 
 %% 2nd twiddle-sense
-phi_Vdown_1 = pinout(controlDAC,3);
+phi_Vdown_1 = pinout(controlDAC,16);
 phi_Vdown_2 = pinout(controlDAC,15);
-phi_Vdown_3 = pinout(controlDAC,16);
+phi_Vdown_3 = pinout(controlDAC,3);
 
-phi_Vup_1 = pinout(supplyDAC,20);
+phi_Vup_1 = pinout(supplyDAC,7);
 phi_Vup_2 = pinout(supplyDAC,8);
-phi_Vup_3 = pinout(supplyDAC,7);
+phi_Vup_3 = pinout(supplyDAC,20);
 
-d_Vup_1 = pinout(supplyDAC,21);
+d_Vup_1 = pinout(supplyDAC,4);
 d_Vup_2 = pinout(supplyDAC,9);
-d_Vup_3 = pinout(controlDAC,4);
+d_Vup_3 = pinout(controlDAC,21);
 
 d7 = pinout(controlDAC,8); % compensation door for 2nd twiddle-sense
 sense2_l = pinout(controlDAC,22);
@@ -57,21 +57,23 @@ phi2_1 = pinout(supplyDAC,2);
 phi2_2 = pinout(supplyDAC,14);
 phi2_3 = pinout(supplyDAC,1);
 
-trap1 = pinout(controlDAC,13);
-trap2 = pinout(controlDAC,12);
-trap3 = pinout(controlDAC,24);
-trap4 = pinout(controlDAC,11);
+d10 = pinout(supplyDAC,22); % Same as 1st door, uneven channels next to ST
+
+trap1_2 = pinout(controlDAC,13);
+trap1_1 = pinout(controlDAC,12);
+trap2_2 = pinout(controlDAC,24);
+trap2_1 = pinout(controlDAC,11);
 trap5 = pinout(controlDAC,23);
 trap6 = pinout(controlDAC,10);
 
 %% HEMT control lines
-Vg1 = pinout(sim900,7);
-Vc1 = pinout(sim900,6);
-Vf1 = pinout(sim900,4);
+Vg1 = pinout(sim900,3);
+Vc1 = pinout(sim900,2);
+Vf1 = pinout(sim900,1);
 
-Vg2 = pinout(sim900,3);
-Vc2 = pinout(sim900,1); % collector of cascode
-Vf2 = pinout(sim900,8); % emitter follower of cascode
+Vg2 = pinout(sim900,8);
+Vc2 = pinout(sim900,7); % collector of cascode
+Vf2 = pinout(sim900,6); % emitter follower of cascode
 
 function gate = pinout(Device,Port)
 % Creating object that contains DAC and channel
