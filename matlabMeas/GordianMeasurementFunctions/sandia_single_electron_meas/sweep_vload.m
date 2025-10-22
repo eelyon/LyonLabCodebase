@@ -8,9 +8,8 @@ tc = 0.02;
 drat = 1e3;
 poll = 0.1;
 
-capacitance = 3.55e-12;
-gain = 24*0.915*100;
-alpha = 0.52;
+cap1 = 3.55e-12;
+gain1 = 24*0.915*100;
 
 for value = vload
     load_sense1(pinout,value)
@@ -20,7 +19,7 @@ for value = vload
 
     mag = correct_mag(x,y); % Get corrected magnitude
     delta = max(mag) - min(mag); % Calc. change in signal
-    num_electrons = calc_electrons(capacitance,delta,gain,alpha); % Calc. tot. no. of electrons
+    num_electrons = calc_electrons(cap1,delta,gain1,0.52); % Calc. tot. no. of electrons
     fprintf(['-> For vload = ',num2str(value),'V, num_electrons = ',num2str(num_electrons),'\n'])
 
     if num_electrons <= 1

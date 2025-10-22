@@ -1,4 +1,4 @@
-function [] = shuttle_sense2sense1(pinout)
+function [] = shuttle_sense2sense1(pinout,varargin)
 %SHUTTLE_SENSE2SENSE1 Shuttle electrons from sense 2 to sense 1
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
@@ -32,6 +32,7 @@ sigDACRampVoltage(pinout.phi1_3.device,pinout.phi1_3.port,vclose,numSteps)
 sigDACRampVoltage(pinout.d_Vup_2.device,pinout.d_Vup_2.port,vopen,numSteps)
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps)
 
+sigDACRamp(pinout.d7.device,pinout.d8.port,-2,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,0,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,0,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,0,numStepsRC,waitTimeRC)
@@ -39,20 +40,20 @@ sigDACRamp(pinout.d7.device,pinout.d7.port,-2,numStepsRC,waitTimeRC)
 
 sigDACRampVoltage(pinout.d_Vup_1.device,pinout.d_Vup_1.port,vopen,numSteps)
 sigDACRampVoltage(pinout.d_Vup_2.device,pinout.d_Vup_2.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi_Vdown_3.device,pinout.phi_Vdown_3.port, vopen, numSteps)
+sigDACRampVoltage(pinout.phi_Vdown_3.device,pinout.phi_Vdown_3.port,vopen,numSteps)
 sigDACRampVoltage(pinout.d_Vup_1.device,pinout.d_Vup_1.port,vclose,numSteps)
 
 for j = 1:75
-    sigDACRampVoltage(pinout.phi_Vdown_3.device, pinout.phi_Vdown_2.port, vopen, numSteps)
-    sigDACRampVoltage(pinout.phi_Vdown_2.device, pinout.phi_Vdown_3.port, vclose, numSteps)
-    sigDACRampVoltage(pinout.phi_Vdown_1.device, pinout.phi_Vdown_1.port, vopen, numSteps)
-    sigDACRampVoltage(pinout.phi_Vdown_3.device, pinout.phi_Vdown_2.port, vclose, numSteps)
-    sigDACRampVoltage(pinout.phi_Vdown_2.device, pinout.phi_Vdown_3.port, vopen, numSteps)
-    sigDACRampVoltage(pinout.phi_Vdown_1.device, pinout.phi_Vdown_1.port, vclose, numSteps)
+    sigDACRampVoltage(pinout.phi_Vdown_3.device,pinout.phi_Vdown_2.port,vopen,numSteps)
+    sigDACRampVoltage(pinout.phi_Vdown_2.device,pinout.phi_Vdown_3.port,vclose,numSteps)
+    sigDACRampVoltage(pinout.phi_Vdown_1.device,pinout.phi_Vdown_1.port,vopen,numSteps)
+    sigDACRampVoltage(pinout.phi_Vdown_3.device,pinout.phi_Vdown_2.port,vclose,numSteps)
+    sigDACRampVoltage(pinout.phi_Vdown_2.device,pinout.phi_Vdown_3.port,vopen,numSteps)
+    sigDACRampVoltage(pinout.phi_Vdown_1.device,pinout.phi_Vdown_1.port,vclose,numSteps)
 end
 
-sigDACRampVoltage(pinout.phi_Vdown_2.device, pinout.phi_Vdown_2.port, vopen, numSteps)
-sigDACRampVoltage(pinout.phi_Vdown_3.device, pinout.phi_Vdown_3.port, vclose, numSteps)
+sigDACRampVoltage(pinout.phi_Vdown_2.device, pinout.phi_Vdown_2.port,vopen,numSteps)
+sigDACRampVoltage(pinout.phi_Vdown_3.device, pinout.phi_Vdown_3.port,vclose,numSteps)
 sigDACRampVoltage(pinout.phi1_3.device,pinout.phi1_3.port,vopen,numSteps)
 sigDACRampVoltage(pinout.phi_Vdown_2.device,pinout.phi_Vdown_2.port,vclose,numSteps)
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vopen,numSteps)

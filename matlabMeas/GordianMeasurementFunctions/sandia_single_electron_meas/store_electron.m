@@ -1,10 +1,13 @@
 % Script for moving electron into channel leading to avalanche detector
+cap1 = 3.55e-12;
+gain1 = 24*0.915*100;
+
 start_vgd = 0.4;
 stop_vgd = -2;
 step_vgd = 0.05;
 
 tc = 0.02;
-drat = 1e3;
+drat = 10e3;
 poll = 0.1;
 
 vload = -0.3;
@@ -21,7 +24,7 @@ vclose = -1; % closing voltage of ccd
 % sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC) % reset guard
 
 %% Move electrons from twiddle-sense 1 to twiddle-sense 2
-shuttle_sense1sense2(pinout, numSteps, numStepsRC, waitTimeRC, vopen, vclose)
+shuttle_sense1sense2(pinout)
 delay(1)
 
 MFLISweep1D({'Guard2'},start_vgd,stop_vgd,step_vgd,'dev32061',pinout.guard2_l.device,pinout.guard2_l.port,0, ...
@@ -35,17 +38,17 @@ sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC) 
 
 %% Move electron down to last gate before avalanche detector
 for i = 1:6
-    shuttle_store(pinout, numSteps, numStepsRC, waitTimeRC, vopen, vclose)
+    shuttle_store(pinout)
     delay(1)
     
     [~,~,x,y,~,~,stdx,stdy] = MFLISweep1D({'Guard2'},start_vgd,stop_vgd,step_vgd,'dev32061',pinout.guard2_l.device,pinout.guard2_l.port,0, ...
         'time_constant',tc,'demod_rate',drat,'poll_duration',poll);
     sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,0,numStepsRC,waitTimeRC)
     
-    num_elec = calc_electrons(x,y,cap1,gain1,alpha); % Calc. tot. no. of electrons
+    num_elec = calc_electrons(x,y,cap1,gain1,0.52); % Calc. tot. no. of electrons
     
-    if round(num_elec,0) == 0 % Not entirely sure about the margin here
-        fprintf('Exiting loop. Electron is parked.\n')
+    if round(num_elec,0) == 0 % or if averaged, one can use stdev
+        fprintf('Exiting loop. Electron is stored.\n')
         return
     elseif i == 6
         fprintf('Exiting loop. Electron should be in topmost sense 2. Measure...\n')
@@ -55,6 +58,6 @@ for i = 1:6
         return
     end
 
-    shuttle_nextsense2(pinout, numSteps, numStepsRC, waitTimeRC, vopen, vclose)
+    shuttle_nextsense2(pinout)
     fprintf([num2str(i), '\n'])
 end

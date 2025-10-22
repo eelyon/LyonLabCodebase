@@ -42,7 +42,20 @@ for repeats = 1:repeats
     sigDACRampVoltage(pinout.sense1_r.device, pinout.sense1_r.port, Vclose, numSteps)
     sigDACRampVoltage(pinout.guard1_r.device, pinout.guard1_r.port, Vclose, numSteps)
     
-    emptySense1(pinout, numSteps, numStepsRC, waitTimeRC, Vopen, Vclose); % Empty 6x twiddle-sense 1
+    unload_sense1(pinout)
+
+    % Reset sense 1 and move any stray electron from 
+    sigDACRampVoltage(pinout.phi1_1.device,pinout.phi1_1.port,Vopen,numSteps)
+    sigDACRampVoltage(pinout.d4.device,pinout.d4.port,Vopen,numSteps)
+    sigDACRampVoltage(pinout.phi1_1.device,pinout.phi1_1.port,Vclose,numSteps)
+    sigDACRamp(pinout.d5.device,pinout.d5.port,Vopen,numStepsRC,waitTimeRC)
+    sigDACRampVoltage(pinout.d4.device,pinout.d4.port,Vclose,numSteps)
+    sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,0,numStepsRC,waitTimeRC)
+    sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC)
+    sigDACRamp(pinout.twiddle1.device,pinout.twiddle1.port,0,numStepsRC,waitTimeRC)
+    sigDACRampVoltage(pinout.guard1_r.device,pinout.guard1_r.port,-2,numSteps)
+    sigDACRamp(pinout.d5.device,pinout.d5.port,-2,numStepsRC,waitTimeRC) % close d5
+%     emptyTwiddleSense1(pinout, numSteps, numStepsRC, waitTimeRC, Vopen, Vclose); % Empty 6x twiddle-sense 1
     
     %% Move electrons onto vertical CCD
     sigDACRampVoltage(pinout.guard1_r.device, pinout.guard1_r.port, Vopen, numSteps)
@@ -70,10 +83,8 @@ for repeats = 1:repeats
     sigDACRampVoltage(pinout.d_Vup_2.device, pinout.d_Vup_2.port, Vopen, numSteps)
     sigDACRampVoltage(pinout.phi1_3.device, pinout.phi1_3.port, Vclose, numSteps)
     
-    % Add bit for emptying out channels beyond twiddle-sense 2
-    % Can park electrons on d_2_Vup
-        
-    
+    % Add bit for emptying out channels beyond twiddle-sense 2 - might want to
+    % check how many electrons are stuck there
     
     %% Empty twiddle-sense 2 onto d_Vup_2
     sigDACRamp(pinout.d7.device, pinout.d7.port, Vopen, numStepsRC, waitTimeRC) % door for compensation of sense 1
@@ -187,7 +198,7 @@ sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTime
 
 end
 
-function emptySense1(pinout, numSteps, numStepsRC, waitTimeRC, Vopen, Vclose)
+function emptyTwiddleSense1(pinout, numSteps, numStepsRC, waitTimeRC, Vopen, Vclose)
 %% Script for unloading electrons from 1st twiddle-sense and clean top metal
 % Channels parallel to the 6 used ones are emptied by lifting electrons
 % onto top metal through d4 and phi1_1

@@ -1,9 +1,9 @@
 function eject_setgates(pinout, varargin)
-%SETGATESEJECT Script for removing all electrons from device
+%SETGATESEJECT Remove all electrons from device
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
-p.addParameter('numSteps', 5, isnonneg);
-p.addParameter('numStepsRC', 5, isnonneg);
+p.addParameter('numSteps', 10, isnonneg);
+p.addParameter('numStepsRC', 10, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
 p.addParameter('vclose', -2, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
@@ -87,4 +87,3 @@ delay(1)
 sigDACRamp(pinout.tm.device,pinout.tm.port,-1,numStepsRC,waitTimeRC) % make top metal negative
 fprintf('Electrons are ejected.\n')
 end
-
