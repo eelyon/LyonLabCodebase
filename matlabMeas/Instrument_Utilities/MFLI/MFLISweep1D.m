@@ -108,7 +108,7 @@ for value = paramVector
 
 %     sigDACRamp(device,port,value,5,1100);
     setVal(device_id, port, value)
-    pause(10*time_constant); % pause to get a settled lowpass filter
+    delay(10*time_constant); % delay to get a settled lowpass filter
 
     % Perform a global synchronisation between the device and the data server:
     % Ensure that the settings have taken effect on the device before issuing the
@@ -122,7 +122,7 @@ for value = paramVector
     ziDAQ('subscribe', ['/' device '/demods/' demod_c '/sample']);
     
     % Poll data for poll_duration seconds.
-    poll_timeout = 10; % timeout in [ms]
+    poll_timeout = 1; % timeout in [ms]
     data = ziDAQ('poll', poll_duration, poll_timeout);
     
     if ziCheckPathInData(data, ['/' device '/demods/' demod_c '/sample'])

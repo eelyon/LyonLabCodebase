@@ -3,7 +3,7 @@ cap1 = 3.55e-12;
 gain1 = 24*0.915*100;
 
 start_vgd = 0.4;
-stop_vgd = -2;
+stop_vgd = -1.4;
 step_vgd = 0.05;
 
 tc = 0.02;
