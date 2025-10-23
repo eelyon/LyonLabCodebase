@@ -1,7 +1,5 @@
-function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = MFLISweep1D(sweepType, start, stop, step, mfli_id, device_id, port, doBackAndForth, varargin)
-%MFLISweep1D Sweep function using ziDAQ poll function to return data for
-%certain duration.
-%   Detailed explanation goes here
+function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = MFLISweep1D_DAQ(sweepType, start, stop, step, mfli_id, device_id, port, doBackAndForth, varargin)
+%MFLISWEEP1D_DAQ Sweep function using ziDAQ
 % To change the digital lock in parameters like filter stages or tc, you
 % need to change these in the varargin parameters
 
