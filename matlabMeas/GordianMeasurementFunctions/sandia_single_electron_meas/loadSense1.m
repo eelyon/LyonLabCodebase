@@ -1,4 +1,4 @@
-function [] = load_sense1(pinout,vload,varargin)
+function [] = loadSense1(pinout,vload,varargin)
 % Load electrons from Sommer-Tanner to twiddle-sense 1
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);

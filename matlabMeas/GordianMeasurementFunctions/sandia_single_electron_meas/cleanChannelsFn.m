@@ -1,4 +1,4 @@
-function clean_channelsfn(pinout,repeats,varargin)
+function cleanChannelsFn(pinout,repeats,varargin)
 % Script for cleaning all channels
 % Run pinout before running this script
 p = inputParser;

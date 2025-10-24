@@ -1,4 +1,4 @@
-function [] = shuttle_nextsense2(pinout,varargin)
+function [] = shuttleNextSense2(pinout,varargin)
 % Shuttle electron from current sense 2 to sense 2 in next channel 1 above
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);

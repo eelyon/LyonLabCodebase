@@ -1,4 +1,4 @@
-function [] = unload_sense1(pinout,varargin)
+function [] = unloadSense1(pinout,varargin)
 % Move electrons from sense 1 back to Sommer-Tanner
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);

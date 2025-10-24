@@ -1,4 +1,4 @@
-function [] = shuttle_sense2sense1(pinout,varargin)
+function [] = shuttleSense2Sense1(pinout,varargin)
 %SHUTTLE_SENSE2SENSE1 Shuttle electrons from sense 2 to sense 1
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);

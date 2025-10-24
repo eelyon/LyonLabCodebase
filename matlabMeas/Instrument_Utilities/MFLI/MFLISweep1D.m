@@ -109,7 +109,8 @@ for value = paramVector
 
 %     sigDACRamp(device,port,value,5,1100);
     setVal(device_id, port, value)
-    delay(10*time_constant); % delay to get a settled lowpass filter
+    delay(ziFO2ST(time_constant,p.Results.filter_order))
+    % delay(10*time_constant); % delay to get a settled lowpass filter
 
     % Perform a global synchronisation between the device and the data server:
     % Ensure that the settings have taken effect on the device before issuing the
