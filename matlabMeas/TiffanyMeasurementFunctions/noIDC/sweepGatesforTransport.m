@@ -8,13 +8,13 @@ if strcmp(sign,'Pos')
     for i = 1:length(step)
         volt = step(i);
         doorOutVolt = volt-0.5;
-        thinFilmVolt = 1.5; % getVal(device,TfVolt);
+        thinFilmVolt = 2.5; % getVal(device,TfVolt);
         if doorOutVolt > thinFilmVolt - 0.7
             doorOutVolt = thinFilmVolt - 0.7; 
         else
         end
         sigDACRampVoltage(device,[STOuterPort,STMidPort,STInnerPort],[volt+0.5,volt+0.5,volt+0.5],numSteps*5);
-        sigDACRampVoltage(device,[DoorInPort,TwidPort,SensPort,DoorOutPort],[volt-0.5,volt+0.5,volt+0.5,volt+0.5],numSteps*5);
+        sigDACRampVoltage(device,[DoorInPort,TwidPort,SensPort,DoorOutPort],[volt-0.5,volt+0.5,volt+0.5,volt-0.5],numSteps*5);
         sigDACRampVoltage(device,TopPort,-0.7+(0.5*i),numSteps*5);
     end
 else
@@ -28,7 +28,7 @@ else
         else
         end
         sigDACRampVoltage(device,TopPort,-0.7-(0.5*i),numSteps*5);
-        sigDACRampVoltage(device,[DoorInPort,TwidPort,SensPort,DoorOutPort],[volt-1.5,volt-0.5,volt-0.5,doorOutVolt],numSteps*5);
+        sigDACRampVoltage(device,[DoorInPort,TwidPort,SensPort,DoorOutPort],[volt-1.5,volt-0.5,volt-0.5,volt-1.5],numSteps*5);
         sigDACRampVoltage(device,[STOuterPort,STMidPort,STInnerPort],[volt-0.5,volt-0.5,volt-0.5],numSteps*5);
     end
 end

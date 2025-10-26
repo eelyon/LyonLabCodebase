@@ -6,7 +6,7 @@ setVal(supplyDAC,BackMetalPort,0);
 setVal(controlDAC,BlockPort,-2);
 
 setVal(controlDAC,BlockPort,-1);
-setVal(controlDAC,BlockPort,0.5);
+setVal(controlDAC,BlockPort,1.5);
 
 
 %% Compensation voltages
@@ -16,8 +16,8 @@ sigDACRampVoltage(controlDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],
 sigDACRampVoltage(controlDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-0.7,0,0,0],numSteps);
 sigDACRampVoltage(controlDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-1,0,0,-1],numSteps);
 
-sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[-2,-2,-2],numSteps);
-sigDACRampVoltage(supplyDAC,TfEPort,-2,numSteps);
+sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[-1,-1,-1],numSteps);
+sigDACRampVoltage(supplyDAC,TfEPort,-1,numSteps);
 
 
 
@@ -29,7 +29,7 @@ compensateParasitics(SR830Twiddle,Awg2Ch,Awg2Ch,-180,180,10,0.4,0.6,0.010,0)   %
 
 % finer sweep
 compensateParasitics(SR830Twiddle,Awg2Ch,Awg2Ch,26,28,0.1,0.3,0.31,0.005,0)   % HEMT1
-compensateParasitics(SR830TwiddleC,AwgComp,AwgTwiddle,46,48,0.1,0.3,0.31,0.005,0)  %HEMT2
+compensateParasitics(SR830TwiddleC,Awg2Nat,Awg2Nat,-103,-101,0.1,0.3,0.31,0.005,0)   % HEMT2
 
 %% EMISSION VOLTAGES
 % emission to HEMT2 side
