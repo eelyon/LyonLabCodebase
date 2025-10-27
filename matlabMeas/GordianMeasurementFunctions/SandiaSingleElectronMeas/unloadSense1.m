@@ -21,23 +21,23 @@ sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,vclose,numStepsRC,waitTim
 sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,vclose,numStepsRC,waitTimeRC)
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vopen,numSteps) % open d4
 sigDACRamp(pinout.d5.device,pinout.d5.port,vclose,numStepsRC,waitTimeRC) % close door
-sigDACRampVoltage(pinout.phi1_1.device,pinout.phi1_1.port,vopen,numSteps) % open ccd1
+sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vopen,numSteps) % open ccd1
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps) % close door
 
 % Move electrons through horizontal CCD
 ccd_units = 63; % number of repeating units in ccd array
 for n = 1:ccd_units
-    sigDACRampVoltage(pinout.phi1_3.device,pinout.phi1_3.port,vopen,numSteps) % open ccd3
-    sigDACRampVoltage(pinout.phi1_1.device,pinout.phi1_1.port,vclose,numSteps) % close ccd1
-    sigDACRampVoltage(pinout.phi1_2.device,pinout.phi1_2.port,vopen,numSteps) % open ccd2
-    sigDACRampVoltage(pinout.phi1_3.device,pinout.phi1_3.port,vclose,numSteps) % close ccd3
-    sigDACRampVoltage(pinout.phi1_1.device,pinout.phi1_1.port,vopen,numSteps) % open ccd1
-    sigDACRampVoltage(pinout.phi1_2.device,pinout.phi1_2.port,vclose,numSteps) % close ccd2
+    sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vopen,numSteps) % open ccd3
+    sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vclose,numSteps) % close ccd1
+    sigDACRampVoltage(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vopen,numSteps) % open ccd2
+    sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vclose,numSteps) % close ccd3
+    sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vopen,numSteps) % open ccd1
+    sigDACRampVoltage(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vclose,numSteps) % close ccd2
 end
 
 % Dump electrons into Sommer-Tanner
 sigDACRampVoltage(pinout.d3.device,pinout.d3.port,vopen,numSteps) % open 3rd door
-sigDACRampVoltage(pinout.phi1_1.device,pinout.phi1_1.port,vclose,numSteps) % close ccd1
+sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vclose,numSteps) % close ccd1
 sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vopen,numSteps) % open 2nd door
 sigDACRampVoltage(pinout.d3.device,pinout.d3.port,vclose,numSteps) % close 3rd door
 sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vopen,numSteps) % open 1st door

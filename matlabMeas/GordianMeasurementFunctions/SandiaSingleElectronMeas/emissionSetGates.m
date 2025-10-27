@@ -28,9 +28,9 @@ sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vclose,numSteps)
 sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vclose,numSteps)
 sigDACRampVoltage(pinout.d3.device,pinout.d3.port,vclose,numSteps)
 
-sigDACRampVoltage(pinout.phi1_1.device,pinout.phi1_1.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi1_2.device,pinout.phi1_2.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi1_3.device,pinout.phi1_3.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vclose,numSteps)
 
 %% Set 1st twiddle-sense
 sigDACRamp(pinout.shield.device,pinout.shield.port,-0.5,numStepsRC,waitTimeRC) % shield underneath twiddle-sense
@@ -44,17 +44,17 @@ sigDACRampVoltage(pinout.sense1_r.device,pinout.sense1_r.port,vclose,numSteps)
 sigDACRampVoltage(pinout.d6.device,pinout.d6.port,vclose,numSteps)
 
 %% Set vertical CCD
-sigDACRampVoltage(pinout.phi_Vdown_1.device,pinout.phi_Vdown_1.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi_Vdown_2.device,pinout.phi_Vdown_2.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi_Vdown_3.device,pinout.phi_Vdown_3.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_v1_1.device,pinout.phi_v1_1.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_v1_2.device,pinout.phi_v1_2.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_v1_3.device,pinout.phi_v1_3.port,vclose,numSteps)
 
-sigDACRampVoltage(pinout.phi_Vup_1.device,pinout.phi_Vup_1.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi_Vup_2.device,pinout.phi_Vup_2.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi_Vup_3.device,pinout.phi_Vup_3.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_v2_1.device,pinout.phi_v2_1.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_v2_2.device,pinout.phi_v2_2.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_v2_3.device,pinout.phi_v2_3.port,vclose,numSteps)
 
-sigDACRampVoltage(pinout.d_Vup_1.device,pinout.d_Vup_1.port,vclose,numSteps)
-sigDACRampVoltage(pinout.d_Vup_2.device,pinout.d_Vup_2.port,vclose,numSteps)
-sigDACRampVoltage(pinout.d_Vup_3.device,pinout.d_Vup_3.port,vclose,numSteps)
+sigDACRampVoltage(pinout.d_v_1.device,pinout.d_v_1.port,vclose,numSteps)
+sigDACRampVoltage(pinout.d_v_2.device,pinout.d_v_2.port,vclose,numSteps)
+sigDACRampVoltage(pinout.d_v_3.device,pinout.d_v_3.port,vclose,numSteps)
 
 %% Set 2nd twiddle-sense
 sigDACRampVoltage(pinout.d7.device,pinout.d7.port,vclose,numSteps) % door for compensation of sense 1
@@ -67,14 +67,14 @@ sigDACRampVoltage(pinout.d8.device,pinout.d8.port,vclose,numSteps)
 
 %% Set electron trap
 sigDACRampVoltage(pinout.d9.device,pinout.d9.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi2_1.device,pinout.phi2_1.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi2_2.device,pinout.phi2_2.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi2_3.device,pinout.phi2_3.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_h2_1.device,pinout.phi_h2_1.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_h2_2.device,pinout.phi_h2_2.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_h2_3.device,pinout.phi_h2_3.port,vclose,numSteps)
 
-sigDACRamp(pinout.trap1_2.device,pinout.trap1_2.port,vclose,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.trap1_1.device,pinout.trap1_1.port,vclose,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.trap2_2.device,pinout.trap2_2.port,vclose,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.trap2_1.device,pinout.trap2_1.port,vclose,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap1.device,pinout.trap1.port,vclose,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap2.device,pinout.trap2.port,vclose,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap3.device,pinout.trap3.port,vclose,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap4.device,pinout.trap4.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap5.device,pinout.trap5.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap6.device,pinout.trap6.port,vclose,numStepsRC,waitTimeRC)
 
