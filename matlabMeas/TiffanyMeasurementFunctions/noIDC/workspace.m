@@ -1,11 +1,16 @@
-sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[0,0,-0.5],numSteps);
-sigDACRampVoltage(supplyDAC,TfEPort,0.5,numSteps);
+sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[-1,-1,-1],numSteps);
+sigDACRampVoltage(supplyDAC,TfEPort,-1,numSteps);
+sigDACRampVoltage(supplyDAC,TfEPort,2,numSteps);
 
-sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[-0.3,-2.1,-0.6],numSteps);
-sigDACRampVoltage(supplyDAC,TfEPort,-2,numSteps);
 
-sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[0,-2,-2],numSteps);
+sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[0.5,3,0],numSteps);
+sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[0.5,2.5,0],numSteps);
 
+sigDACRampVoltage(supplyDAC,TfEPort,2,numSteps);
+
+
+sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[0.5,2,0.5],numSteps);
+sigDACRampVoltage(supplyDAC,TfEPort,2,numSteps);
 
 sigDACRampVoltage(controlDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-1,0.5,0.5,-1],numSteps);
 
@@ -89,6 +94,9 @@ sigDACRampVoltage(controlDAC,DoorEOutPort,1.5,numSteps);
 sigDACRampVoltage(supplyDAC,TfEPort,2,numSteps);
 end
 
+sigDACRampVoltage(controlDAC,DoorEOutPort,0,numSteps);
+
+
 sigDACRampVoltage(controlDAC,[STOBiasEPort,StmEPort,STIBiasEPort],[2.5,2.5,2.5],numSteps);
 sigDACRampVoltage(controlDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[1.5,2.5,2.5,1.5],numSteps);
 sigDACRampVoltage(controlDAC,TopEPort,1.8,numSteps);
@@ -152,3 +160,38 @@ sigDACRampVoltage(controlDAC,TfCPort,0,numSteps);
 
 sweep1DMeasSR830({'Door'},1,0,0.2,0.1,10,{SR830TwiddleC},controlDAC,{DoorCOutPort},0,1);
 
+sigDACRampVoltage(controlDAC,DoorEOutPort,1.5,numSteps); % close door
+sigDACRampVoltage(controlDAC,DoorEOutPort,2.5,numSteps); % close door
+
+sigDACRampVoltage(controlDAC,DoorEOutPort,4,numSteps); % close door
+sigDACRampVoltage(controlDAC,DoorEOutPort,3,numSteps); % close door
+
+sigDACRampVoltage(controlDAC,DoorCOutPort,0,numSteps); % close door
+sigDACRampVoltage(controlDAC,DoorCOutPort,-1,numSteps); % close door
+
+
+sweep1DMeasSR830({'TFE'},3.5,1.5,0.1,0.1,10,{SR830Twiddle},supplyDAC,{TfEPort},0,1);
+
+
+sigDACRampVoltage(controlDAC,DoorEOutPort,4,numSteps); % close door
+sigDACRampVoltage(controlDAC,DoorCInPort,STCVoltage,numSteps);
+delay(3)
+sigDACRampVoltage(controlDAC,DoorCInPort,STCVoltage-1,numSteps);
+sigDACRampVoltage(controlDAC,DoorCOutPort,0,numSteps);  % close door
+sigDACRampVoltage(controlDAC,DoorCOutPort,-1,numSteps); % close door
+sigDACRampVoltage(controlDAC,DoorEOutPort,3,numSteps);  % close door
+
+sigDACRampVoltage(supplyDAC,TfEPort,3.5,numSteps);
+
+
+sigDACRampVoltage(controlDAC,DoorEInPort,STVoltage,numSteps); % open door
+sigDACRampVoltage(controlDAC,DoorEInPort,STVoltage-1,numSteps); 
+sigDACRampVoltage(controlDAC,DoorEOutPort,4,numSteps);  % close door
+delay(3)
+sigDACRampVoltage(controlDAC,DoorEOutPort,3,numSteps);
+
+
+
+sigDACRampVoltage(controlDAC,DoorEOutPort,0,numSteps);  % close door
+delay(3)
+sigDACRampVoltage(controlDAC,DoorEOutPort,-1,numSteps);
