@@ -42,13 +42,13 @@ end
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 % Filter order
-p.addParameter('filter_order', 4, isnonneg);
+p.addParameter('filter_order', 3, isnonneg);
 % Filter time constant
-p.addParameter('time_constant', 0.020, @isnumeric);
+p.addParameter('time_constant', 0.10, @isnumeric);
 % Demodulation/sampling rate of demodulated data
-p.addParameter('demod_rate', 1e3, @isnumeric);
+p.addParameter('demod_rate', 10e3, @isnumeric);
 % The length of time we'll record data (synchronously) [s].
-p.addParameter('poll_duration', 0.1, isnonneg);
+p.addParameter('poll_duration', 0.5, isnonneg);
 % The length of time to accumulate subscribed data (by sleeping) before polling a second time [s].
 % p.addParameter('sleep_duration', 1.0, isnonneg);
 p.parse(varargin{:});
@@ -101,6 +101,8 @@ end
 halfway = length(paramVector)/2;
 index = 1;
 
+settling_time = ziFO2ST(time_constant,p.Results.filter_order);
+
 % Main parameter loop
 for value = paramVector
 
@@ -108,8 +110,8 @@ for value = paramVector
     ziDAQ('unsubscribe', '*');
 
 %     sigDACRamp(device,port,value,5,1100);
-    setVal(device_id, port, value)
-    delay(ziFO2ST(time_constant,p.Results.filter_order))
+    setVal(device_id, port, value);
+    delay(settling_time);
     % delay(10*time_constant); % delay to get a settled lowpass filter
 
     % Perform a global synchronisation between the device and the data server:

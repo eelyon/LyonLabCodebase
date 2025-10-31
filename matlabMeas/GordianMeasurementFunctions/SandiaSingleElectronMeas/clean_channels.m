@@ -1,5 +1,5 @@
 % Script for cleaning all channels
-repeats = 5;
+repeats = 10;
 numSteps = 5;
 numStepsRC = 5;
 waitTimeRC = 1100;
@@ -11,7 +11,7 @@ stop_vgd = -1.4;
 step_vgd = 0.1;
 tc = 0.02;
 drat = 10e3;
-poll = 0.5;
+poll = 0.2;
 
 for i = 1:repeats
     % Set Sommer-Tanner positive to suck electrons in
@@ -68,28 +68,28 @@ for i = 1:repeats
     
     % Add bit for emptying out channels beyond twiddle-sense 2
     % Can park electrons on d_2_Vup
-%     sigDACRampVoltage(phi_v2_1.Device,phi_v2_1.Port,vopen,numSteps)
-%     sigDACRampVoltage(phi_v1_3.Device,phi_v1_3.Port,vclose,numSteps)
+%     sigDACRampVoltage(phi_v2_1.device,phi_v2_1.port,vopen,numSteps)
+%     sigDACRampVoltage(phi_v1_3.device,phi_v1_3.port,vclose,numSteps)
 
     for j = 1:3
-        sigDACRampVoltage(phi_v2_1.Device,phi_v2_1.Port,vopen,numSteps)
-        sigDACRampVoltage(phi_v2_2.Device,phi_v2_2.Port,vclose,numSteps)
-        sigDACRampVoltage(phi_v2_3.Device,phi_v2_3.Port,vopen,numSteps)
-        sigDACRampVoltage(phi_v2_1.Device,phi_v2_1.Port,vclose,numSteps)
-        sigDACRampVoltage(phi_v2_2.Device,phi_v2_2.Port,vopen,numSteps)
-        sigDACRampVoltage(phi_v2_3.Device,phi_v2_3.Port,vclose,numSteps)
+        sigDACRampVoltage(pinout.phi_v2_1.device,pinout.phi_v2_1.port,vopen,numSteps)
+        sigDACRampVoltage(pinout.phi_v2_2.device,pinout.phi_v2_2.port,vclose,numSteps)
+        sigDACRampVoltage(pinout.phi_v2_3.device,pinout.phi_v2_3.port,vopen,numSteps)
+        sigDACRampVoltage(pinout.phi_v2_1.device,pinout.phi_v2_1.port,vclose,numSteps)
+        sigDACRampVoltage(pinout.phi_v2_2.device,pinout.phi_v2_2.port,vopen,numSteps)
+        sigDACRampVoltage(pinout.phi_v2_3.device,pinout.phi_v2_3.port,vclose,numSteps)
     end
 
-    sigDACRampVoltage(phi_v2_1.Device,phi_v2_1.Port,vopen,numSteps)
-    sigDACRampVoltage(phi_v2_2.Device,phi_v2_2.Port,vclose,numSteps)
-    sigDACRampVoltage(d_v_3.Device,d_v_3.Port,vopen,numSteps)
-    sigDACRampVoltage(phi_v2_1.Device,phi_v2_1.Port,vclose,numSteps)
-    sigDACRampVoltage(d_v_2.Device,d_v_2.Port,vopen,numSteps)
-    sigDACRampVoltage(d_v_3.Device,d_v_3.Port,vclose,numSteps) % e are on d_v_2
+    sigDACRampVoltage(pinout.phi_v2_1.device,pinout.phi_v2_1.port,vopen,numSteps)
+    sigDACRampVoltage(pinout.phi_v2_2.device,pinout.phi_v2_2.port,vclose,numSteps)
+    sigDACRampVoltage(pinout.d_v_3.device,pinout.d_v_3.port,vopen,numSteps)
+    sigDACRampVoltage(pinout.phi_v2_1.device,pinout.phi_v2_1.port,vclose,numSteps)
+    sigDACRampVoltage(pinout.d_v_2.device,pinout.d_v_2.port,vopen,numSteps)
+    sigDACRampVoltage(pinout.d_v_3.device,pinout.d_v_3.port,vclose,numSteps) % e are on d_v_2
 
     %% Empty 2nd horizontal ccd and move to d_v_2
-    sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,open,numSteps)
-    sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,open,numSteps)
+    sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,vopen,numSteps)
+    sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vopen,numSteps)
     sigDACRampVoltage(pinout.d10.device,pinout.d10.port,vopen,numSteps)
     sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,-2,numSteps)
     sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vclose,numSteps)
@@ -131,7 +131,7 @@ for i = 1:repeats
     sigDACRamp(pinout.guard2_r.device,pinout.guard2_r.port,-2,numStepsRC,waitTimeRC)
     delay(2)
     
-    MFLISweep1D({'Guard2'}, start_vgd, stop_vgd, step_vgd, 'dev32061', guard2_l.device, guard2_l.port, 0, ...
+    MFLISweep1D({'Guard2'}, start_vgd, stop_vgd, step_vgd, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
         'time_constant', tc, 'demod_rate', drat, 'poll_duration', poll);
     sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
 
@@ -159,14 +159,14 @@ for i = 1:repeats
     sigDACRamp(pinout.d7.device, pinout.d7.port, -2, numStepsRC, waitTimeRC)
     delay(2)
     
-    MFLISweep1D({'Guard2'}, start_vgd, stop_vgd, step_vgd, 'dev32061', guard2_l.device, guard2_l.port, 0, ...
+    MFLISweep1D({'Guard2'}, start_vgd, stop_vgd, step_vgd, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
         'time_constant', tc, 'demod_rate', drat, 'poll_duration', poll);
     sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
 
     sigDACRampVoltage(pinout.d_v_1.device, pinout.d_v_1.port, vopen, numSteps)
-    sigDACRampVoltage(pinout.d_v_2.device, pinout.d_v_2.port, close, numSteps)
+    sigDACRampVoltage(pinout.d_v_2.device, pinout.d_v_2.port, vclose, numSteps)
     sigDACRampVoltage(pinout.phi_v1_3.device, pinout.phi_v1_3.port, vopen, numSteps)
-    sigDACRampVoltage(pinout.d_v_1.device, pinout.d_v_1.port, close, numSteps)
+    sigDACRampVoltage(pinout.d_v_1.device, pinout.d_v_1.port, vclose, numSteps)
 %     sigDACRampVoltage(pinout.phi_v1_2.device, pinout.phi_v1_2.port,
 %     vopen, numSteps) % already open from earlier
     sigDACRampVoltage(pinout.phi_v1_3.device, pinout.phi_v1_3.port, vclose, numSteps)
@@ -180,7 +180,7 @@ for i = 1:repeats
         sigDACRampVoltage(pinout.phi_v1_1.device, pinout.phi_v1_1.port, vclose, numSteps)
         sigDACRampVoltage(pinout.phi_v1_2.device, pinout.phi_v1_2.port, vopen, numSteps)
         sigDACRampVoltage(pinout.phi_v1_3.device, pinout.phi_v1_3.port, vclose, numSteps)
-        fprintf([num2str(l), ' '])
+%         fprintf([num2str(l), ' '])
     end
     fprintf('\n')
 
@@ -194,9 +194,9 @@ for i = 1:repeats
     sigDACRamp(pinout.d5.device, pinout.d5.port, -2, numStepsRC, waitTimeRC)
 
     % Reset Sommer-Tanner
-    sigDACRampVoltage(pinout.stm.device, pinout.stm.port, 0, numSteps)
-    sigDACRampVoltage(pinout.std.device, pinout.std.port, 0, numSteps)
-    sigDACRampVoltage(pinout.sts.device, pinout.sts.port, 0, numSteps)
+    sigDACRampVoltage(pinout.stm.device, pinout.stm.port, +1, numSteps)
+    sigDACRampVoltage(pinout.std.device, pinout.std.port, +1, numSteps)
+    sigDACRampVoltage(pinout.sts.device, pinout.sts.port, +1, numSteps)
     fprintf([num2str(i), '\n']);
 end
 delay(2);

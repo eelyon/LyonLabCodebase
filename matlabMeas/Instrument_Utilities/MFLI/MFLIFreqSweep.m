@@ -85,7 +85,7 @@ p.addParameter('demod_rate', 13e3, @isnumeric);
 % Set the filter order
 p.addParameter('order', 4, @isnumeric);
 % Settling time
-p.addParameter('settlingtime', 0.001, @isnumeric);
+p.addParameter('settlingtime', 0.07, @isnumeric);
 
 p.parse(varargin{:});
 
@@ -107,8 +107,8 @@ osc_c = '0'; % oscillator
 ziDisableEverything(device);
 
 %% Configure the device ready for this experiment.
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 0);
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 1);
+ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 1);
+ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 0);
 ziDAQ('setInt',    ['/' device '/sigins/' in_c '/autorange'], 1);
 ziDAQ('setInt', ['/' device '/sigouts/' out_c '/on'], 1);
 ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/range'], 0.01);
@@ -284,14 +284,14 @@ function plot_data(frequencies, r, theta, style)
 % Plot data
 clf
 subplot(2, 1, 1)
-% s = semilogx(frequencies, r/max(r), style);
-s = semilogx(frequencies, r*2*sqrt(2), style);
+s = semilogx(frequencies, r/max(r), style);
+% s = semilogx(frequencies, r*2*sqrt(2), style);
 set(s, 'LineWidth', 1.5)
 set(s, 'Color', 'black');
 grid on
 xlabel('Frequency [Hz]')
-% ylabel('Amplitude [V_{pp}/max(V_{pp}]')
-ylabel('Amplitude [V_{pp}]')
+ylabel('Amplitude [V_{pp}/max(V_{pp}]')
+% ylabel('Amplitude [V_{pp}]')
 subplot(2, 1, 2)
 s = semilogx(frequencies, theta*180/pi, style);
 set(s, 'LineWidth', 1.5)

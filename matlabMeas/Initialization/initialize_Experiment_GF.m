@@ -22,10 +22,10 @@ sim900 = SIM900(sim900Port);
 % DCPinout;
 
 %% SR830 Lock-ins
-st_Address = '172.29.117.106'; % top SR830
-% twiddle_Address = '172.29.117.103'; % bottom SR830
-SR830ST = SR830(port,'172.29.117.106'); % for Sommer-Tanner
-% SR830Twiddle = SR830(port,twiddle_Address); % for twiddle
+% top_Address = '172.29.117.106'; % top SR830
+bottom_Address = '172.29.117.103'; % bottom SR830
+SR830ST = SR830(port,bottom_Address); % for Sommer-Tanner
+% SR830Twiddle = SR830(port,bottom_Address); % for twiddle
 
 %% Filament
 % DMM_Address = '172.29.117.107'; % Keysight DMM
