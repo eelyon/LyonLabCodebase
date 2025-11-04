@@ -66,8 +66,8 @@ extref_c = '8'; % external reference channel - 8 for Aux In 1
 ziDisableEverything(device);
 
 % Configure the device for this experiment.
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 1);
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 0);
+ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 0);
+ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 1);
 ziSiginAutorange(device, in_c); % Autorange channel
 % ziDAQ('setInt', ['/' device '/sigins/' in_c '/autorange'], 1);
 % ziDAQ('setDouble', ['/' device '/sigins/' in_c '/range'], 2.0*amplitude);
@@ -101,7 +101,7 @@ end
 halfway = length(paramVector)/2;
 index = 1;
 
-settling_time = ziFO2ST(time_constant,p.Results.filter_order);
+settling_time = ziFO2ST(time_constant,p.Results.filter_order,'percent',99);
 
 % Main parameter loop
 for value = paramVector
@@ -110,7 +110,7 @@ for value = paramVector
     ziDAQ('unsubscribe', '*');
 
 %     sigDACRamp(device,port,value,5,1100);
-    setVal(device_id, port, value);
+    setVal(device_id, port, value); delay(1.1e-3);
     delay(settling_time);
     % delay(10*time_constant); % delay to get a settled lowpass filter
 

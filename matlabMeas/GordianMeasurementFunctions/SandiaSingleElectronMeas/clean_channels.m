@@ -1,17 +1,17 @@
 % Script for cleaning all channels
-repeats = 10;
+repeats = 5;
 numSteps = 5;
 numStepsRC = 5;
 waitTimeRC = 1100;
 vopen = 3;
 vclose = -1;
 
-start_vgd = 0.4;
-stop_vgd = -1.4;
-step_vgd = 0.1;
-tc = 0.02;
-drat = 10e3;
-poll = 0.2;
+start_vgd = 0.1;
+stop_vgd = -0.8;
+step_vgd = 0.05;
+tc = 0.03;
+drat = 13e3;
+poll = 0.3;
 
 for i = 1:repeats
     % Set Sommer-Tanner positive to suck electrons in
@@ -131,9 +131,9 @@ for i = 1:repeats
     sigDACRamp(pinout.guard2_r.device,pinout.guard2_r.port,-2,numStepsRC,waitTimeRC)
     delay(2)
     
-    MFLISweep1D({'Guard2'}, start_vgd, stop_vgd, step_vgd, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
-        'time_constant', tc, 'demod_rate', drat, 'poll_duration', poll);
-    sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
+%     MFLISweep1D({'Guard2'}, start_vgd, stop_vgd, step_vgd, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
+%         'time_constant', tc, 'demod_rate', drat, 'poll_duration', poll);
+%     sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
 
     sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,vclose,numStepsRC,waitTimeRC)
     sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,vclose,numStepsRC,waitTimeRC)
@@ -159,9 +159,9 @@ for i = 1:repeats
     sigDACRamp(pinout.d7.device, pinout.d7.port, -2, numStepsRC, waitTimeRC)
     delay(2)
     
-    MFLISweep1D({'Guard2'}, start_vgd, stop_vgd, step_vgd, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
-        'time_constant', tc, 'demod_rate', drat, 'poll_duration', poll);
-    sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
+%     MFLISweep1D({'Guard2'}, start_vgd, stop_vgd, step_vgd, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
+%         'time_constant', tc, 'demod_rate', drat, 'poll_duration', poll);
+%     sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
 
     sigDACRampVoltage(pinout.d_v_1.device, pinout.d_v_1.port, vopen, numSteps)
     sigDACRampVoltage(pinout.d_v_2.device, pinout.d_v_2.port, vclose, numSteps)
@@ -182,7 +182,7 @@ for i = 1:repeats
         sigDACRampVoltage(pinout.phi_v1_3.device, pinout.phi_v1_3.port, vclose, numSteps)
 %         fprintf([num2str(l), ' '])
     end
-    fprintf('\n')
+%     fprintf('\n')
 
     empty_ccd1(pinout, numSteps, numStepsRC, waitTimeRC, vopen, vclose)
     
@@ -194,9 +194,9 @@ for i = 1:repeats
     sigDACRamp(pinout.d5.device, pinout.d5.port, -2, numStepsRC, waitTimeRC)
 
     % Reset Sommer-Tanner
-    sigDACRampVoltage(pinout.stm.device, pinout.stm.port, +1, numSteps)
-    sigDACRampVoltage(pinout.std.device, pinout.std.port, +1, numSteps)
-    sigDACRampVoltage(pinout.sts.device, pinout.sts.port, +1, numSteps)
+    sigDACRampVoltage(pinout.stm.device, pinout.stm.port, 0, numSteps)
+    sigDACRampVoltage(pinout.std.device, pinout.std.port, 0, numSteps)
+    sigDACRampVoltage(pinout.sts.device, pinout.sts.port, 0, numSteps)
     fprintf([num2str(i), '\n']);
 end
 delay(2);

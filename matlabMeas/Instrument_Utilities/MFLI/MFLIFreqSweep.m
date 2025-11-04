@@ -61,7 +61,7 @@ p.addParameter('savedata', 0, @isnumeric);
 % The value used for the Sweeper's 'samplecount' parameter: This
 % specifies the number of points that will be swept (i.e., the number of
 % frequencies swept in a frequency sweep).
-p.addParameter('sweep_samplecount', 200, isnonnegscalar);
+p.addParameter('sweep_samplecount', 400, isnonnegscalar);
 
 % The value used for the Sweeper's 'settling/inaccuracy' parameter: This
 % defines the settling time the sweeper should wait before changing a sweep
@@ -75,17 +75,17 @@ p.addParameter('sweep_inaccuracy', 0.001, @isnumeric);
 % The signal output mixer amplitude, [V].
 p.addParameter('amplitude', 0.002, @isnumeric);
 % Set the sweep's start frequency
-p.addParameter('sweep_startfreq', 1e3, @isnumeric);
+p.addParameter('sweep_startfreq', 10e3, @isnumeric);
 % Set the sweep's stop frequency
-p.addParameter('sweep_stopfreq', 4e6, @isnumeric);
+p.addParameter('sweep_stopfreq', 3e6, @isnumeric);
 % Set the demodulator time constant [s]
 p.addParameter('tc', 0.007, @isnumeric);
 % Set the demodulation rate
 p.addParameter('demod_rate', 13e3, @isnumeric);
 % Set the filter order
-p.addParameter('order', 4, @isnumeric);
+p.addParameter('order', 1, @isnumeric);
 % Settling time
-p.addParameter('settlingtime', 0.07, @isnumeric);
+p.addParameter('settlingtime', 0.035, @isnumeric);
 
 p.parse(varargin{:});
 
@@ -158,11 +158,11 @@ ziDAQ('set', h, 'settling/time', p.Results.settlingtime);
 % defined by settling/inaccuracy.
 ziDAQ('set', h, 'settling/inaccuracy', p.Results.sweep_inaccuracy);
 % Minimum time to record and average data is 50 time constants.
-ziDAQ('set', h, 'averaging/tc', 50);
+ziDAQ('set', h, 'averaging/tc', 1);
 % Minimal number of samples that we want to record and average is 100. Note,
 % the number of samples used for averaging will be the maximum number of
 % samples specified by either averaging/tc or averaging/sample.
-ziDAQ('set', h, 'averaging/sample', 10);
+ziDAQ('set', h, 'averaging/sample', 1);
 % Use automatic bandwidth control for each measurement.
 ziDAQ('set', h, 'bandwidthcontrol', 2);
 % For fixed bandwidth, set bandwidthcontrol to 1 and specify a bandwidth.

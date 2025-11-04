@@ -18,7 +18,7 @@ poll = 0.1;
 
 for i = 1:10
     %% Move electrons from twiddle-sense 1 to twiddle-sense 2
-    shuttle_sense1sense2(pinout)
+    shuttleSense1Sense2(pinout)
     delay(1)
     
     MFLISweep1D({'Guard2'},start_vgd,stop_vgd,step_vgd,'dev32061',pinout.guard2_l.device,pinout.guard2_l.port,0, ...
@@ -31,7 +31,7 @@ for i = 1:10
     sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC) % reset guard
     
     %% Move electrons from twiddle-sense 2 to twiddle-sense 1
-    shuttle_sense2sense1(pinout)
+    shuttleSense2Sense1(pinout)
     delay(1)
     
     MFLISweep1D({'Guard1'},start_vgd,stop_vgd,step_vgd,'dev32021',pinout.guard1_l.device,pinout.guard1_l.port,0, ...

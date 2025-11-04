@@ -1,19 +1,18 @@
-clear all
-whosePath = 'B417';
+whosePath = 'B124';
 tag = 'Guard1';
 
 % numEs = [];
 % yErrs = [];
 % Vloads = 1:-0.05:0; % [-0.1 0 0.1 0.2 0.3 0.4];
 
-gain = 24.3*0.915*100; % Enter gain from roll-off plot
-cap = 3.55*1e-12; % Enter approximate HEMT input capacitance
+gain = 24.3*0.915; % Enter gain from roll-off plot
+cap = 3.55e-12; % Enter approximate HEMT input capacitance
 
 switch whosePath 
     case 'B417'
         path = 'C:\Users\Lyon Lab Simulation\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\single_electron_sensitivity\data_single_electron_shuttling\10_15_25\';
     case 'B124'
-        path = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\03_06_25\';
+        path = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\11_04_25\';
     case 'gordian'
         path = 'C:\Users\gordi\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\single_electron_sensitivity\data_single_electron_shuttling\09_18_25\';
     otherwise
@@ -21,7 +20,7 @@ switch whosePath
 end
 
 % Try and catch errors in loop
-figPath1 = append(path,tag,'_',num2str(20940),'.fig');
+figPath1 = append(path,tag,'_',num2str(21488),'.fig');
 % figPath2 = append(path,tag,'_',num2str(20835),'.fig');
 % figPath3 = append(path,tag,'_',num2str(20836),'.fig');
 % figPath4 = append(path,tag,'_',num2str(20837),'.fig');
@@ -29,7 +28,7 @@ figPath1 = append(path,tag,'_',num2str(20940),'.fig');
 % figPath6 = append(path,tag,'_',num2str(20839),'.fig');
 
 figure()
-plot_electrons(figPath1,1,2,cap,gain,-0.285)
+plot_electrons(figPath1,1,2,cap,gain,1)
 % plot_electrons(figPath2,1,2,cap,gain,0.2)
 % plot_electrons(figPath3,1,2,cap,gain,0.1)
 % plot_electrons(figPath4,1,2,cap,gain,0.05)
@@ -62,8 +61,8 @@ function plot_electrons(figPath,ax1,ax2,cap,gain,Vload)
     close(fig);
     
     mag = correctedMag(avgReal,avgImag); % Get corrected magnitude
-    delta = max(mag) - min(mag); % mag(3)-mag(end-5); %  Calc. change in signal
-    numE = calcNumElectrons(cap,delta,gain); % Calc. tot. no. of electrons
+    delta = max(mag) - min(mag) % mag(3)-mag(end-5); %  Calc. change in signal
+    numE = calcNumElectrons(cap,delta,gain) % Calc. tot. no. of electrons
     
     stdm = sqrt(stdReal.^2 + stdImag.^2); % Calc. standard deviation of magnitude
     deltaErr = stdm(find(mag==max(mag)))+stdm(find(mag==min(mag))); % stdm(3)+stdm(end-5); 

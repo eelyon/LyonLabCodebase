@@ -40,13 +40,13 @@ end
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 % Filter order
-p.addParameter('filter_order', 4, isnonneg);
+p.addParameter('filter_order', 3, isnonneg);
 % Filter time constant
 p.addParameter('time_constant', 0.020, @isnumeric);
 % Demodulation/sampling rate of demodulated data
-p.addParameter('demod_rate', 1e3, @isnumeric);
-% The length of time we'll record data (synchronously) [s].
-p.addParameter('poll_duration', 0.1, isnonneg);
+p.addParameter('demod_rate', 13e3, @isnumeric);
+% Number of samples averaged over.
+p.addParameter('samples', 1, isnonneg);
 % The length of time to accumulate subscribed data (by sleeping) before polling a second time [s].
 % p.addParameter('sleep_duration', 1.0, isnonneg);
 p.parse(varargin{:});
@@ -64,8 +64,8 @@ extref_c = '8'; % external reference channel - 8 for Aux In 1
 ziDisableEverything(device);
 
 % Configure the device for this experiment.
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 1);
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 0);
+ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 0);
+ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 1);
 ziSiginAutorange(device, in_c); % Autorange channel
 % ziDAQ('setInt', ['/' device '/sigins/' in_c '/autorange'], 1);
 % ziDAQ('setDouble', ['/' device '/sigins/' in_c '/range'], 2.0*amplitude);

@@ -11,8 +11,8 @@ port = 1234; % for the big glass dewar
 %% AJS's 24 channel DACs
 sigDACPortControl = 'COM8'; % 20-bit DAC
 sigDACPortSupply  = 'COM4'; % 18-bit DAC
-controlDAC = sigDAC(sigDACPortControl,24,'controlDAC');
-supplyDAC = sigDAC(sigDACPortSupply,24,'supplyDAC');
+controlDAC = sigDAC(sigDACPortControl,24,'controlDAC')
+supplyDAC = sigDAC(sigDACPortSupply,24,'supplyDAC')
 
 %% SIM900 for biasing HEMTs
 sim900Port = 'COM5';
@@ -24,7 +24,7 @@ sim900 = SIM900(sim900Port);
 %% SR830 Lock-ins
 % top_Address = '172.29.117.106'; % top SR830
 bottom_Address = '172.29.117.103'; % bottom SR830
-SR830ST = SR830(port,bottom_Address); % for Sommer-Tanner
+SR830ST = SR830(port,bottom_Address) % for Sommer-Tanner
 % SR830Twiddle = SR830(port,bottom_Address); % for twiddle
 
 %% Filament
@@ -33,9 +33,9 @@ SR830ST = SR830(port,bottom_Address); % for Sommer-Tanner
 
 %% Agilent AWGs
 awg1_Address = '172.29.117.24';
-Awg2ch_1 = Agilent33622A(1234,awg1_Address,1); % two-channel AWG
+Awg2ch_1 = Agilent33622A(1234,awg1_Address,1) % two-channel AWG
 awg2Houck_Address = '172.29.117.137';
-Awg2ch_2 = Agilent33622A(1234,awg2Houck_Address,1); % two-channel AWG
+Awg2ch_2 = Agilent33622A(1234,awg2Houck_Address,1) % two-channel AWG
 
 % AwgTwiddle_Address = '172.29.117.16';
 % AwgTwiddle = Agilent33220A(1234,AwgTwiddle_Address,1); % 1-channel AWG
