@@ -121,41 +121,43 @@ for value = paramVector
     % to settle above.
     ziDAQ('sync');
 
-    % Get data from MFLI
-    % Subscribe to the demodulator sample.
-    ziDAQ('subscribe', ['/' device '/demods/' demod_c '/sample']);
-    
-    % Poll data for poll_duration seconds.
-    poll_timeout = 1; % timeout in [ms]
-    data = ziDAQ('poll', poll_duration, poll_timeout);
-    
-    if ziCheckPathInData(data, ['/' device '/demods/' demod_c '/sample'])
-        sample = data.(device).demods(demod_idx).sample;
-    else
-        sample = [];
-    end
-    
-    Xrms = mean(sample.x);
-%     length(sample.x)
-    Yrms = mean(sample.y);
-    stdXrms = std(sample.x);
-    stdYrms = std(sample.y);
-
-    x(index) = Xrms;
-    y(index) = Yrms;
-    stdx(index) = stdXrms;
-    stdy(index) = stdYrms;
-    
-    Rrms = sqrt(Xrms.^2+Yrms.^2); % Magnitude in rms
-    phi = rad2deg(atan2(real(Yrms),real(Xrms))); % Phase in degrees
-    stdRrms = sqrt(stdXrms.^2+stdYrms.^2); % Magnitude error in rms
-    stdPhi = sqrt(1/(Xrms.^2+Yrms.^2).^2*(Yrms.^2*stdXrms.^2+Xrms.^2*stdYrms.^2)); % Phase error in degrees
+    sample = ziDAQ('getSample', ['/' device '/demods/' demod_c '/sample']);
+%     r = abs(sample.x + 1i*sample.y);
 
     xvals(index) = value;
-    mag(index) = Rrms;
-    phase(index) = phi;
-    stdm(index) = stdRrms;
-    stdphase(index) = stdPhi;
+    x(index) = sample.x;
+    y(index) = sample.y;
+    mag(index) = abs(sample.x+1i*sample.y);
+    phase(index) = rad2deg(atan2(real(sample.y),real(sample.x)));    
+
+    % Get data from MFLI
+    % Subscribe to the demodulator sample.
+%     ziDAQ('subscribe', ['/' device '/demods/' demod_c '/sample']);
+    
+    % Poll data for poll_duration seconds.
+%     poll_timeout = 1; % timeout in [ms]
+%     data = ziDAQ('poll', poll_duration, poll_timeout);
+    
+%     Xrms = mean(sample.x);
+%     Yrms = mean(sample.y);
+%     stdXrms = std(sample.x);
+%     stdYrms = std(sample.y);
+% 
+%     x(index) = Xrms;
+%     y(index) = Yrms;
+%     stdx(index) = stdXrms;
+%     stdy(index) = stdYrms;
+%     
+%     Rrms = sqrt(Xrms.^2+Yrms.^2); % Magnitude in rms
+%     phi = rad2deg(atan2(real(Yrms),real(Xrms))); % Phase in degrees
+%     stdRrms = sqrt(stdXrms.^2+stdYrms.^2); % Magnitude error in rms
+%     stdPhi = sqrt(1/(Xrms.^2+Yrms.^2).^2*(Yrms.^2*stdXrms.^2+Xrms.^2*stdYrms.^2)); % Phase error in degrees
+% 
+%     xvals(index) = value;
+%     mag(index) = Rrms;
+%     phase(index) = phi;
+%     stdm(index) = stdRrms;
+%     stdphase(index) = stdPhi;
 
     % Assign all the data properly depending on doing a back and forth scan
     updatePlots(plotHandles,xvals,mag,phase,x,y,stdm,stdphase,stdx,stdy,doBackAndForth,index,halfway);
