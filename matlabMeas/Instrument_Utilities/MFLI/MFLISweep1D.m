@@ -1,4 +1,4 @@
-function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = MFLISweep1D(sweepType, start, stop, step, mfli_id, device_id, port, doBackAndForth, varargin)
+function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = MFLISweep1D(sweepType,start,stop,step,mfli_id,device_id,port,doBackAndForth,varargin)
 %MFLISweep1D Sweep function using ziDAQ poll function to return data for
 %certain duration.
 %   Detailed explanation goes here
@@ -42,13 +42,13 @@ end
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 % Filter order
-p.addParameter('filter_order', 3, isnonneg);
+p.addParameter('filter_order', 4, isnonneg);
 % Filter time constant
-p.addParameter('time_constant', 0.10, @isnumeric);
+p.addParameter('time_constant', 0.010, @isnumeric);
 % Demodulation/sampling rate of demodulated data
-p.addParameter('demod_rate', 10e3, @isnumeric);
+p.addParameter('demod_rate', 1e3, @isnumeric);
 % The length of time we'll record data (synchronously) [s].
-p.addParameter('poll_duration', 0.5, isnonneg);
+p.addParameter('poll_duration', 0.1, isnonneg);
 % The length of time to accumulate subscribed data (by sleeping) before polling a second time [s].
 % p.addParameter('sleep_duration', 1.0, isnonneg);
 p.parse(varargin{:});
@@ -69,8 +69,6 @@ ziDisableEverything(device);
 ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 0);
 ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 1);
 ziSiginAutorange(device, in_c); % Autorange channel
-% ziDAQ('setInt', ['/' device '/sigins/' in_c '/autorange'], 1);
-% ziDAQ('setDouble', ['/' device '/sigins/' in_c '/range'], 2.0*amplitude);
 ziDAQ('setInt', ['/' device '/demods/*/order'], p.Results.filter_order);
 ziDAQ('setDouble', ['/' device '/demods/' demod_c '/rate'], p.Results.demod_rate);
 ziDAQ('setInt', ['/' device '/demods/' demod_c '/harmonic'], 1);
@@ -101,18 +99,14 @@ end
 halfway = length(paramVector)/2;
 index = 1;
 
-settling_time = ziFO2ST(time_constant,p.Results.filter_order,'percent',99);
-
 % Main parameter loop
 for value = paramVector
 
     % Unsubscribe all streaming data.
     ziDAQ('unsubscribe', '*');
 
-%     sigDACRamp(device,port,value,5,1100);
-    setVal(device_id, port, value); delay(1.1e-3);
-    delay(settling_time);
-    % delay(10*time_constant); % delay to get a settled lowpass filter
+    setVal(device_id, port, value);
+    pause(10*time_constant); % pause to get a settled lowpass filter
 
     % Perform a global synchronisation between the device and the data server:
     % Ensure that the settings have taken effect on the device before issuing the
@@ -121,63 +115,60 @@ for value = paramVector
     % to settle above.
     ziDAQ('sync');
 
-    sample = ziDAQ('getSample', ['/' device '/demods/' demod_c '/sample']);
-%     r = abs(sample.x + 1i*sample.y);
-
-    xvals(index) = value;
-    x(index) = sample.x;
-    y(index) = sample.y;
-    mag(index) = abs(sample.x+1i*sample.y);
-    phase(index) = rad2deg(atan2(real(sample.y),real(sample.x)));    
-
     % Get data from MFLI
     % Subscribe to the demodulator sample.
-%     ziDAQ('subscribe', ['/' device '/demods/' demod_c '/sample']);
+    ziDAQ('subscribe', ['/' device '/demods/' demod_c '/sample']);
     
     % Poll data for poll_duration seconds.
-%     poll_timeout = 1; % timeout in [ms]
-%     data = ziDAQ('poll', poll_duration, poll_timeout);
+    poll_timeout = 10; % timeout in [ms]
+    data = ziDAQ('poll', poll_duration, poll_timeout);
     
-%     Xrms = mean(sample.x);
-%     Yrms = mean(sample.y);
-%     stdXrms = std(sample.x);
-%     stdYrms = std(sample.y);
-% 
-%     x(index) = Xrms;
-%     y(index) = Yrms;
-%     stdx(index) = stdXrms;
-%     stdy(index) = stdYrms;
-%     
-%     Rrms = sqrt(Xrms.^2+Yrms.^2); % Magnitude in rms
-%     phi = rad2deg(atan2(real(Yrms),real(Xrms))); % Phase in degrees
-%     stdRrms = sqrt(stdXrms.^2+stdYrms.^2); % Magnitude error in rms
-%     stdPhi = sqrt(1/(Xrms.^2+Yrms.^2).^2*(Yrms.^2*stdXrms.^2+Xrms.^2*stdYrms.^2)); % Phase error in degrees
-% 
-%     xvals(index) = value;
-%     mag(index) = Rrms;
-%     phase(index) = phi;
-%     stdm(index) = stdRrms;
-%     stdphase(index) = stdPhi;
+    if ziCheckPathInData(data, ['/' device '/demods/' demod_c '/sample'])
+        sample = data.(device).demods(demod_idx).sample;
+    else
+        sample = [];
+    end
+    
+    Xrms = mean(sample.x);
+%     length(sample.x)
+    Yrms = mean(sample.y);
+    stdXrms = std(sample.x);
+    stdYrms = std(sample.y);
+
+    x(index) = Xrms;
+    y(index) = Yrms;
+    stdx(index) = stdXrms;
+    stdy(index) = stdYrms;
+    
+    Rrms = sqrt(Xrms.^2+Yrms.^2); % Magnitude in rms
+    phi = rad2deg(atan2(real(Yrms),real(Xrms))); % Phase in degrees
+    stdRrms = sqrt(stdXrms.^2+stdYrms.^2); % Magnitude error in rms
+    stdPhi = sqrt(1/(Xrms.^2+Yrms.^2).^2*(Yrms.^2*stdXrms.^2+Xrms.^2*stdYrms.^2)); % Phase error in degrees
+
+    xvals(index) = value;
+    mag(index) = Rrms;
+    phase(index) = phi;
+    stdm(index) = stdRrms;
+    stdphase(index) = stdPhi;
 
     % Assign all the data properly depending on doing a back and forth scan
     updatePlots(plotHandles,xvals,mag,phase,x,y,stdm,stdphase,stdx,stdy,doBackAndForth,index,halfway);
     drawnow;
     index = index + 1;
-    
-    % Unsubscribe from all paths.
-    ziDAQ('unsubscribe', '*');
 end
 
 % Set up metadata to be saved with figure
-metadata_struct.time_constant = time_constant; % ziDAQ('getDouble', ['/' device '/demods/*/timeconstant']);
+metadata_struct.time_constant = ziDAQ('getDouble', ['/' device '/demods/' demod_c '/timeconstant']);
 metadata_struct.filter_order = p.Results.filter_order;
-metadata_struct.demod_rate = p.Results.demod_rate; % ziDAQ('getDouble', ['/' device '/demods/' demod_c '/rate']);
+metadata_struct.demod_rate = ziDAQ('getDouble', ['/' device '/demods/' demod_c '/rate']);
 metadata_struct.poll_duration = poll_duration;
 metadata_struct.length = length(sample.x);
 metadata_struct.controlDAC = evalin('base','controlDAC.channelVoltages;');
 metadata_struct.supplyDAC = evalin('base','supplyDAC.channelVoltages;');
-
 subPlotFigureHandle.UserData = metadata_struct;
+
+% Unsubscribe from all paths.
+ziDAQ('unsubscribe', '*');
 
 % Save data
 if ~strcmp(sweepType,'PHAS') && ~strcmp(sweepType,'Vpp')

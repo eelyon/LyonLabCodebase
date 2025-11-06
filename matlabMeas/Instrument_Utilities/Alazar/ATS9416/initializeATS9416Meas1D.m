@@ -9,11 +9,11 @@ subPlotFigure = figure(getNextMATLABFigNum());
 
 subplot(2,2,1)
 if ~doBackAndForth
-    magVsVoltageErr = errorbar(xaxis,yaxis,yerror,'RX');
+    magVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Ro');
 else
-    magVsVoltageErr = errorbar(xaxis,yaxis,yerror,'RX');
+    magVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Ro');
     hold on
-    magVsVoltageErr2 = errorbar(xaxis,yaxis,yerror,'M*');
+    magVsVoltageErr2 = errorbar(xaxis,yaxis,yerror,'Md');
     hold off
 end
 
@@ -27,11 +27,11 @@ ax.YMinorTick = 'on';
 
 subplot(2,2,2)
 if ~doBackAndForth
-    phiVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Bx');
+    phiVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Bo');
 else
-    phiVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Bx');
+    phiVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Bo');
     hold on
-    phiVsVoltageErr2 = errorbar(xaxis,yaxis,yerror,'C*');
+    phiVsVoltageErr2 = errorbar(xaxis,yaxis,yerror,'Cd');
     hold off
 end
 
@@ -45,11 +45,11 @@ ax.YMinorTick = 'on';
 
 subplot(2,2,3);
 if ~doBackAndForth
-    realVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Bx');
+    realVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Bo');
 else
-    realVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Bx');
+    realVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Bo');
     hold on
-    realVsVoltageErr2 = errorbar(xaxis,yaxis,yerror,'C*');
+    realVsVoltageErr2 = errorbar(xaxis,yaxis,yerror,'Cd');
     hold off
 end
 
@@ -63,11 +63,11 @@ ax.YMinorTick = 'on';
 
 subplot(2,2,4)
 if ~doBackAndForth
-    imagVsVoltageErr = errorbar(xaxis,yaxis,yerror,'RX');
+    imagVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Ro');
 else
-    imagVsVoltageErr = errorbar(xaxis,yaxis,yerror,'RX');
+    imagVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Ro');
     hold on
-    imagVsVoltageErr2 = errorbar(xaxis,yaxis,yerror,'M*');
+    imagVsVoltageErr2 = errorbar(xaxis,yaxis,yerror,'Md');
     hold off
 end
 

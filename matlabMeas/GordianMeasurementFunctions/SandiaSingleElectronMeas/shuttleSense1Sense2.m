@@ -65,7 +65,7 @@ sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vopen,numSteps)
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps)
 sigDACRamp(pinout.d7.device,pinout.d7.port,vopen,numStepsRC,waitTimeRC)
 sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vclose,numSteps)
-sigDACRamp(pinout.d7.device,pinout.d8.port,-2,numStepsRC,waitTimeRC) % Ensure d8 is at -2
+sigDACRamp(pinout.d8.device,pinout.d8.port,-2,numStepsRC,waitTimeRC) % Ensure d8 is at -2
 sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,vopen,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,vopen,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,vopen,numStepsRC,waitTimeRC)

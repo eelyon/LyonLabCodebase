@@ -61,7 +61,7 @@ p.addParameter('savedata', 0, @isnumeric);
 % The value used for the Sweeper's 'samplecount' parameter: This
 % specifies the number of points that will be swept (i.e., the number of
 % frequencies swept in a frequency sweep).
-p.addParameter('sweep_samplecount', 400, isnonnegscalar);
+p.addParameter('sweep_samplecount', 500, isnonnegscalar);
 
 % The value used for the Sweeper's 'settling/inaccuracy' parameter: This
 % defines the settling time the sweeper should wait before changing a sweep
@@ -107,8 +107,8 @@ osc_c = '0'; % oscillator
 ziDisableEverything(device);
 
 %% Configure the device ready for this experiment.
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 1);
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 0);
+ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 0);
+ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 1);
 ziDAQ('setInt',    ['/' device '/sigins/' in_c '/autorange'], 1);
 ziDAQ('setInt', ['/' device '/sigouts/' out_c '/on'], 1);
 ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/range'], 0.01);
@@ -125,7 +125,7 @@ ziDAQ('setInt', ['/' device '/demods/' demod_c '/enable'], 1);
 ziDAQ('setInt', ['/' device '/demods/*/oscselect'], str2double(osc_c));
 ziDAQ('setInt', ['/' device '/demods/*/adcselect'], str2double(in_c));
 ziDAQ('setDouble', ['/' device '/demods/*/timeconstant'], p.Results.tc);
-ziDAQ('setDouble', ['/' device '/oscs/' osc_c '/freq'], 30e5); % [Hz]
+ziDAQ('setDouble', ['/' device '/oscs/' osc_c '/freq'], p.Results.sweep_startfreq); % [Hz]
 
 %% Sweeper settings
 % Create a thread for the sweeper
@@ -283,20 +283,30 @@ end
 function plot_data(frequencies, r, theta, style)
 % Plot data
 clf
-subplot(2, 1, 1)
-s = semilogx(frequencies, r/max(r), style);
-% s = semilogx(frequencies, r*2*sqrt(2), style);
+subplot(3, 1, 1)
+s = semilogx(frequencies, r*2*sqrt(2), style);
 set(s, 'LineWidth', 1.5)
 set(s, 'Color', 'black');
 grid on
 xlabel('Frequency [Hz]')
-ylabel('Amplitude [V_{pp}/max(V_{pp}]')
-% ylabel('Amplitude [V_{pp}]')
-subplot(2, 1, 2)
+ylabel('Amplitude [V_{pp}]')
+xlim([frequencies(1),frequencies(end)])
+
+subplot(3, 1, 2)
+s = semilogx(frequencies, r/max(r), style);
+set(s, 'LineWidth', 1.5)
+set(s, 'Color', 'black');
+grid on
+xlabel('Frequency [Hz]')
+ylabel('Amplitude [V_{pp}/max(V_{pp})]')
+xlim([frequencies(1),frequencies(end)])
+
+subplot(3, 1, 3)
 s = semilogx(frequencies, theta*180/pi, style);
 set(s, 'LineWidth', 1.5)
 set(s, 'Color', 'black');
 grid on
 xlabel('Frequency [Hz]')
 ylabel('Phase [deg]')
+xlim([frequencies(1),frequencies(end)])
 end

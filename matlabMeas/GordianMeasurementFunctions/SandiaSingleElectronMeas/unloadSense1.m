@@ -16,9 +16,10 @@ vopen = p.Results.Vopen; % holding voltage of ccd
 vclose = p.Results.Vclose; % closing voltage of ccd
 
 sigDACRamp(pinout.d5.device,pinout.d5.port,vopen,numStepsRC,waitTimeRC) % open door
-sigDACRamp(pinout.twiddle1.device,pinout.twiddle1.port,vclose,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,vclose,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,vclose,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.guard1_r.device,pinout.guard1_r.port,-3,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.twiddle1.device,pinout.twiddle1.port,-2.5,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,-1.5,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,-1,numStepsRC,waitTimeRC)
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vopen,numSteps) % open d4
 sigDACRamp(pinout.d5.device,pinout.d5.port,vclose,numStepsRC,waitTimeRC) % close door
 sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vopen,numSteps) % open ccd1
@@ -43,6 +44,14 @@ sigDACRampVoltage(pinout.d3.device,pinout.d3.port,vclose,numSteps) % close 3rd d
 sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vopen,numSteps) % open 1st door
 sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vclose,numSteps) % close 2nd door
 sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vclose,numSteps) % close 1st door
+
+% Move electrons back from 
+sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vopen,numSteps) % open ccd1
+sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vopen,numSteps) % close door
+sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vclose,numSteps) % open ccd1
+sigDACRamp(pinout.d5.device,pinout.d5.port,vopen,numStepsRC,waitTimeRC) % open door
+sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps); delay(0.1); % close door
+sigDACRamp(pinout.d5.device,pinout.d5.port,-2,numStepsRC,waitTimeRC) % open door
 
 % Reset sense 1
 sigDACRampVoltage(pinout.guard1_r.device,pinout.guard1_r.port,-2,numSteps)

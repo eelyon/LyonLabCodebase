@@ -3,15 +3,15 @@ repeats = 5;
 numSteps = 5;
 numStepsRC = 5;
 waitTimeRC = 1100;
-vopen = 3;
+vopen = 4;
 vclose = -1;
 
-start_vgd = 0.1;
-stop_vgd = -0.8;
-step_vgd = 0.05;
-tc = 0.03;
-drat = 13e3;
-poll = 0.3;
+vstart = 0.1;
+vstop = -0.8;
+vstep = 0.05;
+tc = 0.05;
+drat = 1e3;
+poll = 0.2;
 
 for i = 1:repeats
     % Set Sommer-Tanner positive to suck electrons in
@@ -131,7 +131,7 @@ for i = 1:repeats
     sigDACRamp(pinout.guard2_r.device,pinout.guard2_r.port,-2,numStepsRC,waitTimeRC)
     delay(2)
     
-%     MFLISweep1D({'Guard2'}, start_vgd, stop_vgd, step_vgd, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
+%     MFLISweep1D({'Guard2'}, vstart, vstop, vstep, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
 %         'time_constant', tc, 'demod_rate', drat, 'poll_duration', poll);
 %     sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
 
@@ -159,7 +159,7 @@ for i = 1:repeats
     sigDACRamp(pinout.d7.device, pinout.d7.port, -2, numStepsRC, waitTimeRC)
     delay(2)
     
-%     MFLISweep1D({'Guard2'}, start_vgd, stop_vgd, step_vgd, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
+%     MFLISweep1D({'Guard2'}, vstart, vstop, vstep, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
 %         'time_constant', tc, 'demod_rate', drat, 'poll_duration', poll);
 %     sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
 
@@ -199,15 +199,29 @@ for i = 1:repeats
     sigDACRampVoltage(pinout.sts.device, pinout.sts.port, 0, numSteps)
     fprintf([num2str(i), '\n']);
 end
-delay(2);
+delay(2)
 
-% Check if any electrons remain in either twiddle-sense
-MFLISweep1D({'Guard1'}, start_vgd, stop_vgd, step_vgd, 'dev32021', pinout.guard1_l.device, pinout.guard1_l.port, 0, ...
-    'time_constant', tc, 'demod_rate', drat, 'poll_duration', poll);
+% Check if stray electrons are in parallel channels of sense 1
+sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vopen,numSteps)
+sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vopen,numSteps)
+sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vclose,numSteps)
+sigDACRamp(pinout.d5.device,pinout.d5.port,vopen,numStepsRC,waitTimeRC)
+sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps)
+sigDACRamp(pinout.d5.device,pinout.d5.port,-2,numStepsRC,waitTimeRC)
+delay(1)
+
+MFLISweep1D_getSample({'Guard1'}, vstart, vstop, vstep, 'dev32021', pinout.guard1_l.device, pinout.guard1_l.port, 0, ...
+    'time_constant', tc, 'demod_rate', drat);
 sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC); delay(1)
 
-MFLISweep1D({'Guard2'}, start_vgd, stop_vgd, step_vgd, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
-    'time_constant', tc, 'demod_rate', drat, 'poll_duration', poll);
+loadSense1(pinout,vclose);
+MFLISweep1D_getSample({'Guard1'}, vstart, vstop, vstep, 'dev32021', pinout.guard1_l.device, pinout.guard1_l.port, 0, ...
+    'time_constant', tc, 'demod_rate', drat);
+sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC); delay(1)
+
+% Also check sense 2
+MFLISweep1D_getSample({'Guard2'}, vstart, vstop, vstep, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
+    'time_constant', tc, 'demod_rate', drat);
 sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
 
 function empty_sense1(pinout, numSteps, numStepsRC, waitTimeRC, vopen, vclose)
