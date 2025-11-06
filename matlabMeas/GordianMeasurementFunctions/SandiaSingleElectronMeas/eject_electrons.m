@@ -6,4 +6,5 @@ for i = 1:5
  sweep1DMeasSR830({'ST'},0,-0.6,-0.05,1,1,{SR830ST},pinout.stm.device,{pinout.stm.port},1);
  fprintf([num2str(i), ' '])
 end
+ejectSetGates(pinout)
 fprintf('\n')
