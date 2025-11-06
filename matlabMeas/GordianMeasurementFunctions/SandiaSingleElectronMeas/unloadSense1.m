@@ -5,7 +5,7 @@ isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 p.addParameter('numSteps', 5, isnonneg);
 p.addParameter('numStepsRC', 5, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
-p.addParameter('Vopen', 3, isnonneg);
+p.addParameter('Vopen', 1, isnonneg);
 p.addParameter('Vclose', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
 
@@ -43,20 +43,22 @@ sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vopen,numSteps) % open 2nd doo
 sigDACRampVoltage(pinout.d3.device,pinout.d3.port,vclose,numSteps) % close 3rd door
 sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vopen,numSteps) % open 1st door
 sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vclose,numSteps) % close 2nd door
+sigDACRampVoltage(pinout.sts.device,pinout.sts.port,+1,numSteps)
 sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vclose,numSteps) % close 1st door
-
-% Move electrons back from 
-sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vopen,numSteps) % open ccd1
-sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vopen,numSteps) % close door
-sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vclose,numSteps) % open ccd1
-sigDACRamp(pinout.d5.device,pinout.d5.port,vopen,numStepsRC,waitTimeRC) % open door
-sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps); delay(0.1); % close door
-sigDACRamp(pinout.d5.device,pinout.d5.port,-2,numStepsRC,waitTimeRC) % open door
+sigDACRampVoltage(pinout.sts.device,pinout.sts.port,0,numSteps)
 
 % Reset sense 1
-sigDACRampVoltage(pinout.guard1_r.device,pinout.guard1_r.port,-2,numSteps)
 sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,0,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.twiddle1.device,pinout.twiddle1.port,0,numStepsRC,waitTimeRC)
+sigDACRampVoltage(pinout.guard1_r.device,pinout.guard1_r.port,-2,numSteps)
+% sigDACRamp(pinout.d5.device,pinout.d5.port,-2,numStepsRC,waitTimeRC)
+
+% Move electrons back from cut off channels parallel to sense1
+sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vopen,numSteps) % open ccd1
+sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vopen,numSteps) % close door
+sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vclose,numSteps)
+sigDACRamp(pinout.d5.device,pinout.d5.port,vopen,numStepsRC,waitTimeRC) % open door
+sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps) % close door
 sigDACRamp(pinout.d5.device,pinout.d5.port,-2,numStepsRC,waitTimeRC)
 end
