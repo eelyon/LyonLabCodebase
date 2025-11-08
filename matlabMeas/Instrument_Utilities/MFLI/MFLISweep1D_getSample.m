@@ -88,7 +88,7 @@ if doBackAndForth
 end
 
 % Create arrays for data storage. 
-[xvals,mag,phase,x,y] = deal([]);
+[xvals,mag,phase,x,y,stdx,stdy,stdm,stdphase] = deal([]);
 
 % Halfway point in case back and forth is done.
 halfway = length(paramVector)/2;
@@ -121,11 +121,11 @@ for value = paramVector
     x(index) = sample.x;
     y(index) = sample.y;
     mag(index) = sqrt(sample.x.^2 + sample.y.^2);
-    phase(index) = rad2deg(atan2(real(sample.y),real(sample.x)));    
+    phase(index) = rad2deg(atan2(real(sample.y),real(sample.x)));
 
     % Assign all the data properly depending on doing a back and forth scan
 %     updatePlots(plotHandles,xvals,mag,phase,x,y,doBackAndForth,index,halfway);
-    updatePlots(plotHandles,xvals,mag,phase,x,y,[],[],[],[],doBackAndForth,index,halfway)
+    updatePlots(plotHandles,xvals,mag,phase,x,y,stdx,stdy,stdm,stdphase,doBackAndForth,index,halfway)
     drawnow;
     index = index + 1;
 end
@@ -155,16 +155,16 @@ function updatePlots(plotHandles,xvals,mag,phase,x,y,stdm,stdphase,stdx,stdy,doB
         setErrorBarXYData(plotHandles{3},xvals,y,stdy);
         setErrorBarXYData(plotHandles{5},xvals,mag,stdm);
         setErrorBarXYData(plotHandles{7},xvals,phase,stdphase);
-    elseif doBackAndForth && index > halfway
-        setErrorBarXYData(plotHandles{1},xvals(1:halfway),x(1:halfway),stdx(1:halfway));
-        setErrorBarXYData(plotHandles{3},xvals(1:halfway),y(1:halfway),stdy(1:halfway));
-        setErrorBarXYData(plotHandles{5},xvals(1:halfway),mag(1:halfway),stdm(1:halfway));
-        setErrorBarXYData(plotHandles{7},xvals(1:halfway),phase(1:halfway),stdphase(1:halfway));
+    elseif doBackAndForth && index > halfway % deleted stdx(halfway+1:end)
+        setErrorBarXYData(plotHandles{1},xvals(1:halfway),x(1:halfway),stdx);
+        setErrorBarXYData(plotHandles{3},xvals(1:halfway),y(1:halfway),stdy);
+        setErrorBarXYData(plotHandles{5},xvals(1:halfway),mag(1:halfway),stdm);
+        setErrorBarXYData(plotHandles{7},xvals(1:halfway),phase(1:halfway),stdphase);
     
-        setErrorBarXYData(plotHandles{2},xvals(halfway+1:end),x(halfway+1:end),stdx(halfway+1:end));
-        setErrorBarXYData(plotHandles{4},xvals(halfway+1:end),y(halfway+1:end),stdy(halfway+1:end));
-        setErrorBarXYData(plotHandles{6},xvals(halfway+1:end),mag(halfway+1:end),stdm(halfway+1:end));
-        setErrorBarXYData(plotHandles{8},xvals(halfway+1:end),phase(halfway+1:end),stdphase(halfway+1:end));
+        setErrorBarXYData(plotHandles{2},xvals(halfway+1:end),x(halfway+1:end),stdx);
+        setErrorBarXYData(plotHandles{4},xvals(halfway+1:end),y(halfway+1:end),stdy);
+        setErrorBarXYData(plotHandles{6},xvals(halfway+1:end),mag(halfway+1:end),stdm);
+        setErrorBarXYData(plotHandles{8},xvals(halfway+1:end),phase(halfway+1:end),stdphase);
     else
         setErrorBarXYData(plotHandles{1},xvals,x,stdx);
         setErrorBarXYData(plotHandles{2},xvals,y,stdy);

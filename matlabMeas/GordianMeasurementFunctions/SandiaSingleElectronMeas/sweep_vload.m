@@ -1,5 +1,5 @@
 % Sweep vload and measure sense 1
-vload = -0.1:-0.02:-0.3;
+vload = -0.2:-0.01:-0.3;
 % start_vgd = 0.1;
 % stop_vgd = -0.8;
 % step_vgd = 0.05;
@@ -12,8 +12,8 @@ vload = -0.1:-0.02:-0.3;
 % gain1 = 24*0.92;
 
 for value = vload
-    loadSense1(pinout,value); delay(1)
-    [ne] = measureElectronsFn(pinout,1,'filter_order',2,'time_constant',0.05);
+    loadSense1(pinout,value); delay(5)
+    [ne] = measureElectronsFn(pinout,1,'filter_order',2,'time_constant',0.1); delay(5)
 %     [~,~,x,y,~,~,stdx,stdy] = MFLISweep1D({'Guard1'},start_vgd,stop_vgd,step_vgd, ...
 %         'dev32021',pinout.guard1_l.device,pinout.guard1_l.port,0,'filter_order',3,'time_constant',tc,'demod_rate',drat,'poll_duration',poll);
 %     sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC) % reset guard

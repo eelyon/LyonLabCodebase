@@ -289,6 +289,7 @@ function plotScopeRecords(scope_records, scope_in_channel, scope_time, clockbase
       scope_rate = double(clockbase)/2^scope_time;
       f = linspace(0, scope_rate/2, totalsamples);
       loglog(f, scope_records{ii}.wave(:, scope_in_channel+1)/gain*1e9, 'color', 'r'); % c(ii,:)
+      xlim([f(1),f(end)]);
       hold on;
     end
   end
