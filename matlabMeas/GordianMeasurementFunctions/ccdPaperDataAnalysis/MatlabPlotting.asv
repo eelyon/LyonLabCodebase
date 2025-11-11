@@ -54,9 +54,9 @@ xlim([-0.71,0.31])
 % ylim([0,0.6])
 legend([p1,p2,p3,p4,p5,p6]);
 m = [x1.', mag1.', mag2.', mag3.', mag4.', mag5.', mag6.'];
-T = table(x1.', mag1.', mag2.', mag3.', mag4.', mag5.', mag6.', ...
-    'VariableNames',{'xvals','mag_21778','mag_21776','mag_21774','mag_21772','mag_21770','mag_21768'});
+T = table(x1.', mag1.', mag2.', mag3.', mag4.', mag5.', mag6.','VariableNames',{'xvals','mag_21778','mag_21776','mag_21774','mag4','mag5','mag6'});
 writetable(T, [path,'11_05_25\','electronSteps.csv'],'QuoteStrings', true);
+% csvwrite([path,'11_05_25\','electronSteps.csv'],m);
 
 % xlim([-1.05,0.25])
 % ylim([-0.7,16])

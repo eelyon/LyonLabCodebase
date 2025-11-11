@@ -106,6 +106,7 @@ index = 1;
 settling_time = ziFO2ST(time_constant,p.Results.filter_order,'percent',99);
 
 startTime = now;
+poll_duration_samples = [];
 
 % Main parameter loop
 for value = paramVector
@@ -139,7 +140,8 @@ for value = paramVector
 
         clockbase = double(ziDAQ('getInt', ['/' device '/clockbase']));
         t = (double(sample.timestamp) - double(t1))/clockbase + t0;
-        fprintf('Poll returned %.3f seconds of data\n', t(end)-t(1));
+        poll_duration_samples(index) = t(end)-t(1);
+        fprintf('Poll returned %.3f seconds of data\n', poll_duration_samples(index));
 
         time = [time t];
         xs = [xs sample.x];
@@ -173,7 +175,7 @@ end
 metadata_struct.time_constant = ziDAQ('getDouble', ['/' device '/demods/' demod_c '/timeconstant']); % time_constant;
 metadata_struct.filter_order = p.Results.filter_order;
 metadata_struct.demod_rate = ziDAQ('getDouble', ['/' device '/demods/' demod_c '/rate']); % demod_rate;
-metadata_struct.poll_duration = poll_duration;
+metadata_struct.poll_duration = poll_duration_samples;
 % metadata_struct.length = length(sample.x);
 metadata_struct.controlDAC = evalin('base','controlDAC.channelVoltages;');
 metadata_struct.supplyDAC = evalin('base','supplyDAC.channelVoltages;');

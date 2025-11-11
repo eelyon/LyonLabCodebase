@@ -44,7 +44,7 @@ p.addParameter('imp50',0,@isnumeric)
 % Input coupling
 p.addParameter('ac',1,@isnumeric)
 % Filter order
-p.addParameter('filter_order', 3, isnonneg);
+p.addParameter('filter_order', 2, isnonneg);
 % Filter time constant
 p.addParameter('time_constant', 0.10, @isnumeric);
 % Demodulation/sampling rate of demodulated data

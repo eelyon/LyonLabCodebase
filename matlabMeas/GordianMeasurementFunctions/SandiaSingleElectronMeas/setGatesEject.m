@@ -1,4 +1,4 @@
-function ejectSetGates(pinout, varargin)
+function setGatesEject(pinout, varargin)
 %SETGATESEJECT Remove all electrons from device
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
