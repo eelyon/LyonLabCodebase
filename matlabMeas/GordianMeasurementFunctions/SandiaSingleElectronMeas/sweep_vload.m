@@ -1,5 +1,5 @@
 % Sweep vload and measure sense 1
-vload = -0.2:-0.01:-0.3;
+vload = -0.4:-0.01:-0.3;
 % start_vgd = 0.1;
 % stop_vgd = -0.8;
 % step_vgd = 0.05;

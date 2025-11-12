@@ -141,7 +141,7 @@ for value = paramVector
         clockbase = double(ziDAQ('getInt', ['/' device '/clockbase']));
         t = (double(sample.timestamp) - double(t1))/clockbase + t0;
         poll_duration_samples(index) = t(end)-t(1);
-        fprintf('Poll returned %.3f seconds of data\n', poll_duration_samples(index));
+%         fprintf('Poll returned %.3f seconds of data\n', poll_duration_samples(index));
 
         time = [time t];
         xs = [xs sample.x];

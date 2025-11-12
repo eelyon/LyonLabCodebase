@@ -4,11 +4,11 @@ function [numE,numErr] = measureElectronsFn(pinout,sensor,varargin)
 % Sweep vload and measure sense 1
 
 % Need to set input capacitance and gain
-cap1 = 3.27e-12;
-gain1 = 23.8*0.888;
+cap1 = 3.23e-12;
+gain1 = 23.8*0.877;
 
-cap2 = 2.9e-12;
-gain2 = 20*0.8915;
+cap2 = 2.8e-12;
+gain2 = 19.3*0.879;
 
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
@@ -23,8 +23,8 @@ p.addParameter('time_constant', 0.5, @isnumeric);
 % Demodulation/sampling rate of demodulated data
 p.addParameter('demod_rate', 1e3, @isnumeric);
 p.addParameter('poll', 10, isnonneg);
-p.addParameter('sweep', 1, isnonneg);
-p.addParameter('onoff', 1, isnonneg);
+p.addParameter('sweep', 1, @isnumeric);
+p.addParameter('onoff', 1, @isnumeric);
 % The length of time to accumulate subscribed data (by sleeping) before polling a second time [s].
 % p.addParameter('sleep_duration', 1.0, isnonneg);
 p.parse(varargin{:});
@@ -38,10 +38,10 @@ vstart = p.Results.vstart;
 vstop = p.Results.vstop;
 vstep = p.Results.vstep;
 
-v_on = -0.35;
-v_off = -0.8;
-
 if sensor == 1
+    v_on = -0.3;
+    v_off = -0.8;
+
 if p.Results.sweep == 1
     [~,~,x,y] = MFLISweep1D_getSample({'Guard1'},vstart,vstop,vstep,'dev32021',pinout.guard1_l.device,pinout.guard1_l.port,0, ...
     'filter_order',filter,'time_constant',tc,'demod_rate',drat);
@@ -49,7 +49,7 @@ if p.Results.sweep == 1
 end
 if p.Results.onoff == 1
     [avgx,avgy,stdx,stdy] = MFLISweep1D_poll({'Guard1'},v_on,v_off,(v_off-v_on),'dev32021',pinout.guard1_l.device,pinout.guard1_l.port,0, ...
-        'filter_order',2,'time_constant',0.1,'poll_duration',poll,'demod_rate',13e3);
+        'filter_order',filter,'time_constant',0.2,'poll_duration',poll,'demod_rate',drat);
     sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,5,1100); % reset guard
 
     corrx = avgx-avgx(2);
@@ -66,15 +66,18 @@ if p.Results.onoff == 1
 end
 
 elseif sensor == 2
+    v_on = -0.16;
+    v_off = -0.8;
+
 if p.Results.sweep == 1
     [~,~,x,y] = MFLISweep1D_getSample({'Guard2'},vstart,vstop,vstep,'dev32061',pinout.guard2_l.device,pinout.guard2_l.port,0, ...
     'filter_order',filter,'time_constant',tc,'demod_rate',drat);
     sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,5,1100); delay(1); % reset guard
 end
 if p.Results.onoff == 1
-    [avgx,avgy,stdx,stdy] = MFLISweep1D_poll({'Guard1'},v_on,v_off,(v_off-v_on),'dev32021',pinout.guard1_l.device,pinout.guard1_l.port,0, ...
-        'filter_order',2,'time_constant',0.1,'poll_duration',30,'demod_rate',13e3);
-    sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,5,1100); % reset guard
+    [avgx,avgy,stdx,stdy] = MFLISweep1D_poll({'Guard2'},v_on,v_off,(v_off-v_on),'dev32061',pinout.guard2_l.device,pinout.guard2_l.port,0, ...
+        'filter_order',filter,'time_constant',0.1,'poll_duration',poll,'demod_rate',drat);
+    sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,0,5,1100); % reset guard
 
     corrx = avgx-avgx(2);
     corry = avgy-avgy(2);
@@ -97,8 +100,8 @@ if p.Results.sweep == 1 && p.Results.onoff == 1
     
     % Replot data
     fig = figure();
-    vguard = vstop:vstep:vstart;
-    plot(vguard,mag(end:-1:1)*1e6,'.-','MarkerSize',14,'DisplayName',['corrected R, n_{e}= ',num2str(numE,'%.2f'),'\pm',num2str(numErr,'%.2f')]);
+    vguard = vstart:vstep:vstop;
+    plot(vguard,mag*1e6,'.-','MarkerSize',14,'DisplayName',['corrected R, n_{e}= ',num2str(numE,'%.2f'),'\pm',num2str(numErr,'%.2f')]);
     % stdm = sqrt(stdx.^2 + stdy.^2); % Calc. standard deviation of magnitude
     % errorbar(vguard,mag(end:-1:1)*1e6,stdm(end:-1:1)*1e6,'.-','MarkerSize',14,'DisplayName',['corrected R, n = ',num2str(round(numE,1))]);
     % set(gca,'FontSize',13)

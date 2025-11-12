@@ -16,7 +16,7 @@ vclose = p.Results.vclose; % closing voltage of ccd
 %% Script to set gate voltages for measurement and initialise ramping parameters
 % Run DCPinout before running this script
 setSIM900Voltage(pinout.filament.device,pinout.filament.port,-0.5) % set back filament backing plate
-delay(1)
+% delay(1)
 
 %% Set Sommer-Tanner
 sigDACRampVoltage(pinout.std.device,pinout.std.port,0,numSteps) % ramp ST-Drive
@@ -32,7 +32,7 @@ sigDACRampVoltage(pinout.d3.device,pinout.d3.port,vclose,numSteps)
 sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vclose,numSteps)
 sigDACRampVoltage(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vclose,numSteps)
 sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vclose,numSteps)
-delay(1)
+% delay(1)
 
 sigDACRampVoltage(pinout.bpg.device,pinout.bpg.port,-2,numSteps) % set bond pad guard
 
@@ -45,7 +45,7 @@ sigDACRampVoltage(pinout.guard1_r.device,pinout.guard1_r.port,-2,numSteps) % set
 sigDACRampVoltage(pinout.sense1_r.device,pinout.sense1_r.port,vclose,numSteps) % set right sense gate
 sigDACRampVoltage(pinout.d6.device,pinout.d6.port,vclose,numSteps)
 sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,0,numStepsRC,waitTimeRC)
-delay(1)
+% delay(1)
 
 %% Set vertical CCD
 sigDACRampVoltage(pinout.phi_v1_1.device,pinout.phi_v1_1.port,vclose,numSteps)
@@ -59,7 +59,7 @@ sigDACRampVoltage(pinout.phi_v2_3.device,pinout.phi_v2_3.port,vclose,numSteps)
 sigDACRampVoltage(pinout.d_v_1.device,pinout.d_v_1.port,vclose,numSteps)
 sigDACRampVoltage(pinout.d_v_2.device,pinout.d_v_2.port,vclose,numSteps)
 sigDACRampVoltage(pinout.d_v_3.device,pinout.d_v_3.port,vclose,numSteps)
-delay(1)
+% delay(1)
 
 %% Set 2nd twiddle-sense
 sigDACRampVoltage(pinout.d7.device,pinout.d7.port,-2,numSteps) % door for compensation of sense 1
@@ -69,7 +69,7 @@ sigDACRampVoltage(pinout.guard2_r.device,pinout.guard2_r.port,-2,numSteps)
 sigDACRampVoltage(pinout.sense2_r.device,pinout.sense2_r.port,vclose,numSteps)
 sigDACRampVoltage(pinout.d8.device,pinout.d8.port,vclose,numSteps)
 sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,0,numStepsRC,waitTimeRC)
-delay(1)
+% delay(1)
 
 %% Set electron trap
 sigDACRampVoltage(pinout.d9.device,pinout.d9.port,-2,numSteps)
@@ -83,7 +83,8 @@ sigDACRamp(pinout.trap3.device,pinout.trap3.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap4.device,pinout.trap4.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap5.device,pinout.trap5.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap6.device,pinout.trap6.port,vclose,numStepsRC,waitTimeRC)
-delay(1)
+% delay(1)
 
 sigDACRamp(pinout.tm.device,pinout.tm.port,-1,numStepsRC,waitTimeRC) % ramp top metal
+delay(1)
 end

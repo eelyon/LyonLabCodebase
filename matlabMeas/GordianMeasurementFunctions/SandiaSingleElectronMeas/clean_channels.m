@@ -1,24 +1,24 @@
 % Script for cleaning all channels
-repeats = 5;
-numSteps = 4;
-numStepsRC = 4;
+repeats = 10;
+numSteps = 5;
+numStepsRC = 5;
 waitTimeRC = 1100;
-vopen = 1;
+vopen = 4;
 vclose = -1;
 
 vstart = 0.1;
 vstop = -0.8;
 vstep = 0.05;
-tc = 0.05;
+tc = 0.1;
 drat = 1e3;
-poll = 0.2;
+poll = 10;
 
-for i = 1:repeats
-    % Set Sommer-Tanner positive to suck electrons in
-    sigDACRampVoltage(pinout.stm.device, pinout.stm.port, +2, numSteps)
-    sigDACRampVoltage(pinout.std.device, pinout.std.port, +2, numSteps)
-    sigDACRampVoltage(pinout.sts.device, pinout.sts.port, +2, numSteps)
-    
+% Set Sommer-Tanner positive to suck electrons in
+sigDACRampVoltage(pinout.stm.device, pinout.stm.port, +2, numSteps)
+sigDACRampVoltage(pinout.std.device, pinout.std.port, +2, numSteps)
+sigDACRampVoltage(pinout.sts.device, pinout.sts.port, +2, numSteps)
+
+for i = 1:repeats    
     %% Set 1st twiddle-sense for top metal sweep
     sigDACRampVoltage(pinout.phi_h1_1.device, pinout.phi_h1_1.port, vopen, numSteps)
     sigDACRampVoltage(pinout.d4.device, pinout.d4.port, vopen, numSteps)
@@ -32,7 +32,7 @@ for i = 1:repeats
     
     % Sweep top metal
     sigDACRamp(pinout.tm.device, pinout.tm.port, -2, numStepsRC, 15000); delay(1)
-    sigDACRamp(pinout.tm.device, pinout.tm.port, -1.2, numStepsRC, waitTimeRC)
+    sigDACRamp(pinout.tm.device, pinout.tm.port, -1, numStepsRC, waitTimeRC)
     
     sigDACRampVoltage(pinout.d6.device, pinout.d6.port, vclose, numSteps)
     sigDACRampVoltage(pinout.sense1_r.device, pinout.sense1_r.port, vclose, numSteps)
@@ -192,13 +192,13 @@ for i = 1:repeats
     sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC)
     sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, 0, numStepsRC, waitTimeRC)
     sigDACRamp(pinout.d5.device, pinout.d5.port, -2, numStepsRC, waitTimeRC)
-
-    % Reset Sommer-Tanner
-    sigDACRampVoltage(pinout.stm.device, pinout.stm.port, 0, numSteps)
-    sigDACRampVoltage(pinout.std.device, pinout.std.port, 0, numSteps)
-    sigDACRampVoltage(pinout.sts.device, pinout.sts.port, 0, numSteps)
     fprintf([num2str(i), '\n']);
 end
+
+% Reset Sommer-Tanner
+sigDACRampVoltage(pinout.stm.device, pinout.stm.port, 0.3, numSteps)
+sigDACRampVoltage(pinout.std.device, pinout.std.port, 0.3, numSteps)
+sigDACRampVoltage(pinout.sts.device, pinout.sts.port, 0.3, numSteps)
 delay(2)
 
 % Check if stray electrons are in parallel channels of sense 1
@@ -210,21 +210,21 @@ sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps)
 sigDACRamp(pinout.d5.device,pinout.d5.port,-2,numStepsRC,waitTimeRC)
 delay(1)
 
-% MFLISweep1D_getSample({'Guard1'}, vstart, vstop, vstep, 'dev32021', pinout.guard1_l.device, pinout.guard1_l.port, 0, ...
-%     'time_constant', tc, 'demod_rate', drat);
-% sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC); delay(1)
-% 
-% % Check if electrons are in horizontal CCD
-% loadSense1(pinout,vclose);
-% MFLISweep1D_getSample({'Guard1'}, vstart, vstop, vstep, 'dev32021', pinout.guard1_l.device, pinout.guard1_l.port, 0, ...
-%     'time_constant', tc, 'demod_rate', drat);
-% sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC); delay(1)
-% 
-% % Check if electrons are in vertical CCD
-% shuttleSense1Sense2(pinout);
-% MFLISweep1D_getSample({'Guard2'}, vstart, vstop, vstep, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
-%     'time_constant', tc, 'demod_rate', drat);
-% sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
+MFLISweep1D_getSample({'Guard1'}, vstart, vstop, vstep, 'dev32021', pinout.guard1_l.device, pinout.guard1_l.port, 0, ...
+    'time_constant', tc, 'demod_rate', drat);
+sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC); delay(1)
+
+% Check if electrons are in horizontal CCD
+loadSense1(pinout,-1);
+MFLISweep1D_getSample({'Guard1'}, vstart, vstop, vstep, 'dev32021', pinout.guard1_l.device, pinout.guard1_l.port, 0, ...
+    'time_constant', tc, 'demod_rate', drat);
+sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC); delay(1)
+
+% Check if electrons are in vertical CCD
+shuttleSense1Sense2(pinout);
+MFLISweep1D_getSample({'Guard2'}, vstart, vstop, vstep, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
+    'time_constant', tc, 'demod_rate', drat);
+sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
 
 function empty_sense1(pinout, numSteps, numStepsRC, waitTimeRC, vopen, vclose)
 % Unload sense 1
@@ -235,7 +235,7 @@ sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, vclose, numStepsRC, wai
 sigDACRampVoltage(pinout.d4.device, pinout.d4.port, vopen, numSteps)
 sigDACRamp(pinout.d5.device, pinout.d5.port, vclose, numStepsRC, waitTimeRC)
 sigDACRampVoltage(pinout.phi_h1_1.device, pinout.phi_h1_1.port, vopen, numSteps)
-sigDACRampVoltage(pinout.d4.device, pinout.d4.port, -1.6, numSteps)
+sigDACRampVoltage(pinout.d4.device, pinout.d4.port, -1.8, numSteps)
 
 % Move electrons on phi_h1_1 back to Sommer-Tanner through horizontal ccd
 ccd_units = 63; % number of repeating units in ccd array
