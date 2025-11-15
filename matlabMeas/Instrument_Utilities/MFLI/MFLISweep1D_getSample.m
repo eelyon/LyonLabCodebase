@@ -73,6 +73,7 @@ ziDAQ('setInt', ['/' device '/demods/*/adcselect'], str2double(in_c));
 ziDAQ('setDouble', ['/' device '/demods/*/timeconstant'], time_constant);
 ziDAQ('setInt', ['/' device '/demods/1/adcselect'], str2double(extref_c));
 ziDAQ('setInt', ['/' device '/extrefs/0/enable'], 1);
+delay(1); % Delay for external ref to settle
 
 %% Set up figure and start sweep loop
 % Set up plot figure and meta data

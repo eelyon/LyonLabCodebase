@@ -15,6 +15,9 @@ waitTimeRC = p.Results.waitTimeRC; % in microseconds
 vopen = p.Results.Vopen; % holding voltage of ccd
 vclose = p.Results.Vclose; % closing voltage of ccd
 
+sigDACRampVoltage(pinout.sts.device,pinout.sts.port,-1,numSteps)
+sigDACRampVoltage(pinout.stm.device,pinout.stm.port,-1,numSteps)
+
 sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vload,numSteps) % open 1st door
 sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vload,numSteps) % open 2nd door
 sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vclose,numSteps);% close 1st door
@@ -22,6 +25,9 @@ sigDACRampVoltage(pinout.d3.device,pinout.d3.port,vopen,numSteps) % open 3rd doo
 sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vclose,numSteps) % close 2nd door
 sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vopen,numSteps) % open phi1
 sigDACRampVoltage(pinout.d3.device,pinout.d3.port,vclose,numSteps) % close 3rd door
+
+sigDACRampVoltage(pinout.sts.device,pinout.sts.port,0,numSteps)
+sigDACRampVoltage(pinout.stm.device,pinout.stm.port,0,numSteps)
 
 ccd_units = 63; % number of repeating units in ccd array
 for n = 1:ccd_units

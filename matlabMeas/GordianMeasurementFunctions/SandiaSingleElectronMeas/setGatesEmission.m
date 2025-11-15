@@ -14,13 +14,13 @@ waitTimeRC = p.Results.waitTimeRC; % in microseconds
 vclose = p.Results.vclose; % closing voltage of ccd
 
 %% Set Sommer-Tanner
-sigDACRamp(pinout.tm.device,pinout.tm.port,-3.4,numStepsRC,waitTimeRC) % ramp top metal
+sigDACRamp(pinout.tm.device,pinout.tm.port,-3.5,numStepsRC,waitTimeRC) % ramp top metal
 sigDACRampVoltage(pinout.m2s.device,pinout.m2s.port,-0.5,numSteps) % ramp M2 shield
 sigDACRampVoltage(pinout.bpg.device,pinout.bpg.port,vclose,numSteps) % ramp bond pad guard
 
-sigDACRampVoltage(pinout.std.device,pinout.std.port,+2,numSteps) % ramp ST-Drive
-sigDACRampVoltage(pinout.sts.device,pinout.sts.port,+2,numSteps) % ramp ST-Sense
-sigDACRampVoltage(pinout.stm.device,pinout.stm.port,+2,numSteps) % ramp ST-Middle
+sigDACRampVoltage(pinout.std.device,pinout.std.port,+1,numSteps) % ramp ST-Drive
+sigDACRampVoltage(pinout.sts.device,pinout.sts.port,+1,numSteps) % ramp ST-Sense
+sigDACRampVoltage(pinout.stm.device,pinout.stm.port,+1,numSteps) % ramp ST-Middle
 
 %% Set 1st CCD
 sigDACRampVoltage(pinout.d1_odd.device,pinout.d1_odd.port,vclose,numSteps)
@@ -78,6 +78,5 @@ sigDACRamp(pinout.trap4.device,pinout.trap4.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap5.device,pinout.trap5.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap6.device,pinout.trap6.port,vclose,numStepsRC,waitTimeRC)
 
-setSIM900Voltage(pinout.filament.device,pinout.filament.port,-3.5) % ramp filament backing plate
+setSIM900Voltage(pinout.filament.device,pinout.filament.port,-1) % ramp filament backing plate
 end
-
