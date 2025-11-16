@@ -15,7 +15,7 @@ vclose = p.Results.vclose; % closing voltage of ccd
 
 %% Script to set gate voltages for measurement and initialise ramping parameters
 % Run DCPinout before running this script
-setSIM900Voltage(pinout.filament.device,pinout.filament.port,-0.5) % set back filament backing plate
+setSIM900Voltage(pinout.filament.device,pinout.filament.port,0) % set back filament backing plate
 % delay(1)
 
 %% Set Sommer-Tanner

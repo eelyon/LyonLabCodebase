@@ -1,4 +1,4 @@
-function [mag,phase,x,y] = MFLISweep1D_getSample(sweepType,start,stop,step,mfli_id,device_id,port,doBackAndForth,varargin)
+function [] = MFLISweep2D_getSample(sweepTypes,starts,stops,steps,mfli_id,device_ids,ports,varargin)
 %MFLISWEEP1D_GETSAMPLE Summary of this function goes here
 % To change the digital lock in parameters like filter stages or tc, you
 % need to change these in the varargin parameters
@@ -73,62 +73,71 @@ ziDAQ('setInt', ['/' device '/demods/*/adcselect'], str2double(in_c));
 ziDAQ('setDouble', ['/' device '/demods/*/timeconstant'], time_constant);
 ziDAQ('setInt', ['/' device '/demods/1/adcselect'], str2double(extref_c));
 ziDAQ('setInt', ['/' device '/extrefs/0/enable'], 1);
-delay(1); % Delay for external ref to settle
 
 %% Set up figure and start sweep loop
 % Set up plot figure and meta data
-[plotHandles,subPlotFigureHandle] = initializeATS9416Meas1D(sweepType{1},doBackAndForth);
+[plotHandles,subPlotFigureHandle] = initializeMFLIMeas2D(sweepTypes,starts,stops,steps);
+
+[sweepType1, sweepType2] = sweepTypes{:};
+[start1, start2] = starts{:};
+[stop1, stop2] = stops{:};
+[step1, step2] = steps{:};
+[device1, device2] = device_ids{:};
+[port1, port2] = ports{:};
 
 % Adjust for sign of sweep
-step = checkDeltaSign(start,stop,step);
-paramVector = start:step:stop;
+step1 = checkDeltaSign(start1,stop1,step1);
+paramVector1 = start1:step1:stop1;
 
-if doBackAndForth
-    flippedParam = fliplr(paramVector);
-    paramVector = [paramVector flippedParam];
-end
+step2 = checkDeltaSign(start2,stop2,step2);
+paramVector2 = start2:step2:stop2;
 
 % Create arrays for data storage. 
-[xvals,mag,phase,x,y,stdx,stdy,stdm,stdphase] = deal([]);
+% [xvals,mag,phase,x,y] = deal([]);
 
-% Halfway point in case back and forth is done.
-halfway = length(paramVector)/2;
-index = 1;
+index1 = 1;
+index2 = 1;
 
 settling_time = ziFO2ST(time_constant,p.Results.filter_order,'percent',99);
 
 % Main parameter loop
-for value = paramVector
+for value1 = paramVector1
 
     % Unsubscribe all streaming data.
     ziDAQ('unsubscribe', '*');
 
 %     sigDACRamp(device,port,value,5,1100);
-    setVal(device_id, port, value); delay(1.1e-3);
-    delay(settling_time); % delay to get a settled lowpass filter
+    setVal(device1, port1, value1); delay(1.1e-3);
+
+    for value2 = paramVector2
+        setVal(device2, port2, value2); delay(1.1e-3);
+        delay(settling_time); % delay to get a settled lowpass filter
+        
+        % Perform a global synchronisation between the device and the data server:
+        % Ensure that the settings have taken effect on the device before issuing the
+        % ``poll`` command and clear the API's data buffers to remove any old
+        % data. Note: ``sync`` must be issued after waiting for the demodulator filter
+        % to settle above.
+        ziDAQ('sync');
     
-    % Perform a global synchronisation between the device and the data server:
-    % Ensure that the settings have taken effect on the device before issuing the
-    % ``poll`` command and clear the API's data buffers to remove any old
-    % data. Note: ``sync`` must be issued after waiting for the demodulator filter
-    % to settle above.
-    ziDAQ('sync');
-
-    % Get data from MFLI
-    % Subscribe to the demodulator sample.
-    sample = ziDAQ('getSample', ['/' device '/demods/' demod_c '/sample']);
-
-    xvals(index) = value;
-    x(index) = sample.x;
-    y(index) = sample.y;
-    mag(index) = sqrt(sample.x.^2 + sample.y.^2);
-    phase(index) = rad2deg(atan2(real(sample.y),real(sample.x)));
-
-    % Assign all the data properly depending on doing a back and forth scan
-%     updatePlots(plotHandles,xvals,mag,phase,x,y,doBackAndForth,index,halfway);
-    updatePlots(plotHandles,xvals,mag,phase,x,y,stdx,stdy,stdm,stdphase,doBackAndForth,index,halfway)
-    drawnow;
-    index = index + 1;
+        % Get data from MFLI
+        % Subscribe to the demodulator sample.
+        sample = ziDAQ('getSample', ['/' device '/demods/' demod_c '/sample']);
+    
+%         xvals(index2) = value;
+%         x(index2) = sample.x;
+%         y(index2) = sample.y;
+%         mag(index2) = sqrt(sample.x.^2 + sample.y.^2);
+%         phase(index2) = rad2deg(atan2(real(sample.y),real(sample.x)));
+    
+        % Assign all the data to the figures
+        plotHandles{1}.CData(index1,index2) = sample.x;
+        plotHandles{2}.CData(index1,index2) = sample.y;
+        plotHandles{3}.CData(index1,index2) = sqrt(sample.x.^2 + sample.y.^2);
+        drawnow;
+        index2 = index2 + 1;
+    end
+index1 = index1 + 1;
 end
 
 % Set up metadata to be saved with figure
@@ -144,39 +153,5 @@ subPlotFigureHandle.UserData = metadata_struct;
 ziDAQ('unsubscribe', '*');
 
 % Save data
-if ~strcmp(sweepType,'PHAS') && ~strcmp(sweepType,'Vpp')
-    saveData(subPlotFigureHandle, genSR830PlotName(sweepType{1}));
-end
-end
-
-%% Function for updating plot and setting errorbars
-function updatePlots(plotHandles,xvals,mag,phase,x,y,stdm,stdphase,stdx,stdy,doBackAndForth,index,halfway)
-    if doBackAndForth && index <= halfway
-        setErrorBarXYData(plotHandles{1},xvals,x,stdx);
-        setErrorBarXYData(plotHandles{3},xvals,y,stdy);
-        setErrorBarXYData(plotHandles{5},xvals,mag,stdm);
-        setErrorBarXYData(plotHandles{7},xvals,phase,stdphase);
-    elseif doBackAndForth && index > halfway % deleted stdx(halfway+1:end)
-        setErrorBarXYData(plotHandles{1},xvals(1:halfway),x(1:halfway),stdx);
-        setErrorBarXYData(plotHandles{3},xvals(1:halfway),y(1:halfway),stdy);
-        setErrorBarXYData(plotHandles{5},xvals(1:halfway),mag(1:halfway),stdm);
-        setErrorBarXYData(plotHandles{7},xvals(1:halfway),phase(1:halfway),stdphase);
-    
-        setErrorBarXYData(plotHandles{2},xvals(halfway+1:end),x(halfway+1:end),stdx);
-        setErrorBarXYData(plotHandles{4},xvals(halfway+1:end),y(halfway+1:end),stdy);
-        setErrorBarXYData(plotHandles{6},xvals(halfway+1:end),mag(halfway+1:end),stdm);
-        setErrorBarXYData(plotHandles{8},xvals(halfway+1:end),phase(halfway+1:end),stdphase);
-    else
-        setErrorBarXYData(plotHandles{1},xvals,x,stdx);
-        setErrorBarXYData(plotHandles{2},xvals,y,stdy);
-        setErrorBarXYData(plotHandles{3},xvals,mag,stdm);
-        setErrorBarXYData(plotHandles{4},xvals,phase,stdphase);
-    end
-end
-
-function setErrorBarXYData(plotHandle,xDat,yDat,yErr)
-    plotHandle.XData = xDat;
-    plotHandle.YData = yDat;
-    plotHandle.YPositiveDelta = yErr;
-    plotHandle.YNegativeDelta = yErr;
+saveData(subPlotFigureHandle, [genSR830PlotName(sweepType1), '-over-', genSR830PlotName(sweepType2)]);
 end

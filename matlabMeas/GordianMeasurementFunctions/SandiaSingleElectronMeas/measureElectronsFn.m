@@ -4,11 +4,11 @@ function [numE,numErr] = measureElectronsFn(pinout,sensor,varargin)
 % Sweep vload and measure sense 1
 
 % Need to set input capacitance and gain
-cap1 = 3.23e-12;
-gain1 = 23.8*0.877;
-
-cap2 = 2.8e-12;
-gain2 = 19.3*0.879;
+alpha = 0.49;
+cap1 = 3.3e-12;
+gain1 = 22*0.8319;
+cap2 = 2.85e-12;
+gain2 = 19.2*0.8647;
 
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
@@ -39,8 +39,8 @@ vstop = p.Results.vstop;
 vstep = p.Results.vstep;
 
 if sensor == 1
-    v_on = -0.3;
-    v_off = -0.8;
+    v_on = -0.35;
+    v_off = -0.9;
 
 if p.Results.sweep == 1
     [~,~,x,y] = MFLISweep1D_getSample({'Guard1'},vstart,vstop,vstep,'dev32021',pinout.guard1_l.device,pinout.guard1_l.port,0, ...
@@ -49,16 +49,16 @@ if p.Results.sweep == 1
 end
 if p.Results.onoff == 1
     [avgx,avgy,stdx,stdy] = MFLISweep1D_poll({'Guard1'},v_on,v_off,(v_off-v_on),'dev32021',pinout.guard1_l.device,pinout.guard1_l.port,0, ...
-        'filter_order',filter,'time_constant',0.2,'poll_duration',poll,'demod_rate',drat);
+        'filter_order',filter,'time_constant',0.3,'poll_duration',poll,'demod_rate',drat);
     sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,5,1100); % reset guard
 
     corrx = avgx-avgx(2);
     corry = avgy-avgy(2);
     corrmag = sqrt(corrx.^2 + corry.^2);
-    numE = (cap1*2*sqrt(2) * (corrmag(1)-corrmag(2))) / (1.602e-19*gain1*0.52);
+    numE = (cap1*2*sqrt(2) * (corrmag(1)-corrmag(2))) / (1.602e-19*gain1*alpha)
     
     stdm = sqrt(stdx.^2 + stdy.^2);
-    numErr = (cap1*2*sqrt(2) * (stdm(1)+stdm(2))) / (1.602e-19*gain1*0.52);
+    numErr = (cap1*2*sqrt(2) * (stdm(1)+stdm(2))) / (1.602e-19*gain1*alpha)
     
 %     corrx_mag = x-avgx(2);
 %     corry_mag = y-avgy(2);
@@ -66,17 +66,17 @@ if p.Results.onoff == 1
 end
 
 elseif sensor == 2
-    v_on = -0.16;
-    v_off = -0.8;
+    v_on = -0.3;
+    v_off = -0.7;
 
 if p.Results.sweep == 1
     [~,~,x,y] = MFLISweep1D_getSample({'Guard2'},vstart,vstop,vstep,'dev32061',pinout.guard2_l.device,pinout.guard2_l.port,0, ...
     'filter_order',filter,'time_constant',tc,'demod_rate',drat);
-    sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,5,1100); delay(1); % reset guard
+    sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,0,5,1100); delay(1); % reset guard
 end
 if p.Results.onoff == 1
     [avgx,avgy,stdx,stdy] = MFLISweep1D_poll({'Guard2'},v_on,v_off,(v_off-v_on),'dev32061',pinout.guard2_l.device,pinout.guard2_l.port,0, ...
-        'filter_order',filter,'time_constant',0.1,'poll_duration',poll,'demod_rate',drat);
+        'filter_order',filter,'time_constant',0.2,'poll_duration',poll,'demod_rate',drat);
     sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,0,5,1100); % reset guard
 
     corrx = avgx-avgx(2);

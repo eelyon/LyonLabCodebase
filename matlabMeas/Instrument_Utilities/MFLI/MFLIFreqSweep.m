@@ -109,7 +109,7 @@ ziDisableEverything(device);
 %% Configure the device ready for this experiment.
 ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 0);
 ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 1);
-ziDAQ('setInt',    ['/' device '/sigins/' in_c '/autorange'], 1);
+% ziDAQ('setInt',    ['/' device '/sigins/' in_c '/autorange'], 1);
 ziDAQ('setInt', ['/' device '/sigouts/' out_c '/on'], 1);
 ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/range'], 0.01);
 ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/amplitudes/*'], 0);

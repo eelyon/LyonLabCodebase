@@ -1,21 +1,30 @@
-function [plotHandle] = initializeSR830Meas2D_Func(sweepTypes, starts, stops, deltas)
-
+function [plotHandles,subPlotFigure] = initializeMFLIMeas2D(sweepTypes, starts, stops, steps)
 %% Test command (FOR TESTING PURPOSES ONLY, NOT INDICATIVE OF ANY OTHER FUNCTIONALITY)
 % initializeSR830Meas2D_Func({'Freq', 'ST'}, {1000, 0}, {10000, 1}, {1000, 0.01})
 
 %% Read in and up pack variables to use in preparation functions
 [sweepType1, sweepType2] = sweepTypes{:};
-dataToPlot = generate2DPlotData(starts, stops, deltas);
+dataToPlot = generate2DPlotData(starts, stops, steps);
 
 yAxisName = genSR830Axis(sweepType1);
 xAxisName = genSR830Axis(sweepType2);
-myFig = figure(getNextMATLABFigNum());
+subPlotFigure = figure(getNextMATLABFigNum());
+
+subplot(1,3,1);
+X = plot2DData(dataToPlot{1},dataToPlot{2},dataToPlot{3},'xLabel',xAxisName,'yLabel',yAxisName,'title','X');
+
+subplot(1,3,2);
+Y = plot2DData(dataToPlot{1},dataToPlot{2},dataToPlot{3},'xLabel',xAxisName,'yLabel',yAxisName,'title','Y');
+
+subplot(1,3,3);
+Amplitude = plot2DData(dataToPlot{1},dataToPlot{2},dataToPlot{3},'xLabel',xAxisName,'yLabel',yAxisName,'title','Amplitude');
 
 %% Plot data
-plotHandle = plot2DData(dataToPlot{1},dataToPlot{2},dataToPlot{3},'xLabel',xAxisName,'yLabel', yAxisName);
+% plotHandle = plot2DData(dataToPlot{1},dataToPlot{2},dataToPlot{3},'xLabel',xAxisName,'yLabel', yAxisName);
+plotHandles = {X,Y,Amplitude};
 axisDirectionCorrector(starts{1}, starts{2}, stops{1}, stops{2});
 
-tileFigures(myFig,1,1,2,[],[0,0,0.5,1]);
+tileFigures(subPlotFigure,1,1,2,[],[0,0,0.5,1]);
 
 function [] = axisDirectionCorrector(start1, start2, stop1, stop2)
     %% axisDirectionCorrector
@@ -138,3 +147,5 @@ switch targetGate
 end
 end
 end
+
+
