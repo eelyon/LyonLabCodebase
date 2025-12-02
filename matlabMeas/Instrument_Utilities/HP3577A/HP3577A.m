@@ -32,7 +32,6 @@ classdef HP3577A
             fprintf(HP3577A.client,'FM1;DT1;');
             datArr = str2num((fscanf(HP3577A.client,'%s')));
             freqArr = linspace(startFreq,stopFreq,401);
-            
         end
         
         function [freqs,s21_dBm,voltageGain,fit] = pull3577ARollOff(HP3577A,startFreq,stopFreq,varargin)
@@ -70,24 +69,24 @@ classdef HP3577A
         %% GETTER Functions
 
         function startFreq = get3577AStartFreq(HP3577A)
-            startFreq = num2str(query(HP3577A.client,'FRA?'));
+            startFreq = str2double(query(HP3577A.client,'FRA?'));
         end
 
         function stopFreq = get3577AStopFreq(HP3577A)
-            stopFreq = num2str(query(HP3577A.client,'FRB?'));
+            stopFreq = str2double(query(HP3577A.client,'FRB?'));
         end
 
-        function sweepTime = get3577ASweepTime(HP3577A)
-            sweepTime = num2str(query(HP3577A.client,'SWT?'));
-        end
+%         function sweepTime = get3577ASweepTime(HP3577A)
+%             sweepTime = str2double(query(HP3577A.client,'SWT?'));
+%         end
 
-        function stepTime = get3577AStepTime(HP3577A)
-            stepTime = num2str(query(HP3577A.client,'SMT?'));
-        end
+%         function stepTime = get3577AStepTime(HP3577A)
+%             stepTime =str2double(query(HP3577A.client,'SMT?'));
+%         end
 
-        function sampleTime = get3577ASampleTime(HP3577A)
-            sampleTime = num2str(query(HP3577A.client,'SMR?'));
-        end
+%         function sampleTime = get3577ASampleTime(HP3577A)
+%             sampleTime = str2double(query(HP3577A.client,'SMR?'));
+%         end
 
         %% SET SOURCE FUNCTIONS %%
         function [] = set3577ASweepType(HP3577A,type)
@@ -176,6 +175,10 @@ classdef HP3577A
             fprintf(HP3577A.client,command);
         end
 
+        function [] = set3577AFreqStepSize(HP3577A,freqStep)
+            command = ['FST ',num2str(freqStep), 'Hz'];
+            fprintf(HP3577A.client,command);
+        end        
 
         %% SET RECEIVER FUNCTIONS
         function [] = set3577Attenuation(HP3577A,inputChannel,attenuation)

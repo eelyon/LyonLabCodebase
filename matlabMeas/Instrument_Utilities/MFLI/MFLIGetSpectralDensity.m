@@ -168,7 +168,7 @@ ziDAQ('subscribe', scopeModule, wave_nodepath);
 % Set the Scope Module's mode to return frequency domain data.
 ziDAQ('set', scopeModule, 'mode', 3);
 % Use a Hann window function.
-ziDAQ('set', scopeModule, 'fft/window', 0);
+ziDAQ('set', scopeModule, 'fft/window', 1);
 % Set power correction
 ziDAQ('set', scopeModule, 'fft/powercompensation', 1);
 % Enable Spectral Density
