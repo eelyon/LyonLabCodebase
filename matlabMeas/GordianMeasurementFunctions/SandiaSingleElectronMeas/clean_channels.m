@@ -1,29 +1,29 @@
 % Script for cleaning all channels
-repeats = 50;
+repeats = 10;
 numSteps = 2;
 numStepsRC = 2;
 waitTimeRC = 1100;
-vopen = 3;
+vopen = 1;
 vclose = -1;
 
-vstart = 0.1;
-vstop = -0.8;
-vstep = 0.05;
+vstart = 0;
+vstop = -1.5;
+vstep = 0.1;
 tc = 0.1;
 drat = 1e3;
-poll = 10;
+% poll = 10;
 
 % Set Sommer-Tanner positive to suck electrons in
-sigDACRampVoltage(pinout.stm.device, pinout.stm.port, +5, numSteps)
-sigDACRampVoltage(pinout.std.device, pinout.std.port, +5, numSteps)
-sigDACRampVoltage(pinout.sts.device, pinout.sts.port, +5, numSteps)
+sigDACRampVoltage(pinout.stm.device, pinout.stm.port, +2, numSteps)
+sigDACRampVoltage(pinout.std.device, pinout.std.port, +2, numSteps)
+sigDACRampVoltage(pinout.sts.device, pinout.sts.port, +2, numSteps)
 
 for i = 1:repeats    
     %% Set 1st twiddle-sense for top metal sweep
     sigDACRampVoltage(pinout.phi_h1_1.device, pinout.phi_h1_1.port, vopen, numSteps)
     sigDACRampVoltage(pinout.d4.device, pinout.d4.port, vopen, numSteps)
     sigDACRamp(pinout.d5.device, pinout.d5.port, vopen, numStepsRC, waitTimeRC)
-    sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, vopen, numStepsRC, waitTimeRC)
+    sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, 0, numStepsRC, waitTimeRC)
     sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, vopen, numStepsRC, waitTimeRC)
     sigDACRamp(pinout.twiddle1.device, pinout.twiddle1.port, vopen, numStepsRC, waitTimeRC)
     sigDACRampVoltage(pinout.guard1_r.device, pinout.guard1_r.port, vopen, numSteps)
@@ -32,7 +32,7 @@ for i = 1:repeats
     
     % Sweep top metal
     sigDACRamp(pinout.tm.device, pinout.tm.port, -2, numStepsRC, 15000); delay(1)
-    sigDACRamp(pinout.tm.device, pinout.tm.port, -1, numStepsRC, waitTimeRC)
+    sigDACRamp(pinout.tm.device, pinout.tm.port, -0.8, numStepsRC, waitTimeRC)
     
     sigDACRampVoltage(pinout.d6.device, pinout.d6.port, vclose, numSteps)
     sigDACRampVoltage(pinout.sense1_r.device, pinout.sense1_r.port, vclose, numSteps)
@@ -43,7 +43,7 @@ for i = 1:repeats
     %% Move electrons onto vertical CCD
     sigDACRampVoltage(pinout.guard1_r.device, pinout.guard1_r.port, vopen, numSteps)
     sigDACRampVoltage(pinout.sense1_r.device, pinout.sense1_r.port, vopen, numSteps)
-    sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, vclose, numStepsRC, waitTimeRC)
+    sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, -0.5, numStepsRC, waitTimeRC)
     sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, vclose, numStepsRC, waitTimeRC)
     sigDACRamp(pinout.twiddle1.device, pinout.twiddle1.port, vclose, numStepsRC, waitTimeRC)
     sigDACRampVoltage(pinout.guard1_r.device, pinout.guard1_r.port, vclose, numSteps)
@@ -121,7 +121,7 @@ for i = 1:repeats
     sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,vopen,numStepsRC,waitTimeRC)
     sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,vopen,numStepsRC,waitTimeRC)
     sigDACRamp(pinout.sense2_r.device,pinout.sense2_r.port,vclose,numStepsRC,waitTimeRC)
-    sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,vopen,numStepsRC,waitTimeRC)
+    sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,0,numStepsRC,waitTimeRC)
 
     % Reset sense 2 to measure stray electrons in 2nd horizontal ccd
     sigDACRamp(pinout.d7.device, pinout.d7.port, -2, numStepsRC, waitTimeRC)
@@ -138,7 +138,7 @@ for i = 1:repeats
     sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,vclose,numStepsRC,waitTimeRC)
     sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,vclose,numStepsRC,waitTimeRC)
     sigDACRamp(pinout.d7.device, pinout.d7.port, vopen, numStepsRC, waitTimeRC)
-    sigDACRamp(pinout.sense2_l.device, pinout.sense2_l.port, vclose, numStepsRC, waitTimeRC)
+    sigDACRamp(pinout.sense2_l.device, pinout.sense2_l.port, -0.5, numStepsRC, waitTimeRC)
     sigDACRampVoltage(pinout.phi_h1_3.device, pinout.phi_h1_3.port, vopen, numSteps)
     sigDACRamp(pinout.d7.device, pinout.d7.port, vclose, numStepsRC, waitTimeRC)
     sigDACRampVoltage(pinout.d4.device, pinout.d4.port, vopen, numSteps)
@@ -196,9 +196,9 @@ for i = 1:repeats
 end
 
 % Reset Sommer-Tanner
-sigDACRampVoltage(pinout.stm.device, pinout.stm.port, +2, numSteps)
-sigDACRampVoltage(pinout.std.device, pinout.std.port, +2, numSteps)
-sigDACRampVoltage(pinout.sts.device, pinout.sts.port, +2, numSteps)
+sigDACRampVoltage(pinout.stm.device, pinout.stm.port, 0.6, numSteps)
+sigDACRampVoltage(pinout.std.device, pinout.std.port, 0.6, numSteps)
+sigDACRampVoltage(pinout.sts.device, pinout.sts.port, 0.6, numSteps)
 delay(1)
 
 % Check if stray electrons are in parallel channels of sense 1
@@ -231,7 +231,7 @@ function empty_sense1(pinout, numSteps, numStepsRC, waitTimeRC, vopen, vclose)
 sigDACRamp(pinout.twiddle1.device, pinout.twiddle1.port, vclose, numStepsRC, waitTimeRC)
 sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, vclose, numStepsRC, waitTimeRC)
 sigDACRamp(pinout.d5.device, pinout.d5.port, vopen, numStepsRC, waitTimeRC)
-sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, vclose, numStepsRC, waitTimeRC)
+sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, -0.5, numStepsRC, waitTimeRC)
 sigDACRampVoltage(pinout.d4.device, pinout.d4.port, vopen, numSteps)
 sigDACRamp(pinout.d5.device, pinout.d5.port, vclose, numStepsRC, waitTimeRC)
 sigDACRampVoltage(pinout.phi_h1_1.device, pinout.phi_h1_1.port, vopen, numSteps)
@@ -263,7 +263,7 @@ sigDACRampVoltage(pinout.d4.device, pinout.d4.port, vopen, numSteps)
 sigDACRampVoltage(pinout.phi_h1_1.device, pinout.phi_h1_1.port, vclose, numSteps)
 sigDACRamp(pinout.d5.device, pinout.d5.port, vopen, numStepsRC, waitTimeRC)
 sigDACRampVoltage(pinout.d4.device, pinout.d4.port, vclose, numSteps)
-sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, vopen, numStepsRC, waitTimeRC)
+sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, 0, numStepsRC, waitTimeRC)
 sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, vopen, numStepsRC, waitTimeRC)
 sigDACRamp(pinout.twiddle1.device, pinout.twiddle1.port, vopen, numStepsRC, waitTimeRC)
 sigDACRamp(pinout.d5.device, pinout.d5.port, vclose, numStepsRC, waitTimeRC)
@@ -290,12 +290,12 @@ sigDACRampVoltage(pinout.guard1_r.device, pinout.guard1_r.port, vopen, numSteps)
 sigDACRamp(pinout.twiddle1.device, pinout.twiddle1.port, vopen, numStepsRC, waitTimeRC)
 sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, vopen, numStepsRC, waitTimeRC)
 sigDACRampVoltage(pinout.sense1_r.device, pinout.sense1_r.port, vclose, numSteps)
-sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, vopen, numStepsRC, waitTimeRC)
+sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, 0, numStepsRC, waitTimeRC)
 sigDACRampVoltage(pinout.guard1_r.device, pinout.guard1_r.port, vclose, numSteps)
 sigDACRamp(pinout.twiddle1.device, pinout.twiddle1.port, vclose, numStepsRC, waitTimeRC)
 sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, vclose, numStepsRC, waitTimeRC)
 sigDACRamp(pinout.d5.device, pinout.d5.port, vopen, numStepsRC, waitTimeRC)
-sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, vclose, numStepsRC, waitTimeRC)
+sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, -0.5, numStepsRC, waitTimeRC)
 sigDACRampVoltage(pinout.d4.device, pinout.d4.port, vopen, numSteps)
 sigDACRamp(pinout.d5.device, pinout.d5.port, vclose, numStepsRC, waitTimeRC)
 sigDACRampVoltage(pinout.phi_h1_1.device, pinout.phi_h1_1.port, vopen, numSteps)
@@ -325,12 +325,12 @@ sigDACRampVoltage(pinout.d1_even.device, pinout.d1_even.port, vclose, numSteps)
 sigDACRampVoltage(pinout.d4.device, pinout.d4.port, vopen, numSteps)
 sigDACRamp(pinout.d5.device, pinout.d5.port, vopen, numStepsRC, waitTimeRC)
 sigDACRampVoltage(pinout.d4.device, pinout.d4.port, vclose, numSteps)
-sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, vopen, numStepsRC, waitTimeRC)
+sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, 0, numStepsRC, waitTimeRC)
 sigDACRamp(pinout.d5.device, pinout.d5.port, vclose, numStepsRC, waitTimeRC)
 sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, vopen, numStepsRC, waitTimeRC)
 sigDACRampVoltage(pinout.sense1_r.device, pinout.twiddle1.port, vopen, numSteps)
 sigDACRampVoltage(pinout.guard1_r.device, pinout.guard1_r.port, vopen, numSteps)
-sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, vclose, numStepsRC, waitTimeRC)
+sigDACRamp(pinout.sense1_l.device, pinout.sense1_l.port, -0.5, numStepsRC, waitTimeRC)
 sigDACRampVoltage(pinout.sense1_r.device, pinout.sense1_r.port, vopen, numSteps)
 sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, vclose, numStepsRC, waitTimeRC)
 sigDACRamp(pinout.twiddle1.device, pinout.twiddle1.port, vclose, numStepsRC, waitTimeRC)

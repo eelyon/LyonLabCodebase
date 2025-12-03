@@ -2,8 +2,8 @@ function setGatesEmission(pinout, varargin)
 %SETEMISSIONGATES Set bias voltages for emitting electrons on device
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
-p.addParameter('numSteps', 10, isnonneg);
-p.addParameter('numStepsRC', 10, isnonneg);
+p.addParameter('numSteps', 5, isnonneg);
+p.addParameter('numStepsRC', 5, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
 p.addParameter('vclose', -6, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
@@ -14,7 +14,7 @@ waitTimeRC = p.Results.waitTimeRC; % in microseconds
 vclose = p.Results.vclose; % closing voltage of ccd
 
 %% Set Sommer-Tanner
-sigDACRamp(pinout.tm.device,pinout.tm.port,-3.5,numStepsRC,waitTimeRC) % ramp top metal
+sigDACRamp(pinout.tm.device,pinout.tm.port,-3.2,numStepsRC,waitTimeRC) % ramp top metal
 sigDACRampVoltage(pinout.m2s.device,pinout.m2s.port,-0.5,numSteps) % ramp M2 shield
 sigDACRampVoltage(pinout.bpg.device,pinout.bpg.port,vclose,numSteps) % ramp bond pad guard
 
@@ -36,7 +36,7 @@ sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vclose,numSteps)
 sigDACRamp(pinout.shield.device,pinout.shield.port,-0.5,numStepsRC,waitTimeRC) % shield underneath twiddle-sense
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps)
 sigDACRamp(pinout.d5.device,pinout.d5.port,vclose,numStepsRC,waitTimeRC); % compensation
-sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,vclose,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,-0.5,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,vclose,numStepsRC,waitTimeRC)
 sigDACRampVoltage(pinout.twiddle1.device,pinout.twiddle1.port,vclose,numSteps)
 sigDACRampVoltage(pinout.guard1_r.device,pinout.guard1_r.port,vclose,numSteps)
@@ -58,7 +58,7 @@ sigDACRampVoltage(pinout.d_v_3.device,pinout.d_v_3.port,vclose,numSteps)
 
 %% Set 2nd twiddle-sense
 sigDACRampVoltage(pinout.d7.device,pinout.d7.port,vclose,numSteps) % door for compensation of sense 1
-sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,vclose,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,-0.5,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,vclose,numStepsRC,waitTimeRC)
 sigDACRampVoltage(pinout.twiddle2.device,pinout.twiddle2.port,vclose,numSteps)
 sigDACRampVoltage(pinout.guard2_r.device,pinout.guard2_r.port,vclose,numSteps)

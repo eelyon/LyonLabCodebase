@@ -4,11 +4,11 @@ function [numE,numErr] = measureElectronsFn(pinout,sensor,varargin)
 % Sweep vload and measure sense 1
 
 % Need to set input capacitance and gain
-alpha = 0.49;
-cap1 = 3.3e-12;
-gain1 = 22*0.8319;
-cap2 = 2.85e-12;
-gain2 = 19.2*0.8647;
+alpha = 0.503;
+cap1 = 5.79e-12;
+gain1 = 27.5*0.877;
+cap2 = 4.87e-12;
+gain2 = 23*0.838;
 
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);

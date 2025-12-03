@@ -2,8 +2,8 @@ function [] = unloadSense1(pinout,varargin)
 % Move electrons from sense 1 back to Sommer-Tanner
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
-p.addParameter('numSteps', 20, isnonneg);
-p.addParameter('numStepsRC', 20, isnonneg);
+p.addParameter('numSteps', 2, isnonneg);
+p.addParameter('numStepsRC', 2, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
 p.addParameter('Vopen', 1, isnonneg);
 p.addParameter('Vclose', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
@@ -20,11 +20,11 @@ vclose = p.Results.Vclose; % closing voltage of ccd
 sigDACRamp(pinout.twiddle1.device,pinout.twiddle1.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.d5.device,pinout.d5.port,vopen,numStepsRC,waitTimeRC) % open door
-sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,vclose,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,-0.5,numStepsRC,waitTimeRC)
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vopen,numSteps) % open d4
 sigDACRamp(pinout.d5.device,pinout.d5.port,vclose,numStepsRC,waitTimeRC) % close door
 sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vopen,numSteps) % open ccd1
-sigDACRampVoltage(pinout.d4.device,pinout.d4.port,-1.8,numSteps) % close door
+sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps) % close door
 
 % Move electrons through horizontal CCD
 ccd_units = 63; % number of repeating units in ccd array
@@ -44,9 +44,9 @@ sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vopen,numSteps) % open 2nd doo
 sigDACRampVoltage(pinout.d3.device,pinout.d3.port,vclose,numSteps) % close 3rd door
 sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vopen,numSteps) % open 1st door
 sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vclose,numSteps) % close 2nd door
-sigDACRampVoltage(pinout.sts.device,pinout.sts.port,+1,numSteps)
+% sigDACRampVoltage(pinout.sts.device,pinout.sts.port,+1,numSteps)
 sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vclose,numSteps) % close 1st door
-sigDACRampVoltage(pinout.sts.device,pinout.sts.port,0,numSteps)
+% sigDACRampVoltage(pinout.sts.device,pinout.sts.port,0,numSteps)
 
 % Reset sense 1
 sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,0,numStepsRC,waitTimeRC)

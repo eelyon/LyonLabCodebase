@@ -12,24 +12,25 @@ p.parse(varargin{:});
 
 % Set instrument for roll-off measurement
 set3577ASweepMode(HP3577A,'SING')
+set3577Average(HP3577A,'0')
 set3577Attenuation(HP3577A,'R','20dB')
 set3577Impedance(HP3577A,'R','1Meg')
 set3577AStartFrequency(HP3577A,startFreq)
 set3577AStopFrequency(HP3577A,stopFreq); delay(1)
 
-sweepTime = get3577ASweepTime(HP3577A);
+% sweepTime = get3577ASweepTime(HP3577A);
 % stepTime = get3577AStepTime(HP3577A);
 
-set3577ASweepMode(NetworkAnalyzer,'CONT')
-set3577Average(NetworkAnalyzer,'128')
+set3577ASweepMode(HP3577A,'CONT')
+set3577Average(HP3577A,'128')
 % delay(p.Results.settling_time)
-delay(128*sweepTime);
+delay(128*p.Results.settling_time);
 
 [s21_dBm,freqs] = pull3577AData(HP3577A,startFreq,stopFreq); delay(1)
-set3577Average(NetworkAnalyzer,'0')
+set3577Average(HP3577A,'0')
 set3577ASweepMode(HP3577A,'SING')
 
-s21_volts = convertdBmToVoltage(s21_dBm+p.Results.attenuatio)*p.Results.pot_divider;
+s21_volts = convertdBmToVoltage(s21_dBm+p.Results.attenuation)*p.Results.pot_divider;
 [fit,gof] = fitRollOff(freqs,s21_volts);
 fits = fit(freqs);
 
@@ -45,7 +46,7 @@ hold on
 plot(freqs,fits,'r-','DisplayName',['Cut-off = ',num2str(fit.b,'%.f'),' Hz, A_{v} = ',num2str(max(fits),'%.2f')])
 hold off
 xlabel('Frequency (Hz)','FontSize',15)
-ylabel('Voltage Gain (a.u.)','FontSize',15)
+ylabel('Voltage Gain (arb.units)','FontSize',15)
 xlim([freqs(1),freqs(end)])
 legend('Location','best')
 saveData(fig2,'CorrectedRollOff',0);

@@ -148,7 +148,7 @@ for repeats = 1:repeats
     sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,vclose,numStepsRC,waitTimeRC)
     sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,vclose,numStepsRC,waitTimeRC)
     sigDACRamp(pinout.d7.device, pinout.d7.port, vopen, numStepsRC, waitTimeRC)
-    sigDACRamp(pinout.sense2_l.device, pinout.sense2_l.port, vclose, numStepsRC, waitTimeRC)
+    sigDACRamp(pinout.sense2_l.device, pinout.sense2_l.port, -0.5, numStepsRC, waitTimeRC)
     sigDACRampVoltage(pinout.phi_h1_3.device, pinout.phi_h1_3.port, vopen, numSteps)
     sigDACRamp(pinout.d7.device, pinout.d7.port, vclose, numStepsRC, waitTimeRC)
     sigDACRampVoltage(pinout.d4.device, pinout.d4.port, vopen, numSteps)

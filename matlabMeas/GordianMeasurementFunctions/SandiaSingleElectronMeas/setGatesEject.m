@@ -38,7 +38,7 @@ sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vclose,numSteps)
 %% Set 1st twiddle-sense negative
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps)
 sigDACRamp(pinout.d5.device,pinout.d5.port,vclose,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,vclose,numStepsRC,waitTimeRC) % rampSIM900Voltage(sense1_l.device,sense1_l.port,-0.5,waitTimeRC,delta);
+sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,-0.5,numStepsRC,waitTimeRC) % rampSIM900Voltage(sense1_l.device,sense1_l.port,-0.5,waitTimeRC,delta);
 sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.twiddle1.device,pinout.twiddle1.port,vclose,numStepsRC,waitTimeRC)
 sigDACRampVoltage(pinout.guard1_r.device,pinout.guard1_r.port,vclose,numSteps)
@@ -49,7 +49,7 @@ delay(1)
 
 %% Set 2nd twiddle-sense negative
 sigDACRampVoltage(pinout.d7.device,pinout.d7.port,vclose,numSteps) % door for compensation of sense 1
-sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,vclose,numStepsRC,waitTimeRC); delay(1) % rampSIM900Voltage(sense2_l.device,sense2_l.port,-0.5,waitTimeRC,delta);
+sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,-0.5,numStepsRC,waitTimeRC); delay(1) % rampSIM900Voltage(sense2_l.device,sense2_l.port,-0.5,waitTimeRC,delta);
 sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,vclose,numStepsRC,waitTimeRC)
 sigDACRampVoltage(pinout.guard2_r.device,pinout.guard2_r.port,vclose,numSteps)

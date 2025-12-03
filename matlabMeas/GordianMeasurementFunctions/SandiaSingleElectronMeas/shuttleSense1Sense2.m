@@ -17,7 +17,7 @@ vclose = p.Results.Vclose; % closing voltage of ccd
 
 sigDACRampVoltage(pinout.guard1_r.device,pinout.guard1_r.port,vopen,numSteps)
 sigDACRampVoltage(pinout.sense1_r.device,pinout.sense1_r.port,vopen,numSteps)
-sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,vclose,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,-0.5,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.twiddle1.device,pinout.twiddle1.port,vclose,numStepsRC,waitTimeRC)
 sigDACRampVoltage(pinout.d6.device,pinout.d6.port,vopen,numSteps)
