@@ -2,7 +2,7 @@ numSteps = 5; % sigDACRampVoltage
 numStepsRC = 5; % sigDACRamp
 waitTimeRC = 1100; % in microseconds
 vopen = 1; % holding voltage of ccd
-vclose = -1; % closing voltage of ccd
+vclose = -0.5; % closing voltage of ccd
 
 % sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vload,numSteps) % open 1st door
 % sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vload,numSteps) % open 2nd door

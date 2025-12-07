@@ -6,7 +6,7 @@ p.addParameter('numSteps', 2, isnonneg);
 p.addParameter('numStepsRC', 2, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
 p.addParameter('Vopen', 1, isnonneg);
-p.addParameter('Vclose', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
+p.addParameter('Vclose', -0.5, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
 
 numSteps = p.Results.numSteps; % sigDACRampVoltage
@@ -20,14 +20,14 @@ vclose = p.Results.Vclose; % closing voltage of ccd
 sigDACRamp(pinout.twiddle1.device,pinout.twiddle1.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.d5.device,pinout.d5.port,vopen,numStepsRC,waitTimeRC) % open door
-sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,-0.5,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,vclose,numStepsRC,waitTimeRC)
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vopen,numSteps) % open d4
 sigDACRamp(pinout.d5.device,pinout.d5.port,vclose,numStepsRC,waitTimeRC) % close door
 sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vopen,numSteps) % open ccd1
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps) % close door
 
 % Move electrons through horizontal CCD
-ccd_units = 63; % number of repeating units in ccd array
+ccd_units = 64; % number of repeating units in ccd array
 for n = 1:ccd_units
     sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vopen,numSteps) % open ccd3
     sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vclose,numSteps) % close ccd1
@@ -53,7 +53,7 @@ sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,0,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.twiddle1.device,pinout.twiddle1.port,0,numStepsRC,waitTimeRC)
 sigDACRampVoltage(pinout.guard1_r.device,pinout.guard1_r.port,-2,numSteps)
-% sigDACRamp(pinout.d5.device,pinout.d5.port,-2,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.d5.device,pinout.d5.port,-2,numStepsRC,waitTimeRC)
 
 % % Move electrons back from cut off channels parallel to sense1
 % sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vopen,numSteps) % open ccd1

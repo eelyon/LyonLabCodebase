@@ -12,7 +12,7 @@ poll = 0.1;
 
 vload = -0.3;
 vopen = 1; % holding voltage of ccd
-vclose = -1; % closing voltage of ccd
+vclose = -0.5; % closing voltage of ccd
 
 %% Move electron from Sommer-Tanner to twiddle-sense 1
 % load_sense1(pinout,vload)

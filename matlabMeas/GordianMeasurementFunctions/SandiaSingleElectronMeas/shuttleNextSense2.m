@@ -2,11 +2,11 @@ function [] = shuttleNextSense2(pinout,varargin)
 % Shuttle electron from current sense 2 to sense 2 in next channel 1 above
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
-p.addParameter('numSteps', 5, isnonneg);
-p.addParameter('numStepsRC', 5, isnonneg);
+p.addParameter('numSteps', 2, isnonneg);
+p.addParameter('numStepsRC', 2, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
 p.addParameter('Vopen', 1, isnonneg);
-p.addParameter('Vclose', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
+p.addParameter('Vclose', -0.5, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
 
 numSteps = p.Results.numSteps; % sigDACRampVoltage
@@ -18,7 +18,7 @@ vclose = p.Results.Vclose; % closing voltage of ccd
 sigDACRamp(pinout.d7.device, pinout.d7.port, vopen, numStepsRC, waitTimeRC)
 sigDACRamp(pinout.twiddle2.device, pinout.twiddle2.port, vclose, numStepsRC, waitTimeRC)
 sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, vclose, numStepsRC, waitTimeRC)
-sigDACRamp(pinout.sense2_l.device, pinout.sense2_l.port, -0.5, numStepsRC, waitTimeRC)
+sigDACRamp(pinout.sense2_l.device, pinout.sense2_l.port, vclose, numStepsRC, waitTimeRC)
 sigDACRampVoltage(pinout.phi_h1_3.device, pinout.phi_h1_3.port, vopen, numSteps)
 sigDACRamp(pinout.d7.device, pinout.d7.port, vclose, numStepsRC, waitTimeRC)
 sigDACRampVoltage(pinout.d4.device, pinout.d4.port, vopen, numSteps)

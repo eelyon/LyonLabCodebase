@@ -84,8 +84,8 @@ in_channel = '0';        % signal input channel
 scope_in_channel = '0';    % scope input channel
 
 % Configure the signal inputs
-ziDAQ('setInt', ['/' device '/sigins/' in_channel '/imp50'], 0);
-ziDAQ('setInt', ['/' device '/sigins/' in_channel '/ac'], 1);
+ziDAQ('setInt', ['/' device '/sigins/' in_channel '/imp50'], 1);
+ziDAQ('setInt', ['/' device '/sigins/' in_channel '/ac'], 0);
 ziDAQ('setInt',    ['/' device '/sigins/' in_channel '/autorange'], 1);
 % Perform a global synchronisation between the device and the data server:
 % Ensure that the signal input configuration has taken effect before

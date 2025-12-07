@@ -7,7 +7,7 @@ p.addParameter('numSteps', 5, isnonneg);
 p.addParameter('numStepsRC', 5, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
 p.addParameter('vopen', 1, isnonneg);
-p.addParameter('vclose', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
+p.addParameter('vclose', -0.5, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.addParameter('tc', 0.02, isnonneg);
 p.addParameter('drat', 10e3, isnonneg);
 p.addParameter('poll', 0.5, isnonneg);
