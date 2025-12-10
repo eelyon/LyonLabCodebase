@@ -1,10 +1,10 @@
 % Script for cleaning all channels
 repeats = 5;
-numSteps = 5;
-numStepsRC = 5;
+numSteps = 2;
+numStepsRC = 2;
 waitTimeRC = 1100;
-vopen = 2;
-vclose = -0.8;
+vopen = 1;
+vclose = -0.5;
 
 vstart = 0;
 vstop = -1;
@@ -238,7 +238,7 @@ sigDACRampVoltage(pinout.phi_h1_1.device, pinout.phi_h1_1.port, vopen, numSteps)
 sigDACRampVoltage(pinout.d4.device, pinout.d4.port, -1.8, numSteps)
 
 % Move electrons on phi_h1_1 back to Sommer-Tanner through horizontal ccd
-ccd_units = 63; % number of repeating units in ccd array
+ccd_units = 64; % number of repeating units in ccd array
 for n = 1:ccd_units
     sigDACRampVoltage(pinout.phi_h1_3.device, pinout.phi_h1_3.port, vopen, numSteps)
     sigDACRampVoltage(pinout.phi_h1_1.device, pinout.phi_h1_1.port, vclose, numSteps)
@@ -302,7 +302,7 @@ sigDACRampVoltage(pinout.phi_h1_1.device, pinout.phi_h1_1.port, vopen, numSteps)
 sigDACRampVoltage(pinout.d4.device, pinout.d4.port, vclose-0.2, numSteps) % Set d4 s.t. electrons can't get onto top metal in parallel channels
 
 % Move electrons on CCD3 back to ST through CCD
-ccd_units = 63; % number of repeating units in ccd array
+ccd_units = 64; % number of repeating units in ccd array
 for n = 1:ccd_units
     sigDACRampVoltage(pinout.phi_h1_3.device, pinout.phi_h1_3.port, vopen, numSteps)
     sigDACRampVoltage(pinout.phi_h1_1.device, pinout.phi_h1_1.port, vclose, numSteps)

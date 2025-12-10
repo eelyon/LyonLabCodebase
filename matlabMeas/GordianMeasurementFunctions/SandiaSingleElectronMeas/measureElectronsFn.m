@@ -5,10 +5,10 @@ function [numE,numErr] = measureElectronsFn(pinout,sensor,varargin)
 
 % Need to set input capacitance and gain
 alpha = 0.503;
-cap1 = 5.79e-12;
-gain1 = 27.5*0.877;
-cap2 = 4.87e-12;
-gain2 = 23*0.838;
+cap1 = 6.2e-12;
+gain1 = 27.2*0.883;
+cap2 = 5.3e-12;
+gain2 = 22.8*0.86;
 
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
@@ -21,8 +21,8 @@ p.addParameter('filter_order', 2, isnonneg);
 % Filter time constant
 p.addParameter('time_constant', 0.5, @isnumeric);
 % Demodulation/sampling rate of demodulated data
-p.addParameter('demod_rate', 1e3, @isnumeric);
-p.addParameter('poll', 10, isnonneg);
+p.addParameter('demod_rate', 10e3, @isnumeric);
+p.addParameter('poll', 20, isnonneg);
 p.addParameter('sweep', 1, @isnumeric);
 p.addParameter('onoff', 1, @isnumeric);
 % The length of time to accumulate subscribed data (by sleeping) before polling a second time [s].
@@ -66,8 +66,8 @@ if p.Results.onoff == 1
 end
 
 elseif sensor == 2
-    v_on = -0.3;
-    v_off = -0.7;
+    v_on = -0.2;
+    v_off = -0.6;
 
 if p.Results.sweep == 1
     [~,~,x,y] = MFLISweep1D_getSample({'Guard2'},vstart,vstop,vstep,'dev32061',pinout.guard2_l.device,pinout.guard2_l.port,0, ...
@@ -76,16 +76,16 @@ if p.Results.sweep == 1
 end
 if p.Results.onoff == 1
     [avgx,avgy,stdx,stdy] = MFLISweep1D_poll({'Guard2'},v_on,v_off,(v_off-v_on),'dev32061',pinout.guard2_l.device,pinout.guard2_l.port,0, ...
-        'filter_order',filter,'time_constant',0.2,'poll_duration',poll,'demod_rate',drat);
+        'filter_order',filter,'time_constant',0.3,'poll_duration',poll,'demod_rate',drat);
     sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,0,5,1100); % reset guard
 
     corrx = avgx-avgx(2);
     corry = avgy-avgy(2);
     corrmag = sqrt(corrx.^2 + corry.^2);
-    numE = (cap2*2*sqrt(2) * (corrmag(1)-corrmag(2))) / (1.602e-19*gain2*0.52);
+    numE = (cap2*2*sqrt(2) * (corrmag(1)-corrmag(2))) / (1.602e-19*gain2*alpha);
     
     stdm = sqrt(stdx.^2 + stdy.^2);
-    numErr = (cap2*2*sqrt(2) * (stdm(1)+stdm(2))) / (1.602e-19*gain2*0.52);
+    numErr = (cap2*2*sqrt(2) * (stdm(1)+stdm(2))) / (1.602e-19*gain2*alpha);
 
     % corrx_mag = x-avgx(2);
     % corry_mag = y-avgy(2);

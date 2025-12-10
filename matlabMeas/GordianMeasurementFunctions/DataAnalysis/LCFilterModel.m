@@ -30,21 +30,21 @@ for i = 1:numPoints
 end
 
 %% Load data from matlab figure
-path_home = 'C:\Users\gordi\Dropbox (Princeton)\GroupDropbox\Gordian\Experiments\Sandia2023\Data\HeLevelMeter_LCFilter\12_04_23\';
-path_lab = 'C:\Users\Lyon Lab Simulation\Dropbox (Princeton)\GroupDropbox\Gordian\Experiments\Sandia2023\Data\HeLevelMeter_LCFilter\12_04_23\';
-tag = 'freqHeFilter';
-figNum = 6608;
-figPath = append(path_lab,tag,'_',num2str(figNum),'.fig');
-
-try
-    fig = openfig(figPath,"reuse","invisible");
-catch
-    fprintf(['Figure number ', num2str(figNum), ' is missing.\n'])
-end
-
-h = findall(gcf,'Type','line');
-xDat = h(2).XData; % 1 is phase (degrees) data, 2 is magnitude (dB) data
-yDat = h(2).YData;
+% path_home = 'C:\Users\gordi\Dropbox (Princeton)\GroupDropbox\Gordian\Experiments\Sandia2023\Data\HeLevelMeter_LCFilter\12_04_23\';
+% path_lab = 'C:\Users\Lyon Lab Simulation\Dropbox (Princeton)\GroupDropbox\Gordian\Experiments\Sandia2023\Data\HeLevelMeter_LCFilter\12_04_23\';
+% tag = 'freqHeFilter';
+% figNum = 6608;
+% figPath = append(path_lab,tag,'_',num2str(figNum),'.fig');
+% 
+% try
+%     fig = openfig(figPath,"reuse","invisible");
+% catch
+%     fprintf(['Figure number ', num2str(figNum), ' is missing.\n'])
+% end
+% 
+% h = findall(gcf,'Type','line');
+% xDat = h(2).XData; % 1 is phase (degrees) data, 2 is magnitude (dB) data
+% yDat = h(2).YData;
 
 %% Plot figure
 figure();
@@ -55,7 +55,7 @@ title(['C_c=',num2str(Cc*1e12),'pF, C_{l}=',num2str(Cl*1e15),'fF, C_{idC}=', ...
     num2str(Cidc*1e15),'fF, L=',num2str(L*1e9),'nH, R_l=',num2str(Rl), ...
     '\Omega , R=',num2str(R),'\Omega'])
 
-hold on; plot(xDat,yDat);
+% hold on; plot(xDat,yDat);
 
 grid on
 % xlim([min(f_GHz) max(f_GHz)])

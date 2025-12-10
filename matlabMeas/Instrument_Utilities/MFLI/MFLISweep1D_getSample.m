@@ -40,15 +40,15 @@ end
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 % Input impedance
-p.addParameter('imp50',0,@isnumeric)
+% p.addParameter('imp50',1,@isnumeric)
 % Input coupling
-p.addParameter('ac',1,@isnumeric)
+% p.addParameter('ac',0,@isnumeric)
 % Filter order
 p.addParameter('filter_order', 2, isnonneg);
 % Filter time constant
 p.addParameter('time_constant', 0.10, @isnumeric);
 % Demodulation/sampling rate of demodulated data
-p.addParameter('demod_rate', 1e3, @isnumeric);
+p.addParameter('demod_rate', 10e3, @isnumeric);
 p.parse(varargin{:});
 time_constant = p.Results.time_constant;
 

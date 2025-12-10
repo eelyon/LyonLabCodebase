@@ -1,6 +1,6 @@
 % Loop for ejecting electrons.
 % Usually takes 3 attempts to remove all electrons from the device.
-for i = 1:10
+for i = 1:5
  fprintf([num2str(i), ' '])
  setGatesEject(pinout); delay(5)
  setGatesExperiment(pinout); delay(5)
