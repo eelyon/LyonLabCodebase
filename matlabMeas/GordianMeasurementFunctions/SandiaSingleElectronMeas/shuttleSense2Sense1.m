@@ -2,8 +2,8 @@ function [] = shuttleSense2Sense1(pinout,varargin)
 %SHUTTLE_SENSE2SENSE1 Shuttle electrons from sense 2 to sense 1
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
-p.addParameter('numSteps', 5, isnonneg);
-p.addParameter('numStepsRC', 5, isnonneg);
+p.addParameter('numSteps', 2, isnonneg);
+p.addParameter('numStepsRC', 2, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
 p.addParameter('Vopen', 1, isnonneg);
 p.addParameter('Vclose', -0.5, @(x) isnumeric(x) && isscalar(x) && (x < 0));
@@ -15,9 +15,9 @@ waitTimeRC = p.Results.waitTimeRC; % in microseconds
 vopen = p.Results.Vopen; % holding voltage of ccd
 vclose = p.Results.Vclose; % closing voltage of ccd
 
-sigDACRamp(pinout.guard2_r.device,pinout.guard2_r.port,-3,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,-2.5,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,-2,numStepsRC,waitTimeRC)
+% sigDACRamp(pinout.guard2_r.device,pinout.guard2_r.port,-3,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,vclose,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.d7.device,pinout.d7.port,vopen,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,vclose,numStepsRC,waitTimeRC)
 sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vopen,numSteps)
@@ -29,7 +29,7 @@ sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps)
 sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vopen,numSteps)
 sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vclose,numSteps)
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vopen,numSteps)
-sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,-2,numSteps)
+sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vclose,numSteps)
 sigDACRampVoltage(pinout.d_v_2.device,pinout.d_v_2.port,vopen,numSteps)
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps)
 

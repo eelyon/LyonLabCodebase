@@ -41,6 +41,8 @@ sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,vopen,numStepsRC,waitTime
 sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,vopen,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.twiddle1.device,pinout.twiddle1.port,vopen,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.d5.device,pinout.d5.port,vclose,numStepsRC,waitTimeRC)
+
+% Reset Sense1
 sigDACRampVoltage(pinout.guard1_r.device,pinout.guard1_r.port,-2,numSteps)
 sigDACRamp(pinout.d5.device,pinout.d5.port,-2,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,0,numStepsRC,waitTimeRC)

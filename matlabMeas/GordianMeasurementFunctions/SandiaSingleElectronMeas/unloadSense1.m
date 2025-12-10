@@ -48,7 +48,7 @@ sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vclose,numSteps) % close 2nd d
 sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vclose,numSteps) % close 1st door
 % sigDACRampVoltage(pinout.sts.device,pinout.sts.port,0,numSteps)
 
-% Reset sense 1
+% Reset Sense1
 sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,0,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.twiddle1.device,pinout.twiddle1.port,0,numStepsRC,waitTimeRC)
