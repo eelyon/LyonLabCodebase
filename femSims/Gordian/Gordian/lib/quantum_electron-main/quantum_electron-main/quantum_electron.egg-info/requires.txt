@@ -1,5 +1,0 @@
-shapely
-scikit-image
-pyvista
-IPython
-alive_progress

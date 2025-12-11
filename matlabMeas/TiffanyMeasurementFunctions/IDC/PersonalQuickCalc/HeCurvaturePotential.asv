@@ -1,0 +1,13 @@
+fig = gca;
+a = get(gca,'Children');
+xdata = get(a, 'XData');
+ydata = get(a, 'YData');
+
+figure(10)
+plot(xdata,ydata*1e3)
+xlabel('Transport Line Position (m)')
+ylabel('Helium Depth (nm)')
+
+figure(11)
+[pos, eField] = eFieldCalc(ydata*1e-6,xdata);
+plot(pos,eField)

@@ -1,0 +1,39 @@
+dielectric_constants:
+  DIELECTRIC: 3.9
+  HELIUM: 1.057
+  METAL: 1.0
+  VACUUM: 1.0
+  WAFERDIELECTRIC: 11
+extract_opt:
+- additional_name: twiddleSense_20251121
+  coordinate1:
+  - -16.875
+  - -1.875
+  - 1001
+  coordinate2:
+  - -2.5
+  - 2.5
+  - 201
+  coordinate3: 1.99
+  plane: xy
+  quantity: phi
+ff_polynomial: 2
+meshfile: dump/GordianSensor_20251121
+physicalSurfaces:
+  D4: 8
+  D5: 15
+  D6: 14
+  Guard1: 10
+  Guard2: 12
+  Phi_h1_1: 7
+  Phi_h1_3: 6
+  Sense1: 9
+  Sense2: 13
+  Top: 16
+  Twiddle: 11
+physicalVolumes:
+  DIELECTRIC: 3
+  HELIUM: 5
+  METAL: 4
+  VACUUM: 2
+  WAFERDIELECTRIC: 1

@@ -1,0 +1,122 @@
+savedir: dump
+meshfile: dump\geo\dot.msh
+extrude:
+   wafer:
+      z_base: -10
+      height: 10
+      physical_name: DIELECTRIC
+      cut: null
+      forConstruction: false
+   trap:
+      z_base: 0
+      height: 0.2
+      physical_name: METAL
+      cut: null
+      forConstruction: false
+   dielectric:
+      z_base: 0
+      height: 1.5
+      physical_name: DIELECTRIC
+      cut:
+      - trap
+      forConstruction: false
+   top:
+      z_base: 1.5
+      height: 0.1
+      physical_name: METAL
+      cut: null
+      forConstruction: false
+   helium:
+      z_base: 0
+      height: 1.6
+      physical_name: HELIUM
+      cut:
+      - trap
+      - dielectric
+      - top
+      forConstruction: false
+   vacuum:
+      z_base: 1.6
+      height: 20
+      physical_name: VACUUM
+      cut:
+      - dielectric
+      - top
+      forConstruction: false
+physicalSurfaces:
+   mid: 5
+   out: 6
+   top: 7
+physicalVolumes:
+   VACUUM: 1
+   METAL: 2
+   HELIUM: 3
+   DIELECTRIC: 4
+dielectric_constants:
+   DIELECTRIC: 11.0
+   METAL: 1.0
+   HELIUM: 1.057
+   VACUUM: 1.0
+ff_polynomial: 2
+extract_opt:
+-  name: result1
+   quantity: phi
+   plane: xy
+   coordinate1:
+   - -10
+   - 10
+   - 201
+   coordinate2:
+   - -10
+   - 10
+   - 201
+   coordinate3:
+   - 1.6
+   curvature_config: null
+-  name: result2
+   quantity: phi
+   plane: xy
+   coordinate1:
+   - -10
+   - 10
+   - 201
+   coordinate2:
+   - -10
+   - 10
+   - 201
+   coordinate3:
+   - 0
+   - 0.001
+   - 0.01
+   - 0.02
+   curvature_config:
+      script: "load \"gmsh\"\nmesh heliumsurfTh = gmshload(\"dump\\\\geo\\\\heliumsurface.msh\"\
+         );\ncout << \"Area: \" << int2d(heliumsurfTh)(1.0) << endl;\n\nfespace heliumsurfVh(heliumsurfTh,P2);\n\
+         heliumsurfVh<real> disp,vdisp;\nproblem HeliumSurfaceCalculate(disp,vdisp,solver=CG)\
+         \ =\n    int2d(heliumsurfTh)( (dx(disp)*dx(vdisp) + dy(disp)*dy(vdisp)) )\n\
+         \    - int2d(heliumsurfTh)( 1*vdisp )\n    + on (2,disp=0);\n\nHeliumSurfaceCalculate;\n\
+         heliumsurfTh = adaptmesh( heliumsurfTh, disp, hmax = .5, hmin = 0.02, iso\
+         \ = 1, nbvx = 10000 );\nHeliumSurfaceCalculate;\ncout << \"Helium Surface\
+         \ Calculations are finished\" << endl;\n"
+      displacement: disp
+      bulk_helium_distances:
+      - 0
+      - 0.001
+      - 0.01
+      - 0.02
+      surface_helium_level: 1.6
+-  name: result3
+   quantity: Ez
+   plane: yz
+   coordinate1:
+   - -10
+   - 10
+   - 101
+   coordinate2:
+   - -2
+   - 2
+   - 101
+   coordinate3:
+   - 0.0
+   curvature_config: null
+msh_refinements: null

@@ -1,0 +1,59 @@
+result1:
+  Quantity: phi
+  Plane: xy
+  X Min: -10
+  X Max: 10
+  X Num: 201
+  Y Min: -10
+  Y Max: 10
+  Y Num: 201
+  Slices: 1
+  Slice Values:
+  - 1.6
+  Curved Surface: false
+  Schema: (1, 201, 201)
+result2:
+  Quantity: phi
+  Plane: xy
+  X Min: -10
+  X Max: 10
+  X Num: 201
+  Y Min: -10
+  Y Max: 10
+  Y Num: 201
+  Slices: 4
+  Slice Values:
+  - 0
+  - 0.001
+  - 0.01
+  - 0.02
+  Curved Surface: true
+  Schema: (4, 201, 201)
+result3:
+  Quantity: Ez
+  Plane: yz
+  X Min: -10
+  X Max: 10
+  X Num: 101
+  Y Min: -2
+  Y Max: 2
+  Y Num: 101
+  Slices: 1
+  Slice Values:
+  - 0.0
+  Curved Surface: false
+  Schema: (1, 101, 101)
+Capacitance Matrix:
+- - -643.654
+  - 529.172
+  - 135.587
+- - 517.105
+  - -3716.11
+  - 3452.49
+- - 126.552
+  - 3186.93
+  - -3588.07
+Control Electrodes:
+- mid
+- out
+- top

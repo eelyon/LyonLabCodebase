@@ -1,0 +1,15 @@
+load "gmsh"
+mesh heliumsurfTh = gmshload("heliumsurface.msh2");
+cout << "Area: " << int2d(heliumsurfTh)(1.0) << endl;
+
+fespace heliumsurfVh(heliumsurfTh,P2);
+heliumsurfVh<real> disp,vdisp;
+problem HeliumSurfaceCalculate(disp,vdisp,solver=CG) =
+    int2d(heliumsurfTh)( (dx(disp)*dx(vdisp) + dy(disp)*dy(vdisp)) )
+    - int2d(heliumsurfTh)( 1*vdisp )
+    + on (2,disp=0);
+
+HeliumSurfaceCalculate;
+heliumsurfTh = adaptmesh( heliumsurfTh, disp, hmax = .5, hmin = 0.02, iso = 1, nbvx = 10000 );
+HeliumSurfaceCalculate;
+cout << "Helium Surface Calculations are finished" << endl;

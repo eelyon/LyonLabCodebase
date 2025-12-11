@@ -2,7 +2,7 @@ function [] = HeCurvatureFinger( channelHeight, fingerLength )
 
 %%Constants
 
-fn = 3;
+fn = 4;
 
 % Physical Conastants
 i  = sqrt(-1);
@@ -19,10 +19,11 @@ pcm = 1e-2;
 
 % Experimental constants
 
-widthStart = 6.6e-6;
-widthEnd = 31e-6;
+widthStart = 6.3e-6;
+widthEnd = 32e-6;
+
 numWidths = 50;
-listH = [6e-3];
+listH = [5.5e-3];
 
 % channelHeight = 0.620e-6;
 % fingerLength = 55;
@@ -73,8 +74,7 @@ for h = listH
 
         % depth = @(x,y) [y(2); -B/A*y(1)^(-3)-1/A*y(1)-C/A-D/A*(epHe*(Ez(x,y(1)))^2+(Ex(x,y(1)))^2)];
         % HBalance0 = @(d,x,n,V0) (h+d) - (epHe - 1).*ep0./2./rho./g.*(epHe.*Ez(x,d,V0).^2+Ex(x,d,V0).^2) - k.^4./d.^3 + n.*n.*e.*e./2./ep0./epHe./rho./g;
-        dpp = @(d,x,n,V0) 1./sigma.*rho.*g.*((h+d) - (epHe - 1).*ep0./2./rho./g.*(epHe.*Ez(x,d,V0).^2+Ex(x,d,V0).^2) - k.^4./d.^3 + n.*n.*e.*e./2./ep0./epHe./rho./g);
-        % dppBulk = @(d,x,n,V0) 1./sigma.*rho.*g.*((h+d)); % - (epHe - 1).*ep0./2./rho./g.*(epHe.*Ez(x,d,V0).^2+Ex(x,d,V0).^2) - k.^4./d.^3 + n.*n.*e.*e./2./ep0./epHe./rho./g);
+        dpp = @(d,x,n,V0) (1./sigma).*rho.*g.*((h+d) - (epHe - 1).*ep0./2./rho./g.*(epHe.*Ez(x,d,V0).^2+Ex(x,d,V0).^2) - k.^4./d.^3 + n.*n.*e.*e./2./ep0./epHe./rho./g);
         
         params = sprintf(' [ h=%1.0e , p=%2.0e ] ',h,p);
         
@@ -101,13 +101,13 @@ for h = listH
                 end
                 
                 if(min(d) > 0 && isreal(d) && d(end) > dend)
-                    figure(fn+1)
-                    subplot(1,1,1)
-                    plot(x.*um,d.*um,'LineWidth',2)
-                    xlabel('Position [um]')
-                    ylabel('Helium Depth [um]')
-                    title(['Depth Vs x Position' params])
-                    hold on
+%                     figure(fn+1)
+%                     subplot(1,1,1)
+%                     plot(x.*um,d.*um,'LineWidth',2)
+%                     xlabel('Position [um]')
+%                     ylabel('Helium Depth [um]')
+%                     title(['Depth Vs x Position' params])
+%                     hold on
                     dWinner = dGuess;
                     dwins = d;
                 end
