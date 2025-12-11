@@ -1,11 +1,18 @@
 directory = 'C:\Users\gordi\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensingShuttling\data_single_electron_shuttling\';
-day = '11_11_25\';
-tag = 'Guard1';
-figNum = []; % 22028;
+day = '12_09_25\';
+tag = 'Guard2';
+% cd(directory)
+% allFilesInDirectory = dir;
+% figNum = 22880:1:23009; % 22028;
 
 %maybe do thin where you enter the tag and then convert it
-for n = figNum
-    fig = openfig([directory,day,tag,'_',num2str(figNum),'.fig'],"invisible");
+for figNum = 23009:1:23015
+    try
+        fig = openfig([directory,day,tag,'_',num2str(figNum),'.fig'],"invisible");
+    catch
+        warning(['Figure ', tag,'_',num2str(figNum), ' not found'])
+        continue;
+    end
     ax = findall(fig,'Type','Axes');
     
     % Prepare a structure to store data
