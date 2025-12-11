@@ -1,42 +1,42 @@
-2025-12-11 13:49:50,234 | INFO | Starting EDP: dump\\edp\\ff_mid.edp
-2025-12-11 13:50:02,842 | DEBUG | Full output captured
-2025-12-11 13:50:02,842 | INFO | -- FreeFem++ v4.6 (Fri, Apr 03, 2020  2:08:08 PM - git v4.6)
-2025-12-11 13:50:02,842 | INFO |  Load: lg_fem lg_mesh lg_mesh3 eigenvalue 
-2025-12-11 13:50:02,842 | INFO | 'ffglut.exe' is not recognized as an internal or external command,
-2025-12-11 13:50:02,842 | INFO | operable program or batch file.
-2025-12-11 13:50:02,842 | INFO | (load: loadLibary C:\Program Files (x86)\FreeFem++\\.\gmsh = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\msh3 = 0) (already loaded: gmsh)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\medit = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\mshmet = 0) load: mshmet  
-2025-12-11 13:50:02,842 | INFO | (load: loadLibary C:\Program Files (x86)\FreeFem++\\.\tetgen = 0) load: tetgen  
-2025-12-11 13:50:02,842 | INFO |  sizestack + 1024 =4888  ( 3864 )
-2025-12-11 13:50:02,842 | INFO | 
-2025-12-11 13:50:02,842 | INFO | Area: 69
-2025-12-11 13:50:02,842 | INFO |  GC:  converge in  66 g=1.92433e-12 rho= 2.22443 gamma= 0.825859
-2025-12-11 13:50:02,842 | INFO |   -- Solve : 
-2025-12-11 13:50:02,842 | INFO |           min 1.60385e-32  max 2.09196
-2025-12-11 13:50:02,842 | INFO |   number of required edges : 0
-2025-12-11 13:50:02,842 | INFO |   -- adaptmesh Regulary:  Nb triangles 8324 , h  min 0.078402 , h max 0.239228
-2025-12-11 13:50:02,842 | INFO |      area =  69 , M area = 3609.32 , M area/( |Khat| nt) 1.00137
-2025-12-11 13:50:02,842 | INFO |      infiny-regularity:  min 0.52859  max 1.54291
-2025-12-11 13:50:02,842 | INFO |      anisomax  2.28854, beta max = 1.24255 min  0.789706
-2025-12-11 13:50:02,842 | INFO |   --  mesh:  Nb of Triangles =   8324, Nb of Vertices 4338
-2025-12-11 13:50:02,842 | INFO |  GC:  converge in  335 g=7.47048e-14 rho= 1.94402 gamma= 0.887293
-2025-12-11 13:50:02,842 | INFO |   -- Solve : 
-2025-12-11 13:50:02,842 | INFO |           min 6.47678e-34  max 2.11431
-2025-12-11 13:50:02,842 | INFO | Helium Surface Calculations are finished
-2025-12-11 13:50:02,842 | INFO | 159044 tetrahedrons
-2025-12-11 13:50:02,842 | INFO | 23714 triangles
-2025-12-11 13:50:02,842 | INFO | 182758 numElements
-2025-12-11 13:50:02,842 | INFO |   -- Build Nodes/DF on mesh :   n.v. 26667, n. elmt. 159044, n b. elmt. 23714
-2025-12-11 13:50:02,842 | INFO |      nb of Nodes 213292    nb of DoF   213292  DFon=1100
-2025-12-11 13:50:02,842 | INFO |   -- FESpace: Nb of Nodes 213292 Nb of DoF 213292
-2025-12-11 13:50:02,842 | INFO |   -- Build Nodes/DF on mesh :   n.v. 26667, n. elmt. 159044, n b. elmt. 23714
-2025-12-11 13:50:02,842 | INFO |      nb of Nodes 159044    nb of DoF   159044  DFon=0001
-2025-12-11 13:50:02,842 | INFO |   -- FESpace: Nb of Nodes 159044 Nb of DoF 159044
-2025-12-11 13:50:02,842 | INFO |  GC:  converge in  189 g=1.54541e-09 rho= 1.26219 gamma= 0.908297
-2025-12-11 13:50:02,842 | INFO |   -- Solve : 
-2025-12-11 13:50:02,842 | INFO |           min -8.26755e-30  max 1
-2025-12-11 13:50:02,842 | INFO | times: compile 0.03s, execution 12.527s,  mpirank:0
-2025-12-11 13:50:02,842 | INFO |  ######## We forget of deleting   -13 Nb pointer,   0Bytes  ,  mpirank 0, memory leak =0
-2025-12-11 13:50:02,842 | INFO |  CodeAlloc : nb ptr  4344,  size :509208 mpirank: 0
-2025-12-11 13:50:02,842 | INFO |  WARNING NUMBER bad SearchMethod cas in 2d: 63860 int 3d 0(essai d2: 0 3d: 0 )
-2025-12-11 13:50:02,843 | INFO | Ok: Normal End
-2025-12-11 13:50:02,843 | INFO | Completed EDP: dump\\edp\\ff_mid.edp
+2025-12-11 14:08:23,294 | INFO | Starting EDP: dump\\edp\\ff_mid.edp
+2025-12-11 14:08:36,448 | DEBUG | Full output captured
+2025-12-11 14:08:36,448 | INFO | -- FreeFem++ v4.6 (Fri, Apr 03, 2020  2:08:08 PM - git v4.6)
+2025-12-11 14:08:36,448 | INFO |  Load: lg_fem lg_mesh lg_mesh3 eigenvalue 
+2025-12-11 14:08:36,448 | INFO | 'ffglut.exe' is not recognized as an internal or external command,
+2025-12-11 14:08:36,448 | INFO | operable program or batch file.
+2025-12-11 14:08:36,449 | INFO | (load: loadLibary C:\Program Files (x86)\FreeFem++\\.\gmsh = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\msh3 = 0) (already loaded: gmsh)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\medit = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\mshmet = 0) load: mshmet  
+2025-12-11 14:08:36,449 | INFO | (load: loadLibary C:\Program Files (x86)\FreeFem++\\.\tetgen = 0) load: tetgen  
+2025-12-11 14:08:36,449 | INFO |  sizestack + 1024 =4808  ( 3784 )
+2025-12-11 14:08:36,449 | INFO | 
+2025-12-11 14:08:36,449 | INFO | Area: 69
+2025-12-11 14:08:36,449 | INFO |  GC:  converge in  66 g=1.92433e-12 rho= 2.22443 gamma= 0.825859
+2025-12-11 14:08:36,449 | INFO |   -- Solve : 
+2025-12-11 14:08:36,449 | INFO |           min 1.60385e-32  max 2.09196
+2025-12-11 14:08:36,449 | INFO |   number of required edges : 0
+2025-12-11 14:08:36,449 | INFO |   -- adaptmesh Regulary:  Nb triangles 8324 , h  min 0.078402 , h max 0.239228
+2025-12-11 14:08:36,449 | INFO |      area =  69 , M area = 3609.32 , M area/( |Khat| nt) 1.00137
+2025-12-11 14:08:36,449 | INFO |      infiny-regularity:  min 0.52859  max 1.54291
+2025-12-11 14:08:36,449 | INFO |      anisomax  2.28854, beta max = 1.24255 min  0.789706
+2025-12-11 14:08:36,449 | INFO |   --  mesh:  Nb of Triangles =   8324, Nb of Vertices 4338
+2025-12-11 14:08:36,449 | INFO |  GC:  converge in  335 g=7.47048e-14 rho= 1.94402 gamma= 0.887293
+2025-12-11 14:08:36,449 | INFO |   -- Solve : 
+2025-12-11 14:08:36,449 | INFO |           min 6.47678e-34  max 2.11431
+2025-12-11 14:08:36,449 | INFO | Helium Surface Calculations are finished
+2025-12-11 14:08:36,449 | INFO | 159044 tetrahedrons
+2025-12-11 14:08:36,449 | INFO | 23714 triangles
+2025-12-11 14:08:36,449 | INFO | 182758 numElements
+2025-12-11 14:08:36,449 | INFO |   -- Build Nodes/DF on mesh :   n.v. 26667, n. elmt. 159044, n b. elmt. 23714
+2025-12-11 14:08:36,449 | INFO |      nb of Nodes 213292    nb of DoF   213292  DFon=1100
+2025-12-11 14:08:36,449 | INFO |   -- FESpace: Nb of Nodes 213292 Nb of DoF 213292
+2025-12-11 14:08:36,449 | INFO |   -- Build Nodes/DF on mesh :   n.v. 26667, n. elmt. 159044, n b. elmt. 23714
+2025-12-11 14:08:36,449 | INFO |      nb of Nodes 159044    nb of DoF   159044  DFon=0001
+2025-12-11 14:08:36,449 | INFO |   -- FESpace: Nb of Nodes 159044 Nb of DoF 159044
+2025-12-11 14:08:36,449 | INFO |  GC:  converge in  189 g=1.54541e-09 rho= 1.26219 gamma= 0.908297
+2025-12-11 14:08:36,449 | INFO |   -- Solve : 
+2025-12-11 14:08:36,449 | INFO |           min -8.26755e-30  max 1
+2025-12-11 14:08:36,449 | INFO | times: compile 0.026s, execution 13.083s,  mpirank:0
+2025-12-11 14:08:36,449 | INFO |  ######## We forget of deleting   -13 Nb pointer,   0Bytes  ,  mpirank 0, memory leak =0
+2025-12-11 14:08:36,449 | INFO |  CodeAlloc : nb ptr  4344,  size :509208 mpirank: 0
+2025-12-11 14:08:36,449 | INFO |  WARNING NUMBER bad SearchMethod cas in 2d: 63860 int 3d 0(essai d2: 0 3d: 0 )
+2025-12-11 14:08:36,449 | INFO | Ok: Normal End
+2025-12-11 14:08:36,449 | INFO | Completed EDP: dump\\edp\\ff_mid.edp

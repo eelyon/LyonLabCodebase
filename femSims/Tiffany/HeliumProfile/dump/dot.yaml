@@ -48,10 +48,10 @@ physicalSurfaces:
    out: 6
    top: 7
 physicalVolumes:
-   VACUUM: 1
+   DIELECTRIC: 1
    METAL: 2
-   DIELECTRIC: 3
-   HELIUM: 4
+   HELIUM: 3
+   VACUUM: 4
 dielectric_constants:
    DIELECTRIC: 11.0
    METAL: 1.0
