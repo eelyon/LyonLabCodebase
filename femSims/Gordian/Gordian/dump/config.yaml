@@ -1,0 +1,32 @@
+dielectric_constants:
+  DIELECTRIC: 11.0
+  HELIUM: 1.057
+  METAL: 1.0
+  VACUUM: 1.0
+extract_opt:
+- additional_name: GordianSensor
+  coordinate1:
+  - -8
+  - 8
+  - 1001
+  coordinate2:
+  - -2.5
+  - 2.5
+  - 201
+  coordinate3: 2.05
+  plane: xy
+  quantity: phi
+ff_polynomial: 2
+meshfile: dump/GordianSensor
+physicalSurfaces:
+  Door1: 5
+  Door2: 9
+  Guard: 7
+  Sense: 6
+  Top: 10
+  Twiddle: 8
+physicalVolumes:
+  DIELECTRIC: 1
+  HELIUM: 3
+  METAL: 4
+  VACUUM: 2

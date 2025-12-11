@@ -1,0 +1,29 @@
+ GC:  converge in  128 g=5.52059e-07 rho= 1.28602 gamma= 0.897046
+  -- Solve :
+          min -0.0063562  max 1
+calculations are finished, saving data
+I'm on iteration 5/8
+ GC:  converge in  123 g=5.54954e-07 rho= 1.07375 gamma= 0.979325
+  -- Solve :
+          min -0.00519605  max 1
+calculations are finished, saving data
+I'm on iteration 6/8
+ GC:  converge in  461 g=4.39163e-06 rho= 1.36538 gamma= 0.939744
+  -- Solve :
+          min -0.00663508  max 1.00001
+calculations are finished, saving data
+I'm on iteration 7/8
+ GC:  converge in  257 g=7.33992e-06 rho= 1.33836 gamma= 0.946014
+  -- Solve :
+          min 5.99722e-06  max 1.00003
+calculations are finished, saving data
+I'm on iteration 8/8
+ GC:  converge in  466 g=3.52159e-06 rho= 1.32094 gamma= 0.955452
+  -- Solve :
+          min -0.00660154  max 1
+calculations are finished, saving data
+times: compile 0.039s, execution 257.333s,  mpirank:0
+ ######## We forget of deleting   -37 Nb pointer,   0Bytes  ,  mpirank 0, memory leak =0
+ CodeAlloc : nb ptr  4027,  size :497048 mpirank: 0
+Ok: Normal End
+ try getConsole C:\Users\LyonLab\Documents\GitHub\LyonLabCodebase\femSims\ThinFilmTransport - original\twiddleSense.edp

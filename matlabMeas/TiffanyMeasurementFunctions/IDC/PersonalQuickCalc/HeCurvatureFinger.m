@@ -19,11 +19,18 @@ pcm = 1e-2;
 
 % Experimental constants
 
+<<<<<<< Updated upstream
 widthStart = 6.3e-6;
 widthEnd = 32e-6;
 
 numWidths = 50;
 listH = [5.5e-3];
+=======
+widthStart = 7e-6;
+widthEnd = 42e-6;
+numWidths = 50;
+listH = [6e-3];
+>>>>>>> Stashed changes
 
 % channelHeight = 0.620e-6;
 % fingerLength = 55;
@@ -42,7 +49,7 @@ for h = listH
     
         ci = ci+1;
         p = channelWidth/2;
-        ne = 1e8*1e4;
+        ne = 0; %1e10*1e4;
         n_mu = 0;
         n_sigma = p/7;
         V0 = 0;
