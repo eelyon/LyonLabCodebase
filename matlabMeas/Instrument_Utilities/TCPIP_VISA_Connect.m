@@ -1,6 +1,4 @@
-
 function [obj1] = TCPIP_VISA_Connect(IP_Address)
-
 %% Function creates a TCPIP connection and returns the object which
 %% holds the connection information.
 
@@ -24,4 +22,3 @@ end
 fopen(obj1);
 
 end
-

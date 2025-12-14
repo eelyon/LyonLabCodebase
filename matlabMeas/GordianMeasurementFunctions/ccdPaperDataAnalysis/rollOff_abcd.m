@@ -30,9 +30,9 @@ for i = 1:length(f)
     S21_pts(i) = S21(ABCD(f(i)));
 end
 
-S21_dB = 20*log10(abs(S21_pts));
+% S21_dB = 20*log10(abs(S21_pts));
 
-figure();
-semilogx(f,S21_dB)
+figure()
+semilogx(f,abs(S21_pts)*27.2)
 % semilogx(f,20*log10(H))
 xlim([f(1),f(end)])
