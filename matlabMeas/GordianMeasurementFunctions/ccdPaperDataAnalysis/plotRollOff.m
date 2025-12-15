@@ -1,6 +1,8 @@
 % [datArr,freqArr] = pull3577AData(HP3577A,startFreq,stopFreq);
-path = 'C:\Users\Lyon-Lab-B417\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensingShuttling\data_single_electron_shuttling\';
+path = 'C:\Users\gordi\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensingShuttling\data_single_electron_shuttling\';
+% path = 'C:\Users\gordi\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\TwiddleSenseCCD_JLTP2025\';
 day = '12_09_25\';
+% day = '08_19_24\';
 tag = 'RawRollOff';
 figNum = 22867;
 
@@ -12,10 +14,10 @@ s21_dBm = data(1).YData;
 close(fig);
 
 s21_volts = convertdBmToVoltage(s21_dBm+76);
-% [fit,gof] = fitRollOff(freqs,s21_volts);
-% fits = fit(freqs);
+[fit,gof] = fitRollOff(freqs,s21_volts);
+fits = fit(freqs);
 
-% s21_dB = 20*log10(s21_volts);
+s21_dB = 20*log10(s21_volts);
 
 % [fitresult] = rollOffFit_abcd(freqs,s21_volts,'R',1.1e6,'Cc',47e-9);
 % size(fitresult)
@@ -38,13 +40,18 @@ Zl = 1e12;
 S21 = @(x,f) x(2)*abs(Zl./((1+(R+1./(1i*2*pi*f*Cc)).*(1./R+1i*2*pi*f*x(1)))*Zl ...
     + (R+1./(1i*2*pi*f*Cc)) + (1/R+1i*2*pi*f*x(1))*Zs*Zl + 1*Zs));
 
-x0 = [x0(1) x0(2)];
-[x,resnorm] = lsqcurvefit(S21,x0,freqs,s21_volts);
+x0(1) = 13.6; %19.7
+x0(2) = 40e3; % 44e3
+x0(3) = 0; %-6
+rawFit = @(x,f) x0(1)./sqrt((1+f.^2./x0(2).^2))+x0(3);
+
+x0 = [x0(1) x0(2) x0(3)];
+[x,resnorm] = lsqcurvefit(rawFit,x0,freqs,s21_volts);
 
 S21_pts = [];
 
 for i = 1:length(freqs)
-    S21_pts(i) = S21(x0,freqs(i));
+    S21_pts(i) = rawFit(x0,freqs(i));
 end
 
 % S21_dB = 20*log10(abs(S21_pts));
@@ -67,11 +74,15 @@ semilogx(freqs,s21_dBm)
 xlabel('Frequency (Hz)','FontSize',15)
 ylabel('S_{21} (dBm)','FontSize',15)
 
-% figure()
-% semilogx(freqs,s21_dB)
-% xlabel('Frequency (Hz)','FontSize',15)
-% ylabel('S_{21} (dB)','FontSize',15)
-% 
+figure()
+semilogx(freqs,s21_volts,'b-','DisplayName','Measured S_{21}')
+hold on
+semilogx(freqs,rawFit(x,freqs))
+hold off
+xlabel('Frequency (Hz)','FontSize',15)
+ylabel('S_{21} (dB)','FontSize',15)
+legend('Location','best')
+
 figure()
 semilogx(freqs,s21_volts,'b-','DisplayName','Measured S_{21}')
 hold on
