@@ -9,3 +9,4 @@ end
 setGatesEject(pinout)
 sigDACSetChannels(controlDAC,0)
 sigDACSetChannels(supplyDAC,0)
+setSIM900Voltage(pinout.filament.device,pinout.filament.port,0)

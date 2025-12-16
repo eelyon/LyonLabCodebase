@@ -64,22 +64,22 @@ extref_c = '8'; % external reference channel - 8 for Aux In 1
 
 % Create a base configuration: Disable all available outputs, awgs,
 % demods, scopes,...
-ziDisableEverything(device);
+% ziDisableEverything(device);
 
 % Configure the device for this experiment.
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 0);
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 1);
+% ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 0);
+% ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 1);
 ziSiginAutorange(device, in_c); % Autorange channel
 % ziDAQ('setInt', ['/' device '/sigins/' in_c '/autorange'], 1);
 % ziDAQ('setDouble', ['/' device '/sigins/' in_c '/range'], 2.0*amplitude);
 ziDAQ('setInt', ['/' device '/demods/*/order'], p.Results.filter_order);
 ziDAQ('setDouble', ['/' device '/demods/' demod_c '/rate'], demod_rate);
-ziDAQ('setInt', ['/' device '/demods/' demod_c '/harmonic'], 1);
-ziDAQ('setInt', ['/' device '/demods/' demod_c '/enable'], 1);
-ziDAQ('setInt', ['/' device '/demods/*/adcselect'], str2double(in_c));
+% ziDAQ('setInt', ['/' device '/demods/' demod_c '/harmonic'], 1);
+% ziDAQ('setInt', ['/' device '/demods/' demod_c '/enable'], 1);
+% ziDAQ('setInt', ['/' device '/demods/*/adcselect'], str2double(in_c));
 ziDAQ('setDouble', ['/' device '/demods/*/timeconstant'], time_constant);
-ziDAQ('setInt', ['/' device '/demods/1/adcselect'], str2double(extref_c));
-ziDAQ('setInt', ['/' device '/extrefs/0/enable'], 1);
+% ziDAQ('setInt', ['/' device '/demods/1/adcselect'], str2double(extref_c));
+% ziDAQ('setInt', ['/' device '/extrefs/0/enable'], 1);
 delay(1); % Wait for external reference to settle
 
 %% Set up figure and start sweep loop

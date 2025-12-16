@@ -87,7 +87,7 @@ if ~doBackAndForth
 else
     plotHandles = {realVsTime,imagVsTime,magVsTime,realVsVoltageErr,realVsVoltageErr2,imagVsVoltageErr,imagVsVoltageErr2,magVsVoltageErr,magVsVoltageErr2};
 end
-tileFigures(subPlotFigure,1,1,2,[],[0,0,0.5,1]);
+% tileFigures(subPlotFigure,1,1,2,[],[0,0,0.5,1]);
 end
 
 function xAxisName = genSR830Axis(targetGate)

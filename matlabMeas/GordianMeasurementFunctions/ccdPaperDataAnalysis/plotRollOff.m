@@ -1,8 +1,9 @@
 % [datArr,freqArr] = pull3577AData(HP3577A,startFreq,stopFreq);
-path = 'C:\Users\Lyon-Lab-B417\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensingShuttling\data_single_electron_shuttling\';
-day = '12_09_25\';
+% path = 'C:\Users\Lyon-Lab-B417\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensingShuttling\data_single_electron_shuttling\';
+path = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\';
+day = '12_15_25\';
 tag = 'RawRollOff';
-figNum = 22867;
+figNum = 23019;
 
 figPath = append(path,day,tag,'_',num2str(figNum),'.fig');
 fig = openfig(figPath,"invisible");
@@ -22,8 +23,9 @@ s21_volts = convertdBmToVoltage(s21_dBm+76);
 
 R = 1.1e6;
 Cc = 47e-9;
+Cin = 5.7e-12;
 x0(1) = 8.2e-12;
-x0(2) = 27.2;
+gain = 22.6;
 Zs = 50;
 Zl = 1e12;
 
@@ -35,16 +37,18 @@ Zl = 1e12;
 % ABCD = @(x,f) [1+(R+1/(1i*2*pi*f*Cc)).*(1/R+1i*2*pi*f*x(1)) R+1/(1i*2*pi*f*Cc); 1/R+1i*2*pi*f*x(1) 1]; % [1 R; 0 1]*[1 1./(2*pi*f*Cc); 0 1].*[1 0; 1/R 1]*[1 0; 2*pi*f*Cin 1];
 % S21 = @(ABCD) Zl/(ABCD(1,1)*Zl + ABCD(1,2) + ABCD(2,1)*Zs*Zl + ABCD(2,2)*Zs);
 % S21_pts = [];
-S21 = @(x,f) x(2)*abs(Zl./((1+(R+1./(1i*2*pi*f*Cc)).*(1./R+1i*2*pi*f*x(1)))*Zl ...
-    + (R+1./(1i*2*pi*f*Cc)) + (1/R+1i*2*pi*f*x(1))*Zs*Zl + 1*Zs));
+ABCD = @(f) [1 17; 0 1]*[1 500; 0 1]*[1 0; 1i*2*pi*f*2.2e-9 1]*[1 1200; 0 1]*[1 0; 1i*2*pi*f*1e-9 1]*[1 27; 0 1]*[1 R; 0 1]*[1 1./(1i*2*pi*f*Cc); 0 1]*[1 0; 1/R 1]*[1 0; 1i*2*pi*f*Cin 1]; % [1+(R+1/(1i*2*pi*f*Cc)).*(1/R+1i*2*pi*f*Cin) R+1/(1i*2*pi*f*Cc); 1/Zr+1i*2*pi*f*Cin 1];
+S21 = @(ABCD) Zl/(ABCD(1,1)*Zl + ABCD(1,2) + ABCD(2,1)*Zs*Zl + ABCD(2,2)*Zs);
+% S21 = @(x,f) x(2)*abs(Zl./((1+(R+1./(1i*2*pi*f*Cc)).*(1./R+1i*2*pi*f*x(1)))*Zl ...
+%     + (R+1./(1i*2*pi*f*Cc)) + (1/R+1i*2*pi*f*x(1))*Zs*Zl + 1*Zs));
 
-x0 = [x0(1) x0(2)];
-[x,resnorm] = lsqcurvefit(S21,x0,freqs,s21_volts);
+% x0 = [x0(1) x0(2)];
+% [x,resnorm] = lsqcurvefit(S21,x0,freqs,s21_volts);
 
 S21_pts = [];
 
 for i = 1:length(freqs)
-    S21_pts(i) = S21(x0,freqs(i));
+    S21_pts(i) = S21(ABCD(freqs(i)));
 end
 
 % S21_dB = 20*log10(abs(S21_pts));
@@ -75,8 +79,8 @@ ylabel('S_{21} (dBm)','FontSize',15)
 figure()
 semilogx(freqs,s21_volts,'b-','DisplayName','Measured S_{21}')
 hold on
-% semilogx(freqs,abs(S21_pts),'r.')%,'DisplayName',['Cut-off = ',num2str(fit.b,'%.f'),' Hz, A_{v} = ',num2str(max(fits),'%.2f')])
-plot(freqs,fits,'r-','DisplayName',['Cut-off = ',num2str(fit.b,'%.f'),' Hz, A_{v} = ',num2str(max(fits),'%.2f')])
+semilogx(freqs,abs(S21_pts)*gain,'r.','DisplayName','ABCD')%,'DisplayName',['Cut-off = ',num2str(fit.b,'%.f'),' Hz, A_{v} = ',num2str(max(fits),'%.2f')])
+% plot(freqs,fits,'r-','DisplayName',['Cut-off = ',num2str(fit.b,'%.f'),' Hz, A_{v} = ',num2str(max(fits),'%.2f')])
 hold off
 % % str1 = ['Fitted Rolloff Frequency = ', num2str(fit.b),' Hz'];
 % % str2 = ['Max. gain = ', numstr(fit())]
