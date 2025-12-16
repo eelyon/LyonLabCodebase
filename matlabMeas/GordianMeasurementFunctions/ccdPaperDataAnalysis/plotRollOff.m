@@ -13,10 +13,10 @@ s21_dBm = data(1).YData;
 close(fig);
 
 s21_volts = convertdBmToVoltage(s21_dBm+76);
-% [fit,gof] = fitRollOff(freqs,s21_volts);
-% fits = fit(freqs);
+[fit,gof] = fitRollOff(freqs,s21_volts);
+fits = fit(freqs);
 
-% s21_dB = 20*log10(s21_volts);
+s21_dB = 20*log10(s21_volts);
 
 % [fitresult] = rollOffFit_abcd(freqs,s21_volts,'R',1.1e6,'Cc',47e-9);
 % size(fitresult)
@@ -44,7 +44,6 @@ S21 = @(ABCD) Zl/(ABCD(1,1)*Zl + ABCD(1,2) + ABCD(2,1)*Zs*Zl + ABCD(2,2)*Zs);
 
 % x0 = [x0(1) x0(2)];
 % [x,resnorm] = lsqcurvefit(S21,x0,freqs,s21_volts);
-
 S21_pts = [];
 
 for i = 1:length(freqs)
@@ -71,11 +70,15 @@ semilogx(freqs,s21_dBm)
 xlabel('Frequency (Hz)','FontSize',15)
 ylabel('S_{21} (dBm)','FontSize',15)
 
-% figure()
-% semilogx(freqs,s21_dB)
-% xlabel('Frequency (Hz)','FontSize',15)
-% ylabel('S_{21} (dB)','FontSize',15)
-% 
+figure()
+semilogx(freqs,s21_volts,'b-','DisplayName','Measured S_{21}')
+hold on
+semilogx(freqs,rawFit(x,freqs))
+hold off
+xlabel('Frequency (Hz)','FontSize',15)
+ylabel('S_{21} (dB)','FontSize',15)
+legend('Location','best')
+
 figure()
 semilogx(freqs,s21_volts,'b-','DisplayName','Measured S_{21}')
 hold on
