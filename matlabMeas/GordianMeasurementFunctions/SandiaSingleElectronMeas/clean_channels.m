@@ -9,7 +9,7 @@ vclose = -0.5;
 vstart = 0;
 vstop = -1;
 vstep = 0.1;
-tc = 0.1;
+tc = 0.2;
 drat = 1e3;
 % poll = 10;
 

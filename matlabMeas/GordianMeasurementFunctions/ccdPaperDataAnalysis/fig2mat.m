@@ -1,12 +1,12 @@
-directory = 'C:\Users\gordi\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensingShuttling\data_single_electron_shuttling\';
-day = '12_09_25\';
-tag = 'Guard2';
+directory = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\';
+day = '12_18_25\';
+tag = 'Guard1';
 % cd(directory)
 % allFilesInDirectory = dir;
 % figNum = 22880:1:23009; % 22028;
 
 %maybe do thin where you enter the tag and then convert it
-for figNum = 23009:1:23015
+for figNum = 23460:1:23730
     try
         fig = openfig([directory,day,tag,'_',num2str(figNum),'.fig'],"invisible");
     catch

@@ -7,9 +7,9 @@ v_off = -0.9;
 
 dalpha = 0.503; % Change in alpha
 cin1 = 6e-12; % HEMT input capacitance
-gain1 = 28*0.9; % Amplifier gain
-cin2 = 5e-12; % HEMT input capacitance
-gain2 = 22*0.89; % Amplifier gain
+gain1 = 22.8*0.86; % Amplifier gain
+cin2 = 5.4e-12; % HEMT input capacitance
+gain2 = 21.8*0.895; % Amplifier gain
 
 vload = -0.17;
 n = 0;

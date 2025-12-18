@@ -95,7 +95,7 @@ end
 halfway = length(paramVector)/2;
 index = 1;
 
-settling_time = ziFO2ST(time_constant,p.Results.filter_order,'percent',99.9);
+settling_time = ziFO2ST(time_constant,p.Results.filter_order,'percent',99);
 
 % Main parameter loop
 for value = paramVector

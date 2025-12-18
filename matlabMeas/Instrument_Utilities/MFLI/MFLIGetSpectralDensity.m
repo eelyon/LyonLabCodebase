@@ -68,7 +68,7 @@ isnonnegscalar = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 % The PSD start frequency is always 0 Hz and its stop frequency is half
 % the scope's sample rate.
 p.addParameter('scope_samplerate', 4, isnonnegscalar);
-p.addParameter('scope_lengthpts', 16384, @isnumeric);
+p.addParameter('scope_lengthpts', 524288, @isnumeric);
 p.addParameter('min_num_records', 1, @isnumeric);
 p.addParameter('averager', 0, @isnumeric);
 p.addParameter('temp', 296, @isnumeric);
