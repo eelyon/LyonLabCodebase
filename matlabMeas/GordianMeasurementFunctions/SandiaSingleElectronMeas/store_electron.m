@@ -58,6 +58,6 @@ for i = 1:6
         return
     end
 
-    shuttle_nextsense2(pinout)
+    shuttleNextSense2(pinout)
     fprintf([num2str(i), '\n'])
 end
