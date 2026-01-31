@@ -1,4 +1,4 @@
-function [] = shuttle_store(pinout,varargin)
+function [] = shuttleStore(pinout,varargin)
 % Shuttle electron along 2nd horizontal ccd, store, and run ccd back
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
