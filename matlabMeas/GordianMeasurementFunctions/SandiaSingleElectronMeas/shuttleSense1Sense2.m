@@ -2,8 +2,8 @@ function [] = shuttleSense1Sense2(pinout,varargin)
 % Shuttle electrons from sense 1 to sense 2
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
-p.addParameter('numSteps', 2, isnonneg);
-p.addParameter('numStepsRC', 2, isnonneg);
+p.addParameter('numSteps', 10, isnonneg);
+p.addParameter('numStepsRC', 10, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
 p.addParameter('Vopen', 2, isnonneg);
 p.addParameter('Vclose', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
@@ -83,4 +83,3 @@ sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,0,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,0,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,0,numStepsRC,waitTimeRC)
 end
-

@@ -3,14 +3,14 @@ repeats = 5;
 numSteps = 2;
 numStepsRC = 2;
 waitTimeRC = 1100;
-vopen = 1;
-vclose = -0.5;
+vopen = 2;
+vclose = -1;
 
 vstart = 0;
-vstop = -1;
+vstop = -1.5;
 vstep = 0.1;
-tc = 0.2;
-drat = 1e3;
+tc = 0.3;
+drat = 10e3;
 % poll = 10;
 
 % Set Sommer-Tanner positive to suck electrons in
@@ -31,8 +31,8 @@ for i = 1:repeats
     sigDACRampVoltage(pinout.d6.device, pinout.d6.port, vopen, numSteps)
     
     % Sweep top metal
-    sigDACRamp(pinout.tm.device, pinout.tm.port, -2, numStepsRC, 15000); delay(1)
-    sigDACRamp(pinout.tm.device, pinout.tm.port, -1, numStepsRC, waitTimeRC)
+    sigDACRamp(pinout.tm.device, pinout.tm.port, -3, numStepsRC, 15000); delay(1)
+    sigDACRamp(pinout.tm.device, pinout.tm.port, -2, numStepsRC, waitTimeRC)
     
     sigDACRampVoltage(pinout.d6.device, pinout.d6.port, vclose, numSteps)
     sigDACRampVoltage(pinout.sense1_r.device, pinout.sense1_r.port, vclose, numSteps)
@@ -210,21 +210,21 @@ sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps)
 sigDACRamp(pinout.d5.device,pinout.d5.port,-2,numStepsRC,waitTimeRC)
 delay(1)
 
-MFLISweep1D_getSample({'Guard1'}, vstart, vstop, vstep, 'dev32021', pinout.guard1_l.device, pinout.guard1_l.port, 0, ...
-    'time_constant', tc, 'demod_rate', drat);
-sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC); delay(1)
-
-% Check if electrons are in horizontal CCD
-loadSense1(pinout,vclose);
-MFLISweep1D_getSample({'Guard1'}, vstart, vstop, vstep, 'dev32021', pinout.guard1_l.device, pinout.guard1_l.port, 0, ...
-    'time_constant', tc, 'demod_rate', drat);
-sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC); delay(1)
-
-% Check if electrons are in vertical CCD
-shuttleSense1Sense2(pinout);
-MFLISweep1D_getSample({'Guard2'}, vstart, vstop, vstep, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
-    'time_constant', tc, 'demod_rate', drat);
-sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
+% MFLISweep1D_getSample({'Guard1'}, vstart, vstop, vstep, 'dev32021', pinout.guard1_l.device, pinout.guard1_l.port, 0, ...
+%     'time_constant', tc, 'demod_rate', drat);
+% sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC); delay(1)
+% 
+% % Check if electrons are in horizontal CCD
+% loadSense1(pinout,vclose);
+% MFLISweep1D_getSample({'Guard1'}, vstart, vstop, vstep, 'dev32021', pinout.guard1_l.device, pinout.guard1_l.port, 0, ...
+%     'time_constant', tc, 'demod_rate', drat);
+% sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC); delay(1)
+% 
+% % Check if electrons are in vertical CCD
+% shuttleSense1Sense2(pinout);
+% MFLISweep1D_getSample({'Guard2'}, vstart, vstop, vstep, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
+%     'time_constant', tc, 'demod_rate', drat);
+% sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
 
 function empty_sense1(pinout, numSteps, numStepsRC, waitTimeRC, vopen, vclose)
 % Unload sense 1

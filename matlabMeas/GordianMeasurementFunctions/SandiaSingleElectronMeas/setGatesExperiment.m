@@ -5,7 +5,7 @@ isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 p.addParameter('numSteps', 5, isnonneg);
 p.addParameter('numStepsRC', 5, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
-p.addParameter('vclose', -0.5, @(x) isnumeric(x) && isscalar(x) && (x < 0));
+p.addParameter('vclose', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
 
 numSteps = p.Results.numSteps; % sigDACRampVoltage

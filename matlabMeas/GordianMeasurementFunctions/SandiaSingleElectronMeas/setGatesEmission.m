@@ -5,7 +5,7 @@ isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 p.addParameter('numSteps', 5, isnonneg);
 p.addParameter('numStepsRC', 5, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
-p.addParameter('vclose', -3.5, @(x) isnumeric(x) && isscalar(x) && (x < 0));
+p.addParameter('vclose', -3.2, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
 
 numSteps = p.Results.numSteps; % sigDACRampVoltage
@@ -78,5 +78,5 @@ sigDACRamp(pinout.trap4.device,pinout.trap4.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap5.device,pinout.trap5.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap6.device,pinout.trap6.port,vclose,numStepsRC,waitTimeRC)
 
-setSIM900Voltage(pinout.filament.device,pinout.filament.port,-4) % ramp filament backing plate
+setSIM900Voltage(pinout.filament.device,pinout.filament.port,-1) % ramp filament backing plate
 end

@@ -37,10 +37,14 @@ if ~(exist('ziDAQ') == 3) && ~(exist('ziCreateAPISession', 'file') == 2)
 end
 
 % The API level supported by this example.
-apilevel_example = 6;
+apilevel = 6;
 % Create an API session; connect to the correct Data Server for the device.
-[device, props] = ziCreateAPISession(device_id, apilevel_example);
+[device, props] = ziCreateAPISession(device_id, apilevel);
 ziApiServerVersionCheck();
+
+% server_address = 'localhost';
+% ziDAQ('connect', server_address', 8004, 6);
+% ziDAQ('connectDevice', props.deviceid, '1GbE');
 
 branches = ziDAQ('listNodes', ['/' device ], 0);
 if ~any(strcmpi([branches], 'DEMODS'))
@@ -61,7 +65,7 @@ p.addParameter('savedata', 0, @isnumeric);
 % The value used for the Sweeper's 'samplecount' parameter: This
 % specifies the number of points that will be swept (i.e., the number of
 % frequencies swept in a frequency sweep).
-p.addParameter('sweep_samplecount', 500, isnonnegscalar);
+p.addParameter('sweep_samplecount', 200, isnonnegscalar);
 
 % The value used for the Sweeper's 'settling/inaccuracy' parameter: This
 % defines the settling time the sweeper should wait before changing a sweep
@@ -70,22 +74,22 @@ p.addParameter('sweep_samplecount', 500, isnonnegscalar);
 % should remain. The value provided here, 0.001, is appropriate for fast and
 % reasonably accurate amplitude measurements. For precise noise measurements
 % it should be set to ~100n.
-p.addParameter('sweep_inaccuracy', 0.001, @isnumeric);
+p.addParameter('sweep_inaccuracy', 0.1e-3, @isnumeric);
 
 % The signal output mixer amplitude, [V].
-p.addParameter('amplitude', 0.002, @isnumeric);
+p.addParameter('amplitude', 0.001, @isnumeric);
 % Set the sweep's start frequency
 p.addParameter('sweep_startfreq', 10e3, @isnumeric);
 % Set the sweep's stop frequency
 p.addParameter('sweep_stopfreq', 3e6, @isnumeric);
 % Set the demodulator time constant [s]
-p.addParameter('tc', 0.007, @isnumeric);
+p.addParameter('tc', 0.01, @isnumeric);
 % Set the demodulation rate
 p.addParameter('demod_rate', 13e3, @isnumeric);
 % Set the filter order
 p.addParameter('order', 1, @isnumeric);
 % Settling time
-p.addParameter('settlingtime', 0.035, @isnumeric);
+p.addParameter('settlingtime', 0.01, @isnumeric);
 
 p.parse(varargin{:});
 
@@ -104,11 +108,11 @@ osc_c = '0'; % oscillator
 
 % Create a base configuration: Disable all available outputs, awgs,
 % demods, scopes,...
-ziDisableEverything(device);
+% ziDisableEverything(device);
 
 %% Configure the device ready for this experiment.
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 0);
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 1);
+% ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 0);
+% ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 1);
 % ziDAQ('setInt',    ['/' device '/sigins/' in_c '/autorange'], 1);
 ziDAQ('setInt', ['/' device '/sigouts/' out_c '/on'], 1);
 ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/range'], 0.01);
@@ -127,6 +131,11 @@ ziDAQ('setInt', ['/' device '/demods/*/adcselect'], str2double(in_c));
 ziDAQ('setDouble', ['/' device '/demods/*/timeconstant'], p.Results.tc);
 ziDAQ('setDouble', ['/' device '/oscs/' osc_c '/freq'], p.Results.sweep_startfreq); % [Hz]
 
+% Perform a global synchronisation between the device and the data server:
+% Ensure that 1. the settings have taken effect on the device before issuing
+% the poll() command and 2. clear the API's data buffers.
+ziDAQ('sync');
+
 %% Sweeper settings
 % Create a thread for the sweeper
 h = ziDAQ('sweep');
@@ -143,10 +152,10 @@ ziDAQ('set', h, 'stop', p.Results.sweep_stopfreq);
 ziDAQ('set', h, 'samplecount', p.Results.sweep_samplecount);
 % Perform one single sweep.
 ziDAQ('set', h, 'loopcount', 1);
-% Logarithmic sweep mode.
-ziDAQ('set', h, 'xmapping', 1);
-% Binary scan type.
-ziDAQ('set', h, 'scan', 1);
+% Linear = 0 or logarithmic = 1 sweep mode.
+ziDAQ('set', h, 'xmapping', 0);
+% Sequential = 0 scanning mode (as opposed to binary = 1 or bidirectional = 2).
+ziDAQ('set', h, 'scan', 0);
 % Set a fixed settling/time.
 ziDAQ('set', h, 'settling/time', p.Results.settlingtime);
 % The setting/inaccuracy defines the settling time the sweeper should
@@ -157,8 +166,8 @@ ziDAQ('set', h, 'settling/time', p.Results.settlingtime);
 % recording data is the maximum time specified by settling/time and
 % defined by settling/inaccuracy.
 ziDAQ('set', h, 'settling/inaccuracy', p.Results.sweep_inaccuracy);
-% Minimum time to record and average data is 50 time constants.
-ziDAQ('set', h, 'averaging/tc', 1);
+% Minimum time to record and average data is 10 time constants.
+ziDAQ('set', h, 'averaging/tc', 5);
 % Minimal number of samples that we want to record and average is 100. Note,
 % the number of samples used for averaging will be the maximum number of
 % samples specified by either averaging/tc or averaging/sample.
@@ -177,7 +186,8 @@ ziDAQ('set', h, 'bandwidthcontrol', 2);
 % enabled to achieve maximal sweep speed (default: 0). 0 = Disable, 1 = Enable.
 ziDAQ('set', h, 'bandwidthoverlap', 0);
 % Subscribe to the node from which data will be recorded.
-ziDAQ('subscribe', h, ['/' device '/demods/' demod_c '/sample']);
+path = ['/' device '/demods/' demod_c '/sample'];
+ziDAQ('subscribe', h, path); % ['/' device '/demods/' demod_c '/sample']);
 
 % Start sweeping.
 ziDAQ('execute', h);
@@ -187,45 +197,67 @@ frequencies = nan(1, p.Results.sweep_samplecount);
 r = nan(1, p.Results.sweep_samplecount);
 theta = nan(1, p.Results.sweep_samplecount);
 
-fig = figure; clf;
-timeout = 60;
-t0 = tic;
-% Read and plot intermediate data until the sweep has finished.
-while ~ziDAQ('finished', h)
-    pause(1);
-    tmp = ziDAQ('read', h);
-    fprintf('Sweep progress %0.0f%%\n', ziDAQ('progress', h) * 100);
-    % Using intermediate reads we can plot a continuous refinement of the ongoing
-    % measurement. If not required it can be removed.
-    if ziCheckPathInData(tmp, ['/' device '/demods/' demod_c '/sample'])
-        sample = tmp.(device).demods(demod_idx).sample{1};
-        if ~isempty(sample)
-            data = tmp;
-            % Get the magnitude and phase of demodulator from the sweeper result.
-            r = sample.r;
-            theta = sample.phase;
-            % Frequency values at which measurement points were taken
-            frequencies = sample.grid;
-            valid = ~isnan(frequencies);
-            plot_data(frequencies(valid), r(valid), theta(valid), '.-')
-            drawnow;
-        end
-    end
-    if toc(t0) > timeout
-        ziDAQ('clear', h);
-        error('Timeout: Sweeper failed to finish after %f seconds.', timeout)
+% timeout = 60;
+% t0 = tic;
+% % Read and plot intermediate data until the sweep has finished.
+% while ~ziDAQ('finished', h)
+%     pause(0.5);
+%     fprintf('Sweep progress %0.0f%%\n', ziDAQ('progress', h) * 100);
+%     % Using intermediate reads we can plot a continuous refinement of the ongoing
+%     % measurement. If not required it can be removed.
+%     if ziCheckPathInData(tmp, path) % ['/' device '/demods/' demod_c '/sample'])
+%         sample = tmp.(device).demods(demod_idx).sample{1};
+%         if ~isempty(sample)
+%             data = tmp;
+%             % Get the magnitude and phase of demodulator from the sweeper result.
+%             r = sample.r;
+%             theta = sample.phase;
+%             % Frequency values at which measurement points were taken
+%             frequencies = sample.grid;
+%             valid = ~isnan(frequencies);
+%             plot_data(frequencies(valid), r(valid), theta(valid), '.-')
+%             drawnow;
+%         end
+%     end
+%     if toc(t0) > timeout
+%         ziDAQ('clear', h);
+%         error('Timeout: Sweeper failed to finish after %f seconds.', timeout)
+%     end
+% end
+% fprintf('Sweep completed after %.2f s.\n', toc(t0));
+% 
+% % Start the Sweeper's thread.
+% ziDAQ('execute', sweeper);
+
+start = now();
+timeout = 120;  % [s]
+while ~ziDAQ('finished', h)  % Wait until the sweep is complete, with timeout.
+    pause(0.5);
+    progress = ziDAQ('progress', h);
+    fprintf('Individual sweep progress: %d%%\n', round(progress*100));
+    % Here we could read intermediate data via:
+    % data = ziDAQ('read', sweeper)...
+    % and process it while the sweep is completing.
+    % if device in data:
+    % ...
+    if (now() - start) * 24 * 60 * 60 > timeout
+        % If for some reason the sweep is blocking, force the end of the
+        % measurement.
+        fprintf('\nSweep still not finished, forcing finish...\n');
+        ziDAQ('finish', h);
     end
 end
-fprintf('Sweep completed after %.2f s.\n', toc(t0));
+fprintf('');
 
 % Read the data. This command can also be executed during the waiting (as above).
 tmp = ziDAQ('read', h);
 
 % Unsubscribe from the node; stop filling the data from that node to the
 % internal buffer in the Data Server.
-ziDAQ('unsubscribe', h, ['/' device '/demods/*/sample']);
+ziDAQ('unsubscribe', h, path); % ['/' device '/demods/*/sample']);
 
-% Process any remainging data returned by read().
+fig = figure; clf; 
+% Process any data returned by read()
 if ziCheckPathInData(tmp, ['/' device '/demods/' demod_c '/sample'])
     sample = tmp.(device).demods(demod_idx).sample{1};
     if ~isempty(sample)
@@ -282,7 +314,7 @@ end
 
 function plot_data(frequencies, r, theta, style)
 % Plot data
-clf
+%clf
 subplot(3, 1, 1)
 s = semilogx(frequencies, r*2*sqrt(2), style);
 set(s, 'LineWidth', 1.5)

@@ -1,7 +1,7 @@
 % Script for moving electrons into channel leading to avalanche detector
 % i.e. moving electrons into 
-cap1 = 5e-12;
-gain1 = 24*0.915*100;
+% cap1 = 5e-12;
+% gain1 = 24*0.915*100;
 
 vstart = 0.2;
 vstop = -1;
@@ -12,27 +12,27 @@ drat = 10e3;
 filter = 2;
 
 vload = 0;
-vopen = 2; % holding voltage of ccd
+vopen = 4; % holding voltage of ccd
 vclose = -1; % closing voltage of ccd
 
-%% Move electron from Sommer-Tanner to Sense 1
-loadSense1(pinout,vload); delay(1)
-MFLISweep1D_getSample({'Guard1'},vstart,vstop,vstep,'dev32021',pinout.guard1_l.device,pinout.guard1_l.port,0, ...
-        'filter_order',filter,'time_constant',tc,'demod_rate',drat);
-sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC) % reset guard
-delay(1)
-
-%% Move electrons from Sense 1 to Sense 2
-shuttleSense1Sense2(pinout); delay(1)
-MFLISweep1D_getSample({'Guard2'},vstart,vstop,vstep,'dev32061',pinout.guard2_l.device,pinout.guard2_l.port,0, ...
-        'filter_order',filter,'time_constant',tc,'demod_rate',drat);
-sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,0,numStepsRC,waitTimeRC)
-
+% %% Move electrons from Sommer-Tanner to Sense 1
+% loadSense1(pinout,vload); delay(1)
+% MFLISweep1D_getSample({'Guard1'},vstart,vstop,vstep,'dev32021',pinout.guard1_l.device,pinout.guard1_l.port,0, ...
+%         'filter_order',filter,'time_constant',tc,'demod_rate',drat);
+% sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC) % reset guard
+% delay(1)
+% 
+% %% Move electrons from Sense 1 to Sense 2
+% shuttleSense1Sense2(pinout); delay(1)
+% MFLISweep1D_getSample({'Guard2'},vstart,vstop,vstep,'dev32061',pinout.guard2_l.device,pinout.guard2_l.port,0, ...
+%         'filter_order',filter,'time_constant',tc,'demod_rate',drat);
+% sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,0,numStepsRC,waitTimeRC)
+% 
 % Check if sense 1 is truly empty
-MFLISweep1D_getSample({'Guard1'},vstart,vstop,vstep,'dev32021',pinout.guard1_l.device,pinout.guard1_l.port,0, ...
-        'filter_order',filter,'time_constant',tc,'demod_rate',drat);
-sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC) % reset guard
-delay(1)
+% MFLISweep1D_getSample({'Guard1'},vstart,vstop,vstep,'dev32021',pinout.guard1_l.device,pinout.guard1_l.port,0, ...
+%         'filter_order',filter,'time_constant',tc,'demod_rate',drat);
+% sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC) % reset guard
+% delay(1)
 
 %% Move electron(s) along 2nd horizontal CCD and trap them
 sigDACRamp(pinout.guard2_r.device,pinout.guard2_r.port,vopen,numStepsRC,waitTimeRC)
@@ -70,7 +70,7 @@ sigDACRampVoltage(pinout.trap3.device,pinout.trap3.port,-1,numSteps)
 sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,-1,numSteps)
 sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vopen,numSteps)
 sigDACRampVoltage(pinout.d10.device,pinout.d10.port,vclose,numSteps)
-delay(2)
+delay(1)
 
 %% Move electrons in parallel channels back to Sense 2 and measure
 for k = 1:22
@@ -99,8 +99,18 @@ sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,vopen,numStepsRC,waitTime
 sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,vopen,numStepsRC,waitTimeRC)
 sigDACRampVoltage(pinout.sense2_r.device,pinout.sense2_r.port,vclose,numSteps)
 sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,vopen,numStepsRC,waitTimeRC)
-sigDACRampVoltage(pinout.guard2_r.device,pinout.guard2_r.port,-2,numSteps)
+
+% Reset sense2 for measurement
+sigDACRamp(pinout.guard2_r.device,pinout.guard2_r.port,-2,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.d7.device,pinout.d7.port,-2,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,0,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,0,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,0,numStepsRC,waitTimeRC)
+
+[ne2,nerr2] = measureElectronsFn(pinout,2,'vstart',0,'vstop',-0.8,'vstep',-0.02,'filter_order',2, ...
+'time_constant',0.4,'demod_rate',10e3,'poll',10,'sweep',1,'onoff',1,'v_on',-0.25,'v_off',-0.8, ...
+'dalpha',dalpha,'cin',cin2,'gain',gain2);
+fprintf(['n2 = ',num2str(ne2),' +- ',num2str(nerr2),'\n'])
 
 % %% Move electrons out of avalanche trap
 % sigDACRampVoltage(pinout.d10.device,pinout.d10.port,vopen,numSteps)
@@ -136,6 +146,18 @@ sigDACRamp(pinout.d7.device,pinout.d7.port,-2,numStepsRC,waitTimeRC)
 % sigDACRamp(pinout.sense2_r.device,pinout.sense2_r.port,vclose,numStepsRC,waitTimeRC)
 % sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,vopen,numStepsRC,waitTimeRC)
 % sigDACRamp(pinout.guard2_r.device,pinout.guard2_r.port,-2,numStepsRC,waitTimeRC)
+% 
+% % Reset Sense2 for measurement
+% sigDACRamp(pinout.guard2_r.device,pinout.guard2_r.port,-2,numStepsRC,waitTimeRC)
+% sigDACRamp(pinout.d7.device,pinout.d7.port,-2,numStepsRC,waitTimeRC)
+% sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,0,numStepsRC,waitTimeRC)
+% sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,0,numStepsRC,waitTimeRC)
+% sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,0,numStepsRC,waitTimeRC)
+
+% [ne2,nerr2] = measureElectronsFn(pinout,2,'vstart',0,'vstop',-0.8,'vstep',-0.02,'filter_order',2, ...
+% 'time_constant',0.4,'demod_rate',10e3,'poll',10,'sweep',1,'onoff',1,'v_on',-0.25,'v_off',-0.8, ...
+% 'dalpha',dalpha,'cin',cin2,'gain',gain2);
+% fprintf(['n2 = ',num2str(ne2),' +- ',num2str(nerr2),'\n'])
 
 % %% Move electron down to last gate before avalanche detector
 % for i = 1:6
