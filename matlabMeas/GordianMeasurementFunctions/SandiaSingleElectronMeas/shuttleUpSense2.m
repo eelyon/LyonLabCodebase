@@ -1,11 +1,11 @@
-function [] = shuttleNextSense2(pinout,varargin)
+function [] = shuttleUpSense2(pinout,varargin)
 % Shuttle electron from current sense 2 to sense 2 in next channel 1 above
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 p.addParameter('numSteps', 2, isnonneg);
 p.addParameter('numStepsRC', 2, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
-p.addParameter('Vopen', 4, isnonneg);
+p.addParameter('Vopen', 2, isnonneg);
 p.addParameter('Vclose', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
 
@@ -88,8 +88,8 @@ sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,vopen,numStepsRC,waitTime
 sigDACRamp(pinout.d7.device,pinout.d7.port,vclose,numStepsRC,waitTimeRC)
 
 % Reset Sense2 for measurement
-sigDACRamp(pinout.d7.device,pinout.d7.port,-2,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.guard2_r.device,pinout.guard2_r.port,-2,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.d7.device,pinout.d7.port,-2,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,0,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,0,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,0,numStepsRC,waitTimeRC)

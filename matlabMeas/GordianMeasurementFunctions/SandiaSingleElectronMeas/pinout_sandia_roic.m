@@ -21,7 +21,7 @@ pinout.bpg.device = supplyDAC; % bond pad guard
 pinout.bpg.port = 12;
 
 pinout.filament.device = sim900;
-pinout.filament.port = 4; % filament backing plate
+pinout.filament.port = 8; % filament backing plate
 
 %% 1st twiddle-sense
 pinout.d1_odd.device = supplyDAC;

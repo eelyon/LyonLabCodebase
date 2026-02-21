@@ -65,7 +65,7 @@ p.addParameter('savedata', 0, @isnumeric);
 % The value used for the Sweeper's 'samplecount' parameter: This
 % specifies the number of points that will be swept (i.e., the number of
 % frequencies swept in a frequency sweep).
-p.addParameter('sweep_samplecount', 200, isnonnegscalar);
+p.addParameter('samplecount', 200, isnonnegscalar);
 
 % The value used for the Sweeper's 'settling/inaccuracy' parameter: This
 % defines the settling time the sweeper should wait before changing a sweep
@@ -79,9 +79,9 @@ p.addParameter('sweep_inaccuracy', 0.1e-3, @isnumeric);
 % The signal output mixer amplitude, [V].
 p.addParameter('amplitude', 0.001, @isnumeric);
 % Set the sweep's start frequency
-p.addParameter('sweep_startfreq', 10e3, @isnumeric);
+p.addParameter('startfreq', 10e3, @isnumeric);
 % Set the sweep's stop frequency
-p.addParameter('sweep_stopfreq', 3e6, @isnumeric);
+p.addParameter('stopfreq', 3e6, @isnumeric);
 % Set the demodulator time constant [s]
 p.addParameter('tc', 0.01, @isnumeric);
 % Set the demodulation rate
@@ -129,7 +129,7 @@ ziDAQ('setInt', ['/' device '/demods/' demod_c '/enable'], 1);
 ziDAQ('setInt', ['/' device '/demods/*/oscselect'], str2double(osc_c));
 ziDAQ('setInt', ['/' device '/demods/*/adcselect'], str2double(in_c));
 ziDAQ('setDouble', ['/' device '/demods/*/timeconstant'], p.Results.tc);
-ziDAQ('setDouble', ['/' device '/oscs/' osc_c '/freq'], p.Results.sweep_startfreq); % [Hz]
+ziDAQ('setDouble', ['/' device '/oscs/' osc_c '/freq'], p.Results.startfreq); % [Hz]
 
 % Perform a global synchronisation between the device and the data server:
 % Ensure that 1. the settings have taken effect on the device before issuing
@@ -144,12 +144,12 @@ ziDAQ('set', h, 'device', device);
 % Sweeping setting is the frequency of the output signal
 ziDAQ('set', h, 'gridnode', ['oscs/' osc_c '/freq']);
 % Start frequency = 1 kHz
-ziDAQ('set', h, 'start', p.Results.sweep_startfreq);
+ziDAQ('set', h, 'start', p.Results.startfreq);
 % Stop frequency
-ziDAQ('set', h, 'stop', p.Results.sweep_stopfreq);
-% Perform sweeps consisting of sweep_samplecount measurement points (i.e.,
-% record the subscribed data for sweep_samplecount different frequencies).
-ziDAQ('set', h, 'samplecount', p.Results.sweep_samplecount);
+ziDAQ('set', h, 'stop', p.Results.stopfreq);
+% Perform sweeps consisting of samplecount measurement points (i.e.,
+% record the subscribed data for samplecount different frequencies).
+ziDAQ('set', h, 'samplecount', p.Results.samplecount);
 % Perform one single sweep.
 ziDAQ('set', h, 'loopcount', 1);
 % Linear = 0 or logarithmic = 1 sweep mode.
@@ -193,9 +193,9 @@ ziDAQ('subscribe', h, path); % ['/' device '/demods/' demod_c '/sample']);
 ziDAQ('execute', h);
 
 data = [];
-frequencies = nan(1, p.Results.sweep_samplecount);
-r = nan(1, p.Results.sweep_samplecount);
-theta = nan(1, p.Results.sweep_samplecount);
+frequencies = nan(1, p.Results.samplecount);
+r = nan(1, p.Results.samplecount);
+theta = nan(1, p.Results.samplecount);
 
 % timeout = 60;
 % t0 = tic;
@@ -230,7 +230,7 @@ theta = nan(1, p.Results.sweep_samplecount);
 % ziDAQ('execute', sweeper);
 
 start = now();
-timeout = 120;  % [s]
+timeout = 60*5;  % [s]
 while ~ziDAQ('finished', h)  % Wait until the sweep is complete, with timeout.
     pause(0.5);
     progress = ziDAQ('progress', h);

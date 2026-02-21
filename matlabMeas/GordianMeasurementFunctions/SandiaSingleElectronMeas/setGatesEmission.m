@@ -6,12 +6,14 @@ p.addParameter('numSteps', 5, isnonneg);
 p.addParameter('numStepsRC', 5, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
 p.addParameter('vclose', -3.2, @(x) isnumeric(x) && isscalar(x) && (x < 0));
+p.addParameter('vbackmetal', -1, @(x) isnumeric(x) && isscalar(x) && (x <= 0));
 p.parse(varargin{:});
 
 numSteps = p.Results.numSteps; % sigDACRampVoltage
 numStepsRC = p.Results.numStepsRC; % sigDACRamp
 waitTimeRC = p.Results.waitTimeRC; % in microseconds
 vclose = p.Results.vclose; % closing voltage of ccd
+vbackmetal = p.Results.vbackmetal;
 
 %% Set Sommer-Tanner
 sigDACRamp(pinout.tm.device,pinout.tm.port,vclose,numStepsRC,waitTimeRC) % ramp top metal
@@ -78,5 +80,5 @@ sigDACRamp(pinout.trap4.device,pinout.trap4.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap5.device,pinout.trap5.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap6.device,pinout.trap6.port,vclose,numStepsRC,waitTimeRC)
 
-setSIM900Voltage(pinout.filament.device,pinout.filament.port,-1) % ramp filament backing plate
+setSIM900Voltage(pinout.filament.device,pinout.filament.port,vbackmetal) % ramp filament backing plate
 end

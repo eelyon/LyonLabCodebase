@@ -23,8 +23,8 @@ sim900 = SIM900(sim900Port)
 
 %% SR830 Lock-ins
 % top_Address = '172.29.117.106'; % top SR830
-bottom_Address = '172.29.117.103'; % bottom SR830
-SR830ST = SR830(1234,bottom_Address) % for Sommer-Tanner
+% bottom_Address = '172.29.117.103'; % bottom SR830
+SR830ST = SR830(1234,'172.29.117.103') % for Sommer-Tanner
 % SR830Twiddle = SR830(port,bottom_Address); % for twiddle
 
 %% Filament
@@ -43,6 +43,8 @@ Awg2ch_2 = Agilent33622A(1234,awg2Houck_Address,1) % two-channel AWG
 % AwgComp = Agilent33220A(1234,AwgComp_Address,1); % 1-channel AWG
 
 % AwgFilament = Agilent33220A(port,'172.29.117.127',1);
+% Siglent power supply address
+siglentFil = SPD330('172.29.117.8',1);
 
 %% GUIs
 controlDACGUI = sigDACGUI;

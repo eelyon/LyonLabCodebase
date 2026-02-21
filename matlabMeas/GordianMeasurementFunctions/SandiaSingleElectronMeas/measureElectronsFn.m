@@ -22,8 +22,8 @@ p.addParameter('sweep', 1, @isnumeric);
 p.addParameter('onoff', 1, @isnumeric);
 % Circuit parameters
 p.addParameter('dalpha', 0.503, @isnumeric);
-p.addParameter('cin', 5e-12, @isnumeric);
-p.addParameter('gain', 23*0.9, @isnumeric);
+p.addParameter('cin', 5.2e-12, @isnumeric);
+p.addParameter('gain', 27*0.89, @isnumeric);
 p.parse(varargin{:});
 
 tc = p.Results.time_constant;
