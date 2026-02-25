@@ -1,11 +1,11 @@
-function [] = electronStore(pinout,varargin)
+function [] = electronsStore(pinout,varargin)
 % Shuttle electron along 2nd horizontal ccd, store, and run ccd back
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 p.addParameter('numSteps', 2, isnonneg);
 p.addParameter('numStepsRC', 2, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
-p.addParameter('vopen', 2, isnonneg);
+p.addParameter('vopen', 4, isnonneg);
 p.addParameter('vclose', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
 

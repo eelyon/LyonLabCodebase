@@ -10,20 +10,20 @@ p.addParameter('vstart', 0, @isnumeric);
 p.addParameter('vstop', -0.7, @isnumeric);
 p.addParameter('vstep', 0.01, @isnumeric);
 p.addParameter('v_on', -0.3, @isnumeric);
-p.addParameter('v_off', -1, @isnumeric);
+p.addParameter('v_off', -0.6, @isnumeric);
 % Filter order
 p.addParameter('filter_order', 2, isnonneg);
 % Filter time constant
 p.addParameter('time_constant', 0.5, @isnumeric);
 % Demodulation/sampling rate of demodulated data
 p.addParameter('demod_rate', 10e3, @isnumeric);
-p.addParameter('poll', 20, isnonneg);
+p.addParameter('poll', 10, isnonneg);
 p.addParameter('sweep', 1, @isnumeric);
 p.addParameter('onoff', 1, @isnumeric);
 % Circuit parameters
 p.addParameter('dalpha', 0.503, @isnumeric);
-p.addParameter('cin', 5.2e-12, @isnumeric);
-p.addParameter('gain', 27*0.89, @isnumeric);
+p.addParameter('cin', 5.1e-12, @isnumeric);
+p.addParameter('gain', 22.7*0.86, @isnumeric);
 p.parse(varargin{:});
 
 tc = p.Results.time_constant;

@@ -12,14 +12,14 @@ waitTimeRC = 1100;
 % fprintf(['n1 = ',num2str(ne1),' +- ',num2str(nerr1),'\n'])
 
 % Shuttle electrons from Sense1 to Sense2 and measure
-shuttleSense1Sense2(pinout)
-[ne2,nerr2] = measureElectronsFn(pinout,2,'vstart',0,'vstop',-0.8,'vstep',-0.02,'filter_order',2, ...
-    'time_constant',0.4,'demod_rate',10e3,'poll',10,'sweep',1,'onoff',1,'v_on',-0.25,'v_off',-0.8, ...
-    'dalpha',dalpha,'cin',cin2,'gain',gain2);
-fprintf(['n2 = ',num2str(ne2),' +- ',num2str(nerr2),'\n'])
+% shuttleSense1Sense2(pinout)
+% [ne2,nerr2] = measureElectronsFn(pinout,2,'vstart',0,'vstop',-0.8,'vstep',-0.02,'filter_order',2, ...
+%     'time_constant',0.4,'demod_rate',10e3,'poll',10,'sweep',1,'onoff',1,'v_on',-0.25,'v_off',-0.8, ...
+%     'dalpha',dalpha,'cin',cin2,'gain',gain2);
+% fprintf(['n2 = ',num2str(ne2),' +- ',num2str(nerr2),'\n'])
 
 % Move electrons from Sense2 out onto d7, phi_h1_3, and d4
-for vturn = 0:0.02:0.3
+for vturn = 0.45
     fprintf(['-- Vturnstile ', num2str(vturn), ' --\n'])
     % Move electrons from Sense2 and split
     sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,vclose,numStepsRC,waitTimeRC)
@@ -29,7 +29,7 @@ for vturn = 0:0.02:0.3
     sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vopen,numSteps)
     % sigDACRamp(pinout.d7.device,pinout.d7.port,vclose,numStepsRC,waitTimeRC)
     sigDACRamp(pinout.d7.device,pinout.d7.port,vopen-vturn,numStepsRC,waitTimeRC); delay(1)
-    sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vopen,numSteps)
+    sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vopen+vturn,numSteps)
     sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vclose,numSteps)
 
     % Move electrons on d7 back to Sense2
@@ -45,8 +45,8 @@ for vturn = 0:0.02:0.3
     sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,0,numStepsRC,waitTimeRC)
     sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,0,numStepsRC,waitTimeRC)
 
-    [ne2,nerr2] = measureElectronsFn(pinout,2,'vstart',0,'vstop',-0.8,'vstep',-0.02,'filter_order',2, ...
-    'time_constant',0.4,'demod_rate',10e3,'poll',10,'sweep',1,'onoff',1,'v_on',-0.25,'v_off',-0.8, ...
+    [ne2,nerr2] = measureElectronsFn(pinout,2,'vstart',0,'vstop',-0.8,'vstep',-0.05,'filter_order',2, ...
+    'time_constant',0.5,'demod_rate',10e3,'poll',5,'sweep',1,'onoff',1,'v_on',-0.3,'v_off',-0.7, ...
     'dalpha',dalpha,'cin',cin2,'gain',gain2);
     fprintf(['n2 = ',num2str(ne2),' +- ',num2str(nerr2),'\n'])
 
@@ -103,12 +103,12 @@ for vturn = 0:0.02:0.3
     sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,0,numStepsRC,waitTimeRC)
     sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC)
     sigDACRamp(pinout.twiddle1.device,pinout.twiddle1.port,0,numStepsRC,waitTimeRC)
-
-    [ne1,nerr1] = measureElectronsFn(pinout,1,'vstart',0,'vstop',-0.8,'vstep',-0.02,'filter_order',2, ...
-        'time_constant',1,'demod_rate',10e3,'poll',10,'sweep',1,'onoff',1,'v_on',-0.25,'v_off',-0.8, ...
-        'dalpha',dalpha,'cin',cin1,'gain',gain1);
-    fprintf(['n1 = ',num2str(ne1),' +- ',num2str(nerr1),'\n'])
-    delay(1)
+    % [ne1,nerr1] = measureElectronsFn(pinout,1,'vstart',0,'vstop',-0.8,'vstep',-0.02,'filter_order',2, ...
+    %     'time_constant',1,'demod_rate',10e3,'poll',10,'sweep',1,'onoff',1,'v_on',-0.25,'v_off',-0.8, ...
+    %     'dalpha',dalpha,'cin',cin1,'gain',gain1);
+    % fprintf(['n1 = ',num2str(ne1),' +- ',num2str(nerr1),'\n'])
+    % delay(1)
+    unloadSense1(pinout)
 end
 
-eject_electrons;
+% eject_electrons;

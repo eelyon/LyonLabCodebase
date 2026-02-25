@@ -44,7 +44,7 @@ Awg2ch_2 = Agilent33622A(1234,awg2Houck_Address,1) % two-channel AWG
 
 % AwgFilament = Agilent33220A(port,'172.29.117.127',1);
 % Siglent power supply address
-siglentFil = SPD330('172.29.117.8',1);
+siglentFil = SPD330('172.29.117.8',1)
 
 %% GUIs
 controlDACGUI = sigDACGUI;

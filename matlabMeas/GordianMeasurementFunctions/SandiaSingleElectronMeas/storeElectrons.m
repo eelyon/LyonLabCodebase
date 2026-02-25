@@ -3,7 +3,7 @@
 % cap1 = 5e-12;
 % gain1 = 24*0.915*100;
 
-vstart = 0.4;
+vstart = 0.5;
 vstop = -1;
 vstep = -0.05;
 
@@ -12,11 +12,11 @@ drat = 10e3;
 filter = 2;
 
 vload = 0;
-vopen = 3; % holding voltage of ccd
+vopen = 4; % holding voltage of ccd
 vclose = -1; % closing voltage of ccd
 
-storeE = 1;
-releaseE = 0;
+% storeE = 1;
+% releaseE = 0;
 
 % %% Move electrons from Sommer-Tanner to Sense 1
 % loadSense1(pinout,vload); delay(1)
@@ -37,27 +37,36 @@ releaseE = 0;
 % sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC) % reset guard
 % delay(1)
 
-for i = 1:5
-    shuttleUpSense2(pinout)
+% electronStore(pinout,'vopen',vopen,'vclose',vclose)
+% measureElectronsFn(pinout,2,'vstart',vstart,'vstop',vstop,'vstep',vstep,'filter_order',filter, ...
+% 'time_constant',tc,'demod_rate',drat,'poll',5,'sweep',1,'onoff',1,'dalpha',dalpha,'cin',cin2,'gain',gain2);
 
-    if storeE == 1
-        electronStore(pinout,'vopen',vopen,'vclose',vclose)
-        fprintf('Electrons stored\n')
-        
-        measureElectronsFn(pinout,2,'vstart',vstart,'vstop',vstop,'vstep',vstep,'filter_order',filter, ...
-        'time_constant',tc,'demod_rate',drat,'poll',10,'sweep',1,'onoff',0,'dalpha',dalpha,'cin',cin2,'gain',gain2);
-        % fprintf(['n2 = ',num2str(ne2),' +- ',num2str(nerr2),'\n'])
-    end
+for i = 1:4
+    shuttleUpSense2(pinout)
     
-    if releaseE == 1
-        electronRelease(pinout,'vopen',vopen,'vclose',vclose)
-        fprintf('Electrons released\n')
-        
-        measureElectronsFn(pinout,2,'vstart',vstart,'vstop',vstop,'vstep',vstep,'filter_order',filter, ...
-        'time_constant',tc,'demod_rate',drat,'poll',10,'sweep',1,'onoff',0,'dalpha',dalpha,'cin',cin2,'gain',gain2);
-        % fprintf(['n2 = ',num2str(ne2),' +- ',num2str(nerr2),'\n'])
-    end
-    fprintf(['Electrons are in channel no. ', num2str(6-i),'/n'])
+    % if storeE == 1
+        % Measure 
+    measureElectronsFn(pinout,2,'vstart',vstart,'vstop',vstop,'vstep',vstep,'filter_order',filter, ...
+    'time_constant',tc,'demod_rate',drat,'poll',5,'sweep',1,'onoff',1,'dalpha',dalpha,'cin',cin2,'gain',gain2);
+    
+    electronStore(pinout,'vopen',vopen,'vclose',vclose)
+    fprintf('Electrons stored\n')
+    
+    measureElectronsFn(pinout,2,'vstart',vstart,'vstop',vstop,'vstep',vstep,'filter_order',filter, ...
+    'time_constant',tc,'demod_rate',drat,'poll',5,'sweep',1,'onoff',1,'dalpha',dalpha,'cin',cin2,'gain',gain2);
+    % fprintf(['n2 = ',num2str(ne2),' +- ',num2str(nerr2),'\n'])
+    % end
+    
+    % if releaseE == 1
+    %     electronRelease(pinout,'vopen',vopen,'vclose',vclose)
+    %     fprintf('Electrons released\n')
+    % 
+    %     measureElectronsFn(pinout,2,'vstart',vstart,'vstop',vstop,'vstep',vstep,'filter_order',filter, ...
+    %     'time_constant',tc,'demod_rate',drat,'poll',10,'sweep',1,'onoff',0,'dalpha',dalpha,'cin',cin2,'gain',gain2);
+    %     % fprintf(['n2 = ',num2str(ne2),' +- ',num2str(nerr2),'\n'])
+    % end
+    % fprintf(['Electrons are in channel no. ', num2str(6-i),'/n'])
+    fprintf(['Iteration no. ', num2str(i),'/n'])
 end
 
 % %% Move electron down to last gate before avalanche detector
