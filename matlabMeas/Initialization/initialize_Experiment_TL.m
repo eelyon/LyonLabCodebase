@@ -27,7 +27,6 @@ door_Address = '172.29.117.57';
 % Oscilloscope
 oscope_Address = 'USB0::0x0699::0x03A5::C011465::0';
 
-
 %% Connect
 controlDAC = sigDAC(sigDACPortControl,24,'controlDAC');
 supplyDAC  = sigDAC(sigDACPortSupply,24,'supplyDAC');

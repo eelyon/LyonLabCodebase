@@ -27,7 +27,7 @@ if contains(name,'SR830') || contains(name,'VmeasC') || contains(name,'VmeasE')
 
     end
 
-elseif contains(name,'AP24') || contains(name,'DAC')
+elseif contains(name,'AP24') || contains(name,'Sig')
 
         if calibrate
             load(['AP24/AP24_' num2str(Port) '.mat']);
@@ -35,6 +35,10 @@ elseif contains(name,'AP24') || contains(name,'DAC')
             Value = interp1(vRange,vRange.*m+b,Value);
         end
         Device.sigDACSetVoltage(Port,Value);
+
+elseif contains(name,'QDevil')
+        Device.QDACSetVoltage(Port,Value);
+
 elseif contains(name,'AP16')
 
     if calibrate

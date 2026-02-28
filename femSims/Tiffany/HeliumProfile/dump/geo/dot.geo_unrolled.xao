@@ -22352,23 +22352,23 @@ Co
       <element index="377"/>
       <element index="378"/>
     </group>
-    <group name="DIELECTRIC" dimension="solid" tag="1" count="3">
-      <element index="0"/>
-      <element index="6"/>
-      <element index="7"/>
-    </group>
-    <group name="METAL" dimension="solid" tag="2" count="5">
+    <group name="METAL" dimension="solid" tag="1" count="5">
       <element index="1"/>
       <element index="2"/>
       <element index="3"/>
       <element index="4"/>
       <element index="5"/>
     </group>
-    <group name="HELIUM" dimension="solid" tag="3" count="1">
+    <group name="HELIUM" dimension="solid" tag="2" count="1">
       <element index="8"/>
     </group>
-    <group name="VACUUM" dimension="solid" tag="4" count="1">
+    <group name="VACUUM" dimension="solid" tag="3" count="1">
       <element index="9"/>
+    </group>
+    <group name="DIELECTRIC" dimension="solid" tag="4" count="3">
+      <element index="0"/>
+      <element index="6"/>
+      <element index="7"/>
     </group>
   </groups>
   <fields count="0"/>
