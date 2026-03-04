@@ -5,15 +5,15 @@ isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 p.addParameter('numSteps', 2, isnonneg);
 p.addParameter('numStepsRC', 2, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
-p.addParameter('Vopen', 2, isnonneg);
-p.addParameter('Vclose', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
+p.addParameter('vopen', 2, isnonneg);
+p.addParameter('vclose', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
 
 numSteps = p.Results.numSteps; % sigDACRampVoltage
 numStepsRC = p.Results.numStepsRC; % sigDACRamp
 waitTimeRC = p.Results.waitTimeRC; % in microseconds
-vopen = p.Results.Vopen; % holding voltage of ccd
-vclose = p.Results.Vclose; % closing voltage of ccd
+vopen = p.Results.vopen; % holding voltage of ccd
+vclose = p.Results.vclose; % closing voltage of ccd
 
 sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vload,numSteps) % open 1st door
 sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vload,numSteps) % open 2nd door

@@ -154,7 +154,6 @@ classdef Agilent33220A
         end
         
         %% SET TRIGGER %%
-        
         function send33220Trigger(Agilent33220A)
             fprintf(Agilent33220A.client,'TRIG');
         end

@@ -21,18 +21,21 @@ classdef SIM900
         end
 
        function [] = setSIM900Voltage(SIM900,port,voltage)
-           voltageResolution = .001;
-           currentVoltage = str2double(querySIM900Voltage(SIM900, port));
+           % voltageResolution = .001;
+           % currentVoltage = str2double(querySIM900Voltage(SIM900, port));
+           % pause(0.1)
            
-           if abs(voltage - currentVoltage) < voltageResolution && voltage ~= 0
-               fprintf('Voltage step is too small for SIM900\n');
-           else
-               connectSIM900Port(SIM900,port);
-               pause(0.1)
-               command = ['VOLT ' num2str(voltage)];
-               fprintf(SIM900.client,command);
-               disconnectSIM900Port(SIM900);
-           end
+           % if abs(voltage - currentVoltage) < voltageResolution % && voltage ~= 0
+           %     fprintf('Voltage step is too small for SIM900\n');
+           % elif voltage > 20 || voltage < 20 % && voltage ~= 0
+           %     fprintf('Voltage outside +-20 V range\n');
+           % else
+           connectSIM900Port(SIM900,port);
+           pause(0.1)
+           command = ['VOLT ' num2str(voltage)];
+           fprintf(SIM900.client,command);
+           disconnectSIM900Port(SIM900);
+           % end
        end
 
        function [] = setBulkSIM900Voltage(SIM900,ports,voltages)
@@ -42,23 +45,23 @@ classdef SIM900
        end
 
        function [] = rampSIM900Voltage(SIM900,port,voltage,pauser,delta)
-           voltageResolution = .001;
+           % voltageResolution = .001;
            currentVoltage = str2double(querySIM900Voltage(SIM900, port));
            
-           if abs(voltage - currentVoltage) < voltageResolution
-               fprintf('Voltage step is too small for SIM928\n');
-           else
-               connectSIM900Port(SIM900,port);
-               for volts = currentVoltage:sign(voltage - currentVoltage)*delta:voltage
-                   command = ['VOLT ' num2str(volts)];
-                   fprintf(SIM900.client,command);
-                   while str2double(query(SIM900.client,'*OPC?')) == 0
-                       continue % OPC flag writes 1 when operation complete
-                   end
-                   pause(pauser)
+           % if abs(voltage - currentVoltage) < voltageResolution
+           %     fprintf('Voltage step is too small for SIM928\n');
+           % else
+           connectSIM900Port(SIM900,port);
+           for volts = currentVoltage:sign(voltage - currentVoltage)*delta:voltage
+               command = ['VOLT ' num2str(volts)];
+               fprintf(SIM900.client,command);
+               while str2double(query(SIM900.client,'*OPC?')) == 0
+                   continue % OPC flag writes 1 when operation complete
                end
-               disconnectSIM900Port(SIM900);
+               pause(pauser)
            end
+           disconnectSIM900Port(SIM900);
+           % end
        end
 
        function [] = rampBulkSIM900Voltage(SIM900,ports,voltages)
