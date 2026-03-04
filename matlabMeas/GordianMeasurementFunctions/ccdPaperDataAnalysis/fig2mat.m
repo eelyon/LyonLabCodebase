@@ -1,12 +1,13 @@
-directory = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\';
-day = '12_18_25\';
-tag = 'Guard1';
+% directory = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\';
+directory = 'C:\Users\gordi\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensingShuttling\data_single_electron_shuttling\';
+day = '02_24_26\';
+tag = 'MFLIFreqSweep';% 'SpectralDensity';
 % cd(directory)
 % allFilesInDirectory = dir;
 % figNum = 22880:1:23009; % 22028;
 
 %maybe do thin where you enter the tag and then convert it
-for figNum = 23460:1:23730
+for figNum = 24096:1:24103
     try
         fig = openfig([directory,day,tag,'_',num2str(figNum),'.fig'],"invisible");
     catch
@@ -16,18 +17,20 @@ for figNum = 23460:1:23730
     ax = findall(fig,'Type','Axes');
     
     % Prepare a structure to store data
-    plotData = struct();
-    plotData.timeConstant = fig.UserData.time_constant;
-    plotData.filterOrder = fig.UserData.filter_order;
-    plotData.demodRate = fig.UserData.demod_rate;
+    if isempty(fig.UserData) == 0
+        plotData = struct();
+        plotData.timeConstant = fig.UserData.time_constant;
+        plotData.filterOrder = fig.UserData.filter_order;
+        plotData.demodRate = fig.UserData.demod_rate;
+        plotData.controlDAC = fig.UserData.controlDAC;
+        plotData.supplyDAC = fig.UserData.supplyDAC;
+    end
+
     try
         plotData.pollDuration = fig.UserData.poll_duration;
     catch
         warning('no poll duration in figure meta data')
     end
-    plotData.controlDAC = fig.UserData.controlDAC;
-    plotData.supplyDAC = fig.UserData.supplyDAC;
-    
     
     for i = 1:length(ax)
         subplotData = struct();
