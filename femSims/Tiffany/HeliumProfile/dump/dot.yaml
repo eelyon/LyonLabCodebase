@@ -45,7 +45,3 @@ physicalSurfaces:
    Reservoir: 5
    Top: 6
 physicalVolumes:
-   VACUUM: 1
-   DIELECTRIC: 2
-   METAL: 3
-   HELIUM: 4
