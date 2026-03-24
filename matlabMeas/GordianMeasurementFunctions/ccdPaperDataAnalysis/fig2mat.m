@@ -1,13 +1,14 @@
 % directory = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\';
-directory = 'C:\Users\gordi\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensingShuttling\data_single_electron_shuttling\';
+% directory = 'C:\Users\gordi\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensingShuttling\data_single_electron_shuttling\';
+directory = 'C:\Users\Lyon Lab Simulation\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensingShuttling\data_single_electron_shuttling\';
 day = '02_24_26\';
-tag = 'MFLIFreqSweep';% 'SpectralDensity';
+tag = 'Guard2';% 'SpectralDensity';
 % cd(directory)
 % allFilesInDirectory = dir;
 % figNum = 22880:1:23009; % 22028;
 
 %maybe do thin where you enter the tag and then convert it
-for figNum = 24096:1:24103
+for figNum = 24139:1:24438
     try
         fig = openfig([directory,day,tag,'_',num2str(figNum),'.fig'],"invisible");
     catch

@@ -1,9 +1,9 @@
 % [datArr,freqArr] = pull3577AData(HP3577A,startFreq,stopFreq);
-% path = 'C:\Users\Lyon-Lab-B417\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensingShuttling\data_single_electron_shuttling\';
-path = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\';
-day = '12_15_25\';
-tag = 'RawRollOff';
-figNum = 23019;
+path = 'C:\Users\Lyon-Lab-B417\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensingShuttling\data_single_electron_shuttling\';
+% path = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\';
+day = '12_26_25\';
+tag = 'MFLIFreqSweep';
+figNum = 24097;
 
 figPath = append(path,day,tag,'_',num2str(figNum),'.fig');
 fig = openfig(figPath,"invisible");
@@ -13,13 +13,13 @@ s21_dBm = data(1).YData;
 close(fig);
 
 s21_volts = convertdBmToVoltage(s21_dBm+76);
-[fit,gof] = fitRollOff(freqs,s21_volts);
-fits = fit(freqs);
+% [fit,gof] = fitRollOff(freqs,s21_volts);
+% fits = fit(freqs);
 
 s21_dB = 20*log10(s21_volts);
 
-% [fitresult] = rollOffFit_abcd(freqs,s21_volts,'R',1.1e6,'Cc',47e-9);
-% size(fitresult)
+[fitresult] = rollOffFit_abcd(freqs,s21_volts,'R',1.1e6,'Cc',47e-9);
+size(fitresult)
 
 R = 1.1e6;
 Cc = 47e-9;
