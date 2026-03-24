@@ -13504,7 +13504,15 @@ Co
       <element index="229"/>
       <element index="230"/>
     </group>
-    <group name="METAL" dimension="solid" tag="1" count="12">
+    <group name="DIELECTRIC" dimension="solid" tag="1" count="3">
+      <element index="0"/>
+      <element index="11"/>
+      <element index="12"/>
+    </group>
+    <group name="HELIUM" dimension="solid" tag="2" count="1">
+      <element index="15"/>
+    </group>
+    <group name="METAL" dimension="solid" tag="3" count="12">
       <element index="1"/>
       <element index="2"/>
       <element index="3"/>
@@ -13517,14 +13525,6 @@ Co
       <element index="10"/>
       <element index="13"/>
       <element index="14"/>
-    </group>
-    <group name="DIELECTRIC" dimension="solid" tag="2" count="3">
-      <element index="0"/>
-      <element index="11"/>
-      <element index="12"/>
-    </group>
-    <group name="HELIUM" dimension="solid" tag="3" count="1">
-      <element index="15"/>
     </group>
     <group name="VACUUM" dimension="solid" tag="4" count="1">
       <element index="16"/>

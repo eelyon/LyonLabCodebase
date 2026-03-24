@@ -1,27 +1,27 @@
-2025-12-11 15:08:45,162 | INFO | Starting EDP: dump\\edp\\ff_Sense.edp
-2025-12-11 15:09:00,951 | DEBUG | Full output captured
-2025-12-11 15:09:00,951 | INFO | -- FreeFem++ v4.6 (Fri, Apr 03, 2020  2:08:08 PM - git v4.6)
-2025-12-11 15:09:00,951 | INFO |  Load: lg_fem lg_mesh lg_mesh3 eigenvalue 
-2025-12-11 15:09:00,951 | INFO | 'ffglut.exe' is not recognized as an internal or external command,
-2025-12-11 15:09:00,951 | INFO | operable program or batch file.
-2025-12-11 15:09:00,951 | INFO | (load: loadLibary C:\Program Files (x86)\FreeFem++\\.\msh3 = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\gmsh = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\medit = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\mshmet = 0) load: mshmet  
-2025-12-11 15:09:00,951 | INFO | (load: loadLibary C:\Program Files (x86)\FreeFem++\\.\tetgen = 0) load: tetgen  
-2025-12-11 15:09:00,952 | INFO |  sizestack + 1024 =3776  ( 2752 )
-2025-12-11 15:09:00,952 | INFO | 
-2025-12-11 15:09:00,952 | INFO | 142303 tetrahedrons
-2025-12-11 15:09:00,952 | INFO | 21462 triangles
-2025-12-11 15:09:00,952 | INFO | 163765 numElements
-2025-12-11 15:09:00,952 | INFO |   -- Build Nodes/DF on mesh :   n.v. 25246, n. elmt. 142303, n b. elmt. 21462
-2025-12-11 15:09:00,952 | INFO |      nb of Nodes 197322    nb of DoF   197322  DFon=1100
-2025-12-11 15:09:00,952 | INFO |   -- FESpace: Nb of Nodes 197322 Nb of DoF 197322
-2025-12-11 15:09:00,952 | INFO |   -- Build Nodes/DF on mesh :   n.v. 25246, n. elmt. 142303, n b. elmt. 21462
-2025-12-11 15:09:00,952 | INFO |      nb of Nodes 142303    nb of DoF   142303  DFon=0001
-2025-12-11 15:09:00,952 | INFO |   -- FESpace: Nb of Nodes 142303 Nb of DoF 142303
-2025-12-11 15:09:00,952 | INFO |  GC:  converge in  191 g=9.54545e-09 rho= 1.61868 gamma= 0.796365
-2025-12-11 15:09:00,952 | INFO |   -- Solve : 
-2025-12-11 15:09:00,952 | INFO |           min -0.00311179  max 1
-2025-12-11 15:09:00,952 | INFO | times: compile 0.028s, execution 15.724s,  mpirank:0
-2025-12-11 15:09:00,952 | INFO |  ######## We forget of deleting   -6 Nb pointer,   0Bytes  ,  mpirank 0, memory leak =0
-2025-12-11 15:09:00,952 | INFO |  CodeAlloc : nb ptr  4165,  size :501464 mpirank: 0
-2025-12-11 15:09:00,952 | INFO | Ok: Normal End
-2025-12-11 15:09:00,952 | INFO | Completed EDP: dump\\edp\\ff_Sense.edp
+2026-03-24 16:08:22,546 | INFO | Starting EDP: dump\\edp\\ff_Sense.edp
+2026-03-24 16:09:00,604 | DEBUG | Full output captured
+2026-03-24 16:09:00,604 | INFO | -- FreeFem++ v4.6 (Fri, Apr 03, 2020  2:08:08 PM - git v4.6)
+2026-03-24 16:09:00,604 | INFO |  Load: lg_fem lg_mesh lg_mesh3 eigenvalue 
+2026-03-24 16:09:00,605 | INFO | 'ffglut.exe' is not recognized as an internal or external command,
+2026-03-24 16:09:00,605 | INFO | operable program or batch file.
+2026-03-24 16:09:00,605 | INFO | (load: loadLibary C:\Program Files (x86)\FreeFem++\\.\msh3 = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\gmsh = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\medit = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\mshmet = 0) load: mshmet  
+2026-03-24 16:09:00,605 | INFO | (load: loadLibary C:\Program Files (x86)\FreeFem++\\.\tetgen = 0) load: tetgen  
+2026-03-24 16:09:00,605 | INFO |  sizestack + 1024 =3432  ( 2408 )
+2026-03-24 16:09:00,605 | INFO | 
+2026-03-24 16:09:00,605 | INFO | 243078 tetrahedrons
+2026-03-24 16:09:00,605 | INFO | 29550 triangles
+2026-03-24 16:09:00,605 | INFO | 272628 numElements
+2026-03-24 16:09:00,605 | INFO |   -- Build Nodes/DF on mesh :   n.v. 43634, n. elmt. 243078, n b. elmt. 29550
+2026-03-24 16:09:00,605 | INFO |      nb of Nodes 339354    nb of DoF   339354  DFon=1100
+2026-03-24 16:09:00,605 | INFO |   -- FESpace: Nb of Nodes 339354 Nb of DoF 339354
+2026-03-24 16:09:00,605 | INFO |   -- Build Nodes/DF on mesh :   n.v. 43634, n. elmt. 243078, n b. elmt. 29550
+2026-03-24 16:09:00,605 | INFO |      nb of Nodes 243078    nb of DoF   243078  DFon=0001
+2026-03-24 16:09:00,605 | INFO |   -- FESpace: Nb of Nodes 243078 Nb of DoF 243078
+2026-03-24 16:09:00,605 | INFO |  GC:  converge in  268 g=1.38608e-08 rho= 1.24919 gamma= 0.861635
+2026-03-24 16:09:00,605 | INFO |   -- Solve : 
+2026-03-24 16:09:00,605 | INFO |           min -0.0140961  max 1
+2026-03-24 16:09:00,605 | INFO | times: compile 0.022s, execution 38.001s,  mpirank:0
+2026-03-24 16:09:00,605 | INFO |  ######## We forget of deleting   -6 Nb pointer,   0Bytes  ,  mpirank 0, memory leak =0
+2026-03-24 16:09:00,605 | INFO |  CodeAlloc : nb ptr  4057,  size :498608 mpirank: 0
+2026-03-24 16:09:00,605 | INFO | Ok: Normal End
+2026-03-24 16:09:00,605 | INFO | Completed EDP: dump\\edp\\ff_Sense.edp

@@ -51,9 +51,9 @@ physicalSurfaces:
    Door2: 11
    Top: 12
 physicalVolumes:
-   METAL: 1
-   DIELECTRIC: 2
-   HELIUM: 3
+   DIELECTRIC: 1
+   HELIUM: 2
+   METAL: 3
    VACUUM: 4
 dielectric_constants:
    DIELECTRIC: 11.0
@@ -75,19 +75,5 @@ extract_opt:
    - 201
    coordinate3:
    - 0.96
-   curvature_config: null
--  name: result3
-   quantity: Ez
-   plane: yz
-   coordinate1:
-   - -10
-   - 10
-   - 101
-   coordinate2:
-   - -2
-   - 2
-   - 101
-   coordinate3:
-   - 0.0
    curvature_config: null
 msh_refinements: null
