@@ -1,0 +1,27 @@
+2025-12-11 15:09:00,419 | INFO | Starting EDP: dump\\edp\\ff_Twiddle.edp
+2025-12-11 15:09:14,799 | DEBUG | Full output captured
+2025-12-11 15:09:14,799 | INFO | -- FreeFem++ v4.6 (Fri, Apr 03, 2020  2:08:08 PM - git v4.6)
+2025-12-11 15:09:14,799 | INFO |  Load: lg_fem lg_mesh lg_mesh3 eigenvalue 
+2025-12-11 15:09:14,799 | INFO | 'ffglut.exe' is not recognized as an internal or external command,
+2025-12-11 15:09:14,799 | INFO | operable program or batch file.
+2025-12-11 15:09:14,799 | INFO | (load: loadLibary C:\Program Files (x86)\FreeFem++\\.\msh3 = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\gmsh = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\medit = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\mshmet = 0) load: mshmet  
+2025-12-11 15:09:14,800 | INFO | (load: loadLibary C:\Program Files (x86)\FreeFem++\\.\tetgen = 0) load: tetgen  
+2025-12-11 15:09:14,800 | INFO |  sizestack + 1024 =3776  ( 2752 )
+2025-12-11 15:09:14,800 | INFO | 
+2025-12-11 15:09:14,800 | INFO | 142303 tetrahedrons
+2025-12-11 15:09:14,800 | INFO | 21462 triangles
+2025-12-11 15:09:14,800 | INFO | 163765 numElements
+2025-12-11 15:09:14,800 | INFO |   -- Build Nodes/DF on mesh :   n.v. 25246, n. elmt. 142303, n b. elmt. 21462
+2025-12-11 15:09:14,800 | INFO |      nb of Nodes 197322    nb of DoF   197322  DFon=1100
+2025-12-11 15:09:14,800 | INFO |   -- FESpace: Nb of Nodes 197322 Nb of DoF 197322
+2025-12-11 15:09:14,800 | INFO |   -- Build Nodes/DF on mesh :   n.v. 25246, n. elmt. 142303, n b. elmt. 21462
+2025-12-11 15:09:14,800 | INFO |      nb of Nodes 142303    nb of DoF   142303  DFon=0001
+2025-12-11 15:09:14,800 | INFO |   -- FESpace: Nb of Nodes 142303 Nb of DoF 142303
+2025-12-11 15:09:14,800 | INFO |  GC:  converge in  189 g=4.7545e-09 rho= 1.58916 gamma= 0.84112
+2025-12-11 15:09:14,800 | INFO |   -- Solve : 
+2025-12-11 15:09:14,800 | INFO |           min -0.00944224  max 1
+2025-12-11 15:09:14,800 | INFO | times: compile 0.023s, execution 14.329s,  mpirank:0
+2025-12-11 15:09:14,800 | INFO |  ######## We forget of deleting   -6 Nb pointer,   0Bytes  ,  mpirank 0, memory leak =0
+2025-12-11 15:09:14,800 | INFO |  CodeAlloc : nb ptr  4165,  size :501464 mpirank: 0
+2025-12-11 15:09:14,800 | INFO | Ok: Normal End
+2025-12-11 15:09:14,801 | INFO | Completed EDP: dump\\edp\\ff_Twiddle.edp
