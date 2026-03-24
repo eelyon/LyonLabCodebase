@@ -1,0 +1,116 @@
+%% HEMT voltages
+
+setAgilent33622APresetConfig('CharacterizeHEMT',Awg2Ch,1);
+setAgilent33622APresetConfig('CharacterizeHEMT',Awg2Ch,2);
+
+hDAC = HarvardDAC('COM5','hDAC', 8);
+
+% turn on HEMTs at RT
+HEMT1Channels = [0,1,2];    
+HEMT2Channels = [3,4,5];
+turnOnHEMT(HEMT1Channels,hDAC,2.2)
+turnOnHEMT(HEMT2Channels,hDAC,2.2)
+
+% turn on HEMTs when cold
+interleavedRamp([supplyDAC,supplyDAC,supplyDAC],[24,13,23],[1.9,1.98,0.5],5,0.1)
+interleavedRamp([supplyDAC,supplyDAC,supplyDAC],[14,15,16],[2,2,0.5],5,0.1)
+
+% turn off HEMTS
+turnOffHEMT(HEMT1Channels,hDAC,2.2)
+turnOffHEMT(HEMT1Channels,hDAC,2.2)
+SetAllDAC(hDAC,0);
+
+
+
+function []= turnOnHEMT(DAC,channels,endVoltage)
+    VtomV = 1e3;
+    Vg_voltages = [0.3,0.5];
+    for i = Vg_voltages
+        for j = channels
+            SetDAC(DAC,j,i*VtomV)
+        end
+    end
+    
+    Vbias_voltages = 0.6:0.2:2.2;
+    for i = Vbias_voltages
+        for j = channels(2:3)
+            SetDAC(DAC,j,i*VtomV)
+        end
+    end
+    SetDAC(DAC,2,endVoltage*VtomV)
+end
+
+function []= turnOffHEMT(DAC,channels,endVoltage)
+    VtomV = 1e3;
+    Vg_voltages = [0.3,0.5];
+    for i = Vg_voltages
+        for j = channels
+            SetDAC(DAC,j,i*VtomV)
+        end
+    end
+    
+    Vbias_voltages = 0.6:0.2:2.2;
+    for i = Vbias_voltages
+        for j = channels(2:3)
+            SetDAC(DAC,j,i*VtomV)
+        end
+    end
+    SetDAC(DAC,2,endVoltage*VtomV)
+end
+
+
+
+SetDAC(hDAC,2,2*VtomV)
+
+SetDAC(hDAC,1,1.7*VtomV)
+SetDAC(hDAC,2,1.7*VtomV)
+SetDAC(hDAC,1,1.4*VtomV)
+SetDAC(hDAC,2,1.4*VtomV)
+SetDAC(hDAC,1,1.1*VtomV)
+SetDAC(hDAC,2,1.1*VtomV)
+SetDAC(hDAC,1,0.8*VtomV)
+SetDAC(hDAC,2,0.8*VtomV)
+SetDAC(hDAC,1,0.5*VtomV)
+SetDAC(hDAC,2,0.5*VtomV)
+SetDAC(hDAC,0,0.3*VtomV)
+SetDAC(hDAC,1,0.3*VtomV)
+SetDAC(hDAC,2,0.3*VtomV)
+SetDAC(hDAC,0,0*VtomV)
+SetDAC(hDAC,1,0*VtomV)
+SetDAC(hDAC,2,0*VtomV)
+
+% HEMT2
+SetDAC(hDAC,3,0.3*VtomV)
+SetDAC(hDAC,4,0.3*VtomV)
+SetDAC(hDAC,5,0.3*VtomV)
+SetDAC(hDAC,3,0.5*VtomV)
+SetDAC(hDAC,4,0.5*VtomV)
+SetDAC(hDAC,5,0.5*VtomV)
+
+SetDAC(hDAC,4,0.8*VtomV)
+SetDAC(hDAC,5,0.8*VtomV)
+SetDAC(hDAC,4,1.1*VtomV)
+SetDAC(hDAC,5,1.1*VtomV)
+SetDAC(hDAC,4,1.5*VtomV)
+SetDAC(hDAC,5,1.5*VtomV)
+SetDAC(hDAC,4,1.8*VtomV)
+SetDAC(hDAC,5,1.8*VtomV)
+SetDAC(hDAC,4,2*VtomV)
+SetDAC(hDAC,5,2*VtomV)
+
+SetDAC(hDAC,4,1.7*VtomV)
+SetDAC(hDAC,5,1.7*VtomV)
+SetDAC(hDAC,4,1.4*VtomV)
+SetDAC(hDAC,5,1.4*VtomV)
+SetDAC(hDAC,4,1.1*VtomV)
+SetDAC(hDAC,5,1.1*VtomV)
+SetDAC(hDAC,4,0.8*VtomV)
+SetDAC(hDAC,5,0.8*VtomV)
+SetDAC(hDAC,4,0.5*VtomV)
+SetDAC(hDAC,5,0.5*VtomV)
+SetDAC(hDAC,3,0.3*VtomV)
+SetDAC(hDAC,4,0.3*VtomV)
+SetDAC(hDAC,5,0.3*VtomV)
+SetDAC(hDAC,3,0*VtomV)
+SetDAC(hDAC,4,0*VtomV)
+SetDAC(hDAC,5,0*VtomV)

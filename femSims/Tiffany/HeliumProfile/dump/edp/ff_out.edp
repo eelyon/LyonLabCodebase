@@ -56,8 +56,8 @@ macro field(u,x,y,z) [dx(u)(x,y,z),dy(u)(x,y,z),dz(u)(x,y,z)] //
 Vh u,v;
 FunctionRegion dielectric =
                           + 11.0 * (region == 1)
-                          + 1.0 * (region == 2)
-                          + 1.057 * (region == 3)
+                          + 1.057 * (region == 2)
+                          + 1.0 * (region == 3)
                           + 1.0 * (region == 4)
                           ;
 problem Electro(u,v,solver=CG) =
