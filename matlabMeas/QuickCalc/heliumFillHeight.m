@@ -51,9 +51,9 @@ function [ h ] = heliumFillHeight( Pkpa )
      Patm = (30-Pkpa)*0.0334211; % atm
      h = Patm * (Vpanel)*25.4/(757*Acell); % [mm]
  elseif bombCell
-     Vpanel = 5.93;             % in^3
+     Vpanel = 5.94;             % in^3
      Acell = pi*(0.32/2)^2;      % in^2, 2.15/2
      Patm = (30-Pkpa)*0.0334211; % atm
-     h = Patm * (Vpanel)*25.4/(757*Acell); % [mm]
+     h = Patm * (Vpanel)*25.4/(757*Acell);                            % [mm]
  end
 end
