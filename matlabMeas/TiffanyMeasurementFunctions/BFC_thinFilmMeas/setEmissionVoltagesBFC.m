@@ -2,8 +2,11 @@
 
 DCMap_BFC;
 SetDAC(hDAC,BackMetalPort,0*VtomV);
-QDACSmoothRampVoltage(qDAC,BlockPort,-1,0.2)
+QDACSmoothRampVoltage(qDAC,BlockPort,-0.5,0.2)
 qDACrampTime = 0.2;
+
+SetDAC(hDAC,BackMetalPort,-4*VtomV);
+RampDAC(hDAC,TfEPort,0*VtomV);
 
 %% Compensation voltages
 QDACSmoothRampVoltage(qDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-0.7,0,0,0],qDACrampTime)
@@ -15,8 +18,8 @@ QDACSmoothRampVoltage(qDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-
 QDACSmoothRampVoltage(qDAC,[TfCPort,BEPort,BCPort],[-1,-1,-1],qDACrampTime)
 RampDAC(hDAC,TfEPort,-1*VtomV);
 
-compensateParasitics(SR830Twiddle,Awg_1,Awg_1,-180,180,10,2,4,0.1,0)        % HEMT1
-compensateParasitics(SR830TwiddleC,AwgComp,AwgTwd,-180,180,10,2,4,0.1,0)    % HEMT2
+compensateParasitics(SR830Twiddle,AwgComp,AwgTwd,-180,180,10,0.2,0.4,0.01,0)        % HEMT1
+compensateParasitics(SR830TwiddleC,Awg_1,Awg_1,-180,180,10,0.2,0.4,0.01,0)    % HEMT2
 
 % finer sweep
 compensateParasitics(SR830Twiddle,Awg2Ch,Awg2Ch,26,28,0.1,0.3,0.31,0.005,0)         % HEMT1
@@ -24,66 +27,67 @@ compensateParasitics(SR830TwiddleC,Awg2Nat,Awg2Nat,-103,-101,0.1,0.3,0.31,0.005,
 
 %% EMISSION VOLTAGES
 % emission to HEMT2 side
-sigDACRampVoltage(controlDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-3,-3,-3,-3],numSteps);
-sigDACRampVoltage(controlDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-2,-2,0,-2],numSteps);
+QDACSmoothRampVoltage(qDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-3,-3,-3,-3],qDACrampTime)
+QDACSmoothRampVoltage(qDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-3,-3,-3,-3],qDACrampTime)
 
-sigDACRampVoltage(controlDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-0.7,0,0,0],numSteps);
-sigDACRampVoltage(controlDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-2,-2,0,-2],numSteps);
+QDACSmoothRampVoltage(qDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-0.7,0,0,0],qDACrampTime)
+QDACSmoothRampVoltage(qDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-1,-1,-1,-1],qDACrampTime)
 
-sigDACRampVoltage(controlDAC,[TfCPort,TfEPort,BEPort,BCPort],[-3,-3,-3,-3],numSteps);
+QDACSmoothRampVoltage(qDAC,[TfCPort,BEPort,BCPort],[-3,-3,-3],qDACrampTime)
+RampDAC(hDAC,TfEPort,-3*VtomV);
 
 % emission to HEMT1 side
-sigDACRampVoltage(controlDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-0.7,0,0,0],numSteps);
-sigDACRampVoltage(controlDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-2,-2,-2,-2],numSteps);
+QDACSmoothRampVoltage(qDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-0.7,0,0,0],qDACrampTime)
+QDACSmoothRampVoltage(qDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-1,-1,-1,-1],qDACrampTime)
 
-sigDACRampVoltage(controlDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-3,-3,-3,-3],numSteps);
-sigDACRampVoltage(controlDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-3,-3,0,-3],numSteps);
 
-sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[-3,-3,-3],numSteps);
-sigDACRampVoltage(supplyDAC,TfEPort,-2,numSteps);
+QDACSmoothRampVoltage(qDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-3,-3,-3,-3],qDACrampTime)
+QDACSmoothRampVoltage(qDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-3,-3,-3,-3],qDACrampTime)
+
+QDACSmoothRampVoltage(qDAC,[TfCPort,BEPort,BCPort],[-3,-3,-3],qDACrampTime)
+RampDAC(hDAC,TfEPort,-3*VtomV);
 
 
 % emission to both sides
-sigDACRampVoltage(controlDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-0.7,0,0,0],numSteps);
-sigDACRampVoltage(controlDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-1,-1,-1,-1],numSteps);
+QDACSmoothRampVoltage(qDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-0.7,0,0,0],qDACrampTime)
+QDACSmoothRampVoltage(qDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-1,-1,-1,-1],qDACrampTime)
 
-sigDACRampVoltage(controlDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-0.7,0,0,0],numSteps);
-sigDACRampVoltage(controlDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-1,-1,-1,-1],numSteps);
+QDACSmoothRampVoltage(qDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-0.7,0,0,0],qDACrampTime)
+QDACSmoothRampVoltage(qDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-1,-1,-1,-1],qDACrampTime)
 
-sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[-3,-3,-3],numSteps);
-sigDACRampVoltage(supplyDAC,TfEPort,-3,numSteps);
+QDACSmoothRampVoltage(qDAC,[TfCPort,BEPort,BCPort],[-2,-2,-2],qDACrampTime)
+RampDAC(hDAC,TfEPort,-2*VtomV);
+QDACSmoothRampVoltage(qDAC,BlockPort,-2,0.2)
 
 
 %% Sweeps
-sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830TwiddleC},qDAC,{StmCPort},1);
-sweep1DMeasSR830({'TE'},-0.7,-1.1,-0.05,0.1,10,{SR830Twiddle},qDAC,{TopEPort},1);
 
 % check sommer tanner for electrons
-sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830Twiddle},controlDAC,{StmEPort},1);
-sweep1DMeasSR830({'ST'},0,-0.55,-0.05,0.1,10,{SR830TwiddleC},controlDAC,{StmCPort},1);
+sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830Twiddle},qDAC,{StmEPort},1);
+sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830TwiddleC},qDAC,{StmCPort},1);
 
-sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830Twiddle},controlDAC,{StmCPort},1);
+sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830Twiddle},qDAC,{StmCPort},1);
 
-sweep1DMeasSR830({'ST'},0,-0.3,-0.05,0.1,10,{SR830Twiddle},controlDAC,{StmEPort},1);
-sweep1DMeasSR830({'ST'},0,-0.2,-0.01,0.1,10,{SR830Twiddle},controlDAC,{StmEPort},1);
-sweep1DMeasSR830({'ST'},0,-0.2,-0.01,0.1,10,{SR830TwiddleC},controlDAC,{StmCPort},1);
+sweep1DMeasSR830({'ST'},0,-0.3,-0.05,0.1,10,{SR830Twiddle},qDAC,{StmEPort},1);
+sweep1DMeasSR830({'ST'},0,-0.2,-0.01,0.1,10,{SR830Twiddle},qDAC,{StmEPort},1);
+sweep1DMeasSR830({'ST'},0,-0.2,-0.01,0.1,10,{SR830TwiddleC},qDAC,{StmCPort},1);
 
 
-sweep1DMeasSR830({'ST'},2.5,2.5-0.2,-0.01,0.1,10,{SR830Twiddle},controlDAC,{StmEPort},1);
-sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830TwiddleC},controlDAC,{StmEPort},1);
+sweep1DMeasSR830({'ST'},2.5,2.5-0.2,-0.01,0.1,10,{SR830Twiddle},qDAC,{StmEPort},1);
+sweep1DMeasSR830({'ST'},0,-0.5,-0.05,0.1,10,{SR830TwiddleC},qDAC,{StmEPort},1);
 
 % sweep top metal 
-sweep1DMeasSR830({'TE'},-0.7,-1.1,-0.05,0.1,10,{SR830Twiddle},controlDAC,{TopEPort},1);
-sweep1DMeasSR830({'TC'},-0.7,-1.2,-0.05,0.1,10,{SR830TwiddleC},controlDAC, {TopCPort},1);
-sweep1DMeasSR830({'TC'},-2.7,-2.7-0.3,-0.05,0.1,10,{SR830TwiddleC},controlDAC,{TopCPort},1);
+sweep1DMeasSR830({'TE'},-0.7,-1.1,-0.05,0.1,10,{SR830Twiddle},qDAC,{TopEPort},1);
+sweep1DMeasSR830({'TC'},-0.7,-1.2,-0.05,0.1,10,{SR830TwiddleC},qDAC, {TopCPort},1);
+sweep1DMeasSR830({'TC'},-2.7,-2.7-0.3,-0.05,0.1,10,{SR830TwiddleC},qDAC,{TopCPort},1);
 
 % sweep twiddle sense or door
-sweep1DMeasSR830({'TWW'},0,-0.8,0.05,0.1,10,{SR830TwiddleC},controlDAC,{TwiddleEPort},1,1);
-sweep1DMeasSR830({'Door'},-3,0,0.05,0.1,10,{SR830Twiddle},controlDAC,{DoorEInPort},1,1);
-sweep1DMeasSR830({'Door'},-2.5,-1,0.05,0.1,10,{SR830Twiddle},controlDAC,{DoorEOutPort},1,1);
+sweep1DMeasSR830({'TWW'},0,-0.8,0.05,0.1,10,{SR830TwiddleC},qDAC,{TwiddleEPort},1,1);
+sweep1DMeasSR830({'Door'},-3,0,0.05,0.1,10,{SR830Twiddle},qDAC,{DoorEInPort},1,1);
+sweep1DMeasSR830({'Door'},-2.5,-1,0.05,0.1,10,{SR830Twiddle},qDAC,{DoorEOutPort},1,1);
 
-sweep1DMeasSR830({'Door'},-2.5,-1,0.05,0.1,10,{SR830TwiddleC},controlDAC,{DoorCOutPort},1,1);
-sweep1DMeasSR830({'Door'},-1,0.5,0.05,0.1,10,{SR830TwiddleC},controlDAC,{DoorCOutPort},1,1);
+sweep1DMeasSR830({'Door'},-2.5,-1,0.05,0.1,10,{SR830TwiddleC},qDAC,{DoorCOutPort},1,1);
+sweep1DMeasSR830({'Door'},-1,0.5,0.05,0.1,10,{SR830TwiddleC},qDAC,{DoorCOutPort},1,1);
 
 
 %% Thin Film Transfer
@@ -219,32 +223,24 @@ set33622AOutput(Awg2Ch,2,1);
 
 
 %% CLOSE EXPERIMENT
-setVal(supplyDAC,BackMetalPort,8);
+SetDAC(hDAC,BackMetalPort,8*VtomV);
 
-sigDACRampVoltage(controlDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-2,-2,-2,-2],numSteps);
-sigDACRampVoltage(controlDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-2,-2,-2,-2],numSteps);
+QDACSmoothRampVoltage(qDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-2,-2,-2,-2],qDACrampTime);
+QDACSmoothRampVoltage(qDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-2,-2,-2,-2],qDACrampTime);
 
-sigDACRampVoltage(controlDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-2,-2,-2,-2],numSteps);
-sigDACRampVoltage(controlDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-2,-2,-2,-2],numSteps);
+QDACSmoothRampVoltage(qDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-2,-2,-2,-2],qDACrampTime);
+QDACSmoothRampVoltage(qDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-2,-2,-2,-2],qDACrampTime);
 
-sigDACRampVoltage(controlDAC,[TfCPort,TfEPort,BEPort,BCPort],[-2,-2,-2,-2],numSteps);
-sigDACRampVoltage(supplyDAC,TfEPort,-2,numSteps);
+QDACSmoothRampVoltage(qDAC,[TfCPort,TfEPort,BEPort,BCPort],[-2,-2,-2,-2],qDACrampTime);
+QDACSmoothRampVoltage(qDAC,TfEPort,-2,qDACrampTime);
 
-setVal(controlDAC,BlockPort,-2);
+QDACSmoothRampVoltage(qDAC,BlockPort,-2,qDACrampTime);
+
 
 % turn off HEMTS
-interleavedRamp([supplyDAC,supplyDAC,supplyDAC],[24,13,23],[0,0,0],5,0.1)
-interleavedRamp([supplyDAC,supplyDAC,supplyDAC],[14,15,16],[0,0,0],5,0.1)                                                                                                                                                                                 
+turnOffHEMT_TL(hDAC,HEMT1Channels)
+turnOffHEMT_TL(hDAC,HEMT2Channels)                                                                                                                                                                              
 
 % Set all voltages to zero
-setVal(supplyDAC,BackMetalPort,0);
-setVal(controlDAC,BlockPort,0);
-
-sigDACRampVoltage(controlDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[0,0,0,0],numSteps);
-sigDACRampVoltage(controlDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[0,0,0,0],numSteps);
-
-sigDACRampVoltage(controlDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[0,0,0,0],numSteps);
-sigDACRampVoltage(controlDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[0,0,0,0],numSteps);
-
-sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[0,0,0],numSteps);
-sigDACRampVoltage(supplyDAC,TfEPort,0,numSteps);
+QDACSetAllZero(qDAC)
+SetAllDAC(hDAC,0);

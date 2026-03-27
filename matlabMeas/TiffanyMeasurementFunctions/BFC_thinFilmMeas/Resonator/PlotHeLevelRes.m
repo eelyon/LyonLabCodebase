@@ -1,9 +1,9 @@
 %% Set single frequency sweep
 close all;
 
-power     = -10;      % in dBm - be careful!! Do not set too high!!
-startFreq = 2110;    % in MHz 2130
-stopFreq  = 2123;    % in MHz 2148
+power     = -20;     % in dBm - be careful!! Do not set too high!!
+startFreq = 2111;    % in MHz 2130
+stopFreq  = 2120;    % in MHz 2148
 
 % decide whether to include metadata (1=include,0=don't)
 saveFig   = 1;       % for saving the figure
@@ -13,12 +13,14 @@ E5071SetPower(ENA,power);           % in dBm
 E5071SetStartFreq(ENA,startFreq);   % in MHz
 E5071SetStopFreq(ENA,stopFreq);     % in MHz
 
-flush(ENA);
+flush(ENA.client);
 pause(0.1)
-fprintf(ENA,':INIT1');         % Set trigger value - for continuous set: ':INIT:CONT ON'
-fprintf(ENA,':TRIG:SOUR BUS'); % Set trigger source to "Bus Trigger"
-fprintf(ENA,':TRIG:SING');     % Trigger ENA to start sweep cycle
-query(ENA,'*OPC?');            % Execute *OPC? command and wait until command return 1
+E5071SetTriggerValue(ENA)             % Set trigger value - for continuous set: ':INIT:CONT ON'
+fprintf(ENA.client,':TRIG:SOUR BUS'); % Set trigger source to "Bus Trigger"
+fprintf(ENA.client,':TRIG:SING');     % Trigger ENA to start sweep cycle
+fprintf(ENA.client,'*CLS');           % Clear buffer
+query(ENA.client,'*OPC?');            % Execute *OPC? command and wait until command return 1
+E5071AutoScale(ENA);
 
 % Get mag (log) and phase (deg) data
 [fdata,mag,phase] = E5071GetData(ENA,tag);
@@ -26,7 +28,7 @@ query(ENA,'*OPC?');            % Execute *OPC? command and wait until command re
 % fres = fdata(loc);
 
 %% Plot data
-measType = num2str(query(ENA,':CALC:PAR:DEF?')); % S21, S12, S22, or S11
+measType = num2str(query(ENA.client,':CALC:PAR:DEF?')); % S21, S12, S22, or S11
 subPlotFigure = figure(getNextMATLABFigNum());
 
 subplot(1,2,1);
