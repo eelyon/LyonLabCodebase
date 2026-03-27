@@ -4,7 +4,7 @@ function [ vdW ] = vdWThickness( H )
   thin = 1;
 
   if thin % l<600A
-      kv = 2.88*10^-6; % [cm^(4/3)] for metal substrates  
+      kv = 3*10^-6; % [cm^(4/3)] for metal substrates  
       vdW  = kv*H^(-1/3)*1e7;  % [nm]
 
   else    % l>600A
