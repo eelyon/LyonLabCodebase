@@ -24,7 +24,7 @@ sim900 = SIM900(sim900Port)
 %% SR830 Lock-ins
 % top_Address = '172.29.117.106'; % top SR830
 % bottom_Address = '172.29.117.103'; % bottom SR830
-SR830ST = SR830(1234,'172.29.117.103') % for Sommer-Tanner
+SR830ST = SR830(1234,"172.29.117.103") % for Sommer-Tanner
 % SR830Twiddle = SR830(port,bottom_Address); % for twiddle
 
 %% Filament
@@ -32,10 +32,14 @@ SR830ST = SR830(1234,'172.29.117.103') % for Sommer-Tanner
 % Fil_Address = '172.29.117.127'; % Agilent for Filament
 
 %% Agilent AWGs
-awg1_Address = '172.29.117.24';
-Awg2ch_1 = Agilent33622A(1234,awg1_Address,1) % two-channel AWG
-awg2Houck_Address = '172.29.117.137';
-Awg2ch_2 = Agilent33622A(1234,awg2Houck_Address,1) % two-channel AWG
+awg1_address = '172.29.117.24';
+awg2ch_1 = Agilent33622A(1234,awg1_address) % two-channel AWG
+awg2_address = '172.29.117.62';
+awg2ch_2 = Agilent33622A(1234,awg2_address)
+awg3_address = '172.29.117.57';
+awg2ch_3 = Agilent33622A(1234,awg3_address)
+awgHouck_address = '172.29.117.137';
+awg2ch_houck = Agilent33622A(1234,awgHouck_address) % two-channel AWG
 
 % AwgTwiddle_Address = '172.29.117.16';
 % AwgTwiddle = Agilent33220A(1234,AwgTwiddle_Address,1); % 1-channel AWG
@@ -44,7 +48,7 @@ Awg2ch_2 = Agilent33622A(1234,awg2Houck_Address,1) % two-channel AWG
 
 % AwgFilament = Agilent33220A(port,'172.29.117.127',1);
 % Siglent power supply address
-siglentFil = SPD330('172.29.117.8',1)
+siglentFilament = SPD330('172.29.117.8',1)
 
 %% GUIs
 controlDACGUI = sigDACGUI;

@@ -10,12 +10,15 @@ classdef Agilent33622A
         function Agilent33622A = Agilent33622A(port,IPAddress,opt)
             Agilent33622A.IPAddress     = IPAddress;
             Agilent33622A.port          = port;
+
+            visaAddress = sprintf('TCPIP0::%s::inst0::INSTR', Agilent33622A.IPAddress);
+            Agilent33622A.client = visadev(visaAddress);
             
-            if exist('opt','var') 
-                Agilent33622A.client    = TCPIP_VISA_Connect(IPAddress);                
-            else
-                Agilent33622A.client    = TCPIP_Connect(IPAddress,port);
-            end
+            % if exist('opt','var') 
+            %     Agilent33622A.client    = TCPIP_VISA_Connect(IPAddress);                
+            % else
+            %     Agilent33622A.client    = TCPIP_Connect(IPAddress,port);
+            % end
             Agilent33622A.identifier    = '33622A';
         end
 
@@ -125,6 +128,7 @@ classdef Agilent33622A
         
         function send33622ATrigger(Agilent33622A)
             fprintf(Agilent33622A.client,'TRIG');
+            % writeline(fgen, "*TRG");
         end
 
         function [] = set33622ATrigSlope(Agilent33622A,channel,slope)
@@ -182,9 +186,10 @@ classdef Agilent33622A
             end
         end
 
-        function [] = set33622ANumBurstCycles(Agilent33622A,channel,numCycles)
-            command = ['SOUR',num2str(channel),':BURS:NCYC ' num2str(numCycles)];
-            fprintf(Agilent33622A.client,command);
+        function [] = set33622ANumBurstCycles(Agilent33622A,chan,ncycles)
+            % command = ['SOUR',num2str(channel),':BURS:NCYC ' num2str(numCycles)];
+            % fprintf(Agilent33622A.client,command);
+            writeline(Agilent33622A.client, "SOUR" + num2str(chan) + ":BURS:NCYC " + num2str(round(ncycles)));
         end
 
         function [] = set33622ABurstStateOn(Agilent33622A,onOrOff)
@@ -241,14 +246,16 @@ classdef Agilent33622A
             fprintf(Agilent33622A.client,command2);
         end
 
-        function [] = set33622AVoltageHigh(Agilent33622A,channel,highVoltage)
-            command = ['SOUR',num2str(channel),'VOLT:HIGH ', num2str(highVoltage)];
-            fprintf(Agilent33622A.client,command);
+        function [] = set33622AVHigh(Agilent33622A,chan,vhigh)
+            % command = ['SOUR',num2str(channel),'VOLT:HIGH ', num2str(highVoltage)];
+            % fprintf(Agilent33622A.client,command);
+            writeline(Agilent33622A.client, "SOUR" + num2str(chan) + ":VOLT:HIGH " + num2str(vhigh));
         end
 
-        function [] = set33622AVoltageLow(Agilent33622A,channel,lowVoltage)
-            command = ['SOUR',num2str(channel),'VOLT:LOW ', num2str(lowVoltage)];
-            fprintf(Agilent33622A.client,command);
+        function [] = set33622AVLow(Agilent33622A,chan,vlow)
+            % command = ['SOUR',num2str(channel),'VOLT:LOW ', num2str(lowVoltage)];
+            % fprintf(Agilent33622A.client,command);
+            writeline(Agilent33622A.client, "SOUR" + num2str(chan) + ":VOLT:LOW "  + num2str(vlow));
         end
 
         function [] = set33622AVoltageOffset(Agilent33622A,channel,voltageOffset)
