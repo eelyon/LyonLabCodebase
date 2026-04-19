@@ -23,15 +23,17 @@ sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vclose,numSteps) % close 2nd d
 sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vopen,numSteps) % open phi1
 sigDACRampVoltage(pinout.d3.device,pinout.d3.port,vclose,numSteps) % close 3rd door
 
-ccd_units = 64; % number of repeating units in ccd array
-for n = 1:ccd_units
-    sigDACRampVoltage(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vopen,numSteps) % open phi2
-    sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vclose,numSteps) % close phi1
-    sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vopen,numSteps) % open phi3
-    sigDACRampVoltage(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vclose,numSteps) % close phi2
-    sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vopen,numSteps) % open phi1
-    sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vclose,numSteps) % close phi3
-end
+ccdShuttleForward(pinout.phi_h1_1.device,'A',64*3);
+
+% ccd_units = 64; % number of repeating units in ccd array
+% for n = 1:ccd_units
+%     sigDACRampVoltage(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vopen,numSteps) % open phi2
+%     sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vclose,numSteps) % close phi1
+%     sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vopen,numSteps) % open phi3
+%     sigDACRampVoltage(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vclose,numSteps) % close phi2
+%     sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vopen,numSteps) % open phi1
+%     sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vclose,numSteps) % close phi3
+% end
 
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vopen,numSteps)
 sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vclose,numSteps)

@@ -9,14 +9,11 @@
 % initializeENA;
 
 %% AJS's 24 channel DACs
-sigDACPortControl = 'COM8'; % 20-bit DAC
-sigDACPortSupply  = 'COM4'; % 18-bit DAC
-controlDAC = sigDAC(sigDACPortControl,24,'controlDAC')
-supplyDAC = sigDAC(sigDACPortSupply,24,'supplyDAC')
+controlDAC = sigDAC('COM8',24,'controlDAC')
+supplyDAC = sigDAC('COM4',24,'supplyDAC')
 
 %% SIM900 for biasing HEMTs
-sim900Port = 'COM5';
-sim900 = SIM900(sim900Port)
+sim900 = SIM900('COM5')
 
 %% DC pinout script
 % DCPinout;
@@ -32,21 +29,17 @@ SR830ST = SR830(1234,"172.29.117.103") % for Sommer-Tanner
 % Fil_Address = '172.29.117.127'; % Agilent for Filament
 
 %% Agilent AWGs
-awg1_address = '172.29.117.24';
-awg2ch_1 = Agilent33622A(1234,awg1_address) % two-channel AWG
-awg2_address = '172.29.117.62';
-awg2ch_2 = Agilent33622A(1234,awg2_address)
-awg3_address = '172.29.117.57';
-awg2ch_3 = Agilent33622A(1234,awg3_address)
-awgHouck_address = '172.29.117.137';
-awg2ch_houck = Agilent33622A(1234,awgHouck_address) % two-channel AWG
+awg2ch_1 = Agilent33622A(1234,'172.29.117.24')
+awg2ch_2 = Agilent33622A(1234,'172.29.117.62')
+awg2ch_3 = Agilent33622A(1234,'172.29.117.57')
+awg2ch_houck = Agilent33622A(1234,'172.29.117.137') % Borrowed from Houck lab (lowest noise)
 
 % AwgTwiddle_Address = '172.29.117.16';
 % AwgTwiddle = Agilent33220A(1234,AwgTwiddle_Address,1); % 1-channel AWG
 % AwgComp_Address = '172.29.117.17';
 % AwgComp = Agilent33220A(1234,AwgComp_Address,1); % 1-channel AWG
 
-% AwgFilament = Agilent33220A(port,'172.29.117.127',1);
+awgFilament = Agilent33220A(port,'172.29.117.127',1);
 % Siglent power supply address
 siglentFilament = SPD330('172.29.117.8',1)
 

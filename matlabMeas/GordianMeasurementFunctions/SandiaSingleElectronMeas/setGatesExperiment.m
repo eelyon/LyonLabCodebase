@@ -83,8 +83,8 @@ sigDACRamp(pinout.trap3.device,pinout.trap3.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap4.device,pinout.trap4.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap5.device,pinout.trap5.port,vclose,numStepsRC,waitTimeRC)
 sigDACRamp(pinout.trap6.device,pinout.trap6.port,vclose,numStepsRC,waitTimeRC)
-% delay(1)
+delay(1)
 
-sigDACRamp(pinout.tm.device,pinout.tm.port,-1,numStepsRC,waitTimeRC) % ramp top metal
+sigDACRamp(pinout.tm.device,pinout.tm.port,-2,numStepsRC,waitTimeRC) % ramp top metal
 delay(1)
 end
