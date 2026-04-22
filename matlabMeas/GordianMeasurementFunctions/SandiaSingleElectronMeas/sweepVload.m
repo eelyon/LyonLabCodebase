@@ -37,7 +37,7 @@ for value = 0.2:0.02:0.4
 
     % fprintf(['-> For vload = ',num2str(value),'V, num_electrons = ',num2str(ne),'\n'])
 
-    shuttleSense1Sense2(pinout,'vopen',3,'vclose',-1); delay(1)
+    shuttleSense1Sense2(pinout,'vhigh',3,'vlow',-1); delay(1)
     [ne2,nerr2] = measureElectronsFn(pinout,2,'vstart',0.2,'vstop',-0.7,'vstep',-0.05,'filter_order',2, ...
         'time_constant',0.5,'demod_rate',10e3,'poll',10,'sweep',1,'onoff',1,'v_on',-0.3,'v_off',-0.7, ...
         'dalpha',dalpha,'cin',cin2,'gain',gain2);

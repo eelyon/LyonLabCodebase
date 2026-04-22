@@ -12,8 +12,8 @@ drat = 10e3;
 filter = 2;
 
 vload = 0;
-vopen = 4; % holding voltage of ccd
-vclose = -1; % closing voltage of ccd
+vhigh = 4; % holding voltage of ccd
+vlow = -1; % closing voltage of ccd
 
 % storeE = 1;
 % releaseE = 0;
@@ -37,7 +37,7 @@ vclose = -1; % closing voltage of ccd
 % sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC) % reset guard
 % delay(1)
 
-% electronStore(pinout,'vopen',vopen,'vclose',vclose)
+% electronStore(pinout,'vhigh',vhigh,'vlow',vlow)
 % measureElectronsFn(pinout,2,'vstart',vstart,'vstop',vstop,'vstep',vstep,'filter_order',filter, ...
 % 'time_constant',tc,'demod_rate',drat,'poll',5,'sweep',1,'onoff',1,'dalpha',dalpha,'cin',cin2,'gain',gain2);
 
@@ -49,7 +49,7 @@ for i = 1:4
     measureElectronsFn(pinout,2,'vstart',vstart,'vstop',vstop,'vstep',vstep,'filter_order',filter, ...
     'time_constant',tc,'demod_rate',drat,'poll',5,'sweep',1,'onoff',1,'dalpha',dalpha,'cin',cin2,'gain',gain2);
     
-    electronStore(pinout,'vopen',vopen,'vclose',vclose)
+    electronStore(pinout,'vhigh',vhigh,'vlow',vlow)
     fprintf('Electrons stored\n')
     
     measureElectronsFn(pinout,2,'vstart',vstart,'vstop',vstop,'vstep',vstep,'filter_order',filter, ...
@@ -58,7 +58,7 @@ for i = 1:4
     % end
     
     % if releaseE == 1
-    %     electronRelease(pinout,'vopen',vopen,'vclose',vclose)
+    %     electronRelease(pinout,'vhigh',vhigh,'vlow',vlow)
     %     fprintf('Electrons released\n')
     % 
     %     measureElectronsFn(pinout,2,'vstart',vstart,'vstop',vstop,'vstep',vstep,'filter_order',filter, ...

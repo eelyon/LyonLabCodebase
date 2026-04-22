@@ -1,7 +1,7 @@
-ccdDefine(controlDAC,'A',pinout.phi_h1_1.port,pinout.phi_h1_2.port,pinout.phi_h1_3.port);
-ccdDefine(controlDAC,'B',pinout.phi_h2_1.port,pinout.phi_h2_2.port,pinout.phi_h2_3.port);
-ccdDefine(supplyDAC,'C',pinout.phi_v1_2.port,pinout.phi_v1_3.port,pinout.phi_v1_1.port);
-ccdDefine(supplyDAC,'D',pinout.phi_v2_1.port,pinout.phi_v2_2.port,pinout.phi_v2_3.port);
+ccdDefine(pinout.phi_h1_1.device,'A',pinout.phi_h1_1.port,pinout.phi_h1_2.port,pinout.phi_h1_3.port);
+ccdDefine(pinout.phi_h2_1.device,'B',pinout.phi_h2_1.port,pinout.phi_h2_2.port,pinout.phi_h2_3.port);
+ccdDefine(pinout.phi_v1_1.device,'C',pinout.phi_v1_2.port,pinout.phi_v1_3.port,pinout.phi_v1_1.port);
+% ccdDefine(pinout.phi_v2_1.device,'D',pinout.phi_v2_1.port,pinout.phi_v2_2.port,pinout.phi_v2_3.port);
 
 ccdAmplitude(controlDAC,'A','ALL',2.0,-1.0);
 ccdAmplitude(controlDAC,'B','ALL',2.0,-1.0);

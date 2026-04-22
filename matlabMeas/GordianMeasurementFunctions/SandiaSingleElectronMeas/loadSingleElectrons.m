@@ -49,7 +49,7 @@ delay(1)
 %     fprintf(['Change vload to ',num2str(vload),'\n'])
 % elseif length(nEs) >= 2 && nEs(i) > 2 && nEs(i-1) > 2
 %     vload = vload - 0.01;
-%     unloadSense1(pinout,'vopen',7,'vclose',-1.6); delay(2)
+%     unloadSense1(pinout,'vhigh',7,'vlow',-1.6); delay(2)
 %     fprintf(['Change vload to ',num2str(vload),'\n'])
 % end
 

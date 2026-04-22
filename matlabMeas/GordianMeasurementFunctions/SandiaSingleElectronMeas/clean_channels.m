@@ -2,7 +2,7 @@
 vhigh = 5;
 vlow = -1;
 
-repeats = 10;
+repeats = 5;
 numSteps = 5;
 numStepsRC = 5;
 waitTimeRC = 1100;
@@ -100,11 +100,11 @@ for i = 1:repeats
     sigDACRampVoltage(pinout.d_v_3.device,pinout.d_v_3.port,vlow,numSteps) % E are on d_v_2
 
     %% Empty 2nd horizontal ccd and move to d_v_2
-    sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,vhigh,numSteps)
-    sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vhigh,numSteps)
-    sigDACRampVoltage(pinout.d10.device,pinout.d10.port,vhigh,numSteps)
-    sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,-2,numSteps)
-    sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vlow,numSteps)
+    % sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,vhigh,numSteps)
+    % sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vhigh,numSteps)
+    % sigDACRampVoltage(pinout.d10.device,pinout.d10.port,vhigh,numSteps)
+    % sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,-2,numSteps)
+    % sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vlow,numSteps)
     sigDACRampVoltage(pinout.phi_h2_3.device,pinout.phi_h2_3.port,vhigh,numSteps)
     sigDACRampVoltage(pinout.d10.device,pinout.d10.port,vlow,numSteps)
     
@@ -223,9 +223,9 @@ delay(1)
 %     'time_constant', tc, 'demod_rate', drat);
 % sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC); delay(1)
 
-MFLISweep1D_getSample({'Guard2'}, vstart, vstop, vstep, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
-    'time_constant', tc, 'demod_rate', drat);
-sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
+% MFLISweep1D_getSample({'Guard2'}, vstart, vstop, vstep, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
+%     'time_constant', tc, 'demod_rate', drat);
+% sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
 
 % % Check if electrons are in horizontal CCD
 % loadSense1(pinout,vlow);
@@ -234,10 +234,10 @@ sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTime
 % sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC); delay(1)
 
 % Check if electrons are in vertical CCD
-shuttleSense1Sense2(pinout);
-MFLISweep1D_getSample({'Guard2'}, vstart, vstop, vstep, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
-    'time_constant', tc, 'demod_rate', drat);
-sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
+% shuttleSense1Sense2(pinout);
+% MFLISweep1D_getSample({'Guard2'}, vstart, vstop, vstep, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
+%     'time_constant', tc, 'demod_rate', drat);
+% sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
 
 function empty_sense1(pinout,numSteps,numStepsRC,waitTimeRC,vhigh,vlow)
 % Unload Sense1

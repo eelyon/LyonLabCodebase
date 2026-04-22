@@ -1,14 +1,15 @@
-function [] = cleanChannels(repeats,sense1,sense2,options)
+function [] = cleanChannels(pinout,repeats,sense1,sense2,options)
 %CLEANCHANNELS Cleaning all channels after emission
 %   Detailed explanation goes here
 arguments (Input)
+    pinout
     repeats    (1,1) double {mustBeInteger, mustBeGreaterThanOrEqual(repeats, 1), mustBeLessThan(repeats, 20)}
     sense1     (1,1) double {mustBeMember(sense1, [0 1])}
     sense2     (1,1) double {mustBeMember(sense2, [0 1])}
     options.vhigh      (1,1) double                                    = 3.0
     options.vlow       (1,1) double                                    = -1.0
-    options.numSteps   (1,1) double {mustBeNumeric, mustBePositive}    = 5
-    options.numStepsRC (1,1) double {mustBeNumeric, mustBePositive}    = 5
+    options.numSteps   (1,1) double {mustBeNumeric, mustBePositive}    = 2
+    options.numStepsRC (1,1) double {mustBeNumeric, mustBePositive}    = 2
     options.waitTimeRC (1,1) double {mustBeInRange(options.waitTimeRC, 40, 16383)} = 1100
     options.biasST     (1,1) double                                    = 2.0
 end
@@ -30,6 +31,7 @@ drat = 10e3;
 vstm = sigDACQueryVoltage(pinout.stm.device, pinout.stm.port);
 vstd = sigDACQueryVoltage(pinout.std.device, pinout.std.port);
 vsts = sigDACQueryVoltage(pinout.sts.device, pinout.sts.port);
+vtm = sigDACQueryVoltage(pinout.tm.device, pinout.tm.port);
 
 % Set Sommer-Tanner positive to suck electrons in
 sigDACRampVoltage(pinout.stm.device, pinout.stm.port, biasST, numSteps)
@@ -50,7 +52,7 @@ for i = 1:repeats
     
     % Sweep top metal
     sigDACRamp(pinout.tm.device, pinout.tm.port, -3, 100, 15000); delay(0.1)
-    sigDACRamp(pinout.tm.device, pinout.tm.port, -2, 100, 15000)
+    sigDACRamp(pinout.tm.device, pinout.tm.port, vtm, 100, 15000)
     
     sigDACRampVoltage(pinout.d6.device, pinout.d6.port, vlow, numSteps)
     sigDACRampVoltage(pinout.sense1_r.device, pinout.sense1_r.port, vlow, numSteps)
@@ -118,13 +120,15 @@ for i = 1:repeats
     sigDACRampVoltage(pinout.d_v_3.device,pinout.d_v_3.port,vlow,numSteps) % E are on d_v_2
 
     %% Empty 2nd horizontal ccd and move to d_v_2
-    sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,vhigh,numSteps)
-    sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vhigh,numSteps)
-    sigDACRampVoltage(pinout.d10.device,pinout.d10.port,vhigh,numSteps)
-    sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,-2,numSteps)
-    sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vlow,numSteps)
+    % sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,vhigh,numSteps)
+    % sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vhigh,numSteps)
+    % sigDACRampVoltage(pinout.d10.device,pinout.d10.port,vhigh,numSteps)
+    % sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,-2,numSteps)
+    % sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vlow,numSteps)
     sigDACRampVoltage(pinout.phi_h2_3.device,pinout.phi_h2_3.port,vhigh,numSteps)
     sigDACRampVoltage(pinout.d10.device,pinout.d10.port,vlow,numSteps)
+
+    % ccdShuttleBackward(pinout.phi_h2_1.device,'B',22*3);
     
     for k = 1:22
         sigDACRampVoltage(pinout.phi_h2_2.device,pinout.phi_h2_2.port,vhigh,numSteps)
@@ -196,6 +200,9 @@ for i = 1:repeats
 % %         fprintf([num2str(l), ' '])
 %     end
 %     fprintf('\n')
+
+    % ccdShuttleBackward(pinout.phi_v1_1.device,'C',75*3);
+
     for j = 1:75
         sigDACRampVoltage(pinout.phi_v1_2.device,pinout.phi_v1_2.port,vhigh,numSteps)
         sigDACRampVoltage(pinout.phi_v1_3.device,pinout.phi_v1_3.port,vlow,numSteps)
@@ -247,7 +254,7 @@ if sense1 == 1
         'time_constant', tc, 'demod_rate', drat);
     sigDACRamp(pinout.guard1_l.device, pinout.guard1_l.port, 0, numStepsRC, waitTimeRC)
 
-    if sense2 == 2
+    if sense2 == 1
         MFLISweep1D_getSample({'Guard2'}, vstart, vstop, vstep, 'dev32061', pinout.guard2_l.device, pinout.guard2_l.port, 0, ...
         'time_constant', tc, 'demod_rate', drat);
         sigDACRamp(pinout.guard2_l.device, pinout.guard2_l.port, 0, numStepsRC, waitTimeRC)
@@ -283,6 +290,8 @@ sigDACRampVoltage(pinout.d4.device, pinout.d4.port, vhigh, numSteps)
 sigDACRamp(pinout.d5.device, pinout.d5.port, vlow, numStepsRC, waitTimeRC)
 sigDACRampVoltage(pinout.phi_h1_1.device, pinout.phi_h1_1.port, vhigh, numSteps)
 sigDACRampVoltage(pinout.d4.device, pinout.d4.port,vlow-0.5, numSteps)
+
+% ccdShuttleBackward(pinout.phi_h1_1.device,'A',64*3);
 
 % Move electrons on phi_h1_1 back to Sommer-Tanner through horizontal ccd
 ccd_units = 64; % number of repeating units in ccd array

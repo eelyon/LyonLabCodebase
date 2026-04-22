@@ -5,13 +5,13 @@ isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 p.addParameter('numSteps', 5, isnonneg);
 p.addParameter('numStepsRC', 5, isnonneg);
 p.addParameter('waitTimeRC', 1100, isnonneg);
-p.addParameter('vclose', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
+p.addParameter('vlow', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
 
 numSteps = p.Results.numSteps; % sigDACRampVoltage
 numStepsRC = p.Results.numStepsRC; % sigDACRamp
 waitTimeRC = p.Results.waitTimeRC; % in microseconds
-vclose = p.Results.vclose; % closing voltage of ccd
+vlow = p.Results.vlow; % closing voltage of ccd
 
 %% Set backing plate and top metal positive then sweep ST middle gate
 setSIM900Voltage(pinout.filament.device,pinout.filament.port,4) % ramp filament backing plate
@@ -20,69 +20,69 @@ sigDACRamp(pinout.tm.device,pinout.tm.port,1,numStepsRC,waitTimeRC) % make top m
 delay(1)
 
 %% Set ST gates negative
-sigDACRampVoltage(pinout.std.device,pinout.std.port,vclose,numSteps) % Sommer-Tanner drive
-sigDACRampVoltage(pinout.sts.device,pinout.sts.port,vclose,numSteps) % Sommer-Tanner sense
-sigDACRampVoltage(pinout.stm.device,pinout.stm.port,vclose,numSteps) % Sommer-Tanner middle gate
-sigDACRampVoltage(pinout.bpg.device,pinout.bpg.port,vclose,numSteps) % bond pad guard
+sigDACRampVoltage(pinout.std.device,pinout.std.port,vlow,numSteps) % Sommer-Tanner drive
+sigDACRampVoltage(pinout.sts.device,pinout.sts.port,vlow,numSteps) % Sommer-Tanner sense
+sigDACRampVoltage(pinout.stm.device,pinout.stm.port,vlow,numSteps) % Sommer-Tanner middle gate
+sigDACRampVoltage(pinout.bpg.device,pinout.bpg.port,vlow,numSteps) % bond pad guard
 
 %% Set CCD gates negative
-sigDACRampVoltage(pinout.d1_odd.device,pinout.d1_odd.port,vclose,numSteps)
-sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vclose,numSteps)
-sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vclose,numSteps)
-sigDACRampVoltage(pinout.d3.device,pinout.d3.port,vclose,numSteps)
+sigDACRampVoltage(pinout.d1_odd.device,pinout.d1_odd.port,vlow,numSteps)
+sigDACRampVoltage(pinout.d1_even.device,pinout.d1_even.port,vlow,numSteps)
+sigDACRampVoltage(pinout.d2.device,pinout.d2.port,vlow,numSteps)
+sigDACRampVoltage(pinout.d3.device,pinout.d3.port,vlow,numSteps)
 
-sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vlow,numSteps)
+sigDACRampVoltage(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vlow,numSteps)
+sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vlow,numSteps)
 
 %% Set 1st twiddle-sense negative
-sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vclose,numSteps)
-sigDACRamp(pinout.d5.device,pinout.d5.port,vclose,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,vclose,numStepsRC,waitTimeRC) % rampSIM900Voltage(sense1_l.device,sense1_l.port,-0.5,waitTimeRC,delta);
-sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,vclose,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.twiddle1.device,pinout.twiddle1.port,vclose,numStepsRC,waitTimeRC)
-sigDACRampVoltage(pinout.guard1_r.device,pinout.guard1_r.port,vclose,numSteps)
-sigDACRampVoltage(pinout.sense1_r.device,pinout.sense1_r.port,vclose,numSteps)
-sigDACRampVoltage(pinout.d6.device,pinout.d6.port,vclose,numSteps)
-sigDACRamp(pinout.shield.device,pinout.shield.port,vclose,numStepsRC,waitTimeRC)
+sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vlow,numSteps)
+sigDACRamp(pinout.d5.device,pinout.d5.port,vlow,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.sense1_l.device,pinout.sense1_l.port,vlow,numStepsRC,waitTimeRC) % rampSIM900Voltage(sense1_l.device,sense1_l.port,-0.5,waitTimeRC,delta);
+sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,vlow,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.twiddle1.device,pinout.twiddle1.port,vlow,numStepsRC,waitTimeRC)
+sigDACRampVoltage(pinout.guard1_r.device,pinout.guard1_r.port,vlow,numSteps)
+sigDACRampVoltage(pinout.sense1_r.device,pinout.sense1_r.port,vlow,numSteps)
+sigDACRampVoltage(pinout.d6.device,pinout.d6.port,vlow,numSteps)
+sigDACRamp(pinout.shield.device,pinout.shield.port,vlow,numStepsRC,waitTimeRC)
 delay(1)
 
 %% Set 2nd twiddle-sense negative
-sigDACRampVoltage(pinout.d7.device,pinout.d7.port,vclose,numSteps) % door for compensation of sense 1
-sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,vclose,numStepsRC,waitTimeRC); delay(1) % rampSIM900Voltage(sense2_l.device,sense2_l.port,-0.5,waitTimeRC,delta);
-sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,vclose,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,vclose,numStepsRC,waitTimeRC)
-sigDACRampVoltage(pinout.guard2_r.device,pinout.guard2_r.port,vclose,numSteps)
-sigDACRampVoltage(pinout.sense2_r.device,pinout.sense2_r.port,vclose,numSteps)
-sigDACRampVoltage(pinout.d8.device,pinout.d8.port,vclose,numSteps)
+sigDACRampVoltage(pinout.d7.device,pinout.d7.port,vlow,numSteps) % door for compensation of sense 1
+sigDACRamp(pinout.sense2_l.device,pinout.sense2_l.port,vlow,numStepsRC,waitTimeRC); delay(1) % rampSIM900Voltage(sense2_l.device,sense2_l.port,-0.5,waitTimeRC,delta);
+sigDACRamp(pinout.guard2_l.device,pinout.guard2_l.port,vlow,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.twiddle2.device,pinout.twiddle2.port,vlow,numStepsRC,waitTimeRC)
+sigDACRampVoltage(pinout.guard2_r.device,pinout.guard2_r.port,vlow,numSteps)
+sigDACRampVoltage(pinout.sense2_r.device,pinout.sense2_r.port,vlow,numSteps)
+sigDACRampVoltage(pinout.d8.device,pinout.d8.port,vlow,numSteps)
 delay(1)
 
 %% Set vertical CCD
-sigDACRampVoltage(pinout.phi_v1_1.device,pinout.phi_v1_1.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi_v1_2.device,pinout.phi_v1_2.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi_v1_3.device,pinout.phi_v1_3.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_v1_1.device,pinout.phi_v1_1.port,vlow,numSteps)
+sigDACRampVoltage(pinout.phi_v1_2.device,pinout.phi_v1_2.port,vlow,numSteps)
+sigDACRampVoltage(pinout.phi_v1_3.device,pinout.phi_v1_3.port,vlow,numSteps)
 
-sigDACRampVoltage(pinout.phi_v2_1.device,pinout.phi_v2_1.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi_v2_2.device,pinout.phi_v2_2.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi_v2_3.device,pinout.phi_v2_3.port,vclose,numSteps)
+sigDACRampVoltage(pinout.phi_v2_1.device,pinout.phi_v2_1.port,vlow,numSteps)
+sigDACRampVoltage(pinout.phi_v2_2.device,pinout.phi_v2_2.port,vlow,numSteps)
+sigDACRampVoltage(pinout.phi_v2_3.device,pinout.phi_v2_3.port,vlow,numSteps)
 
-sigDACRampVoltage(pinout.d_v_1.device,pinout.d_v_1.port,vclose,numSteps)
-sigDACRampVoltage(pinout.d_v_2.device,pinout.d_v_2.port,vclose,numSteps)
-sigDACRampVoltage(pinout.d_v_3.device,pinout.d_v_3.port,vclose,numSteps)
+sigDACRampVoltage(pinout.d_v_1.device,pinout.d_v_1.port,vlow,numSteps)
+sigDACRampVoltage(pinout.d_v_2.device,pinout.d_v_2.port,vlow,numSteps)
+sigDACRampVoltage(pinout.d_v_3.device,pinout.d_v_3.port,vlow,numSteps)
 
 %% Set electron trap
-sigDACRampVoltage(pinout.d9.device,pinout.d9.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi_h2_1.device,pinout.phi_h2_1.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi_h2_2.device,pinout.phi_h2_2.port,vclose,numSteps)
-sigDACRampVoltage(pinout.phi_h2_3.device,pinout.phi_h2_3.port,vclose,numSteps)
+sigDACRampVoltage(pinout.d9.device,pinout.d9.port,vlow,numSteps)
+sigDACRampVoltage(pinout.phi_h2_1.device,pinout.phi_h2_1.port,vlow,numSteps)
+sigDACRampVoltage(pinout.phi_h2_2.device,pinout.phi_h2_2.port,vlow,numSteps)
+sigDACRampVoltage(pinout.phi_h2_3.device,pinout.phi_h2_3.port,vlow,numSteps)
 
-sigDACRamp(pinout.trap1.device,pinout.trap1.port,vclose,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.trap2.device,pinout.trap2.port,vclose,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.trap3.device,pinout.trap3.port,vclose,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.trap4.device,pinout.trap4.port,vclose,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.trap5.device,pinout.trap5.port,vclose,numStepsRC,waitTimeRC)
-sigDACRamp(pinout.trap6.device,pinout.trap6.port,vclose,numStepsRC,waitTimeRC)
-delay(1)
+% sigDACRamp(pinout.trap1.device,pinout.trap1.port,vlow,numStepsRC,waitTimeRC)
+% sigDACRamp(pinout.trap2.device,pinout.trap2.port,vlow,numStepsRC,waitTimeRC)
+% sigDACRamp(pinout.trap3.device,pinout.trap3.port,vlow,numStepsRC,waitTimeRC)
+% sigDACRamp(pinout.trap4.device,pinout.trap4.port,vlow,numStepsRC,waitTimeRC)
+% sigDACRamp(pinout.trap5.device,pinout.trap5.port,vlow,numStepsRC,waitTimeRC)
+% sigDACRamp(pinout.trap6.device,pinout.trap6.port,vlow,numStepsRC,waitTimeRC)
+% delay(1)
 
 sigDACRamp(pinout.tm.device,pinout.tm.port,-1,numStepsRC,waitTimeRC) % make top metal negative
 fprintf('Electrons are ejected.\n')
