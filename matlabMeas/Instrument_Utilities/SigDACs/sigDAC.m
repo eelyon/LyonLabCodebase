@@ -89,6 +89,15 @@ classdef sigDAC < handle
             end
         end
 
+        function sigDACTest(sigDAC)
+            % Ramp all 24 channels to channel_number * 0.1 V
+            numSteps = 10;
+            for i = 1:24
+                targetVoltage = i * 0.1;
+                sigDACRampVoltage(sigDAC,i,targetVoltage,numSteps);
+            end
+        end
+
         function  voltageArr = sigDACGetConfig(sigDAC)
             for channel = 1:sigDAC.numChannels
                 sigDAC.channelVoltages(channel) = sigDACQueryVoltage(sigDAC,channel);

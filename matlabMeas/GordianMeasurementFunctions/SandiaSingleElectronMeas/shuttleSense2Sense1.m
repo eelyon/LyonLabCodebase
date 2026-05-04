@@ -38,7 +38,7 @@ sigDACRampVoltage(pinout.d_v_2.device,pinout.d_v_2.port,vlow,numSteps)
 sigDACRampVoltage(pinout.phi_v1_3.device,pinout.phi_v1_3.port,vhigh,numSteps)
 sigDACRampVoltage(pinout.d_v_1.device,pinout.d_v_1.port,vlow,numSteps)
 
-% ccdShuttleBackward(pinout.v1_1.device,'C',75*3);
+% ccdShuttleBackward(pinout.v1_1.device,'C',75*3+1);
 
 for j = 1:75
     sigDACRampVoltage(pinout.phi_v1_2.device,pinout.phi_v1_2.port,vhigh,numSteps)

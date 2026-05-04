@@ -58,7 +58,7 @@ classdef SIM900
                while str2double(query(SIM900.client,'*OPC?')) == 0
                    continue % OPC flag writes 1 when operation complete
                end
-               pause(pauser)
+               delay(pauser)
            end
            disconnectSIM900Port(SIM900);
            % end

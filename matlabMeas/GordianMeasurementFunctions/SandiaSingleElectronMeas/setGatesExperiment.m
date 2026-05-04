@@ -15,7 +15,7 @@ vlow = p.Results.vlow; % closing voltage of ccd
 
 %% Script to set gate voltages for measurement and initialise ramping parameters
 % Run DCPinout before running this script
-setSIM900Voltage(pinout.filament.device,pinout.filament.port,0) % set back filament backing plate
+setSIM900Voltage(pinout.filament.device,pinout.filament.port,0) % set filament backing plate
 % delay(1)
 
 %% Set Sommer-Tanner
@@ -77,13 +77,13 @@ sigDACRampVoltage(pinout.phi_h2_1.device,pinout.phi_h2_1.port,vlow,numSteps)
 sigDACRampVoltage(pinout.phi_h2_2.device,pinout.phi_h2_2.port,vlow,numSteps)
 sigDACRampVoltage(pinout.phi_h2_3.device,pinout.phi_h2_3.port,vlow,numSteps)
 
-% sigDACRamp(pinout.trap1.device,pinout.trap1.port,vlow,numStepsRC,waitTimeRC)
-% sigDACRamp(pinout.trap2.device,pinout.trap2.port,vlow,numStepsRC,waitTimeRC)
-% sigDACRamp(pinout.trap3.device,pinout.trap3.port,vlow,numStepsRC,waitTimeRC)
-% sigDACRamp(pinout.trap4.device,pinout.trap4.port,vlow,numStepsRC,waitTimeRC)
-% sigDACRamp(pinout.trap5.device,pinout.trap5.port,vlow,numStepsRC,waitTimeRC)
-% sigDACRamp(pinout.trap6.device,pinout.trap6.port,vlow,numStepsRC,waitTimeRC)
-% delay(1)
+sigDACRamp(pinout.trap1.device,pinout.trap1.port,vlow,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap2.device,pinout.trap2.port,vlow,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap3.device,pinout.trap3.port,vlow,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap4.device,pinout.trap4.port,vlow,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap5.device,pinout.trap5.port,vlow,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap6.device,pinout.trap6.port,vlow,numStepsRC,waitTimeRC)
+delay(1)
 
 sigDACRamp(pinout.tm.device,pinout.tm.port,-2,numStepsRC,waitTimeRC) % ramp top metal
 delay(1)

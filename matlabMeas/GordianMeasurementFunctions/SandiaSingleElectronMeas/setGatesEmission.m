@@ -20,9 +20,9 @@ sigDACRamp(pinout.tm.device,pinout.tm.port,vlow,numStepsRC,waitTimeRC) % ramp to
 sigDACRampVoltage(pinout.m2s.device,pinout.m2s.port,-0.5,numSteps) % ramp M2 shield
 sigDACRampVoltage(pinout.bpg.device,pinout.bpg.port,vlow,numSteps) % ramp bond pad guard
 
-sigDACRampVoltage(pinout.std.device,pinout.std.port,+1,numSteps) % ramp ST-Drive
-sigDACRampVoltage(pinout.sts.device,pinout.sts.port,+1,numSteps) % ramp ST-Sense
-sigDACRampVoltage(pinout.stm.device,pinout.stm.port,+1,numSteps) % ramp ST-Middle
+sigDACRampVoltage(pinout.std.device,pinout.std.port,+2,numSteps) % ramp ST-Drive
+sigDACRampVoltage(pinout.sts.device,pinout.sts.port,+2,numSteps) % ramp ST-Sense
+sigDACRampVoltage(pinout.stm.device,pinout.stm.port,+2,numSteps) % ramp ST-Middle
 
 %% Set 1st CCD
 sigDACRampVoltage(pinout.d1_odd.device,pinout.d1_odd.port,vlow,numSteps)
@@ -73,12 +73,12 @@ sigDACRampVoltage(pinout.phi_h2_1.device,pinout.phi_h2_1.port,vlow,numSteps)
 sigDACRampVoltage(pinout.phi_h2_2.device,pinout.phi_h2_2.port,vlow,numSteps)
 sigDACRampVoltage(pinout.phi_h2_3.device,pinout.phi_h2_3.port,vlow,numSteps)
 
-% sigDACRamp(pinout.trap1.device,pinout.trap1.port,vlow,numStepsRC,waitTimeRC)
-% sigDACRamp(pinout.trap2.device,pinout.trap2.port,vlow,numStepsRC,waitTimeRC)
-% sigDACRamp(pinout.trap3.device,pinout.trap3.port,vlow,numStepsRC,waitTimeRC)
-% sigDACRamp(pinout.trap4.device,pinout.trap4.port,vlow,numStepsRC,waitTimeRC)
-% sigDACRamp(pinout.trap5.device,pinout.trap5.port,vlow,numStepsRC,waitTimeRC)
-% sigDACRamp(pinout.trap6.device,pinout.trap6.port,vlow,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap1.device,pinout.trap1.port,vlow,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap2.device,pinout.trap2.port,vlow,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap3.device,pinout.trap3.port,vlow,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap4.device,pinout.trap4.port,vlow,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap5.device,pinout.trap5.port,vlow,numStepsRC,waitTimeRC)
+sigDACRamp(pinout.trap6.device,pinout.trap6.port,vlow,numStepsRC,waitTimeRC)
 
 setSIM900Voltage(pinout.filament.device,pinout.filament.port,vbackmetal) % ramp filament backing plate
 end

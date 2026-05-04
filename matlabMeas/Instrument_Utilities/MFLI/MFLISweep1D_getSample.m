@@ -54,8 +54,8 @@ time_constant = p.Results.time_constant;
 
 % Define some other helper parameters.
 demod_c = '0'; % Demod channel, 0-based indexing for paths on the device.
-in_c = '0'; % signal input channel
-extref_c = '8'; % external reference channel - 8 for Aux In 1
+% in_c = '0'; % signal input channel
+% extref_c = '8'; % external reference channel - 8 for Aux In 1
 
 % Create a base configuration: Disable all available outputs, awgs,
 % demods, scopes,...

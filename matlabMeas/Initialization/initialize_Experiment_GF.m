@@ -30,8 +30,8 @@ SR830ST = SR830(1234,"172.29.117.103") % for Sommer-Tanner
 
 %% Agilent AWGs
 awg2ch_1 = Agilent33622A(1234,'172.29.117.24')
-awg2ch_2 = Agilent33622A(1234,'172.29.117.62')
-awg2ch_3 = Agilent33622A(1234,'172.29.117.57')
+% awg2ch_2 = Agilent33622A(1234,'172.29.117.62')
+% awg2ch_3 = Agilent33622A(1234,'172.29.117.57')
 awg2ch_houck = Agilent33622A(1234,'172.29.117.137') % Borrowed from Houck lab (lowest noise)
 
 % AwgTwiddle_Address = '172.29.117.16';
@@ -39,7 +39,7 @@ awg2ch_houck = Agilent33622A(1234,'172.29.117.137') % Borrowed from Houck lab (l
 % AwgComp_Address = '172.29.117.17';
 % AwgComp = Agilent33220A(1234,AwgComp_Address,1); % 1-channel AWG
 
-awgFilament = Agilent33220A(port,'172.29.117.127',1)
+awgFilament = Agilent33220A(1234,'172.29.117.127',1)
 % Siglent power supply address
 siglentFilament = SPD330('172.29.117.8',1)
 

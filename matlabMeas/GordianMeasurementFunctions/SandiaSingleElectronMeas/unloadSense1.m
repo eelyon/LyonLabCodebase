@@ -26,18 +26,18 @@ sigDACRamp(pinout.d5.device,pinout.d5.port,vlow,numStepsRC,waitTimeRC) % close d
 sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vhigh,numSteps) % open ccd1
 sigDACRampVoltage(pinout.d4.device,pinout.d4.port,vlow,numSteps) % close door
 
-% ccdShuttleBackward(pinout.phi_h1_1.device,'A',64*3);
+ccdShuttleBackward(pinout.phi_h1_1.device,'A',64*3);
 
 % Move electrons through horizontal CCD
-ccd_units = 64; % number of repeating units in ccd array
-for n = 1:ccd_units
-    sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vhigh,numSteps) % open ccd3
-    sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vlow,numSteps) % close ccd1
-    sigDACRampVoltage(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vhigh,numSteps) % open ccd2
-    sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vlow,numSteps) % close ccd3
-    sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vhigh,numSteps) % open ccd1
-    sigDACRampVoltage(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vlow,numSteps) % close ccd2
-end
+% ccd_units = 64; % number of repeating units in ccd array
+% for n = 1:ccd_units
+%     sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vhigh,numSteps) % open ccd3
+%     sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vlow,numSteps) % close ccd1
+%     sigDACRampVoltage(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vhigh,numSteps) % open ccd2
+%     sigDACRampVoltage(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vlow,numSteps) % close ccd3
+%     sigDACRampVoltage(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vhigh,numSteps) % open ccd1
+%     sigDACRampVoltage(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vlow,numSteps) % close ccd2
+% end
 
 % Dump electrons into Sommer-Tanner
 sigDACRampVoltage(pinout.d3.device,pinout.d3.port,vhigh,numSteps) % open 3rd door

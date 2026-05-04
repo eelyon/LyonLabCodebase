@@ -6,14 +6,14 @@ ccdDefine(pinout.phi_v1_1.device,'C',pinout.phi_v1_2.port,pinout.phi_v1_3.port,p
 ccdAmplitude(controlDAC,'A','ALL',2.0,-1.0);
 ccdAmplitude(controlDAC,'B','ALL',2.0,-1.0);
 ccdAmplitude(supplyDAC,'C','ALL',2.0,-1.0);
-ccdAmplitude(supplyDAC,'D','ALL',2.0,-1.0);
+% ccdAmplitude(supplyDAC,'D','ALL',2.0,-1.0);
 
 ccdDwellPerPhase(controlDAC,'A','ALL',0);
 ccdDwellPerPhase(controlDAC,'B','ALL',0);
 ccdDwellPerPhase(supplyDAC,'C','ALL',0);
-ccdDwellPerPhase(supplyDAC,'D','ALL',0);
+% ccdDwellPerPhase(supplyDAC,'D','ALL',0);
 
 ccdIntermediateStep(controlDAC,'A','ALL','HALF')
 ccdIntermediateStep(controlDAC,'B','ALL','HALF');
 ccdIntermediateStep(supplyDAC,'C','ALL','HALF');
-ccdIntermediateStep(supplyDAC,'D','ALL','HALF');
+% ccdIntermediateStep(supplyDAC,'D','ALL','HALF');

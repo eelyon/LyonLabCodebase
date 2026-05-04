@@ -51,7 +51,7 @@ for i = 1:repeats
     sigDACRampVoltage(pinout.d6.device, pinout.d6.port, vhigh, numSteps)
     
     % Sweep top metal
-    sigDACRamp(pinout.tm.device, pinout.tm.port, -3, 100, 15000); delay(0.1)
+    sigDACRamp(pinout.tm.device, pinout.tm.port, vtm-1, 100, 15000); delay(1)
     sigDACRamp(pinout.tm.device, pinout.tm.port, vtm, 100, 15000)
     
     sigDACRampVoltage(pinout.d6.device, pinout.d6.port, vlow, numSteps)
@@ -120,11 +120,11 @@ for i = 1:repeats
     sigDACRampVoltage(pinout.d_v_3.device,pinout.d_v_3.port,vlow,numSteps) % E are on d_v_2
 
     %% Empty 2nd horizontal ccd and move to d_v_2
-    % sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,vhigh,numSteps)
-    % sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vhigh,numSteps)
-    % sigDACRampVoltage(pinout.d10.device,pinout.d10.port,vhigh,numSteps)
-    % sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,-2,numSteps)
-    % sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vlow,numSteps)
+    sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,vhigh,numSteps)
+    sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vhigh,numSteps)
+    sigDACRampVoltage(pinout.d10.device,pinout.d10.port,vhigh,numSteps)
+    sigDACRampVoltage(pinout.trap4.device,pinout.trap4.port,-2,numSteps)
+    sigDACRampVoltage(pinout.trap2.device,pinout.trap2.port,vlow,numSteps)
     sigDACRampVoltage(pinout.phi_h2_3.device,pinout.phi_h2_3.port,vhigh,numSteps)
     sigDACRampVoltage(pinout.d10.device,pinout.d10.port,vlow,numSteps)
 
