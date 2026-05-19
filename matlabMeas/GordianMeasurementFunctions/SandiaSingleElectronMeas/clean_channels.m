@@ -1,5 +1,5 @@
 %% Script for cleaning all channels
-vhigh = 5;
+vhigh = 4;
 vlow = -1;
 
 repeats = 5;
@@ -14,9 +14,9 @@ tc = 0.3;
 drat = 10e3;
 
 % Set Sommer-Tanner positive to suck electrons in
-sigDACRampVoltage(pinout.stm.device, pinout.stm.port, +2, numSteps)
-sigDACRampVoltage(pinout.std.device, pinout.std.port, +2, numSteps)
-sigDACRampVoltage(pinout.sts.device, pinout.sts.port, +2, numSteps)
+% sigDACRampVoltage(pinout.stm.device, pinout.stm.port, +2, numSteps)
+% sigDACRampVoltage(pinout.std.device, pinout.std.port, +2, numSteps)
+% sigDACRampVoltage(pinout.sts.device, pinout.sts.port, +2, numSteps)
 
 for i = 1:repeats    
     %% Set 1st twiddle-sense for top metal sweep
@@ -205,9 +205,9 @@ for i = 1:repeats
 end
 
 % Reset Sommer-Tanner
-sigDACRampVoltage(pinout.stm.device, pinout.stm.port, +1, numSteps)
-sigDACRampVoltage(pinout.std.device, pinout.std.port, +1, numSteps)
-sigDACRampVoltage(pinout.sts.device, pinout.sts.port, +1, numSteps)
+sigDACRampVoltage(pinout.stm.device, pinout.stm.port, +0.8, numSteps)
+sigDACRampVoltage(pinout.std.device, pinout.std.port, +0.8, numSteps)
+sigDACRampVoltage(pinout.sts.device, pinout.sts.port, +0.8, numSteps)
 delay(1)
 
 % % Check if stray electrons are in parallel channels of sense 1

@@ -1,12 +1,13 @@
 % awgFilament = Agilent33220A(port,'172.29.117.127',1);
 % siglentFilament = SPD330('172.29.117.8',1);
 
-% setVolt(siglentFilament,2,1.90) % Set emission voltage # 2.06
-% setGatesEmission(pinout,'vlow',-3,'vbackmetal',-3) % Set gates for emission and wait
-% delay(5)
-% send33220Trigger(awgFilament) % Trigger filament AWG
-% fprintf('AWG triggered\n')
-% delay(10)
-% setGatesExperiment(pinout) % Set gates for experiment and wait
-% delay(20)
+vemission = 2.02;
+setVolt(siglentFilament,2,vemission) % Set emission voltage # 2.06
+setGatesEmission(pinout,'vlow',-vemission-0.1,'vbackmetal',0) % Set gates for emission and wait
+delay(5)
+send33220Trigger(awgFilament) % Trigger filament AWG
+fprintf('AWG triggered\n')
+delay(10)
+setGatesExperiment(pinout) % Set gates for experiment and wait
+delay(20)
 sweep1DMeasSR830({'ST'},0,-1.5,-0.1,1,1,{SR830ST},pinout.stm.device,{pinout.stm.port},1);

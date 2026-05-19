@@ -1,5 +1,5 @@
-doorDevice = awg2ch_1; % Default channel 2
-mfli_id = 'dev32021';
+doorDevice = awg2ch_houck; % Default channel 2
+mfli_id = 'dev32061';
 % doorDevice = Awg2ch_2;
 % mfli_id = 'dev32061';
 
