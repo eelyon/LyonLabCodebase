@@ -3,15 +3,15 @@ function emission_WF(DAC, Filament_backing, Top_metal, Gates_no_st, Gates_st)
     %
     % Syntax:  emission_WF(DAC)
     %
-    % Inputs:
+    % Inputs:emis
     %    DAC - DAC object used for voltage control
     %
     % Example:
     %    emission_WF(myDAC)
     
     % Define voltage settings for emission
-    backing_voltage = -1.5;
-    gates_voltage = -3;
+    backing_voltage = -4;
+    gates_voltage = -1;
     st_voltage = 0;
     tm_voltage = -0.7;
     
