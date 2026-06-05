@@ -25,7 +25,8 @@ classdef HarvardDAC
             HarvardDAC.comPort = comPort;
             HarvardDAC.client = serialport(comPort,57600,"Parity","none","DataBits",8,"StopBits",1);
             HarvardDAC.name = name;
-            HarvardDAC.identifier = writeread(HarvardDAC.client,"*IDN?");
+            % HarvardDAC.identifier = writeread(HarvardDAC.client,"*IDN?");
+            % DAC is unable to give responses ^
             HarvardDAC.numChannels = numChannels;
             
             % Set Harvard DAC parameters
@@ -48,8 +49,11 @@ classdef HarvardDAC
                 HarvardDAC.DACVoltage(chan) = 0;
             end
 
-            SetAllDAC(HarvardDAC, 0); % Set all DAC channels to 0 mV
-
+            restarted = input('Do you want to zero the DAC? (y/n)',"s");
+            if strcmp(restarted,'y')
+                SetAllDAC(HarvardDAC, 0); % Set all DAC channels to 0 mV
+            end
+            
             HarvardDAC.rampStep = 20; % mV per step
             HarvardDAC.rampTime = 0.005; % Seconds of delay per step
         end
@@ -71,7 +75,6 @@ classdef HarvardDAC
 
         function RampDAC(HarvardDAC, chan, mV)
             % Ramp chan # chan to voltage mV
-
             if (chan<0) || (chan>HarvardDAC.numChannels)
                 sprintf("Channel number is out of range!")
                 return
@@ -90,13 +93,12 @@ classdef HarvardDAC
                 end
             end
             SetDAC(HarvardDAC, chan, mV); % Make sure there are no rounding errors
-
         end
-
+   
         function SetDAC(HarvardDAC, chan, mV)
             % Set chan # chan to voltage mV
 
-            if (chan>HarvardDAC.numChannels) || (chan<=0)
+            if (chan>HarvardDAC.numChannels) || (chan<0)
                 sprintf("Channel number is out of range!")
                 return
             end
@@ -188,9 +190,41 @@ classdef HarvardDAC
             high = 0;
 
             SetDAC(HarvardDAC, chan, 0);
-
         end
 
+        function turnOnHEMT_TL(HarvardDAC,channels,endVoltage)
+            VtomV = 1e3;
+            Vg_voltages = [0.2,0.45];
+            for i = Vg_voltages
+                for j = channels
+                    SetDAC(HarvardDAC,j,i*VtomV)
+                end
+            end
+            
+            Vbias_voltages = 0.7:0.2:1.5;
+            for i = Vbias_voltages
+                for j = channels(2:3)
+                    SetDAC(HarvardDAC,j,i*VtomV)
+                end
+            end
+            SetDAC(HarvardDAC,channels(end),endVoltage*VtomV)
+        end
+
+        function turnOffHEMT_TL(HarvardDAC,channels)
+            VtomV = 1e3;
+            Vbias_voltages = 1.5:-0.2:0.7;
+            for i = Vbias_voltages
+                for j = channels(2:3)
+                    SetDAC(HarvardDAC,j,i*VtomV)
+                end
+            end
+            Vg_voltages = [0.5,0.3,0];
+            for i = Vg_voltages
+                for j = channels
+                    SetDAC(HarvardDAC,j,i*VtomV)
+                end
+            end
+        end
     end
 end
 

@@ -6,41 +6,8 @@ function [plotHandles,subPlotFigure] = initializeATS9416Meas1D(sweepType,doBackA
 voltageAxisName = genATS9416Axis(sweepType);
 
 subPlotFigure = figure(getNextMATLABFigNum());
-subplot(2,2,1);
-if ~doBackAndForth
-    realVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Bx');
-else
-    realVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Bx');
-    hold on
-    realVsVoltageErr2 = errorbar(xaxis,yaxis,yerror,'C*');
-    hold off
-end
-xlabel(voltageAxisName);
-ylabel("X [V_{rms}]");
-title("X vs Voltage");
-ax = gca;
-ax.LineWidth = 1;
-ax.XMinorTick = 'on';
-ax.YMinorTick = 'on';
 
-subplot(2,2,2)
-if ~doBackAndForth
-    imagVsVoltageErr = errorbar(xaxis,yaxis,yerror,'RX');
-else
-    imagVsVoltageErr = errorbar(xaxis,yaxis,yerror,'RX');
-    hold on
-    imagVsVoltageErr2 = errorbar(xaxis,yaxis,yerror,'M*');
-    hold off
-end
-xlabel(voltageAxisName);
-ylabel("Y [V_{rms}]");
-title("Y vs Voltage");
-ax = gca;
-ax.LineWidth = 1;
-ax.XMinorTick = 'on';
-ax.YMinorTick = 'on';
-
-subplot(2,2,3)
+subplot(2,2,1)
 if ~doBackAndForth
     magVsVoltageErr = errorbar(xaxis,yaxis,yerror,'RX');
 else
@@ -49,6 +16,7 @@ else
     magVsVoltageErr2 = errorbar(xaxis,yaxis,yerror,'M*');
     hold off
 end
+
 xlabel(voltageAxisName);
 ylabel("Magnitude [V_{rms}]");
 title("Mag vs Voltage");
@@ -57,7 +25,7 @@ ax.LineWidth = 1;
 ax.XMinorTick = 'on';
 ax.YMinorTick = 'on';
 
-subplot(2,2,4)
+subplot(2,2,2)
 if ~doBackAndForth
     phiVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Bx');
 else
@@ -66,9 +34,46 @@ else
     phiVsVoltageErr2 = errorbar(xaxis,yaxis,yerror,'C*');
     hold off
 end
+
 xlabel(voltageAxisName);
 ylabel("Phase [^{\circ}]");
 title("Phase vs Voltage");
+ax = gca;
+ax.LineWidth = 1;
+ax.XMinorTick = 'on';
+ax.YMinorTick = 'on';
+
+subplot(2,2,3);
+if ~doBackAndForth
+    realVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Bx');
+else
+    realVsVoltageErr = errorbar(xaxis,yaxis,yerror,'Bx');
+    hold on
+    realVsVoltageErr2 = errorbar(xaxis,yaxis,yerror,'C*');
+    hold off
+end
+
+xlabel(voltageAxisName);
+ylabel("X [V_{rms}]");
+title("X vs Voltage");
+ax = gca;
+ax.LineWidth = 1;
+ax.XMinorTick = 'on';
+ax.YMinorTick = 'on';
+
+subplot(2,2,4)
+if ~doBackAndForth
+    imagVsVoltageErr = errorbar(xaxis,yaxis,yerror,'RX');
+else
+    imagVsVoltageErr = errorbar(xaxis,yaxis,yerror,'RX');
+    hold on
+    imagVsVoltageErr2 = errorbar(xaxis,yaxis,yerror,'M*');
+    hold off
+end
+
+xlabel(voltageAxisName);
+ylabel("Y [V_{rms}]");
+title("Y vs Voltage");
 ax = gca;
 ax.LineWidth = 1;
 ax.XMinorTick = 'on';
@@ -106,6 +111,10 @@ switch targetGate
         xAxisName = "Dot Potential Voltage [V]";
     case 'Guard'
         xAxisName = "Guard Voltage [V]";
+    case 'Guard1'
+        xAxisName = "Guard 1 Voltage [V]";
+    case 'Guard2'
+        xAxisName = "Guard 2 Voltage [V]";
     case 'Freq'
         xAxisName = "SR830 Frequency [Hz]";
     case 'ThermoFreq'

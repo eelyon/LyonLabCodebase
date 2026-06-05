@@ -34,15 +34,14 @@ classdef sigDAC
         function voltage = sigDACQueryVoltage(sigDAC,channel)
                 fprintf(sigDAC.client,['CH ' num2str(channel)]);
                 pause(0.1);
-                v = query(sigDAC.client,'VOLT?');
+%                 v = query(sigDAC.client,'VOLT?');
                 voltage = str2double(query(sigDAC.client,'VOLT?'));
         end
 
         function sigDACSetVoltage(sigDAC,channels,voltages)
                 for i=1:length(channels)
                     fprintf(sigDAC.client,['CH ' num2str(channels(i))])
-
-                    pause(.1);
+                    pause(0.1);
                     fprintf(sigDAC.client,['VOLT ' num2str(voltages(i))])
                     pause(0.1);
                     %sigDAC.channelVoltages(24) = voltages(i);
@@ -92,8 +91,9 @@ classdef sigDAC
                 str = [numSteps numChans channels calvoltList];
                 convertArray = sprintf('%d ', str);
                 fprintf(sigDAC.client,['RAMP ' convertArray]);
-                delayTime = 0.00004*numSteps*numChans; % set delay until DAC has run ramp
-                delay(1.5*delayTime)
+                delayTime = 1.5*40e-6*numSteps*numChans; % set delay until DAC has run ramp
+                delay(delayTime) % previously set to 1.5 times i.e. 60 us
+
                 for i=1:numChans
                     evalin('base',[sigDAC.name '.channelVoltages( ' num2str(channels(i)) ') = ' num2str(voltages(i)) ';']);
                 end
@@ -101,12 +101,25 @@ classdef sigDAC
                 str = [numSteps numChans channels voltages];
                 convertArray = sprintf('%d ', str);  % num2str pads the array with space, use sprintf instead!
                 fprintf(sigDAC.client,['RAMP ' convertArray]);
-                delayTime = 0.00004*numSteps*numChans; 
-                delay(1.5*delayTime)
+                delayTime = 1.5*40e-6*numSteps*numChans; 
+                delay(delayTime)
+
                 for i=1:numChans
                     evalin('base',[sigDAC.name '.channelVoltages( ' num2str(channels(i)) ') = ' num2str(voltages(i)) ';']);
                 end
            end
+        end
+
+        function sigDACRamp(sigDAC,channel,voltage,numSteps,wait)
+            % Wait time is in microseconds!
+            if wait < 40 % Min. time for ramp is 40e-6 set by Arduino
+                error('Error: Wait time cannot be less than 40 microseconds!\n')
+            elseif wait > 16383 % Max. accurate delay
+                error('Error: Wait time is inaccurate if larger than 16383 microseconds!\n')
+            end
+            fprintf(sigDAC.client,['RAMPGF ' num2str([channel,voltage,numSteps,wait-40])]);
+            delay((1.5*40e-6 + wait*1e-6 - 40e-6)*numSteps); % Give Arduino/Matlab time for communication
+            evalin('base',[sigDAC.name '.channelVoltages( ' num2str(channel) ') = ' num2str(voltage) ';']);
         end
 
         function sigDACInit(sigDAC)

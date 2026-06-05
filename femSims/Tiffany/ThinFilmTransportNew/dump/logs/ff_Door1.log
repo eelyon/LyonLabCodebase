@@ -1,0 +1,27 @@
+2026-03-24 16:08:22,548 | INFO | Starting EDP: dump\\edp\\ff_Door1.edp
+2026-03-24 16:09:00,874 | DEBUG | Full output captured
+2026-03-24 16:09:00,874 | INFO | -- FreeFem++ v4.6 (Fri, Apr 03, 2020  2:08:08 PM - git v4.6)
+2026-03-24 16:09:00,874 | INFO |  Load: lg_fem lg_mesh lg_mesh3 eigenvalue 
+2026-03-24 16:09:00,874 | INFO | 'ffglut.exe' is not recognized as an internal or external command,
+2026-03-24 16:09:00,874 | INFO | operable program or batch file.
+2026-03-24 16:09:00,874 | INFO | (load: loadLibary C:\Program Files (x86)\FreeFem++\\.\msh3 = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\gmsh = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\medit = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\mshmet = 0) load: mshmet  
+2026-03-24 16:09:00,874 | INFO | (load: loadLibary C:\Program Files (x86)\FreeFem++\\.\tetgen = 0) load: tetgen  
+2026-03-24 16:09:00,874 | INFO |  sizestack + 1024 =3512  ( 2488 )
+2026-03-24 16:09:00,874 | INFO | 
+2026-03-24 16:09:00,874 | INFO | 243078 tetrahedrons
+2026-03-24 16:09:00,874 | INFO | 29550 triangles
+2026-03-24 16:09:00,874 | INFO | 272628 numElements
+2026-03-24 16:09:00,874 | INFO |   -- Build Nodes/DF on mesh :   n.v. 43634, n. elmt. 243078, n b. elmt. 29550
+2026-03-24 16:09:00,874 | INFO |      nb of Nodes 339354    nb of DoF   339354  DFon=1100
+2026-03-24 16:09:00,874 | INFO |   -- FESpace: Nb of Nodes 339354 Nb of DoF 339354
+2026-03-24 16:09:00,874 | INFO |   -- Build Nodes/DF on mesh :   n.v. 43634, n. elmt. 243078, n b. elmt. 29550
+2026-03-24 16:09:00,874 | INFO |      nb of Nodes 243078    nb of DoF   243078  DFon=0001
+2026-03-24 16:09:00,874 | INFO |   -- FESpace: Nb of Nodes 243078 Nb of DoF 243078
+2026-03-24 16:09:00,874 | INFO |  GC:  converge in  276 g=7.56307e-09 rho= 1.16664 gamma= 0.925847
+2026-03-24 16:09:00,874 | INFO |   -- Solve : 
+2026-03-24 16:09:00,874 | INFO |           min -0.00993066  max 1
+2026-03-24 16:09:00,874 | INFO | times: compile 0.026s, execution 38.265s,  mpirank:0
+2026-03-24 16:09:00,874 | INFO |  ######## We forget of deleting   -6 Nb pointer,   0Bytes  ,  mpirank 0, memory leak =0
+2026-03-24 16:09:00,875 | INFO |  CodeAlloc : nb ptr  4057,  size :498608 mpirank: 0
+2026-03-24 16:09:00,875 | INFO | Ok: Normal End
+2026-03-24 16:09:00,875 | INFO | Completed EDP: dump\\edp\\ff_Door1.edp

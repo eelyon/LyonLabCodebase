@@ -1,17 +1,17 @@
-whosePath = 'lab';
-tag = 'NSD';
+whosePath = 'gordian';
+tag = 'SpectralDensity';
 
 switch whosePath 
     case 'lab'
         path = 'C:\Users\Lyon Lab Simulation\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Conferences\APS March Meeting 2025 (LA)\Presentation_March2025\Images\';
     case 'gordian'
-        path = 'C:\Users\gordi\Dropbox (Princeton)\GroupDropbox\Gordian\rfReflectometry\VNA measurements\HeLevelMeter_110623\11_10_23\';
+        path = 'C:\Users\gordi\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Conferences\SiQEW 2025 LA\images_poster\';
     otherwise
         disp('Error! Choose existing path')
 end
 
 % Try and catch errors in loop
-currentFigNum = 17307; %14813;
+currentFigNum = 20393; %14813;
 figPath = append(path,tag,'_',num2str(currentFigNum),'.fig');
 fig = openfig(figPath,"invisible");
 dataObjs = findobj(fig,'type','line');
@@ -38,4 +38,4 @@ set(gca,'FontSize',14)
 
 xlabel('Frequency (Hz)','FontSize',15)
 ylabel('NSD (nV/\surd{Hz})','FontSize',15)
-xlim([1e3,xDat_old(end)])
+xlim([1e3,xDat_new(end)])

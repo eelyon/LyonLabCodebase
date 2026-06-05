@@ -1,0 +1,29 @@
+   75 :     extract0phi << quantity << endl;
+   76 :     extract0phi << "END" << endl;
+   77 :     if (k == numV - 1){
+   78 :         extract0phi << "startXY xlist ";
+   79 :         extract0phi << xList << endl;
+   80 :         extract0phi << "END" << endl;
+   81 :         extract0phi << "startXY ylist ";
+   82 :         extract0phi << yList << endl;
+   83 :         extract0phi << "END" << endl;}
+   84 :     }
+   85 : }
+   86 :  sizestack + 1024 =3456  ( 2432 )
+ 
+258438 tetrahedrons
+59796 triangles
+318234 numElements
+  -- Build Nodes/DF on mesh :   n.v. 49188, n. elmt. 258438, n b. elmt. 59796
+     nb of Nodes 370182    nb of DoF   370182  DFon=1100
+  -- FESpace: Nb of Nodes 370182 Nb of DoF 370182
+  -- Build Nodes/DF on mesh :   n.v. 49188, n. elmt. 258438, n b. elmt. 59796
+     nb of Nodes 258438    nb of DoF   258438  DFon=0001
+  -- FESpace: Nb of Nodes 258438 Nb of DoF 258438
+I'm on iteration 1/7
+ GC:  converge in  143 g=5.29222e-06 rho= 1.34385 gamma= 0.857809
+  -- Solve :
+          min -0.0489329  max 1
+calculations are finished, saving data
+I'm on iteration 2/7
+^ try getConsole C:\Users\LyonLab\Documents\GitHub\LyonLabCodebase\femSims\KyleOriginal\twiddleSense.edp

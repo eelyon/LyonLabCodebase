@@ -1,4 +1,4 @@
-function [Xrms,Yrms,stdXrms,stdYrms] = ATS9416GetXY(buffer,samplesPerSec,postTriggerSamples,f_signal,phase,stages,fc,opt)
+function [Xrms,Yrms,stdXrms,stdYrms] = ATS9416GetXY(buffer,samplesPerSec,postTriggerSamples,f_signal,phase,stages,tc,opt)
 %ATS9416GETXY Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -19,7 +19,7 @@ demod_X_fft = fftshift(fft(demod_X)) / N;
 demod_Y_fft = fftshift(fft(demod_Y)) / N;
 
 % RC filter transfer function
-H_rc = (1 ./ (1 + 1j * 2 * pi * (f/fc))).^stages;
+H_rc = (1 ./ (1 + 1j * 2 * pi * (f*tc))).^stages;
 
 % Apply the RC filter in frequency domain
 filtered_X_fft = demod_X_fft .* H_rc;
@@ -29,7 +29,7 @@ filtered_Y_fft = demod_Y_fft .* H_rc;
 filtered_X = ifft(ifftshift(filtered_X_fft))*N; % Normalize X
 filtered_Y = ifft(ifftshift(filtered_Y_fft))*N; % Normalize Y
 
-if exist('opt','var') % Normalise by 1.273 (amp. of 1st harmonic)
+if exist('opt','var') % Normalise by 1.273 (amp. of 1st harmonic in sqr wave)
     Xrms = mean(real(filtered_X))*2/sqrt(2) / 1.273;
     Yrms = mean(real(filtered_Y))*2/sqrt(2) / 1.273;
     stdXrms = std(filtered_X)*2/sqrt(2) / 1.273;
@@ -42,7 +42,7 @@ else
 end
 
 % figure
-% plot(t,buffer)
+% plot(t,buffer*5)
 % hold on
 % plot(t,0.1*reference_signal_X)
 % hold on

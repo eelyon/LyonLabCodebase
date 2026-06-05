@@ -1,4 +1,4 @@
-function [avgmags] = sweep2DMeasSR830_Func(sweepTypes, starts, stops, deltaParams, devices, ports, timeBetweenPoints,repeat,readSR830,extraPorts)
+function [avgmags] = sweep2DMeasSR830_Func(sweepTypes,starts,stops,deltaParams,devices,ports,timeBetweenPoints,repeat,readSR830,extraPorts)
 
 %% Test command (FOR TESTING PURPOSES ONLY, NOT INDICATIVE OF ANY OTHER FUNCTIONALITY)
 % sweep2DMeasSR830_Func({'Freq', 'ST'}, {1000, 0}, {10000, 1}, {1000, 0.1}, {SR830,SR830}, {{'Freq'},{'1'}}, 0.5, 5, SR830)
@@ -22,6 +22,7 @@ end
 [deltaParam1, deltaParam2] = deltaParams{:};
 [device1, device2] = devices{:};
 [ports1, ports2] = ports{:};
+
 if exist('extraPorts','var')
     [ports3, ports4, BiasCPort] = extraPorts{:};
     centerV = sigDACQueryVoltage(device2,BiasCPort)/2;

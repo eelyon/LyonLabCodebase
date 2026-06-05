@@ -1,0 +1,28 @@
+   65 :     real[int] xList(n1), yList(n2);
+   66 :
+   67 :     for(int i = 0; i < n1; i++){
+   68 :         real ax1 = xmin + i*(xmax-xmin)/(n1-1);
+   69 :         xList[i] = ax1;
+   70 :         for(int j = 0; j < n2; j++){
+   71 :             real ax2 = ymin + j*(ymax-ymin)/(n2-1);
+   72 :             yList[j] = ax2;
+   73 :             quantity(i,j) = u(ax1,ax2,ax3);}}
+   74 :
+   75 :     extract0phi << "startDATA " + electrodenames[k] + " ";
+   76 :     extract0phi << quantity << endl;
+   77 :     extract0phi << "END" << endl;
+   78 :     if (k == numV - 1){
+   79 :         extract0phi << "startXY xlist ";
+   80 :         extract0phi << xList << endl;
+   81 :         extract0phi << "END" << endl;
+   82 :         extract0phi << "startXY ylist ";
+   83 :         extract0phi << yList << endl;
+   84 :         extract0phi << "END" << endl;}
+   85 :     }
+   86 : }
+   87 :  sizestack + 1024 =3376  ( 2352 )
+ 
+620622 tetrahedrons
+227268 triangles
+847890 numElements
+^C try getConsole C:\Users\LyonLab\Documents\GitHub\LyonLabCodebase\femSims\Tiffany\ThinFilmTransport - original\twiddleleIJSt7complexId±}´ùXÝSense.edp

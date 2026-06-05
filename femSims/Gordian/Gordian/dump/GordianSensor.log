@@ -1,0 +1,29 @@
+   82 :         xList[i] = ax1;
+   83 :         for(int j = 0; j < n2; j++){
+   84 :             real ax2 = ymin + j*(ymax-ymin)/(n2-1);
+   85 :             yList[j] = ax2;
+   86 :             quantity(i,j) = u(ax1,ax2,ax3);}}
+   87 :
+   88 :     extract0phi << "startDATA " + electrodenames[k] + " ";
+   89 :     extract0phi << quantity << endl;
+   90 :     extract0phi << "END" << endl;
+   91 :     if (k == numV - 1){
+   92 :         extract0phi << "startXY xlist ";
+   93 :         extract0phi << xList << endl;
+   94 :         extract0phi << "END" << endl;
+   95 :         extract0phi << "startXY ylist ";
+   96 :         extract0phi << yList << endl;
+   97 :         extract0phi << "END" << endl;}
+   98 :     }
+   99 :
+  100 : //////////////////////////////////////////////////////////
+  101 : //
+  102 : //    2D DATA EXTRACTION BLOCK END
+  103 : //
+  104 : //////////////////////////////////////////////////////////
+  105 :
+  106 : }
+  107 :  sizestack + 1024 =3456  ( 2432 )
+ 
+Unable to open file dump/GordianSensor.msh2
+ try getConsole C:\Users\LyonLab\Documents\GitHub\LyonLabCodebase\femSims\Gordian\Gordian\dump\GordianSensor.edp

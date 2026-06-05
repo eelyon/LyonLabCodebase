@@ -1,0 +1,112 @@
+
+
+//////////////////////////////////////////////////////////
+//
+//    ELECTROSTATIC POTENTIAL
+//
+//////////////////////////////////////////////////////////
+
+load "msh3"
+load "gmsh"
+load "medit"
+
+mesh3 Th = gmshload3("dump/GordianSensor_20251121.msh2");
+
+int n1, n2, n3;
+real xmin, xmax, ymin, ymax, ax3, zmin, zmax;
+string[int] electrodenames = ["D4","D5","D6","Guard1","Guard2","Phi_h1_1","Phi_h1_3","Sense1","Sense2","Top","Twiddle"];
+int[int] electrodeid = [8, 15, 14, 10, 12, 7, 6, 9, 13, 16, 11];
+
+int numV = 11;
+real[int, int] V(numV, numV);
+for (int i = 0; i < numV; i+= 1){
+    for (int j = 0; j < numV; j+= 1){
+        if (i == j) {V(i, j) = 1.0;}
+        else {V(i, j) = 1e-5;}}}
+
+real[int, int] CapacitanceMatrix(numV, numV);
+for (int i = 0; i < numV; i+= 1){
+    for (int j = 0; j < numV; j+= 1){
+        CapacitanceMatrix(i, j) = 0.0;}}
+
+ofstream extract0phi("twiddleSense_20251121_phi_xy.txt");
+
+fespace Vh(Th,P23d);
+fespace FunctionRegion(Th,P03d);
+real eps = 1e-6;
+macro norm [N.x,N.y,N.z] //
+macro Grad(u) [dx(u),dy(u),dz(u)] //
+macro field(u,x,y,z) [dx(u)(x,y,z),dy(u)(x,y,z),dz(u)(x,y,z)] //
+ 
+Vh u,v;
+FunctionRegion dielectric =
+                          + 3.9 * (region == 3)
+                          + 1.057 * (region == 5)
+                          + 1.0 * (region == 4)
+                          + 1.0 * (region == 2)
+                          + 11 * (region == 1)
+                          ;
+for(int k = 0; k < numV; k++){
+    problem Electro(u,v,solver=CG) =
+                    int3d(Th)(dielectric * Grad(u)' * Grad(v))
+                    + on(8,u = V(k,0))
+                    + on(15,u = V(k,1))
+                    + on(14,u = V(k,2))
+                    + on(10,u = V(k,3))
+                    + on(12,u = V(k,4))
+                    + on(7,u = V(k,5))
+                    + on(6,u = V(k,6))
+                    + on(9,u = V(k,7))
+                    + on(13,u = V(k,8))
+                    + on(16,u = V(k,9))
+                    + on(11,u = V(k,10))
+                    ;
+    cout << "I'm on iteration " << k + 1 << "/" << numV << endl;
+    Electro;
+    cout << "calculations are finished, saving data" << endl;
+ 
+
+//////////////////////////////////////////////////////////
+//
+//    2D DATA EXTRACTION BLOCK START
+//
+//////////////////////////////////////////////////////////
+
+    {
+    n1 = 1001;
+    n2 = 201;
+    xmin = -16.875;
+    xmax = -1.875;
+    ymin = -2.5;
+    ymax = 2.5;
+    ax3  = 1.99;
+    real[int,int] quantity(n1,n2);
+    real[int] xList(n1), yList(n2);
+ 
+    for(int i = 0; i < n1; i++){
+        real ax1 = xmin + i*(xmax-xmin)/(n1-1);
+        xList[i] = ax1;
+        for(int j = 0; j < n2; j++){
+            real ax2 = ymin + j*(ymax-ymin)/(n2-1);
+            yList[j] = ax2;
+            quantity(i,j) = u(ax1,ax2,ax3);}}
+ 
+    extract0phi << "startDATA " + electrodenames[k] + " ";
+    extract0phi << quantity << endl;
+    extract0phi << "END" << endl;
+    if (k == numV - 1){
+        extract0phi << "startXY xlist ";
+        extract0phi << xList << endl;
+        extract0phi << "END" << endl;
+        extract0phi << "startXY ylist ";
+        extract0phi << yList << endl;
+        extract0phi << "END" << endl;}
+    }
+
+//////////////////////////////////////////////////////////
+//
+//    2D DATA EXTRACTION BLOCK END
+//
+//////////////////////////////////////////////////////////
+
+}

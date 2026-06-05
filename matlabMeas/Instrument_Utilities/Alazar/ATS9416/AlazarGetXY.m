@@ -62,7 +62,7 @@ phi = rad2deg(atan2(filtered_signal_Y, filtered_signal_X));
 % Plot original signal, reference signal, X and Y quadratures
 figure;
 subplot(1,3,1);
-plot(t(1:100), signal(1:100)/sqrt(2));
+plot(t(1:100), signal(1:100)/sqrt(2)*50);
 hold on
 plot(t(1:100), imag(reference_signal(1:100)/sqrt(2)));
 hold off
@@ -105,4 +105,4 @@ disp(['Extracted Phase (degrees): ', num2str(rad2deg(phase))]);
 disp(['Extracted X: ', num2str(X)]);
 disp(['Extracted Y: ', num2str(Y)]);
 disp(['Extracted R: ', num2str(R_xy)]);
-disp(['Extracted \phi: ', num2str(phi_xy)]);
+disp(['Extracted phi: ', num2str(phi_xy)]);

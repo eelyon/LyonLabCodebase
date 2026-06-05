@@ -15,7 +15,7 @@ f_signal = 1e6; % Frequency of the signal (Hz)
 signal_amplitude = 1;
 noise_level = 0.1;
 
-[result,y] = ATS9416AcquireData_NPT(boardHandle, samplesPerSec, postTriggerSamples, 1, 1, CHANNEL_B);
+[result,y] = ATS9416AcquireData_NPT(boardHandle, postTriggerSamples, recordsPerBuffer, buffersPerAcquisition, CHANNEL_A);
 
 % y = signal_amplitude * cos(2 * pi * f_signal * t + 23*pi/180) + noise_level * randn(size(t));
 yf = lowpass(y, 1e6, samplesPerSec);
