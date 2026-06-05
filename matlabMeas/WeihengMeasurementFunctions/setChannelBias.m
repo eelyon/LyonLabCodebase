@@ -11,9 +11,9 @@ function setChannelBias(dac, nbsiMiddleLow, nbsiMiddleHigh, dotsVoltDiff, sideMi
 %   numSteps - Number of steps for voltage ramping (optional, default 100)
 %
 % Channel mapping:
-%   Channel 5: NBSI middle low
+%   Channel 7: NBSI middle low
 %   Channel 10: NBSI middle high
-%   Channel 7: NBSI side low
+%   Channel 5: NBSI side low
 %   Channel 9: NBSI side high
 %   Channel 8: Dots
 
@@ -28,7 +28,7 @@ function setChannelBias(dac, nbsiMiddleLow, nbsiMiddleHigh, dotsVoltDiff, sideMi
     nbsiSideHigh = nbsiMiddleHigh + sideMiddleDiff;
     
     % Define channel mapping
-    channels = [5, 10, 7, 9, 8]; % NBSI middle low, middle high, side low, side high, dots
+    channels = [7, 10, 5, 9, 8]; % NBSI middle low, middle high, side low, side high, dots
     channelNames = {'NBSI Middle Low', 'NBSI Middle High', 'NBSI Side Low', 'NBSI Side High', 'Dots'};
     targetVoltages = [nbsiMiddleLow, nbsiMiddleHigh, nbsiSideLow, nbsiSideHigh, dotsVoltage];
     
@@ -48,9 +48,9 @@ function setChannelBias(dac, nbsiMiddleLow, nbsiMiddleHigh, dotsVoltDiff, sideMi
     
     % Display the target voltage configuration
     fprintf('\n=== TARGET VOLTAGES ===\n');
-    fprintf('  NBSI Middle Low (Ch 5): %.3f V\n', nbsiMiddleLow);
+    fprintf('  NBSI Middle Low (Ch 7): %.3f V\n', nbsiMiddleLow);
     fprintf('  NBSI Middle High (Ch 10): %.3f V\n', nbsiMiddleHigh);
-    fprintf('  NBSI Side Low (Ch 7): %.3f V  (Middle Low + %.3f V)\n', nbsiSideLow, sideMiddleDiff);
+    fprintf('  NBSI Side Low (Ch 5): %.3f V  (Middle Low + %.3f V)\n', nbsiSideLow, sideMiddleDiff);
     fprintf('  NBSI Side High (Ch 9): %.3f V  (Middle High + %.3f V)\n', nbsiSideHigh, sideMiddleDiff);
     fprintf('  Dots (Ch 8): %.3f V  (Middle High + %.3f V)\n', dotsVoltage, dotsVoltDiff);
     fprintf('  Target Middle gradient: %.3f V\n', nbsiMiddleHigh - nbsiMiddleLow);

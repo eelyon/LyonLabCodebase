@@ -11,9 +11,9 @@ function setChannelBias(dac, nbsiMiddleLow, nbsiMiddleHigh, dotsVoltDiff, sideMi
 %   numSteps - Number of steps for voltage ramping (optional, default 100)
 %
 % Channel mapping:
-%   Channel 5: NBSI middle low
-%   Channel 7: NBSI middle high
-%   Channel 10: NBSI side low
+%   Channel 7: NBSI middle low
+%   Channel 10: NBSI middle high
+%   Channel 5: NBSI side low
 %   Channel 9: NBSI side high
 %   Channel 8: Dots
 
@@ -28,7 +28,7 @@ function setChannelBias(dac, nbsiMiddleLow, nbsiMiddleHigh, dotsVoltDiff, sideMi
     nbsiSideHigh = nbsiMiddleHigh + sideMiddleDiff;
     
     % Define channel mapping
-    channels = [5, 7, 10, 9, 8]; % NBSI middle low, high, side low, high, dots
+    channels = [7, 10, 5, 9, 8]; % NBSI middle low, high, side low, high, dots
     channelNames = {'NBSI Middle Low', 'NBSI Middle High', 'NBSI Side Low', 'NBSI Side High', 'Dots'};
     targetVoltages = [nbsiMiddleLow, nbsiMiddleHigh, nbsiSideLow, nbsiSideHigh, dotsVoltage];
     
@@ -127,14 +127,14 @@ function currentVoltages = getChannelVoltages(dac)
 %   currentVoltages - Structure with all voltage information
 %
 % Channel mapping:
-%   Channel 5: NBSI middle low
-%   Channel 7: NBSI middle high
-%   Channel 10: NBSI side low
+%   Channel 7: NBSI middle low
+%   Channel 10: NBSI middle high
+%   Channel 5: NBSI side low
 %   Channel 9: NBSI side high
 %   Channel 8: Dots
 
     % Define channel mapping
-    channels = [5, 7, 10, 9, 8]; % NBSI middle low, high, side low, high, dots
+    channels = [7, 10, 5, 9, 8]; % NBSI middle low, high, side low, high, dots
     channelNames = {'NBSI Middle Low', 'NBSI Middle High', 'NBSI Side Low', 'NBSI Side High', 'Dots'};
     
     % Get current voltages
