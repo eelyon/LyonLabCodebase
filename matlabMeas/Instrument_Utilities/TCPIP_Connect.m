@@ -1,4 +1,3 @@
-
 function [obj1] = TCPIP_Connect(IP_Address,port)
 % %% Function creates a TCPIP connection and returns the object which
 % %% holds the connection information.
@@ -11,6 +10,7 @@ function [obj1] = TCPIP_Connect(IP_Address,port)
 
 % Find a tcpip object.
 obj1 = instrfind('Type', 'tcpip', 'RemoteHost', IP_Address, 'RemotePort', port, 'Tag', '');
+% obj1 = tcpclient(IP_Address,port); % Matlab 2025
 
 % Create the tcpip object if it does not exist
 % otherwise use the object that was found.
@@ -25,4 +25,3 @@ end
 fopen(obj1);
 
 end
-

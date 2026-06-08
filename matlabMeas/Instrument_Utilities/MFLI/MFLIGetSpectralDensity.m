@@ -67,11 +67,12 @@ isnonnegscalar = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 
 % The PSD start frequency is always 0 Hz and its stop frequency is half
 % the scope's sample rate.
-p.addParameter('scope_samplerate', 4, isnonnegscalar);
-p.addParameter('scope_lengthpts', 16384, @isnumeric);
+p.addParameter('scope_samplerate', 3, isnonnegscalar);
+p.addParameter('scope_lengthpts', 524288, @isnumeric);
 p.addParameter('min_num_records', 1, @isnumeric);
-p.addParameter('temp', 1.8, @isnumeric);
-p.addParameter('gainCryo', 23.6, @isnumeric);
+p.addParameter('averager', 0, @isnumeric);
+p.addParameter('temp', 296, @isnumeric);
+p.addParameter('gainCryo', 1, @isnumeric);
 p.addParameter('gainFEMTO', 1, @isnumeric);
 p.addParameter('saveData', 0, @isnumeric)
 
@@ -83,8 +84,8 @@ in_channel = '0';        % signal input channel
 scope_in_channel = '0';    % scope input channel
 
 % Configure the signal inputs
-ziDAQ('setInt', ['/' device '/sigins/' in_channel '/imp50'], 1);
-ziDAQ('setInt', ['/' device '/sigins/' in_channel '/ac'], 0);
+ziDAQ('setInt', ['/' device '/sigins/' in_channel '/imp50'], 0);
+ziDAQ('setInt', ['/' device '/sigins/' in_channel '/ac'], 1);
 ziDAQ('setInt',    ['/' device '/sigins/' in_channel '/autorange'], 1);
 % Perform a global synchronisation between the device and the data server:
 % Ensure that the signal input configuration has taken effect before
@@ -154,7 +155,7 @@ ziDAQ('set', scopeModule, 'averager/method', 1)
 %   weight>1 - average the scope record segments using an exponentially weighted moving average.
 ziDAQ('set', scopeModule, 'averager/weight', 10);
 % 'averager/enable' : Activate averaging
-ziDAQ('set', scopeModule, 'averager/enable', 1);
+ziDAQ('set', scopeModule, 'averager/enable', p.Results.averager);
 % 'historylength' : The number of scope records to keep in
 %   the Scope Module's memory, when more records arrive in the Module
 %   from the device the oldest records are overwritten.
@@ -167,7 +168,7 @@ ziDAQ('subscribe', scopeModule, wave_nodepath);
 % Set the Scope Module's mode to return frequency domain data.
 ziDAQ('set', scopeModule, 'mode', 3);
 % Use a Hann window function.
-ziDAQ('set', scopeModule, 'fft/window', 0);
+ziDAQ('set', scopeModule, 'fft/window', 1);
 % Set power correction
 ziDAQ('set', scopeModule, 'fft/powercompensation', 1);
 % Enable Spectral Density
@@ -203,7 +204,7 @@ if ziCheckPathInData(data_fft, ['/' device '/scopes/0/wave'])
   num_records_fft = length(records_fft);
   plotScopeRecords(records_fft, str2num(scope_in_channel), scope_time, clockbase, gain);
 end
-annotation('textbox',[0.2 0.5 0.3 0.3],'String',[num2str(p.Results.temp),'K, x',num2str(gain),' total gain'],'FitBoxToText','on');
+annotation('textbox',[0.2 0.5 0.3 0.3],'String',[num2str(p.Results.temp),'K, x',num2str(gain),' total gain, ', num2str(num_records_fft),' records'],'FitBoxToText','on');
 title('\bf Spectral Density of Scope records');
 grid on;
 box on;
@@ -288,6 +289,7 @@ function plotScopeRecords(scope_records, scope_in_channel, scope_time, clockbase
       scope_rate = double(clockbase)/2^scope_time;
       f = linspace(0, scope_rate/2, totalsamples);
       loglog(f, scope_records{ii}.wave(:, scope_in_channel+1)/gain*1e9, 'color', 'r'); % c(ii,:)
+      xlim([f(1),f(end)]);
       hold on;
     end
   end

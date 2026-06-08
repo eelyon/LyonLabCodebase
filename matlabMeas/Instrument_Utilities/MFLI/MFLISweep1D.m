@@ -1,4 +1,4 @@
-function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = MFLISweep1D(sweepType, start, stop, step, mfli_id, device_id, port, doBackAndForth, varargin)
+function [mag,phase,x,y,stdm,stdphase,stdx,stdy] = MFLISweep1D(sweepType,start,stop,step,mfli_id,device_id,port,doBackAndForth,varargin)
 %MFLISweep1D Sweep function using ziDAQ poll function to return data for
 %certain duration.
 %   Detailed explanation goes here
@@ -66,10 +66,9 @@ extref_c = '8'; % external reference channel - 8 for Aux In 1
 ziDisableEverything(device);
 
 % Configure the device for this experiment.
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 1);
-ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 0);
-% ziDAQ('setInt', ['/' device '/sigins/' in_c '/autorange'], 1);
-% ziDAQ('setDouble', ['/' device '/sigins/' in_c '/range'], 2.0*amplitude);
+ziDAQ('setInt', ['/' device '/sigins/' in_c '/imp50'], 0);
+ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 1);
+ziSiginAutorange(device, in_c); % Autorange channel
 ziDAQ('setInt', ['/' device '/demods/*/order'], p.Results.filter_order);
 ziDAQ('setDouble', ['/' device '/demods/' demod_c '/rate'], p.Results.demod_rate);
 ziDAQ('setInt', ['/' device '/demods/' demod_c '/harmonic'], 1);
@@ -106,7 +105,6 @@ for value = paramVector
     % Unsubscribe all streaming data.
     ziDAQ('unsubscribe', '*');
 
-%     sigDACRamp(device,port,value,5,1100);
     setVal(device_id, port, value);
     pause(10*time_constant); % pause to get a settled lowpass filter
 
@@ -157,21 +155,20 @@ for value = paramVector
     updatePlots(plotHandles,xvals,mag,phase,x,y,stdm,stdphase,stdx,stdy,doBackAndForth,index,halfway);
     drawnow;
     index = index + 1;
-    
-    % Unsubscribe from all paths.
-    ziDAQ('unsubscribe', '*');
 end
 
 % Set up metadata to be saved with figure
-metadata_struct.time_constant = time_constant; % ziDAQ('getDouble', ['/' device '/demods/*/timeconstant']);
+metadata_struct.time_constant = ziDAQ('getDouble', ['/' device '/demods/' demod_c '/timeconstant']);
 metadata_struct.filter_order = p.Results.filter_order;
-metadata_struct.demod_rate = p.Results.demod_rate; % ziDAQ('getDouble', ['/' device '/demods/' demod_c '/rate']);
+metadata_struct.demod_rate = ziDAQ('getDouble', ['/' device '/demods/' demod_c '/rate']);
 metadata_struct.poll_duration = poll_duration;
 metadata_struct.length = length(sample.x);
 metadata_struct.controlDAC = evalin('base','controlDAC.channelVoltages;');
 metadata_struct.supplyDAC = evalin('base','supplyDAC.channelVoltages;');
-
 subPlotFigureHandle.UserData = metadata_struct;
+
+% Unsubscribe from all paths.
+ziDAQ('unsubscribe', '*');
 
 % Save data
 if ~strcmp(sweepType,'PHAS') && ~strcmp(sweepType,'Vpp')

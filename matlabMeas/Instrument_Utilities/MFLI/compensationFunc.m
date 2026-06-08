@@ -1,0 +1,55 @@
+function [] = compensationFunc(mfli_id,doorDevice)
+%COMPENSATIONFUNC Summary of this function goes here
+%   Detailed explanation goes here
+
+% doorDevice = Awg2ch_1; % Default channel 2
+% mfli_id = 'dev32021';
+% doorDevice = Awg2ch_2;
+% mfli_id = 'dev32061';
+
+startPhase = -180;
+stopPhase = 180;
+deltaPhase = [10,1,0.1,0.01];
+
+startAmp = 0.002;
+stopAmp = 0.012;
+deltaAmp = [0.001,0.0001,0.00001,0.000001];
+
+% fprintf(doorDevice.client, ['OUTP', num2str(1), ' ON'])
+% fprintf(doorDevice.client, ['OUTP', num2str(2), ' ON'])
+% Run deltaPhase [10,1,0.1,0.01]
+% Run deltaAmp [0.001,0.0001,0.00001,0.000001]
+
+for i=1:4
+    if deltaPhase < .001 || deltaAmp < .000001
+        error('Too small of a step size. Check deltaPhase and/or deltaAmp.')
+    end
+    
+    setVal(doorDevice,3,startPhase); % Set phase
+    setVal(doorDevice,4,startAmp); % Amplitude
+    
+    [mag,~,~,~] = MFLISweep1D_getSample({'PHAS'},startPhase,stopPhase,deltaPhase(i),mfli_id,doorDevice,3,0, ...
+        'filter_order',2,'time_constant',0.05, 'demod_rate', 10e3);
+    
+    phases = startPhase:deltaPhase(i):stopPhase;
+    minValPhase = phases(find(mag==min(mag)));
+    fprintf('Min. phase setting at %f\n', minValPhase);
+    setVal(doorDevice,3,minValPhase); delay(1);
+    
+    [mag,~,x,y] = MFLISweep1D_getSample({'Vpp'},startAmp,stopAmp,deltaAmp(i),mfli_id,doorDevice,4,0, ...
+        'filter_order',2,'time_constant',0.05,'demod_rate',10e3);
+    
+    amps = startAmp:deltaAmp(i):stopAmp;
+    minValAmp = amps(find(mag==min(mag)));
+    fprintf('Min. amplitude setting at %f\n', minValAmp);
+    setVal(doorDevice,4,minValAmp);
+
+    fprintf(['Parasitics of X = ',num2str(x(find(mag==min(mag)))*1e6),' uVrms and Y = ',num2str(y(find(mag==min(mag)))*1e6),' uVrms remain.\n']);
+    
+    startPhase = minValPhase - deltaPhase(i+1);
+    stopPhase = minValPhase + deltaPhase(i+1);
+
+    startAmp = minValAmp - deltaAmp(i+1);
+    stopAmp = minValAmp + deltaAmp(i+1);
+end
+end
