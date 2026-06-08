@@ -12,7 +12,7 @@ function [ZL,ZU] = getZCoefficients(thermometerType)
     elseif strcmp(thermometerType,'X189327')
             ZL = 2.87835571995;
             ZU = 4.2450743341;
-    elseif strcmp(thermometerType,'X105783')
+    elseif strcmp(thermometerType,'X105783')  % 1.4 to 14K
             ZL = 2.91080265441;
             ZU = 4.4147736053;
     else
