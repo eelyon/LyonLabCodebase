@@ -138,11 +138,15 @@ classdef Agilent33622A
             writeline(Agilent33622A.client, "*TRG");
         end
 
+        function send33622ATriggerBUS(Agilent33622A)
+            fprintf(Agilent33622A.client,'*TRG');
+        end
+
         function [] = set33622ATrigSlope(Agilent33622A,channel,slope)
             validSourceTypes = 'POS,NEG';
             if ~contains(validSourceTypes,slope)
                 fprintf([sourceType ' is not a valid trigger slope type. Valid types are:\n'])
-                fprintf([validSourceTypes, '\n']);
+                fprintf([validSourceTypes, '\n'])
             else
                 command = ['TRIG',num2str(channel),':SLOP ' slope];
                 fprintf(Agilent33622A.client,command);
@@ -158,18 +162,7 @@ classdef Agilent33622A
             fprintf(Agilent33622A.client,command);
         end
 
-        function [] = set33622ATriggerSource(Agilent33622A,sourceType)
-            validSourceTypes = 'IMM,EXT,BUS';
-            if ~contains(validSourceTypes,sourceType)
-                fprintf([sourceType ' is not a valid trigger source type. Valid types are:\n'])
-                fprintf([validSourceTypes, '\n']);
-            else
-                command = ['TRIG:SOUR ' sourceType];
-                fprintf(Agilent33622A.client,command);
-            end
-        end
-
-        function [] = set33622ATrigger(Agilent33622A,channel,sourceType)
+        function [] = set33622ATriggerSource(Agilent33622A,channel,sourceType)
             validSourceTypes = 'IMM,EXT,BUS';
             if ~contains(validSourceTypes,sourceType)
                 fprintf([sourceType ' is not a valid trigger source type. Valid types are:\n'])
@@ -314,7 +307,7 @@ classdef Agilent33622A
             % Trigger
             writeline(Agilent33622A.client, "TRIG" + num2str(CHAN) + ":SOUR " + TRIGSRC);
             writeline(Agilent33622A.client, "TRIG" + num2str(CHAN) + ":SLOP POS");
-        
+                
             if strcmp(TRIGSRC, "BUS")
                 writeline(Agilent33622A.client, "OUTP:TRIG:SLOP POS");
                 writeline(Agilent33622A.client, "OUTP:TRIG:SOUR CH1");
@@ -335,6 +328,18 @@ classdef Agilent33622A
             else
                 warning('Instrument error on channel %d: %s', CHAN, err);
             end
+        end
+        
+        function [] = set33622ADoorVoltageLowAndHigh(Agilent33622A,channel,lowVoltage,highVoltage)
+            % checks that low and high voltage are the correct way around
+            volts = [lowVoltage,highVoltage];
+            if lowVoltage > highVoltage
+                lowVoltage = volts(2);
+                highVoltage = volts(1);
+            else
+            end
+            set33622AVoltageLow(Agilent33622A,channel,lowVoltage);
+            set33622AVoltageHigh(Agilent33622A,channel,highVoltage);
         end
 
         %% QUERYING %%
