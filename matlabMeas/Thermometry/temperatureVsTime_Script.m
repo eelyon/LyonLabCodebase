@@ -7,6 +7,7 @@ timeBetweenPoints = 5;
 %thermometerType = 'X189328'; %Small Glass Dewar
 %thermometerType = 'X204446'; %Dunking Thermometer
 %thermometerType = 'X189327'; %CIA Stick
+thermometerType = 'X105783'; %Kelvin Probe
 
 Thermometer;
 Therm = initializeThermometry(thermometerType);
