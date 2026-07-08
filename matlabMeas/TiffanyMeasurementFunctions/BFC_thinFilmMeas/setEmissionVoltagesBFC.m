@@ -2,10 +2,12 @@
 
 DCMap_BFC;
 SetDAC(hDAC,BackMetalPort,0*VtomV);
-QDACSmoothRampVoltage(qDAC,BlockPort,-0.5,0.2)
+QDACSmoothRampVoltage(qDAC,BlockPort,-3,0.2)
 qDACrampTime = 0.2;
 
 SetDAC(hDAC,BackMetalPort,-4*VtomV);
+SetDAC(hDAC,BackMetalPort,3*VtomV);
+
 RampDAC(hDAC,TfEPort,0*VtomV);
 
 %% Compensation voltages
@@ -31,7 +33,7 @@ QDACSmoothRampVoltage(qDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-3,-3,
 QDACSmoothRampVoltage(qDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-3,-3,-3,-3],qDACrampTime)
 
 QDACSmoothRampVoltage(qDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-0.7,0,0,0],qDACrampTime)
-QDACSmoothRampVoltage(qDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-1,-1,-1,-1],qDACrampTime)
+QDACSmoothRampVoltage(qDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-3,-3,-3,-3],qDACrampTime)
 
 QDACSmoothRampVoltage(qDAC,[TfCPort,BEPort,BCPort],[-3,-3,-3],qDACrampTime)
 RampDAC(hDAC,TfEPort,-3*VtomV);

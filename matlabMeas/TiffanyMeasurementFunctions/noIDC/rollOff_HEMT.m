@@ -9,7 +9,7 @@ set3577Average(NetworkAnalyzer,'128');
 
 pullAndPlot3577ARollOff(NetworkAnalyzer,3e3,100e3)
 
-rolloff = 71.1e3;
+rolloff = 48.176e3;
 Cinput = 1/(2*pi*rolloff*1e6)
 Cinput = 1/(2*pi*rolloff*1.1e6)
 
