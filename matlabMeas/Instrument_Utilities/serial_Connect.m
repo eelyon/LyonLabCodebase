@@ -7,6 +7,7 @@ function [obj1] = serial_Connect(COMPort)
 
 % Find a serial port object.
 obj1 = instrfind('Type', 'serial', 'Port', COMPort, 'Tag', '');
+% obj1 = serialportfind(COMPort,9600,Tag=""); % Default baudrate is 9600
 
 % Create the serial port object if it does not exist
 % otherwise use the object that was found.

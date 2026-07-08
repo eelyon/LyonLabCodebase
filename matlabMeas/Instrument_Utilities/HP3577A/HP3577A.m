@@ -32,18 +32,22 @@ classdef HP3577A
             fprintf(HP3577A.client,'FM1;DT1;');
             datArr = str2num((fscanf(HP3577A.client,'%s')));
             freqArr = linspace(startFreq,stopFreq,401);
-            
         end
         
-        function [freqArr,datArr,voltageGain,fit] = pull3577ARollOff(HP3577A,startFreq,stopFreq)
-            [datArr,freqArr] = pull3577AData(HP3577A,startFreq,stopFreq);
-            correctY = [];
+        function [freqs,s21_dBm,voltageGain,fit] = pull3577ARollOff(HP3577A,startFreq,stopFreq,varargin)
+            p = inputParser;
+            % Line attenuation
+            p.addParameter('attenuation',76,@isnumeric)
+            p.parse(varargin{:});
+
+            [s21_dBm,freqs] = pull3577AData(HP3577A,startFreq,stopFreq);
+            s21_corrected = [];
             [correctionX,correctionY] = getXYData('Background_S21.fig');
-            for i = 1:length(correctionY)
-                correctY(i) = datArr(i)+ 76;
+            for i = 1:length(s21_dBm)
+                s21_corrected(i) = s21_dBm(i)+ p.Results.attenuation;
             end
-            voltageGain = convertdBmToVoltage(correctY);
-            [fit,gof] = fitRollOff(freqArr,voltageGain);
+            voltageGain = convertdBmToVoltage(s21_corrected);
+            [fit,gof] = fitRollOff(freqs,voltageGain);
         end
 
         function [] = pullAndPlot3577ARollOff(HP3577A,startFreq,stopFreq)
@@ -65,12 +69,24 @@ classdef HP3577A
         %% GETTER Functions
 
         function startFreq = get3577AStartFreq(HP3577A)
-            startFreq = num2str(query(HP3577A.client,'FRA?'));
+            startFreq = str2double(query(HP3577A.client,'FRA?'));
         end
 
         function stopFreq = get3577AStopFreq(HP3577A)
-            stopFreq = num2str(query(HP3577A.client,'FRB?'));
+            stopFreq = str2double(query(HP3577A.client,'FRB?'));
         end
+
+%         function sweepTime = get3577ASweepTime(HP3577A)
+%             sweepTime = str2double(query(HP3577A.client,'SWT?'));
+%         end
+
+%         function stepTime = get3577AStepTime(HP3577A)
+%             stepTime =str2double(query(HP3577A.client,'SMT?'));
+%         end
+
+%         function sampleTime = get3577ASampleTime(HP3577A)
+%             sampleTime = str2double(query(HP3577A.client,'SMR?'));
+%         end
 
         %% SET SOURCE FUNCTIONS %%
         function [] = set3577ASweepType(HP3577A,type)
@@ -159,6 +175,10 @@ classdef HP3577A
             fprintf(HP3577A.client,command);
         end
 
+        function [] = set3577AFreqStepSize(HP3577A,freqStep)
+            command = ['FST ',num2str(freqStep), 'Hz'];
+            fprintf(HP3577A.client,command);
+        end        
 
         %% SET RECEIVER FUNCTIONS
         function [] = set3577Attenuation(HP3577A,inputChannel,attenuation)

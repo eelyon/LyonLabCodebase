@@ -23,6 +23,9 @@ AWG_1_Address = '172.29.117.60';
 AgTwd_Address = '172.29.29.6';
 AgComp_Address = '172.29.117.17';
 
+% ENA 
+ENA_Address = '172.29.117.72';
+
 %% Connect
 
 % qDAC = QDACCOM(qDACPort,24,'qDAC'); 
@@ -42,5 +45,5 @@ supplyDACGUI = HarvardDACGUI;
 DCMap_BFC;
 
 % Initialize Misc
-initializeENA
-setupENA_GF
+ENA = KeysightE5071(ENA_Address);
+setKeysightE5071PresetConfig(ENA,'HeLevelRes')

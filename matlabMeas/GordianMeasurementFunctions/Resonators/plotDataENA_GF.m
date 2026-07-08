@@ -1,9 +1,9 @@
 %% Set single frequency sweep
 close all;
 
-power     = 5;      % in dBm - be careful!! Do not set too high!!
-startFreq = 2130;    % in MHz
-stopFreq  = 2148;    % in MHz 
+power     = -20;      % in dBm - be careful!! Do not set too high!!
+startFreq = 2110;    % in MHz
+stopFreq  = 2125;    % in MHz 
 
 % decide whether to include metadata (1=include,0=don't)
 saveFig   = 1;       % for saving the figure
@@ -27,8 +27,10 @@ query(ENA,'*OPC?');            % Execute *OPC? command and wait until command re
 
 % Get mag (log) and phase (deg) data
 [fdata,mag,phase] = E5071GetData(ENA,tag);
-loc = findpeaks(fdata,'MinPeakProminence',1); % finds approx resonance frequency
-fres = fdata(loc);
+%loc = findpeaks(fdata,'MinPeakProminence',1); % finds approx resonance frequency
+%fres = fdata(loc);
+[~,min_idx] = min(mag);
+fres = fdata(min_idx);
 
 %% Plot data
 measType = num2str(query(ENA,':CALC:PAR:DEF?')); % S21, S12, S22, or S11

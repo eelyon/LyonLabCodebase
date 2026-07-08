@@ -1,0 +1,55 @@
+% Sweep vload and measure sense 1
+v_on = -0.3;
+v_off = -0.7;
+
+dalpha = 0.503; % Change in alpha
+% cin1 = 6e-12; % HEMT input capacitance
+% gain1 = 28*0.9; % Amplifier gain
+cin2 = 5e-12; % HEMT input capacitance
+gain2 = 22.7*0.86; % Amplifier gain
+
+vload = 0.15:0.01:-0.17;
+% start_vgd = 0.1;
+% stop_vgd = -0.8;
+% step_vgd = 0.05;
+
+% tc = 0.1;
+% drat = 13e3;
+% poll = 1;
+
+% cap1 = 3.16e-12;
+% gain1 = 24*0.92;
+
+for value = 0.2:0.02:0.4
+    fprintf(['-- Vload = ',num2str(value),'V --\n'])
+    loadSense1(pinout,value); delay(1)
+    % [ne1,nerr1] = measureElectronsFn(pinout,1,'vstart',0.1,'vstop',-0.7,'vstep',-0.05,'filter_order',2, ...
+    %     'time_constant',0.6,'demod_rate',10e3,'poll',10,'sweep',1,'onoff',1,'v_on',v_on,'v_off',v_off, ...
+    %     'dalpha',dalpha,'cin',cin1,'gain',gain1);
+    % fprintf(['n1 = ',num2str(ne1),' +- ',num2str(nerr1),'\n'])
+%     [~,~,x,y,~,~,stdx,stdy] = MFLISweep1D({'Guard1'},start_vgd,stop_vgd,step_vgd, ...
+%         'dev32021',pinout.guard1_l.device,pinout.guard1_l.port,0,'filter_order',3,'time_constant',tc,'demod_rate',drat,'poll_duration',poll);
+%     sigDACRamp(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC) % reset guard
+
+%     mag = correct_mag(x,y); % Get corrected magnitude
+%     delta = max(mag) - min(mag); % Calc. change in signal
+%     num_electrons = calc_electrons(x,y,cap1,gain1,0.52); % Calc. tot. no. of electrons
+
+    % fprintf(['-> For vload = ',num2str(value),'V, num_electrons = ',num2str(ne),'\n'])
+
+    shuttleSense1Sense2(pinout,'vhigh',3,'vlow',-1); delay(1)
+    [ne2,nerr2] = measureElectronsFn(pinout,2,'vstart',0.2,'vstop',-0.7,'vstep',-0.05,'filter_order',2, ...
+        'time_constant',0.5,'demod_rate',10e3,'poll',10,'sweep',1,'onoff',1,'v_on',-0.3,'v_off',-0.7, ...
+        'dalpha',dalpha,'cin',cin2,'gain',gain2);
+    fprintf(['n2 = ',num2str(ne2),' +- ',num2str(nerr2),'\n'])
+    shuttleSense2Sense1(pinout); delay(1)
+    unloadSense1(pinout); delay(1)
+
+%     unloadSense1(pinout)
+%     if num_electrons <= 1
+%         fprintf(['Exiting loop. Loaded ', num2str(num_electrons),' electrons.'])
+%         return
+%     else
+%         unloadSense1(pinout)
+%     end
+end

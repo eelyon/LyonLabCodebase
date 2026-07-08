@@ -1,5 +1,5 @@
 %% Script used to initialize an experiment. Comment/uncomment what is needed.
-port = 1234; % for the big glass dewar
+% port = 1234; % for the big glass dewar
 
 %% Thermometer
 % DMM_Address = '172.29.117.107';
@@ -9,40 +9,39 @@ port = 1234; % for the big glass dewar
 % initializeENA;
 
 %% AJS's 24 channel DACs
-sigDACPortControl = 'COM8'; % 20-bit DAC
-sigDACPortSupply  = 'COM4'; % 18-bit DAC
-controlDAC = sigDAC(sigDACPortControl,24,'controlDAC');
-supplyDAC = sigDAC(sigDACPortSupply,24,'supplyDAC');
+controlDAC = sigDAC('COM8',24,'controlDAC')
+supplyDAC = sigDAC('COM4',24,'supplyDAC')
 
 %% SIM900 for biasing HEMTs
-sim900Port = 'COM5';
-sim900 = SIM900(sim900Port);
+sim900 = SIM900('COM5')
 
 %% DC pinout script
 % DCPinout;
 
 %% SR830 Lock-ins
-st_Address = '172.29.117.106'; % top SR830
-% twiddle_Address = '172.29.117.103'; % bottom SR830
-SR830ST = SR830(port,'172.29.117.106'); % for Sommer-Tanner
-% SR830Twiddle = SR830(port,twiddle_Address); % for twiddle
+% top_Address = '172.29.117.106'; % top SR830
+% bottom_Address = '172.29.117.103'; % bottom SR830
+SR830ST = SR830(1234,"172.29.117.103") % for Sommer-Tanner
+% SR830Twiddle = SR830(port,bottom_Address); % for twiddle
 
 %% Filament
 % DMM_Address = '172.29.117.107'; % Keysight DMM
 % Fil_Address = '172.29.117.127'; % Agilent for Filament
 
 %% Agilent AWGs
-awg1_Address = '172.29.117.24';
-Awg2ch_1 = Agilent33622A(1234,awg1_Address,1); % two-channel AWG
-awg2Houck_Address = '172.29.117.137';
-Awg2ch_2 = Agilent33622A(1234,awg2Houck_Address,1); % two-channel AWG
+awg2ch_1 = Agilent33622A(1234,'172.29.117.24')
+% awg2ch_2 = Agilent33622A(1234,'172.29.117.62')
+% awg2ch_3 = Agilent33622A(1234,'172.29.117.57')
+awg2ch_houck = Agilent33622A(1234,'172.29.117.137') % Borrowed from Houck lab (lowest noise)
 
 % AwgTwiddle_Address = '172.29.117.16';
 % AwgTwiddle = Agilent33220A(1234,AwgTwiddle_Address,1); % 1-channel AWG
 % AwgComp_Address = '172.29.117.17';
 % AwgComp = Agilent33220A(1234,AwgComp_Address,1); % 1-channel AWG
 
-% AwgFilament = Agilent33220A(port,'172.29.117.127',1);
+awgFilament = Agilent33220A(1234,'172.29.117.127',1)
+% Siglent power supply address
+siglentFilament = SPD330('172.29.117.8',1)
 
 %% GUIs
 controlDACGUI = sigDACGUI;

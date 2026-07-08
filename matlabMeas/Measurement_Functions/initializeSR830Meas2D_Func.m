@@ -86,8 +86,10 @@ switch targetGate
         axisName = "Door Voltage [V]";
     case 'DP'
         axisName = "Dot Potential Voltage [V]";
-    case 'Guard'
-        axisName = "Guard Voltage [V]";
+    case 'Guard1'
+        axisName = "Guard1 Voltage [V]";
+    case 'Guard2'
+        axisName = "Guard2 Voltage [V]";
     case 'Pair'
         deviceSet = evalin("base","Top100Device");
         portSet = evalin("base","Top100Port");

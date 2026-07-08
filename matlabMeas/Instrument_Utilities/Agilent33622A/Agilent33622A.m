@@ -10,12 +10,15 @@ classdef Agilent33622A
         function Agilent33622A = Agilent33622A(port,IPAddress,opt)
             Agilent33622A.IPAddress     = IPAddress;
             Agilent33622A.port          = port;
+
+            visaAddress = sprintf('TCPIP0::%s::inst0::INSTR', Agilent33622A.IPAddress);
+            Agilent33622A.client = visadev(visaAddress);
             
-            if exist('opt','var') 
-                Agilent33622A.client    = TCPIP_VISA_Connect(IPAddress);                
-            else
-                Agilent33622A.client    = TCPIP_Connect(IPAddress,port);
-            end
+            % if exist('opt','var') 
+            %     Agilent33622A.client    = TCPIP_VISA_Connect(IPAddress);                
+            % else
+            %     Agilent33622A.client    = TCPIP_Connect(IPAddress,port);
+            % end
             Agilent33622A.identifier    = '33622A';
         end
 
@@ -89,6 +92,14 @@ classdef Agilent33622A
             fprintf(Agilent33622A.client,command);
         end
 
+        function [] = clearErr33622A(Agilent33622A)
+            writeline(Agilent33622A.client, "*CLS");
+        end
+
+        function [] = reset33622A(Agilent33622A)
+            writeline(Agilent33622A.client, "*RST");
+        end
+
         %% SET FREQUENCY/PERIOD %%
         function [] = set33622AFrequency(Agilent33622A,channel,frequencyInHz)
             command = ['SOUR',num2str(channel),':FREQ ' num2str(frequencyInHz)];
@@ -122,9 +133,9 @@ classdef Agilent33622A
 
 
         %% SET TRIGGER %%
-        
         function send33622ATrigger(Agilent33622A)
-            fprintf(Agilent33622A.client,'TRIG');
+            % fprintf(Agilent33622A.client,'TRIG');
+            writeline(Agilent33622A.client, "*TRG");
         end
 
         function send33622ATriggerBUS(Agilent33622A)
@@ -163,7 +174,6 @@ classdef Agilent33622A
         end
 
         %% SET BURST %%
-
         function [] = set33622ABurstMode(Agilent33622A,channel,burstType)
             validTypes = 'TRIG,GAT';
             if ~contains(validTypes,burstType)
@@ -175,9 +185,10 @@ classdef Agilent33622A
             end
         end
 
-        function [] = set33622ANumBurstCycles(Agilent33622A,channel,numCycles)
-            command = ['SOUR',num2str(channel),':BURS:NCYC ' num2str(numCycles)];
-            fprintf(Agilent33622A.client,command);
+        function [] = set33622ABurstNCycles(Agilent33622A,CHAN,NCYCLES)
+            % command = ['SOUR',num2str(channel),':BURS:NCYC ' num2str(numCycles)];
+            % fprintf(Agilent33622A.client,command);
+            writeline(Agilent33622A.client, "SOUR" + num2str(CHAN) + ":BURS:NCYC " + num2str(round(NCYCLES)));
         end
 
         function [] = set33622ABurstStateOn(Agilent33622A,onOrOff)
@@ -211,7 +222,6 @@ classdef Agilent33622A
             fprintf(Agilent33622A.client,command);
         end
 
-
         %% SET VOLTAGES %%
         function [] = set33622AAmplitude(Agilent33622A,channel,amplitude,voltType)
             validVoltTypes = 'VPP,VRMS,DBM';
@@ -234,19 +244,90 @@ classdef Agilent33622A
             fprintf(Agilent33622A.client,command2);
         end
 
-        function [] = set33622AVoltageHigh(Agilent33622A,channel,highVoltage)
-            command = ['SOUR',num2str(channel),':VOLT:HIGH ', num2str(highVoltage)];
-            fprintf(Agilent33622A.client,command);
+        function [] = set33622AVhigh(Agilent33622A,CHAN,VHIGH)
+            % command = ['SOUR',num2str(channel),'VOLT:HIGH ', num2str(highVoltage)];
+            % fprintf(Agilent33622A.client,command);
+            writeline(Agilent33622A.client, "SOUR" + num2str(CHAN) + ":VOLT:HIGH " + num2str(VHIGH));
         end
 
-        function [] = set33622AVoltageLow(Agilent33622A,channel,lowVoltage)
-            command = ['SOUR',num2str(channel),':VOLT:LOW ', num2str(lowVoltage)];
-            fprintf(Agilent33622A.client,command);
+        function [] = set33622AVlow(Agilent33622A,CHAN,VLOW)
+            % command = ['SOUR',num2str(channel),'VOLT:LOW ', num2str(lowVoltage)];
+            % fprintf(Agilent33622A.client,command);
+            writeline(Agilent33622A.client, "SOUR" + num2str(CHAN) + ":VOLT:LOW "  + num2str(VLOW));
         end
 
         function [] = set33622AVoltageOffset(Agilent33622A,channel,voltageOffset)
             command = ['SOUR',num2str(channel),':VOLTAGE:OFFS ', num2str(voltageOffset)];
             fprintf(Agilent33622A.client,command);
+        end
+
+        %% Configure arbitrary waveform
+        function [] = loadArb(Agilent33622A,CHAN,arbFile)
+            % Verify file exists
+            writeline(Agilent33622A.client, "MMEM:CAT:DATA:ARB? ""INT:\332XX_ARBS\""");
+            mmem_resp = readline(Agilent33622A.client);
+            if ~contains(upper(mmem_resp), upper(arbFile))
+                warning('"%s" not found in non-volatile memory. Response: %s', arbFile, mmem_resp);
+            else
+                fprintf('Found %s in non-volatile memory.\n', arbFile);
+            end
+        
+            % Load and select
+            writeline(Agilent33622A.client, "MMEM:LOAD:DATA" + num2str(CHAN) + " """ + arbFile + """");
+            pause(0.5);
+            writeline(Agilent33622A.client, "SOUR" + num2str(CHAN) + ":FUNC:ARB """ + arbFile + """");
+            writeline(Agilent33622A.client, "SOUR" + num2str(CHAN) + ":FUNC ARB");
+            fprintf('Channel %d: loaded %s\n', CHAN, arbFile);
+        end
+
+        function [] = configAwgArb(Agilent33622A, CHAN, SRATE, VLOW, VHIGH, NBURST, TRIGSRC)
+            % configAwgArb  Configure channel settings for triggered burst playback.
+            %
+            % INPUTS:
+            %   Agilent33622A     - instrument handle (.client must be a visadev object)
+            %   CHAN    - channel number (1 or 2)
+            %   SRATE   - sample rate in Sa/s
+            %   VLOW    - low voltage in V
+            %   VHIGH   - high voltage in V
+            %   NBURST  - burst cycle count (integer >= 1)
+            %   TRIGSRC - trigger source ('BUS' or 'EXT')
+            
+            % Sample rate, filter, load, voltages
+            writeline(Agilent33622A.client, "SOUR" + num2str(CHAN) + ":FUNC:ARB:SRAT " + num2str(SRATE));
+            writeline(Agilent33622A.client, "SOUR" + num2str(CHAN) + ":FUNC:ARB:FILT STEP");
+            writeline(Agilent33622A.client, "OUTP" + num2str(CHAN) + ":LOAD INF");
+            writeline(Agilent33622A.client, "SOUR" + num2str(CHAN) + ":VOLT:LOW "  + num2str(VLOW));
+            writeline(Agilent33622A.client, "SOUR" + num2str(CHAN) + ":VOLT:HIGH " + num2str(VHIGH));
+        
+            % Burst
+            writeline(Agilent33622A.client, "SOUR" + num2str(CHAN) + ":BURS:STAT ON");
+            writeline(Agilent33622A.client, "SOUR" + num2str(CHAN) + ":BURS:MODE TRIG");
+            writeline(Agilent33622A.client, "SOUR" + num2str(CHAN) + ":BURS:NCYC " + num2str(round(NBURST)));
+        
+            % Trigger
+            writeline(Agilent33622A.client, "TRIG" + num2str(CHAN) + ":SOUR " + TRIGSRC);
+            writeline(Agilent33622A.client, "TRIG" + num2str(CHAN) + ":SLOP POS");
+                
+            if strcmp(TRIGSRC, "BUS")
+                writeline(Agilent33622A.client, "OUTP:TRIG:SLOP POS");
+                writeline(Agilent33622A.client, "OUTP:TRIG:SOUR CH1");
+                writeline(Agilent33622A.client, "OUTP:TRIG ON");
+            else
+                writeline(Agilent33622A.client, "OUTP:TRIG OFF");
+            end
+        
+            % Output on
+            writeline(Agilent33622A.client, "OUTP" + num2str(CHAN) + " ON");
+        
+            % Error check
+            writeline(Agilent33622A.client, "SYST:ERR?");
+            err = readline(Agilent33622A.client);
+            if contains(err, "No error")
+                fprintf('Channel %d configured: SRATE=%.0f Sa/s, VLOW=%.1fV, VHIGH=%.1fV, NBURST=%d, TRIG=%s\n', ...
+                        CHAN, SRATE, VLOW, VHIGH, NBURST, TRIGSRC);
+            else
+                warning('Instrument error on channel %d: %s', CHAN, err);
+            end
         end
         
         function [] = set33622ADoorVoltageLowAndHigh(Agilent33622A,channel,lowVoltage,highVoltage)
@@ -260,8 +341,43 @@ classdef Agilent33622A
             set33622AVoltageLow(Agilent33622A,channel,lowVoltage);
             set33622AVoltageHigh(Agilent33622A,channel,highVoltage);
         end
-        
+
         %% QUERYING %%
+        function [] = queryErr33622A(Agilent33622A)
+            writeline(Agilent33622A.client, "SYST:ERR?");
+            err = readline(Agilent33622A.client);
+            if contains(err, "No error")
+                fprintf('No error: %s', err);
+            else
+                warning('Instrument Error: %s', err);
+            end
+        end
+
+        function queryOPC33622A(Agilent33622A, varargin)
+            % waitAWG  Block until AWG has completed its current operation.
+            %
+            % INPUTS:
+            %   AWG     - instrument handle (.client must be a visadev object)
+            %   timeout - (optional) timeout in seconds, default = current device timeout
+            p = inputParser;
+            p.addOptional('timeout', Agilent33622A.client.Timeout, @(x) isnumeric(x) && x > 0);
+            p.parse(varargin{:});
+            timeout = p.Results.timeout;
+        
+            prev_timeout = Agilent33622A.client.Timeout;
+            Agilent33622A.client.Timeout = timeout;
+        
+            writeline(Agilent33622A.client, "*OPC?");
+            opc = readline(Agilent33622A.client);
+        
+            Agilent33622A.client.Timeout = prev_timeout;   % restore original timeout
+        
+            if strcmp(strtrim(opc), "1")
+                fprintf('AWG operation complete.\n');
+            else
+                warning('Unexpected OPC response: %s', opc);
+            end
+        end
 
         function [functionType] = query33622AFunctionType(Agilent33622A,channel)
             command = strcat('SOUR',num2str(channel),'FUNC?');

@@ -1,14 +1,19 @@
-doorDevice = Awg2ch_2; % Default channel 2
-mfli_id = 'dev32061'; % 'dev32061'
-startPhase = 26;
-stopPhase = 27.2;
-deltaPhase = 0.05;
-startAmp = 0.00324;
-stopAmp = 0.00327;
-deltaAmp = 0.000001;
+doorDevice = awg2ch_houck; % Default channel 2
+mfli_id = 'dev32061';
+% doorDevice = Awg2ch_2;
+% mfli_id = 'dev32061';
+
+startPhase = -180;
+stopPhase = 180;
+deltaPhase = 10;
+startAmp = 0.002;
+stopAmp = 0.02;
+deltaAmp = 0.001;
 
 % fprintf(doorDevice.client, ['OUTP', num2str(1), ' ON'])
 % fprintf(doorDevice.client, ['OUTP', num2str(2), ' ON'])
+% Run deltaPhase [10,1,0.1,0.01]
+% Run deltaAmp [0.001,0.0001,0.00001,0.000001]
 
 if deltaPhase < .001 || deltaAmp < .000001
     error('Too small of a step size. Check deltaPhase and/or deltaAmp.')
@@ -17,14 +22,16 @@ end
 setVal(doorDevice,3,startPhase); % Set phase
 setVal(doorDevice,4,startAmp); % Amplitude
 
-[mag,~,~,~,~,~,~,~] = MFLISweep1D({'PHAS'},startPhase,stopPhase,deltaPhase,mfli_id,doorDevice,3,0);
+[mag,~,~,~] = MFLISweep1D_getSample({'PHAS'},startPhase,stopPhase,deltaPhase,mfli_id,doorDevice,3,0, ...
+    'filter_order',2,'time_constant',0.1, 'demod_rate', 10e3);
 
 phases = startPhase:deltaPhase:stopPhase;
 minValPhase = phases(find(mag==min(mag)));
 fprintf('Min. phase setting at %f\n', minValPhase);
 setVal(doorDevice,3,minValPhase); delay(1);
 
-[mag,~,x,y,~,~,~,~] = MFLISweep1D({'Vpp'},startAmp,stopAmp,deltaAmp,mfli_id,doorDevice,4,0);
+[mag,~,x,y] = MFLISweep1D_getSample({'Vpp'},startAmp,stopAmp,deltaAmp,mfli_id,doorDevice,4,0, ...
+    'filter_order',2,'time_constant',0.1,'demod_rate',10e3);
 
 amps = startAmp:deltaAmp:stopAmp;
 minValAmp = amps(find(mag==min(mag)));

@@ -7,6 +7,8 @@ function [coefficients] = getChebCoefficients(thermometerType)
         coefficients = [5.487638,-6.308681,2.792266,-1.019812,0.312035,-0.077432,0.013465,-0.000482,-0.001030];
     elseif strcmp(thermometerType,'X189327')
         coefficients = [5.542940,-6.362573,2.765561,-0.976236,0.282996,-0.064305,0.009030,0.000457,-0.001173];
+    elseif strcmp(thermometerType,'X105783') % 1.4K to 14K
+        coefficients = [5.502232,-6.352481,2.851414,-1.063305,0.331491,-0.082360,0.012775,0.000807,-0.001858, 0.001036];
     else
         disp('Your thermometer calibration does not exist!');
     end

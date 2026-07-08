@@ -1,0 +1,46 @@
+Number of fit ranges:                  3
+FIT RANGE:                             1
+Fit type for range1:                   LOG
+Order of fit range1:                   9
+Zlower for fit range1:                 2.91080265440867
+Zupper for fit range1:                 4.41477360530206
+Lower Resist. limit for fit range1:    903.6791
+Upper Resist. limit for fit range1:    17958.7314
+C(0) Equation 1:                       5.50223170247933E+00
+C(1) Equation 1:                      -6.35248059661362E+00
+C(2) Equation 1:                       2.85141438138971E+00
+C(3) Equation 1:                      -1.06330475734275E+00
+C(4) Equation 1:                       3.31491381094986E-01
+C(5) Equation 1:                      -8.23599970298054E-02
+C(6) Equation 1:                       1.27746077075414E-02
+C(7) Equation 1:                       8.07166676463777E-04
+C(8) Equation 1:                      -1.85799952786162E-03
+C(9) Equation 1:                       1.03622563269037E-03
+FIT RANGE:                             2
+Fit type for range2:                   LOG
+Order of fit range2:                   6
+Zlower for fit range2:                 2.28819161594688
+Zupper for fit range2:                 3.00970018819204
+Lower Resist. limit for fit range2:    215.6561
+Upper Resist. limit for fit range2:    903.6791
+C(0) Equation 2:                       4.25602752572365E+01
+C(1) Equation 2:                      -3.77714442663655E+01
+C(2) Equation 2:                       8.44282065634222E+00
+C(3) Equation 2:                      -1.10100225610461E+00
+C(4) Equation 2:                       1.25008099028534E-01
+C(5) Equation 2:                      -7.07460295584186E-03
+C(6) Equation 2:                      -5.40169257982255E-03
+FIT RANGE:                             3
+Fit type for range3:                   LOG
+Order of fit range3:                   6
+Zlower for fit range3:                 1.76305801042671
+Zupper for fit range3:                 2.38484047587368
+Lower Resist. limit for fit range3:    58.7667
+Upper Resist. limit for fit range3:    215.6561
+C(0) Equation 3:                       1.76265788153077E+02
+C(1) Equation 3:                      -1.26460380245599E+02
+C(2) Equation 3:                       2.31055650038357E+01
+C(3) Equation 3:                      -3.46563714834239E+00
+C(4) Equation 3:                       6.73080425514190E-01
+C(5) Equation 3:                      -1.35010034531783E-01
+C(6) Equation 3:                       1.94144959485609E-02
