@@ -9,7 +9,8 @@ function [ h ] = heliumFillHeight( Pkpa )
  bigglassRF = 0;
  bigglassGordian = 0;
  bigglassNewRF = 0;
- bombCell = 1;
+ bombCell = 0;
+ BFCSmallCell = 1;
 
  if littleglassdewar   
      Vpanel = 18.4;     % in^3
@@ -50,8 +51,8 @@ function [ h ] = heliumFillHeight( Pkpa )
      Acell = pi*(0.32/2)^2;      % in^2, 2.15/2
      Patm = (30-Pkpa)*0.0334211; % atm
      h = Patm * (Vpanel)*25.4/(757*Acell); % [mm]
- elseif bombCell
-     Vpanel = 5.94;             % in^3
+ elseif BFCSmallCell
+     Vpanel = 4.5;             % in^3
      Acell = pi*(0.32/2)^2;      % in^2, 2.15/2
      Patm = (30-Pkpa)*0.0334211; % atm
      h = Patm * (Vpanel)*25.4/(757*Acell);                            % [mm]

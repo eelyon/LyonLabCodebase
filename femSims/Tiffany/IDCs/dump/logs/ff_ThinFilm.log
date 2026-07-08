@@ -1,0 +1,27 @@
+2026-04-15 19:36:22,961 | INFO | Starting EDP: dump\\edp\\ff_ThinFilm.edp
+2026-04-15 19:39:47,098 | DEBUG | Full output captured
+2026-04-15 19:39:47,098 | INFO | -- FreeFem++ v4.6 (Fri, Apr 03, 2020  2:08:08 PM - git v4.6)
+2026-04-15 19:39:47,098 | INFO |  Load: lg_fem lg_mesh lg_mesh3 eigenvalue 
+2026-04-15 19:39:47,098 | INFO | 'ffglut.exe' is not recognized as an internal or external command,
+2026-04-15 19:39:47,098 | INFO | operable program or batch file.
+2026-04-15 19:39:47,098 | INFO | (load: loadLibary C:\Program Files (x86)\FreeFem++\\.\msh3 = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\gmsh = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\medit = 0)(load: loadLibary C:\Program Files (x86)\FreeFem++\\.\mshmet = 0) load: mshmet  
+2026-04-15 19:39:47,098 | INFO | (load: loadLibary C:\Program Files (x86)\FreeFem++\\.\tetgen = 0) load: tetgen  
+2026-04-15 19:39:47,098 | INFO |  sizestack + 1024 =3512  ( 2488 )
+2026-04-15 19:39:47,098 | INFO | 
+2026-04-15 19:39:47,098 | INFO | 598461 tetrahedrons
+2026-04-15 19:39:47,098 | INFO | 47492 triangles
+2026-04-15 19:39:47,098 | INFO | 645953 numElements
+2026-04-15 19:39:47,099 | INFO |   -- Build Nodes/DF on mesh :   n.v. 108256, n. elmt. 598461, n b. elmt. 47492
+2026-04-15 19:39:47,099 | INFO |      nb of Nodes 842230    nb of DoF   842230  DFon=1100
+2026-04-15 19:39:47,099 | INFO |   -- FESpace: Nb of Nodes 842230 Nb of DoF 842230
+2026-04-15 19:39:47,099 | INFO |   -- Build Nodes/DF on mesh :   n.v. 108256, n. elmt. 598461, n b. elmt. 47492
+2026-04-15 19:39:47,099 | INFO |      nb of Nodes 598461    nb of DoF   598461  DFon=0001
+2026-04-15 19:39:47,099 | INFO |   -- FESpace: Nb of Nodes 598461 Nb of DoF 598461
+2026-04-15 19:39:47,099 | INFO |  GC:  converge in  241 g=6.06876e-08 rho= 1.48068 gamma= 0.863322
+2026-04-15 19:39:47,099 | INFO |   -- Solve : 
+2026-04-15 19:39:47,099 | INFO |           min -0.0222623  max 1
+2026-04-15 19:39:47,099 | INFO | times: compile 0.367s, execution 203.242s,  mpirank:0
+2026-04-15 19:39:47,099 | INFO |  ######## We forget of deleting   -6 Nb pointer,   0Bytes  ,  mpirank 0, memory leak =0
+2026-04-15 19:39:47,099 | INFO |  CodeAlloc : nb ptr  4036,  size :497768 mpirank: 0
+2026-04-15 19:39:47,099 | INFO | Ok: Normal End
+2026-04-15 19:39:47,099 | INFO | Completed EDP: dump\\edp\\ff_ThinFilm.edp

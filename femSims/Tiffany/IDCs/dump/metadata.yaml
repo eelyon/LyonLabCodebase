@@ -1,0 +1,46 @@
+result1:
+  Quantity: phi
+  Plane: xy
+  X Min: -10
+  X Max: 10
+  X Num: 201
+  Y Min: 1950
+  Y Max: 2125
+  Y Num: 201
+  Slices: 1
+  Slice Values:
+  - 0.96
+  Curved Surface: false
+  Schema: (1, 201, 201)
+Capacitance Matrix:
+- - -11705.6
+  - 4642.75
+  - 670.661
+  - 3322.04
+  - 3692.42
+- - 4327.06
+  - -6496.06
+  - 346.654
+  - 1063.03
+  - 170.676
+- - 724.148
+  - 436.749
+  - -16692.1
+  - 6208.42
+  - 10582.4
+- - 3436.31
+  - 1309.7
+  - 6191.03
+  - -19665.6
+  - 10779.0
+- - 3218.08
+  - 106.836
+  - 9483.79
+  - 9072.15
+  - -25224.5
+Control Electrodes:
+- Barrier
+- ThinFilm
+- IDC+
+- IDC-
+- Top
