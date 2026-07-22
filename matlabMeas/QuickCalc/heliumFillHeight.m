@@ -52,8 +52,8 @@ function [ h ] = heliumFillHeight( Pkpa )
      Patm = (30-Pkpa)*0.0334211; % atm
      h = Patm * (Vpanel)*25.4/(757*Acell); % [mm]
  elseif BFCSmallCell
-     Vpanel = 4.5;             % in^3
-     Acell = pi*(0.32/2)^2;      % in^2, 2.15/2
+     Vpanel = 21.29;             % in^3
+     Acell = pi*(1.075)^2;      % in^2, 2.15/2
      Patm = (30-Pkpa)*0.0334211; % atm
      h = Patm * (Vpanel)*25.4/(757*Acell);                            % [mm]
  end
