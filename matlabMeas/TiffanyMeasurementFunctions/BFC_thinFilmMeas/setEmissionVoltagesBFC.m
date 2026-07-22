@@ -5,7 +5,7 @@ SetDAC(hDAC,BackMetalPort,0*VtomV);
 QDACSmoothRampVoltage(qDAC,BlockPort,-3,0.2)
 qDACrampTime = 0.2;
 
-SetDAC(hDAC,BackMetalPort,-4*VtomV);
+SetDAC(hDAC,BackMetalPort,-1*VtomV);
 SetDAC(hDAC,BackMetalPort,3*VtomV);
 
 RampDAC(hDAC,TfEPort,0*VtomV);
@@ -21,7 +21,7 @@ QDACSmoothRampVoltage(qDAC,[TfCPort,BEPort,BCPort],[-1,-1,-1],qDACrampTime)
 RampDAC(hDAC,TfEPort,-1*VtomV);
 
 compensateParasitics(SR830Twiddle,AwgComp,AwgTwd,-180,180,10,0.2,0.4,0.01,0)        % HEMT1
-compensateParasitics(SR830TwiddleC,Awg_1,Awg_1,-180,180,10,0.2,0.4,0.01,0)    % HEMT2
+compensateParasitics(SR830TwiddleC,Awg_1,Awg_1,-180,180,10,0.2,0.4,0.01,0)          % HEMT2
 
 % finer sweep
 compensateParasitics(SR830Twiddle,Awg2Ch,Awg2Ch,26,28,0.1,0.3,0.31,0.005,0)         % HEMT1
@@ -61,6 +61,7 @@ QDACSmoothRampVoltage(qDAC,[TfCPort,BEPort,BCPort],[-2,-2,-2],qDACrampTime)
 RampDAC(hDAC,TfEPort,-2*VtomV);
 QDACSmoothRampVoltage(qDAC,BlockPort,-2,0.2)
 
+QDACSmoothRampVoltage(qDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[0,1,1,1],qDACrampTime)
 
 %% Sweeps
 

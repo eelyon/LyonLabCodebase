@@ -48,7 +48,8 @@ end
 
 delay(1);
 fprintf(['(real,imag) = (', num2str(SR830queryX(device)*1e6),'uV,' num2str(SR830queryY(device)*1e6), 'uV) \n']);
-
+% query333622Amplitude(device,2)
+% query33622APhase(device,2)
 end
 
 function exponent = determineExponent(num)
