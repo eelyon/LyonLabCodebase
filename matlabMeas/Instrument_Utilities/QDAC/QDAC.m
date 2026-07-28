@@ -1,4 +1,4 @@
-classdef QDAC
+classdef QDAC < handle
     %   QDAC class
     %   Contains functions for initiating the Quantum Machine DAC II compact 
     %   and setting voltages

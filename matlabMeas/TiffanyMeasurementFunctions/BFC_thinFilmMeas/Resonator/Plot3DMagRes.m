@@ -3,8 +3,8 @@
 
 consecutive = 1;
 if consecutive
-    startNum = 197-1;
-    stopNum  = 200+1;
+    startNum = 426-1;
+    stopNum  = 426+1;
     numFigs  = stopNum-startNum;
 else
     figNums = [10775 10777 10779 10780 10783:10787 10790];
@@ -35,13 +35,13 @@ for i = 0:2:numFigs+1
         case 'gordian'
             path_home = 'C:\Users\gordi\Dropbox (Princeton)\GroupDropbox\Gordian\rfReflectometry\VNA measurements\HeLevelMeter_110623\11_10_23\';
         case 'tiffany'
-            if currentFigNum <= 7312 %7037
+            if currentFigNum <= 7312 % 7037
                 path_home = 'C:\Users\LyonLab\Dropbox (Princeton)\GroupDropbox\Tiffany\Application\MATLAB\Data\12_07_23\';
             else
                 path_home = 'C:\Users\LyonLab\Dropbox (Princeton)\GroupDropbox\Tiffany\Application\MATLAB\Data\12_08_23\';
             end
         case 'BFC'
-            path_home = 'C:\Users\ee_lyonlab_j409\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\03_21_26\';
+            path_home = 'C:\Users\ee_lyonlab_j409\Documents\GitHub\LyonLabCodebase\matlabMeas\Data\07_13_26\';
         otherwise
             disp('Error! Choose existing path')
     end
@@ -110,7 +110,7 @@ figure
 
 %% Plot uninterpolated data
 temp = [1.2 2 3.55 4.1 5];
-image(temp,freqData,cData.','CDataMapping','scaled')
+image(LHe_cc,freqData,cData.','CDataMapping','scaled')
 set(gca,'YDir','normal')
 
 xlabel('Temperature (K)')
