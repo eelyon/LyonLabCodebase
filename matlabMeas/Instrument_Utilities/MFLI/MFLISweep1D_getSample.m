@@ -104,7 +104,8 @@ for value = paramVector
     ziDAQ('unsubscribe', '*');
 
 %     sigDACRamp(device,port,value,5,1100);
-    setVal(device_id, port, value); delay(1.1e-3);
+    setDACVolts(device_id, port, value); delay(1.1e-3);
+    % setVal(device_id, port, value); delay(1.1e-3);
     delay(settling_time); % delay to get a settled lowpass filter
     
     % Perform a global synchronisation between the device and the data server:
