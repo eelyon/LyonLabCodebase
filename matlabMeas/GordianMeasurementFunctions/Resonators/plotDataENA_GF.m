@@ -2,16 +2,16 @@
 close all;
 
 power     = -20;      % in dBm - be careful!! Do not set too high!!
-startFreq = 2107;    % in MHz
-stopFreq  = 2120;    % in MHz 
+startFreq = 2135;    % in MHz
+stopFreq  = 2155;    % in MHz 
 
 % decide whether to include metadata (1=include,0=don't)
 saveFig   = 1;       % for saving the figure
 plotHe    = 1;       % for Patm and numShots metaData
 plotIDC   = 0;       % for capacitance metaData
-tag = 'HeLevelMeter';
+tag = 'HeLevelMeter_topPCB';
 
-addedHe   = 0;         % in inHg from reading the gauge
+addedHe   = 30;         % in inHg from reading the gauge
 % deviceIDC = VmeasE;    % device for IDC measurement
 
 E5071SetPower(ENA,power);           % in dBm
