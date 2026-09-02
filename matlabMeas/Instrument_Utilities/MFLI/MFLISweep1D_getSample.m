@@ -77,7 +77,7 @@ delay(1); % Delay for external ref to settle
 
 %% Set up figure and start sweep loop
 % Set up plot figure and meta data
-[plotHandles,subPlotFigureHandle] = initializeATS9416Meas1D(sweepType{1},doBackAndForth);
+[plotHandles,subPlotFigureHandle] = initializeATS9416Meas1D(sweepType,doBackAndForth);
 
 % Adjust for sign of sweep
 step = checkDeltaSign(start,stop,step);
@@ -104,8 +104,11 @@ for value = paramVector
     ziDAQ('unsubscribe', '*');
 
 %     sigDACRamp(device,port,value,5,1100);
-    setDACVolts(device_id, port, value); delay(1.1e-3);
-    % setVal(device_id, port, value); delay(1.1e-3);
+    if strcmp(sweepType, 'PHAS') | strcmp(sweepType, 'Vpp')
+        setVal(device_id, port, value); delay(1.1e-3);
+    else
+        setDACVolts(device_id, port, value); delay(1.1e-3);
+    end
     delay(settling_time); % delay to get a settled lowpass filter
     
     % Perform a global synchronisation between the device and the data server:
@@ -137,8 +140,8 @@ metadata_struct.time_constant = ziDAQ('getDouble', ['/' device '/demods/' demod_
 metadata_struct.filter_order = p.Results.filter_order;
 metadata_struct.demod_rate = ziDAQ('getDouble', ['/' device '/demods/' demod_c '/rate']); % p.Results.demod_rate;
 metadata_struct.length = length(sample.x);
-metadata_struct.controlDAC = evalin('base','controlDAC.channelVoltages;');
-metadata_struct.supplyDAC = evalin('base','supplyDAC.channelVoltages;');
+%metadata_struct.controlDAC = evalin('base','controlDAC.channelVoltages;');
+%metadata_struct.supplyDAC = evalin('base','supplyDAC.channelVoltages;');
 subPlotFigureHandle.UserData = metadata_struct;
 
 % Unsubscribe from all paths.
@@ -146,7 +149,7 @@ ziDAQ('unsubscribe', '*');
 
 % Save data
 if ~strcmp(sweepType,'PHAS') && ~strcmp(sweepType,'Vpp')
-    saveData(subPlotFigureHandle, genSR830PlotName(sweepType{1}));
+    saveData(subPlotFigureHandle, genSR830PlotName(sweepType));
 end
 end
 

@@ -7,7 +7,7 @@ stopFreq  = 2155;    % in MHz
 
 % decide whether to include metadata (1=include,0=don't)
 saveFig   = 1;       % for saving the figure
-plotHe    = 1;       % for Patm and numShots metaData
+plotHe    = 0;       % for Patm and numShots metaData
 plotIDC   = 0;       % for capacitance metaData
 tag = 'HeLevelMeter_topPCB';
 

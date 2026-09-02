@@ -102,7 +102,7 @@ classdef QDAC < handle
 
         %% Set Functions
         function [] = setQDACRange(QDAC,channels,lowORHigh)
-            if lowORHigh == 1
+            if lowORHigh == 0
                 command = sprintf('SOUR:VOLT:RANG LOW,(@%s)', strjoin(string(channels), ',')); % +/- 2V range
                 fprintf(QDAC.client,command);
             else
@@ -218,8 +218,12 @@ classdef QDAC < handle
         function [] = QDACRampVoltage(QDAC,channels,voltages,numSteps) % sets interleaved voltage ramp in Sweep mode                       
             % start and stop voltages, and num steps
             startVoltages = str2num(queryQDACVoltage(QDAC,channels));
+            [sortedCh, sortIdx] = sort(channels);
+            startVs = zeros(size(startVoltages));
+            startVs(sortIdx) = startVoltages;
+
             for i=1:length(voltages)
-                QDACSetSweepStartVoltage(QDAC,channels(i),startVoltages(i))
+                QDACSetSweepStartVoltage(QDAC,channels(i),startVs(i))
                 QDACSetSweepStopVoltage(QDAC,channels(i),voltages(i))
             end
             QDACSetSweepPoints(QDAC,channels,numSteps)
@@ -242,9 +246,15 @@ classdef QDAC < handle
 
         function [] = QDACSmoothRampVoltage(QDAC,channels,voltages,time) % sets interleaved voltage ramp in Sweep mode                       
             % start and stop voltages, and num steps
+            % need to reorder voltages after querying since the channel
+            % order gets changed
             startVoltages = str2num(queryQDACVoltage(QDAC,channels));
+            [sortedCh, sortIdx] = sort(channels);
+            startVs = zeros(size(startVoltages));
+            startVs(sortIdx) = startVoltages;
+
             for i=1:length(voltages)
-                QDACSetSweepStartVoltage(QDAC,channels(i),startVoltages(i))
+                QDACSetSweepStartVoltage(QDAC,channels(i),startVs(i))
                 QDACSetSweepStopVoltage(QDAC,channels(i),voltages(i))
             end
             QDACSetSweepPoints(QDAC,channels,1)

@@ -4,7 +4,7 @@ p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 p.addParameter('numSteps', 2, isnonneg);
 p.addParameter('numStepsRC', 2, isnonneg);
-p.addParameter('waitTimeRC', 1100, isnonneg);
+p.addParameter('waitTimeRC', 1.1, isnonneg);
 p.addParameter('vhigh', 2, isnonneg);
 p.addParameter('vlow', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});

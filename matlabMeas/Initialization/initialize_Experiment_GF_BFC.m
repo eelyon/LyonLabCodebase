@@ -25,8 +25,8 @@ SR830 = SR830(1234,"172.29.117.106") % for Sommer-Tanner
 % Fil_Address = '172.29.117.127'; % Agilent for Filament
 
 %% Agilent AWGs
-awg2ch_1 = Agilent33622A(1234,'172.29.117.57')
-awg2ch_2 = Agilent33622A(1234,'172.29.117.60')
+awg2ch_1 = Agilent33622A(1234,'172.29.117.60')
+awg2ch_2 = Agilent33622A(1234,'172.29.117.57')
 awgFilament = Agilent33220A(1234,'172.29.117.16',1)
 
 % Siglent power supply address

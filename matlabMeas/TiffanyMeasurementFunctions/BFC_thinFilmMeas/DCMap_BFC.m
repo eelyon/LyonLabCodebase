@@ -27,7 +27,7 @@ DoorCOutPort     = 19;
 
 %% Thin Film
 TfCPort        = 13;
-TfEPort        = 6; %careful, harvad DAC H6 output
+TfEPort        = 20; %careful, basel DAC output
 
 %% Barriers
 BEPort = 1; % bussed to 5
@@ -37,15 +37,15 @@ BCPort = 8; % tied to SP7 (supply BoB)
 BlockPort = 6; % bussed to 23
 
 
-%% Harvard DAC outputs
-BackMetalPort      = 7; 
+%% Basel DAC outputs
+BackMetalPort      = 6; 
 
-% Emitter Amplifier
-VbbAmpEPort        = 0;
-VccAmpEPort        = 1;
-VccFollowerEPort   = 2; 
-
-% Collector Amplifier
-VbbAmpCPort        = 3;
-VccAmpCPort        = 4;
-VccFollowerCPort   = 5; 
+% % Emitter Amplifier
+% VbbAmpEPort        = 0;
+% VccAmpEPort        = 1;
+% VccFollowerEPort   = 2; 
+% 
+% % Collector Amplifier
+% VbbAmpCPort        = 3;
+% VccAmpCPort        = 4;
+% VccFollowerCPort   = 5; 
