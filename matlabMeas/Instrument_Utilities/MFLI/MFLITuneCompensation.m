@@ -1,14 +1,14 @@
-doorDevice = Awg_2; % Default channel 2
-mfli_id = 'dev32061';
+doorDevice = Awg2Nat; % Default channel 2
+mfli_id = 'dev32021';
 % doorDevice = Awg2ch_2;
 % mfli_id = 'dev32061';
 
-startPhase = 115.5;
-stopPhase = 116.5;
+startPhase = -5.4;
+stopPhase = -5.2;
 deltaPhase = 0.01;
-startAmp = 0.282;
-stopAmp = 0.286;
-deltaAmp = 0.0001;
+startAmp = 0.2907;
+stopAmp = 0.291;
+deltaAmp = 0.00001;
 
 % fprintf(doorDevice.client, ['OUTP', num2str(1), ' ON'])
 % fprintf(doorDevice.client, ['OUTP', num2str(2), ' ON'])

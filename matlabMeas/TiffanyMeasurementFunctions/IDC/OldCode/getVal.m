@@ -1,6 +1,6 @@
 function [ Value ] = getVal( Device, Port)
   %% Determine which voltage source is being used
-  name = query(Device,'*IDN?');
+  name = query(Device.client,'*IDN?');
   if strfind(name,'SR830')
     
     Value = str2double(query(Device, ['AUXV?' num2str(Port)]));
@@ -8,7 +8,7 @@ function [ Value ] = getVal( Device, Port)
   elseif strfind(name,'AP24')
     
     fprintf(Device,['CH ' num2str(Port)]);
-    Value = str2double(query(Device,'VOLT?'));
+    Value = str2double(query(Device.client,'VOLT?'));
     
   elseif strfind(name,'AP16A')
     

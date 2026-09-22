@@ -25,7 +25,7 @@ DoorCOutPort     = 19;
 
 %% Thin Film
 TfCPort        = 13;
-TfEPort        = 20; %careful, supplyDAC
+TfEPort        = 10; %careful, supplyDAC
 
 %% Barriers
 BEPort = 1; % bussed to 5
@@ -33,18 +33,3 @@ BCPort = 8; % tied to SP7
 
 %% other barriers
 BlockPort = 6; % bussed to 23
-
-
-%% Supply Voltages
-
-BackMetalPort   = 5;  % supply voltage
-
-% Emitter Amplifier
-VbbAmpEPort   = 23;
-VccAmpEPort   = 24;
-VccFollowerEPort   = 13; 
-
-% Collector Amplifier
-VbbAmpCPort   = 16;
-VccAmpCPort   = 14;
-VccFollowerCPort   = 15; 

@@ -3,9 +3,8 @@
 DCMap;
 numSteps = 5000;
 setVal(supplyDAC,BackMetalPort,0);
-setVal(controlDAC,BlockPort,-2);
 
-setVal(controlDAC,BlockPort,-1);
+setVal(controlDAC,BlockPort,-3);
 setVal(controlDAC,BlockPort,1.5);
 
 
@@ -16,11 +15,7 @@ sigDACRampVoltage(controlDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],
 sigDACRampVoltage(controlDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-0.7,0,0,0],numSteps);
 sigDACRampVoltage(controlDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-1,0,0,-1],numSteps);
 
-sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[-1,-1,-1],numSteps);
-sigDACRampVoltage(supplyDAC,TfEPort,-1,numSteps);
-
-sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[-2,-2,-2],numSteps);
-sigDACRampVoltage(supplyDAC,TfEPort,-2,numSteps);
+sigDACRampVoltage(controlDAC,[TfEPort,TfCPort,BEPort,BCPort],[-1,-1,-1,-1],numSteps);
 
 % compensateParasitics(SR830Twiddle,Ag2Nat,Ag2Nat,-180,180,10,0.2,0.3,0.010,0)    % HEMT1
 compensateParasitics(SR830Twiddle,Awg2Ch,Awg2Ch,-180,180,10,0.2,0.4,0.010,0)      % HEMT1
@@ -57,13 +52,16 @@ sigDACRampVoltage(supplyDAC,TfEPort,-2,numSteps);
 sigDACRampVoltage(controlDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-0.7,0,0,0],numSteps);
 sigDACRampVoltage(controlDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-1,-1,-1,-1],numSteps);
 
-sigDACRampVoltage(controlDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-0.7,0,0,0],numSteps);
-sigDACRampVoltage(controlDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-1,-1,-1,-1],numSteps);
+sigDACRampVoltage(controlDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[1.8,2.5,2.5,2.5],numSteps);
+sigDACRampVoltage(controlDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[0,0,0,0],numSteps);
 
-sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[-3,-3,-3],numSteps);
-sigDACRampVoltage(supplyDAC,TfEPort,-3,numSteps);
+sigDACRampVoltage(controlDAC,[TfEPort,TfCPort,BEPort,BCPort],[-3,-3,-3,-3],numSteps);
+sigDACRampVoltage(controlDAC,BlockPort,-3,numSteps);
 
 
+% Transfer
+sigDACRampVoltage(controlDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[1.5,2.5,2.5,1.5],numSteps);
+swsigDACRampVoltage(controlDAC,BlockPort,-3,numSteps);
 %% Sweeps
 
 % check sommer tanner for electrons
@@ -254,5 +252,16 @@ sigDACRampVoltage(controlDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],
 sigDACRampVoltage(controlDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[0,0,0,0],numSteps);
 sigDACRampVoltage(controlDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[0,0,0,0],numSteps);
 
-sigDACRampVoltage(controlDAC,[TfCPort,BEPort,BCPort],[0,0,0],numSteps);
-sigDACRampVoltage(supplyDAC,TfEPort,0,numSteps);
+sigDACRampVoltage(controlDAC,[TfEPort,TfCPort,BEPort,BCPort],[0,0,0,0],numSteps);
+%sigDACRampVoltage(supplyDAC,TfEPort,0,numSteps);
+
+% Set all voltages negative
+sigDACRampVoltage(controlDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-1,-1,-1,-1],numSteps);
+sigDACRampVoltage(controlDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-1,-1,-1,-1],numSteps);
+
+sigDACRampVoltage(controlDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-1,-1,-1,-1],numSteps);
+sigDACRampVoltage(controlDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-1,-1,-1,-1],numSteps);
+
+sigDACRampVoltage(controlDAC,[TfEPort,TfCPort,BEPort,BCPort],[-1,-1,-1,-1],numSteps);
+
+setVal(controlDAC,BlockPort,-1);

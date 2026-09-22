@@ -5,7 +5,7 @@ function [] =  sweepGatesBackToZero(device,STOuterPort,STMidPort,STInnerPort,Doo
 numSteps=1000;
 if sign == 'Pos'
     step = startVoltage:-0.5:0.5;
-    TopVoltage = getVal(device,TopPort);
+    TopVoltage = sigDACQueryVoltage(device,TopPort);
     for i = 1:length(step)
         volt = step(i);
         doorOutVolt = volt - 1.5;
@@ -20,7 +20,7 @@ if sign == 'Pos'
     end
 else
     step = startVoltage:0.5:-0.5;
-    TopVolt = getVal(device,TopPort);
+    TopVolt = sigDACQueryVoltage(device,TopPort);
     for i = 1:length(step)
         volt = step(i);
         sigDACRampVoltage(device,[STOuterPort,STMidPort,STInnerPort],[volt+0.5,volt+0.5,volt+0.5],numSteps*5);
