@@ -1,14 +1,13 @@
 %% Starting up Experiment
 
 DCMap_BFC;
-SetDAC(hDAC,BackMetalPort,0*VtomV);
+qDACrampTime = 0.5;
+baselDACSetStatus(baselDAC,TfEPort,'ON');
+baselDACSetStatus(baselDAC,BackMetalPort,'ON');
+
 QDACSmoothRampVoltage(qDAC,BlockPort,-3,0.2)
-qDACrampTime = 0.2;
-
-SetDAC(hDAC,BackMetalPort,-1*VtomV);
-SetDAC(hDAC,BackMetalPort,3*VtomV);
-
-RampDAC(hDAC,TfEPort,0*VtomV);
+baselDACRampVoltage(baselDAC,BackMetalPort,-3,5,0.5)
+baselDACRampVoltage(baselDAC,TfEPort,0,5,0.5)
 
 %% Compensation voltages
 QDACSmoothRampVoltage(qDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-0.7,0,0,0],qDACrampTime)
@@ -18,9 +17,9 @@ QDACSmoothRampVoltage(qDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-0.7,0
 QDACSmoothRampVoltage(qDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-1,0,0,-1],qDACrampTime)
 
 QDACSmoothRampVoltage(qDAC,[TfCPort,BEPort,BCPort],[-1,-1,-1],qDACrampTime)
-RampDAC(hDAC,TfEPort,-1*VtomV);
+baselDACRampVoltage(baselDAC,TfEPort,-1,5,0.5)
 
-compensateParasitics(SR830Twiddle,AwgComp,AwgTwd,-180,180,10,0.2,0.4,0.01,0)        % HEMT1
+compensateParasitics(SR830Top,Awg_1,Awg_1,-180,180,10,0.2,0.4,0.01,0)        % HEMT1
 compensateParasitics(SR830TwiddleC,Awg_1,Awg_1,-180,180,10,0.2,0.4,0.01,0)          % HEMT2
 
 % finer sweep
@@ -36,7 +35,7 @@ QDACSmoothRampVoltage(qDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-0.7,0
 QDACSmoothRampVoltage(qDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-3,-3,-3,-3],qDACrampTime)
 
 QDACSmoothRampVoltage(qDAC,[TfCPort,BEPort,BCPort],[-3,-3,-3],qDACrampTime)
-RampDAC(hDAC,TfEPort,-3*VtomV);
+baselDACRampVoltage(baselDAC,TfEPort,-3,5,0.5)
 
 % emission to HEMT1 side
 QDACSmoothRampVoltage(qDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-0.7,0,0,0],qDACrampTime)
@@ -47,21 +46,19 @@ QDACSmoothRampVoltage(qDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-3,-3,
 QDACSmoothRampVoltage(qDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-3,-3,-3,-3],qDACrampTime)
 
 QDACSmoothRampVoltage(qDAC,[TfCPort,BEPort,BCPort],[-3,-3,-3],qDACrampTime)
-RampDAC(hDAC,TfEPort,-3*VtomV);
+baselDACRampVoltage(baselDAC,TfEPort,-3,5,0.5)
 
 
 % emission to both sides
-QDACSmoothRampVoltage(qDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-0.7,0,0,0],qDACrampTime)
-QDACSmoothRampVoltage(qDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-1,-1,-1,-1],qDACrampTime)
+QDACSmoothRampVoltage(qDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-1,2,2,2],qDACrampTime)
+QDACSmoothRampVoltage(qDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-2,-2,-2,-2],qDACrampTime)
 
-QDACSmoothRampVoltage(qDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-0.7,0,0,0],qDACrampTime)
-QDACSmoothRampVoltage(qDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-1,-1,-1,-1],qDACrampTime)
+QDACSmoothRampVoltage(qDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[-1,2,2,2],qDACrampTime)
+QDACSmoothRampVoltage(qDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[-2,-2,-2,-2],qDACrampTime)
 
 QDACSmoothRampVoltage(qDAC,[TfCPort,BEPort,BCPort],[-2,-2,-2],qDACrampTime)
-RampDAC(hDAC,TfEPort,-2*VtomV);
+baselDACRampVoltage(baselDAC,TfEPort,-2,5,0.5)
 QDACSmoothRampVoltage(qDAC,BlockPort,-2,0.2)
-
-QDACSmoothRampVoltage(qDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[0,1,1,1],qDACrampTime)
 
 %% Sweeps
 

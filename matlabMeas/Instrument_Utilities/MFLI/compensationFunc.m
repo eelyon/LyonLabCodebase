@@ -12,7 +12,7 @@ stopPhase = 180;
 deltaPhase = [10,1,0.1,0.01];
 
 startAmp = 0.002;
-stopAmp = 0.012;
+stopAmp = 0.020;
 deltaAmp = [0.001,0.0001,0.00001,0.000001];
 
 % fprintf(doorDevice.client, ['OUTP', num2str(1), ' ON'])
@@ -21,7 +21,7 @@ deltaAmp = [0.001,0.0001,0.00001,0.000001];
 % Run deltaAmp [0.001,0.0001,0.00001,0.000001]
 
 for i=1:4
-    if deltaPhase < .001 || deltaAmp < .000001
+    if all(deltaPhase < .001) || all(deltaAmp < .000001)
         error('Too small of a step size. Check deltaPhase and/or deltaAmp.')
     end
     

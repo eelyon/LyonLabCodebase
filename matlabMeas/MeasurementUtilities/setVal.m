@@ -39,6 +39,9 @@ elseif contains(name,'AP24') || contains(name,'Sig')
 elseif contains(name,'QDevil')
         Device.QDACSetVoltage(Port,Value);
 
+elseif contains(name,'baspi')
+        Device.baselDACSetVoltage(Port,Value);
+
 elseif contains(name,'AP16')
 
     if calibrate
