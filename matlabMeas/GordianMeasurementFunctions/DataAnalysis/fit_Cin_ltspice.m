@@ -5,7 +5,7 @@
 % - Rewrites ".param Cin=...", runs LTspice in batch mode, minimizes the misfit
 % Requires MATLAB R2016b+ (local functions in scripts).
 
-clear; clc;
+% clear; clc;
 
 %% ---- User settings ------------------------------------------------------
 ltspiceExe = 'C:\Users\Lyon Lab Simulation\AppData\Local\Programs\ADI\LTspice\LTspice.exe';     % check your install path
@@ -13,10 +13,10 @@ workDir    = 'C:\Users\Lyon Lab Simulation\Princeton Dropbox\Gordian Fuchs\Group
 ascFile    = 'roll_off_circuit_bfc_20261002.asc';              % schematic; netlist is regenerated from it
 template   = '';                                               % or set a saved .net here and ascFile = ''
 dataDir = 'C:\Users\Lyon Lab Simulation\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensingShuttling\data_single_electron_shuttling\02_20_26';
-figFile    = 'MFLIFreqSweep_23936.fig';                        % lock-in sweep (in workDir)
+figFile    = 'MFLIFreqSweep_23935.fig';                        % lock-in sweep (in workDir)
 outNode    = 'V(out)';
 
-CinBounds_pF   = [1 15];   % search range for Cin (pF)
+CinBounds_pF   = [2 15];   % search range for Cin (pF)
 Vin_pp         = 2e-3;       % drive amplitude (Vpp), same units as the lock-in amplitude
 fitFreeGain    = true;       % true: also fit a constant gain factor (e.g. an amplifier
                              %       not in the LTspice model); false: absolute fit
@@ -71,7 +71,7 @@ figure;
 semilogx(fMeas, Hmeas, 'o', fMeas, abs(Hbest) * gainFactor, '-', 'LineWidth', 1.2);
 xlabel('Frequency (Hz)'); ylabel('Voltage gain V_{out}/V_{in} (V/V)'); grid on;
 legend(sprintf('Measured (V_{in} = %g mV_{pp})', Vin_pp*1e3), ...
-       sprintf('LTspice, Cin = %.2f pF', CinBest), 'Location', 'best');
+       sprintf('LTspice: Cin = %.2f pF, Gain = %.2f', CinBest, gainFactor), 'Location', 'best');
 
 %% ========================================================================
 function [err, gain_dB] = magCost(Hsim, Hmeas, freeGain)
