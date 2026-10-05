@@ -1,4 +1,4 @@
-function [subPlotFigure,tag,myFig] = E5071FreqSweep(ENA,powerIndBm,startFreq,stopFreq,tag,opt)
+function [fres,subPlotFigure,tag,myFig] = E5071FreqSweep(ENA,powerIndBm,startFreq,stopFreq,Therm,Thermometer,tag,opt)
     % Function that sets VNA measurement and plots data
     E5071SetPower(ENA,powerIndBm);    % in dBm
     E5071SetStartFreq(ENA,startFreq); % in MHz
@@ -24,7 +24,15 @@ function [subPlotFigure,tag,myFig] = E5071FreqSweep(ENA,powerIndBm,startFreq,sto
         [freqvsphase,myFig] = plotData(fdata,phase,'xLabel',"Frequency (GHz)",'yLabel',"\phi (^{\circ})",'color',"r.",'subPlot',1);
 
         %% Set up meta data and save plot
+        % resistance = queryHP34401A(Thermometer);
+        % temperature = Therm.tempFromRes(resistance);
+
+        % sgtitle(['f_{res}= %.5f', num2str(fres),'GHz, T=%.3f', num2str(temperature),'K']);
+
+        % metadata_struct.temperature = [num2str(temperature)]; % add temperature to metadata
         % metadata_struct.power = [num2str(powerIndBm)];
+        % metadata_struct.fres  = [num2str(fres)];
+
         % myFig.UserData = metadata_struct;
         
         saveData(subPlotFigure,tag); % Save mag and phase data

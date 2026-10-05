@@ -79,9 +79,9 @@ p.addParameter('sweep_inaccuracy', 0.1e-3, @isnumeric);
 % The signal output mixer amplitude, [V].
 p.addParameter('amplitude', 0.001, @isnumeric);
 % Set the sweep's start frequency
-p.addParameter('startfreq', 10e3, @isnumeric);
+p.addParameter('startfreq', 1e3, @isnumeric);
 % Set the sweep's stop frequency
-p.addParameter('stopfreq', 3e6, @isnumeric);
+p.addParameter('stopfreq', 1e5, @isnumeric);
 % Set the demodulator time constant [s]
 p.addParameter('tc', 0.01, @isnumeric);
 % Set the demodulation rate

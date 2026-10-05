@@ -18,8 +18,10 @@ AWG_2_Address = '172.29.117.57';
 % ENA 
 ENA_Address = '172.29.117.72';
 
-%% Connect
+% Multimeter
+DMM_Address = '172.29.117.108';
 
+%% Connect
 qDAC = QDAC(qDACIPAddress, 24, 'qDAC');
 baselDAC = baselDAC('172.29.117.62',24,'baselDAC');
 
@@ -30,6 +32,8 @@ Awg_1 = Agilent33622A(port,AWG_1_Address,1); % two-channel AWG
 Awg_2 = Agilent33622A(port,AWG_2_Address,1); % two-channel AWG
 % AwgTwd     = Agilent33220A(port,AgTwd_Address,1); % AWG
 % AwgComp    = Agilent33220A(port,AgComp_Address,1); % AWG
+
+%Multimeter = TCPIP_Connect(DMM_Address,port);
 
 controlDACGUI = QDACGUI_controlTL;
 
