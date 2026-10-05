@@ -3,11 +3,19 @@ mfli_id = 'dev32021';
 % doorDevice = Awg2ch_2;
 % mfli_id = 'dev32061';
 
+<<<<<<< Updated upstream
 startPhase = -5.4;
 stopPhase = -5.2;
 deltaPhase = 0.01;
 startAmp = 0.2907;
 stopAmp = 0.291;
+=======
+startPhase = -26.9;
+stopPhase = -26.7;
+deltaPhase = 0.01;
+startAmp = 0.2728;
+stopAmp = 0.2732;
+>>>>>>> Stashed changes
 deltaAmp = 0.00001;
 
 % fprintf(doorDevice.client, ['OUTP', num2str(1), ' ON'])

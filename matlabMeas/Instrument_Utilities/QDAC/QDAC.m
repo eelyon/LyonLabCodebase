@@ -260,7 +260,7 @@ classdef QDAC < handle
             QDACSetSweepPoints(QDAC,channels,1)
 
             % set dwell and count 
-            QDACSetSweepDwell(QDAC,channels,time) % give this in multiples of 1us (sample rate)
+            QDACSetSweepDwell(QDAC,channels,time) % give this in seconds, 0.5 = 0.5 second long ramp
             QDACSetSweepCount(QDAC,channels,1) % just repeat sweep once
             QDACSetSweepMode(QDAC,channels,'ANAL')
 

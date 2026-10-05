@@ -27,7 +27,7 @@ DoorCOutPort     = 19;
 
 %% Thin Film
 TfCPort        = 13;
-TfEPort        = 20; %careful, basel DAC output
+TfEPort        = 10; %tied SP20 to 10 on qDAC
 
 %% Barriers
 BEPort = 1; % bussed to 5

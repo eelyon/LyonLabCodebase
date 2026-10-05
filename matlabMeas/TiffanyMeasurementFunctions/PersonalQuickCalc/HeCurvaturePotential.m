@@ -10,10 +10,7 @@ ylabel('Helium Depth (um)')
 
 figure(11)
 [pos, eField] = eFieldCalc(ydata*1e-6,xdata);
-%Elat = 2*eField.*dvdx;
-eFieldFin = eField-min(eField);
-plot(pos,eFieldFin)
-%plot(pos,Elat)
+plot(pos,eField)
 xlabel('Transport Line Position (um)')
 ylabel('Electric Field (V/m)')
 
