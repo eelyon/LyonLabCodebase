@@ -12,8 +12,8 @@ ltspiceExe = 'C:\Users\LyonLab\AppData\Local\Programs\ADI\LTspice\LTspice.exe'; 
 workDir    = 'C:\Users\LyonLab\Princeton Dropbox\Tiffany Liu\GroupDropbox\Tiffany\Application\LTSpice\Gordian_RollOffSpice\ampifier_roll_off_bfc_20261002';   % folder with template + .inc files
 ascFile    = 'roll_off_circuit_bfc_20261002.asc';              % schematic; netlist is regenerated from it
 template   = '';                                               % or set a saved .net here and ascFile = ''
-dataDir = 'C:\Users\Lyon Lab Simulation\Princeton Dropbox\Gordian Fuchs\GroupDropbox\Gordian\Experiments\Sandia2023\SingleElectronSensingShuttling\data_single_electron_shuttling\02_20_26';
-figFile    = 'MFLIFreqSweep_693.fig';                        % lock-in sweep (in workDir)
+dataDir = 'C:\Users\LyonLab\Documents\GitHub\LyonLabCodebase\matlabMeas\TiffanyMeasurementFunctions\PersonalQuickCalc\RollOff_Data';
+figFile    = 'MFLIFreqSweep_694.fig';                        % lock-in sweep (in workDir)
 outNode    = 'V(out)';
 
 CinBounds_pF   = [1 15];   % search range for Cin (pF)
