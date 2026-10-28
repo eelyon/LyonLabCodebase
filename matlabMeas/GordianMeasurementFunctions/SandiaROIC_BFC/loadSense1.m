@@ -3,15 +3,15 @@ function [] = loadSense1(pinout,vload,varargin)
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 p.addParameter('numSteps', 2, isnonneg);
-p.addParameter('numStepsRC', 2, isnonneg);
-p.addParameter('waitTimeRC', 1.1, isnonneg);
+% p.addParameter('numStepsRC', 2, isnonneg);
+% p.addParameter('waitTimeRC', 1.1, isnonneg);
 p.addParameter('vhigh', 2, isnonneg);
 p.addParameter('vlow', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
 
 numSteps = p.Results.numSteps; % rampDACVolts
-numStepsRC = p.Results.numStepsRC; % rampDACVolts
-waitTimeRC = p.Results.waitTimeRC; % in microseconds
+% numStepsRC = p.Results.numSteps; % rampDACVolts
+% waitTimeRC = p.Results.waitTimeRC; % in microseconds
 vhigh = p.Results.vhigh; % holding voltage of ccd
 vlow = p.Results.vlow; % closing voltage of ccd
 
@@ -35,17 +35,17 @@ end
 
 rampDACVolts(pinout.d4.device,pinout.d4.port,vhigh,numSteps)
 rampDACVolts(pinout.phi_h1_1.device,pinout.phi_h1_1.port,vlow,numSteps)
-rampDACVolts(pinout.d5.device,pinout.d5.port,vhigh,numStepsRC,waitTimeRC)
+rampDACVolts(pinout.d5.device,pinout.d5.port,vhigh,numSteps,pinout.d5.dwell)
 rampDACVolts(pinout.d4.device,pinout.d4.port,vlow,numSteps)
-rampDACVolts(pinout.sense1_l.device,pinout.sense1_l.port,vhigh,numStepsRC,waitTimeRC)
-rampDACVolts(pinout.guard1_l.device,pinout.guard1_l.port,vhigh,numStepsRC,waitTimeRC)
-rampDACVolts(pinout.twiddle1.device,pinout.twiddle1.port,vhigh,numStepsRC,waitTimeRC)
-rampDACVolts(pinout.d5.device,pinout.d5.port,vlow,numStepsRC,waitTimeRC)
+rampDACVolts(pinout.sense1_l.device,pinout.sense1_l.port,vhigh,numSteps)
+rampDACVolts(pinout.guard1_l.device,pinout.guard1_l.port,vhigh,numSteps,pinout.guard1_l.dwell)
+rampDACVolts(pinout.twiddle1.device,pinout.twiddle1.port,vhigh,numSteps,pinout.twiddle1.dwell)
+rampDACVolts(pinout.d5.device,pinout.d5.port,vlow,numSteps,pinout.d5.dwell)
 
 % Reset Sense1
 rampDACVolts(pinout.guard1_r.device,pinout.guard1_r.port,-2,numSteps)
-rampDACVolts(pinout.d5.device,pinout.d5.port,-2,numStepsRC,waitTimeRC)
-rampDACVolts(pinout.sense1_l.device,pinout.sense1_l.port,0,numStepsRC,waitTimeRC)
-rampDACVolts(pinout.guard1_l.device,pinout.guard1_l.port,0,numStepsRC,waitTimeRC)
-rampDACVolts(pinout.twiddle1.device,pinout.twiddle1.port,0,numStepsRC,waitTimeRC)
+rampDACVolts(pinout.d5.device,pinout.d5.port,-2,numSteps,waitTimeRC)
+rampDACVolts(pinout.sense1_l.device,pinout.sense1_l.port,0,numSteps)
+rampDACVolts(pinout.guard1_l.device,pinout.guard1_l.port,0,numSteps,pinout.guard1_l.dwell)
+rampDACVolts(pinout.twiddle1.device,pinout.twiddle1.port,0,numSteps,pinout.twiddle1.dwell)
 end

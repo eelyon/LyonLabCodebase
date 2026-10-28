@@ -58,8 +58,8 @@ baselDACRampVoltage(baselDAC,TfEPort,-2,5,0.5)
 QDACSmoothRampVoltage(qDAC,BlockPort,-2,0.2)
 
 % emission to both sides - tilted
-QDACSmoothRampVoltage(qDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[-1,0,0,0],qDACrampTime)
-QDACSmoothRampVoltage(qDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[-1,-1,-1,-1],qDACrampTime)
+QDACSmoothRampVoltage(qDAC,[TopEPort,STOBiasEPort,StmEPort,STIBiasEPort],[1.3,2,2,2],qDACrampTime)
+QDACSmoothRampVoltage(qDAC,[DoorEInPort,TwiddleEPort,SenseEPort,DoorEOutPort],[0,0,0,0],qDACrampTime)
 
 QDACSmoothRampVoltage(qDAC,[TopCPort,STOBiasCPort,StmCPort,STIBiasCPort],[1.8,2.5,2.5,2.5],qDACrampTime)
 QDACSmoothRampVoltage(qDAC,[DoorCInPort,TwiddleCPort,SenseCPort,DoorCOutPort],[0,0,0,0],qDACrampTime)

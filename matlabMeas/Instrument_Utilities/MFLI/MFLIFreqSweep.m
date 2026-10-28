@@ -115,7 +115,7 @@ osc_c = '0'; % oscillator
 % ziDAQ('setInt', ['/' device '/sigins/' in_c '/ac'], 1);
 % ziDAQ('setInt',    ['/' device '/sigins/' in_c '/autorange'], 1);
 ziDAQ('setInt', ['/' device '/sigouts/' out_c '/on'], 1);
-ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/range'], 0.01);
+ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/range'], 0.1);
 ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/amplitudes/*'], 0);
 ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/amplitudes/' out_mixer_c], p.Results.amplitude);
 ziDAQ('setDouble', ['/' device '/sigouts/' out_c '/enables/' out_mixer_c], 1);

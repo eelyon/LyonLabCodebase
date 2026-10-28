@@ -67,8 +67,8 @@ isnonnegscalar = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 
 % The PSD start frequency is always 0 Hz and its stop frequency is half
 % the scope's sample rate.
-p.addParameter('scope_samplerate', 3, isnonnegscalar);
-p.addParameter('scope_lengthpts', 524288, @isnumeric);
+p.addParameter('scope_samplerate', 4, isnonnegscalar);
+p.addParameter('scope_lengthpts', 1280000, @isnumeric);
 p.addParameter('min_num_records', 1, @isnumeric);
 p.addParameter('averager', 0, @isnumeric);
 p.addParameter('temp', 296, @isnumeric);
@@ -86,6 +86,8 @@ scope_in_channel = '0';    % scope input channel
 % Configure the signal inputs
 ziDAQ('setInt', ['/' device '/sigins/' in_channel '/imp50'], 0);
 ziDAQ('setInt', ['/' device '/sigins/' in_channel '/ac'], 1);
+% ziDAQ('setInt',    ['/' device '/sigins/' in_channel '/float'], 1);
+ziDAQ('setInt',    ['/' device '/sigins/' in_channel '/diff'], 0);
 ziDAQ('setInt',    ['/' device '/sigins/' in_channel '/autorange'], 1);
 % Perform a global synchronisation between the device and the data server:
 % Ensure that the signal input configuration has taken effect before
@@ -159,7 +161,7 @@ ziDAQ('set', scopeModule, 'averager/enable', p.Results.averager);
 % 'historylength' : The number of scope records to keep in
 %   the Scope Module's memory, when more records arrive in the Module
 %   from the device the oldest records are overwritten.
-ziDAQ('set', scopeModule, 'historylength', 20);
+ziDAQ('set', scopeModule, 'historylength', p.Results.min_num_records);
 
 % Subscribe to the scope's data in the module.
 wave_nodepath = ['/' device '/scopes/0/wave'];
