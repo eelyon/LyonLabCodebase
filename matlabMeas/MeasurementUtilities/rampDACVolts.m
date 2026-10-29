@@ -25,7 +25,7 @@ function rampDACVolts(dac, channels, voltages, numSteps, varargin)
 %
 %   The underlying drivers disagree about units; this wrapper converts:
 %     baselDAC  seconds  - extra pause after each multiple-SET write
-%     QDAC      seconds  - SOUR:SWE:DWEL, minimum 1e-6 s
+%     QDAC      seconds  - SOUR:SWE:DWEL, minimum 2e-6 s (rounded to 1 us)
 %     sigDAC    MICROseconds - sigDACRamp(...,dwellUs), 40 to 16383 us
 %
 %   PER-DAC BEHAVIOUR
@@ -34,12 +34,14 @@ function rampDACVolts(dac, channels, voltages, numSteps, varargin)
 %               period is dwell + ~1 ms (Ethernet) or more (RS-232).
 %               Default dwell 0.
 %
-%     QDAC      Hardware sweep generator, staircase (STEP) mode, count 1.
-%               With no dwell this calls the lab's QDACRampVoltage unchanged
-%               (which hard-codes 1 ms). With a dwell it runs the same
-%               sequence with your value substituted. The sweep is armed and
-%               returns immediately, so 'Wait' pauses for the estimated
-%               duration. Minimum dwell 1e-6 s.
+%     QDAC      Hardware sweep generator, staircase (STEP) mode, count 1,
+%               via QDACRampVoltage. numSteps = SWE:POIN = number of levels
+%               including start and target (numSteps - 1 increments, >= 2).
+%               Default dwell 1 ms. 'Wait' polls the
+%               instrument until the sweep has ended AND the outputs read
+%               back at the target (also covers a finite slew rate).
+%               Channels in FILTer = DC cannot sweep; QDACRampVoltage steps
+%               those from MATLAB (>= 5 ms per step).
 %               For a true analog ramp rather than a staircase, use
 %               QDACSmoothRampVoltage(qdac, channels, voltages, totalTime).
 %
@@ -52,7 +54,7 @@ function rampDACVolts(dac, channels, voltages, numSteps, varargin)
 %   START POINT differs too:
 %     baselDAC  interpolates from its cached channelVoltages - call
 %               baselDACGetConfig first if the outputs may have moved
-%     QDAC      queries the present voltage over SCPI
+%     QDAC      queries the present voltage over SCPI (order-safe)
 %     sigDAC    the Arduino interpolates from its own current value
 %
 %   See also SETVOLTS, QDACSMOOTHRAMPVOLTAGE, BASELDACRAMP
@@ -76,23 +78,20 @@ function rampDACVolts(dac, channels, voltages, numSteps, varargin)
     % =================================================================
     elseif isa(dac, 'QDAC')
     % =================================================================
-        if isempty(dwellSec)
-            % Untouched lab code path: QDACRampVoltage hard-codes 1 ms.
-            QDACRampVoltage(dac, channels, voltages, numSteps);
-            dwellSec = 1e-3;
-        else
-            if dwellSec < 1e-6
-                error('rampVoltage:qdacDwell', ...
-                    ['QDAC sweep dwell must be at least 1e-6 s (1 us). ' ...
-                     'Requested %.3e s.'], dwellSec);
-            end
-            qdacSteppedRamp(dac, channels, voltages, numSteps, dwellSec);
+        if isempty(dwellSec), dwellSec = 1e-3; end
+        if dwellSec < QDAC.MIN_DWELL
+            error('rampVoltage:qdacDwell', ...
+                ['QDAC sweep dwell must be at least %g s. ' ...
+                 'Requested %.3e s.'], QDAC.MIN_DWELL, dwellSec);
         end
-
-        if wait
-            % Hardware sweep returns as soon as it is armed.
-            pause(numSteps * dwellSec + 0.05);
+        if numSteps < 2
+            error('rampVoltage:qdacNumSteps', ...
+                'QDAC ramps need numSteps >= 2 (levels incl. start and target).');
         end
+        % Validates against the channel's actual range (+/-2 V or +/-10 V),
+        % maps start voltages per channel regardless of channel order, and
+        % blocks on the instrument's own completion status when wait is true.
+        QDACRampVoltage(dac, channels, voltages, numSteps, dwellSec, 'Wait', wait);
 
     % =================================================================
     elseif isa(dac, 'sigDAC')
@@ -224,36 +223,6 @@ function [dwellSec, wait] = parseRampOptions(args)
 end
 
 % ---------------------------------------------------------------------
-function qdacSteppedRamp(dac, channels, voltages, numSteps, dwellSec)
-%QDACSTEPPEDRAMP  QDACRampVoltage with a user-supplied dwell.
-%   Mirrors the sequence in QDAC.m/QDACRampVoltage exactly, substituting
-%   the dwell. Kept here so QDAC.m does not have to be edited.
-
-    % Present voltages become the sweep start points. queryQDACVoltage
-    % switches the channels to FIX mode as a side effect.
-    startVoltages = str2num(queryQDACVoltage(dac, channels)); %#ok<ST2NM>
-
-    for i = 1:numel(voltages)
-        QDACSetSweepStartVoltage(dac, channels(i), startVoltages(i));
-        QDACSetSweepStopVoltage(dac,  channels(i), voltages(i));
-    end
-
-    QDACSetSweepPoints(dac, channels, numSteps);
-    QDACSetSweepDwell(dac,  channels, dwellSec);
-    QDACSetSweepCount(dac,  channels, 1);
-    QDACSetSweepMode(dac,   channels, 'STEP');
-
-    setQDACDCGeneratorMode(dac, channels, 'SWE');
-    QDACStartSweep(dac, channels);
-
-    % Keep the cached voltages (and hence the lab GUI) in step. QDAC is a
-    % handle class, so this updates the base-workspace object too.
-    if isprop(dac, 'channelVoltages')
-        dac.channelVoltages(channels) = voltages;
-    end
-end
-
-% ---------------------------------------------------------------------
 function [channels, voltages] = normalizeDACInputs(dac, channels, voltages)
 %NORMALIZEDACINPUTS  Shared argument checking for all DAC types.
 
@@ -291,8 +260,8 @@ function [channels, voltages] = normalizeDACInputs(dac, channels, voltages)
         end
     end
 
-    % Both the Basel and the QDAC top out at +/-10 V. Note the QDAC can be
-    % put in its +/-2 V low range, which this check will not catch.
+    % Both the Basel and the QDAC top out at +/-10 V. The QDAC's +/-2 V LOW
+    % range is enforced inside the QDAC class itself.
     if any(abs(voltages) > 10)
         error('rampVoltage:vRange', ...
             'Voltage %+.3f V is outside the +/-10 V output range.', ...

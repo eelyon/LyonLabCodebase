@@ -16,12 +16,12 @@ vlow = p.Results.vlow; % closing voltage of ccd
 vbackmetal = p.Results.vbackmetal;
 
 %% Set Sommer-Tanner
-rampDACVolts(pinout.tm.device,pinout.tm.port,vlow,numSteps,pinout.tm.dwell) % ramp top metal
+rampDACVolts(pinout.tm.device,pinout.tm.port,vlow,numSteps) % ramp top metal
 rampDACVolts(pinout.m2s.device,pinout.m2s.port,-0.5,numSteps) % ramp M2 shield
 rampDACVolts(pinout.bpg.device,pinout.bpg.port,vlow,numSteps) % ramp bond pad guard
 
-rampDACVolts(pinout.std.device,pinout.std.port,+2,numSteps,pinout.std.dwell) % ramp ST-Drive
-rampDACVolts(pinout.sts.device,pinout.sts.port,+2,numSteps,pinout.sts.dwell) % ramp ST-Sense
+rampDACVolts(pinout.std.device,pinout.std.port,+2,numSteps) % ramp ST-Drive
+rampDACVolts(pinout.sts.device,pinout.sts.port,+2,numSteps) % ramp ST-Sense
 rampDACVolts(pinout.stm.device,pinout.stm.port,+2,numSteps) % ramp ST-Middle
 
 %% Set 1st CCD
@@ -35,12 +35,12 @@ rampDACVolts(pinout.phi_h1_2.device,pinout.phi_h1_2.port,vlow,numSteps)
 rampDACVolts(pinout.phi_h1_3.device,pinout.phi_h1_3.port,vlow,numSteps)
 
 %% Set 1st twiddle-sense
-rampDACVolts(pinout.shield.device,pinout.shield.port,-0.5,numSteps,pinout.shield.dwell) % shield underneath twiddle-sense
+rampDACVolts(pinout.shield.device,pinout.shield.port,-0.5,numSteps) % shield underneath twiddle-sense
 rampDACVolts(pinout.d4.device,pinout.d4.port,vlow,numSteps)
-rampDACVolts(pinout.d5.device,pinout.d5.port,vlow,numSteps,pinout.d5.dwell); % compensation
+rampDACVolts(pinout.d5.device,pinout.d5.port,vlow,numSteps); % compensation
 rampDACVolts(pinout.sense1_l.device,pinout.sense1_l.port,vlow,numSteps)
-rampDACVolts(pinout.guard1_l.device,pinout.guard1_l.port,vlow,numSteps,pinout.guard1_l.dwell)
-rampDACVolts(pinout.twiddle1.device,pinout.twiddle1.port,vlow,numSteps,pinout.twiddle1.dwell)
+rampDACVolts(pinout.guard1_l.device,pinout.guard1_l.port,vlow,numSteps)
+rampDACVolts(pinout.twiddle1.device,pinout.twiddle1.port,vlow,numSteps)
 rampDACVolts(pinout.guard1_r.device,pinout.guard1_r.port,vlow,numSteps)
 rampDACVolts(pinout.sense1_r.device,pinout.sense1_r.port,vlow,numSteps)
 rampDACVolts(pinout.d6.device,pinout.d6.port,vlow,numSteps)
@@ -53,8 +53,8 @@ rampDACVolts(pinout.phi_v_3.device,pinout.phi_v_3.port,vlow,numSteps)
 %% Set 2nd twiddle-sense
 rampDACVolts(pinout.d7.device,pinout.d7.port,vlow,numSteps) % door for compensation of sense 1
 rampDACVolts(pinout.sense2_l.device,pinout.sense2_l.port,vlow,numSteps)
-rampDACVolts(pinout.guard2_l.device,pinout.guard2_l.port,vlow,numSteps,pinout.guard2_l.dwell)
-rampDACVolts(pinout.twiddle2.device,pinout.twiddle2.port,vlow,numSteps,pinout.twiddle2.dwell)
+rampDACVolts(pinout.guard2_l.device,pinout.guard2_l.port,vlow,numSteps)
+rampDACVolts(pinout.twiddle2.device,pinout.twiddle2.port,vlow,numSteps)
 rampDACVolts(pinout.guard2_r.device,pinout.guard2_r.port,vlow,numSteps)
 rampDACVolts(pinout.sense2_r.device,pinout.sense2_r.port,vlow,numSteps)
 rampDACVolts(pinout.d8.device,pinout.d8.port,vlow,numSteps)

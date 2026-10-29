@@ -2,7 +2,7 @@ function [] = loadSense1(pinout,vload,varargin)
 % Load electrons from Sommer-Tanner to twiddle-sense 1
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
-p.addParameter('numSteps', 2, isnonneg);
+p.addParameter('numSteps', 5, isnonneg);
 % p.addParameter('numStepsRC', 2, isnonneg);
 % p.addParameter('waitTimeRC', 1.1, isnonneg);
 p.addParameter('vhigh', 2, isnonneg);
@@ -44,7 +44,7 @@ rampDACVolts(pinout.d5.device,pinout.d5.port,vlow,numSteps,pinout.d5.dwell)
 
 % Reset Sense1
 rampDACVolts(pinout.guard1_r.device,pinout.guard1_r.port,-2,numSteps)
-rampDACVolts(pinout.d5.device,pinout.d5.port,-2,numSteps,waitTimeRC)
+rampDACVolts(pinout.d5.device,pinout.d5.port,-2,numSteps,pinout.d5.dwell)
 rampDACVolts(pinout.sense1_l.device,pinout.sense1_l.port,0,numSteps)
 rampDACVolts(pinout.guard1_l.device,pinout.guard1_l.port,0,numSteps,pinout.guard1_l.dwell)
 rampDACVolts(pinout.twiddle1.device,pinout.twiddle1.port,0,numSteps,pinout.twiddle1.dwell)
