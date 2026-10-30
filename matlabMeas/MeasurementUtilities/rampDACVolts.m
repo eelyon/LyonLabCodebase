@@ -32,7 +32,7 @@ function rampDACVolts(dac, channels, voltages, numSteps, varargin)
 %     baselDAC  Software-stepped multiple-SET writes, blocking. Dwell is an
 %               extra pause on top of the round-trip time, so the real step
 %               period is dwell + ~1 ms (Ethernet) or more (RS-232).
-%               Default dwell 0.
+%               Default dwell 1 ms.
 %
 %     QDAC      Hardware sweep generator, staircase (STEP) mode, count 1,
 %               via QDACRampVoltage. numSteps = SWE:POIN = number of levels
@@ -72,7 +72,7 @@ function rampDACVolts(dac, channels, voltages, numSteps, varargin)
     % =================================================================
     if isa(dac, 'baselDAC')
     % =================================================================
-        if isempty(dwellSec), dwellSec = 0; end
+        if isempty(dwellSec), dwellSec = 1e-3; end
         baselDACRampVoltage(dac, channels, voltages, numSteps, dwellSec);
 
     % =================================================================

@@ -3,15 +3,11 @@ function [] = loadSense1(pinout,vload,varargin)
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 p.addParameter('numSteps', 5, isnonneg);
-% p.addParameter('numStepsRC', 2, isnonneg);
-% p.addParameter('waitTimeRC', 1.1, isnonneg);
 p.addParameter('vhigh', 2, isnonneg);
 p.addParameter('vlow', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
 
 numSteps = p.Results.numSteps; % rampDACVolts
-% numStepsRC = p.Results.numSteps; % rampDACVolts
-% waitTimeRC = p.Results.waitTimeRC; % in microseconds
 vhigh = p.Results.vhigh; % holding voltage of ccd
 vlow = p.Results.vlow; % closing voltage of ccd
 

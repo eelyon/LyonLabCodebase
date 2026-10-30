@@ -66,12 +66,14 @@ classdef QDAC < handle
         channelRange                    % 1 x N cellstr 'LOW' (+/-2 V) | 'HIGH' (+/-10 V)
         channelFilter                   % 1 x N cellstr 'DC' | 'MED' | 'HIGH'
         channelCurrentRange             % 1 x N cellstr 'LOW' (200 nA) | 'HIGH' (10 mA)
+        channelSlew                     % 1 x N cached DC slew rates [V/s] (Inf = none)
         rangeLimits                     % struct: .LOW, .HIGH = 2 x N [min; max] in V
         monitorChannel = 0              % channel routed to the monitor SMA (0 = none)
         syncTrigger    = 14             % internal trigger reserved for synchronised starts
         autoCheckErrors = true          % query SYST:ERR:ALL? after each high-level call
         verbose        = false          % echo every SCPI line to the console
         settleTolerance = 1e-4          % [V] |readback - target| accepted as settled
+        batchWrites    = true           % coalesce consecutive writes into one TCP send
     end
 
     properties (SetAccess = private)
@@ -79,6 +81,8 @@ classdef QDAC < handle
     end
 
     properties (Access = private)
+        pendingWrites = {}              % writes queued while batching
+        batchDepth    = 0               % > 0 while inside a batch scope
         traceSizes                      % containers.Map: trace name -> points
         traceMaxAbs                     % containers.Map: trace name -> max|y|
     end
@@ -221,6 +225,7 @@ classdef QDAC < handle
                 obj.queryList('SOUR:FILT?', ch), 'UniformOutput', false);
             obj.channelCurrentRange = cellfun(@QDAC.normalizeRange, ...
                 obj.queryList('SENS:RANG?', ch), 'UniformOutput', false);
+            obj.channelSlew = QDACGetSlewRate(obj, ch);
             % Calibrated range limits (documented "primarily for drivers").
             lim.LOW  = [obj.queryNum('SOUR:RANG:LOW:MIN?',  ch); ...
                         obj.queryNum('SOUR:RANG:LOW:MAX?',  ch)];
@@ -244,8 +249,10 @@ classdef QDAC < handle
             %   (QDACSetSlewRate), in which case the hardware ramps at that rate.
             %   voltages may be a scalar (applied to all channels).
             [ch, v] = obj.checkChannelsVoltages(channels, voltages);
+            b = obj.batch();    % mode + all values in one TCP send
             obj.scpiWrite(['SOUR:DC:MODE FIX,' QDAC.chanList(ch)]);
             obj.writeGrouped('SOUR:VOLT', ch, v);
+            clear b
             obj.channelVoltages(ch) = v;
             obj.finish('QDACSetVoltage');
         end
@@ -262,7 +269,10 @@ classdef QDAC < handle
             %   QDACRampVoltage(qdac, ch, v)                 100 levels, 1 ms each
             %   QDACRampVoltage(qdac, ch, v, numSteps, dwell, 'Wait', true)
             %
-            %   numSteps  number of voltage levels including start and target (>= 2)
+            %   numSteps  number of voltage LEVELS including start and target
+            %             (= SOUR:SWE:POIN, >= 2): numSteps - 1 increments.
+            %             0 -> 1 V with numSteps = 5 gives 0, 0.25, ..., 1 V.
+            %             Duration numSteps * dwell.
             %   dwell     time per level [s], 2e-6 ... 36000, rounded to 1 us
             %   'Wait'    block until all channels have settled at the target
             %   'Timeout' [s] for 'Wait' (default: estimated from the ramp)
@@ -287,33 +297,38 @@ classdef QDAC < handle
                 error('QDAC:badNumSteps', 'numSteps must be 2 ... %d (got %d).', ...
                     QDAC.MAX_SWEEP_POINTS, numSteps);
             end
+            numPoints = numSteps;       % SWE:POIN counts levels incl. start
             dwell = QDAC.checkDwell(dwell);
 
+            v0   = QDACGetVoltage(obj, ch);          % the only query before the ramp
             isDC = strcmp(obj.channelFilter(ch), 'DC');
-            chHW = ch(~isDC);  vHW = v(~isDC);
+            chHW = ch(~isDC);
             if ~isempty(chHW)
-                v0 = QDACGetVoltage(obj, chHW);
                 cl = QDAC.chanList(chHW);
-                obj.writeGrouped('SOUR:SWE:STAR', chHW, v0);
-                obj.writeGrouped('SOUR:SWE:STOP', chHW, vHW);
-                obj.scpiWrite(sprintf('SOUR:SWE:POIN %d,%s', numSteps, cl));
+                b = obj.batch();          % whole configuration = one TCP send
+                obj.writeGrouped('SOUR:SWE:STAR', chHW, v0(~isDC));
+                obj.writeGrouped('SOUR:SWE:STOP', chHW, v(~isDC));
+                obj.scpiWrite(sprintf('SOUR:SWE:POIN %d,%s', numPoints, cl));
                 obj.scpiWrite(sprintf('SOUR:SWE:DWEL %s,%s', QDAC.fmtNum(dwell), cl));
                 obj.scpiWrite(['SOUR:SWE:COUN 1,' cl]);
                 obj.scpiWrite(['SOUR:SWE:GEN STEP,' cl]);
                 obj.startDCSweep(chHW);
+                clear b                               % one send; the sweep starts here
             end
+            tStart = tic;
             if any(isDC)
-                obj.softwareRamp(ch(isDC), v(isDC), numSteps, max(dwell, QDAC.SOFT_RAMP_DWELL));
+                obj.softwareRamp(ch(isDC), v0(isDC), v(isDC), numPoints - 1, ...
+                    max(dwell, QDAC.SOFT_RAMP_DWELL));
             end
             obj.channelVoltages(ch) = v;
-            obj.finish('QDACRampVoltage');
 
             if opts.Wait
-                timeout = opts.Timeout;
-                if isnan(timeout)
-                    timeout = obj.estimateRampTime(ch, v, numSteps * dwell);
-                end
-                QDACWaitForDC(obj, ch, v, timeout);
+                % Errors are checked once, at the end of the wait.
+                [tExpected, tTimeout] = obj.estimateRampTime(ch, v0, v, numPoints * dwell);
+                if ~isnan(opts.Timeout), tTimeout = opts.Timeout; end
+                QDACWaitForDC(obj, ch, v, tTimeout, tExpected - toc(tStart));
+            else
+                obj.finish('QDACRampVoltage');
             end
         end
 
@@ -332,47 +347,58 @@ classdef QDAC < handle
             [ch, v] = obj.checkChannelsVoltages(channels, voltages);
             rampTime = QDAC.checkDwell(rampTime);
 
+            v0   = QDACGetVoltage(obj, ch);
             isDC = strcmp(obj.channelFilter(ch), 'DC');
-            chHW = ch(~isDC);  vHW = v(~isDC);
+            chHW = ch(~isDC);
             if ~isempty(chHW)
-                v0 = QDACGetVoltage(obj, chHW);
                 cl = QDAC.chanList(chHW);
-                obj.writeGrouped('SOUR:SWE:STAR', chHW, v0);
-                obj.writeGrouped('SOUR:SWE:STOP', chHW, vHW);
+                b = obj.batch(); 
+                obj.writeGrouped('SOUR:SWE:STAR', chHW, v0(~isDC));
+                obj.writeGrouped('SOUR:SWE:STOP', chHW, v(~isDC));
                 % Cmd ref: for ANALog set POINts = 1, DWELl = total ramp time.
                 obj.scpiWrite(['SOUR:SWE:POIN 1,' cl]);
                 obj.scpiWrite(sprintf('SOUR:SWE:DWEL %s,%s', QDAC.fmtNum(rampTime), cl));
                 obj.scpiWrite(['SOUR:SWE:COUN 1,' cl]);
                 obj.scpiWrite(['SOUR:SWE:GEN ANAL,' cl]);
                 obj.startDCSweep(chHW);
+                clear b
             end
+            tStart = tic;
             if any(isDC)
-                nSoft = max(2, ceil(rampTime / QDAC.SOFT_RAMP_DWELL) + 1);
-                obj.softwareRamp(ch(isDC), v(isDC), nSoft, QDAC.SOFT_RAMP_DWELL);
+                nSoft = max(1, ceil(rampTime / QDAC.SOFT_RAMP_DWELL));
+                obj.softwareRamp(ch(isDC), v0(isDC), v(isDC), nSoft, QDAC.SOFT_RAMP_DWELL);
             end
             obj.channelVoltages(ch) = v;
-            obj.finish('QDACSmoothRampVoltage');
 
             if opts.Wait
-                timeout = opts.Timeout;
-                if isnan(timeout), timeout = obj.estimateRampTime(ch, v, rampTime); end
-                QDACWaitForDC(obj, ch, v, timeout);
+                [tExpected, tTimeout] = obj.estimateRampTime(ch, v0, v, rampTime);
+                if ~isnan(opts.Timeout), tTimeout = opts.Timeout; end
+                QDACWaitForDC(obj, ch, v, tTimeout, tExpected - toc(tStart));
+            else
+                obj.finish('QDACSmoothRampVoltage');
             end
         end
 
-        function QDACWaitForDC(obj, channels, targets, timeout)
+        function QDACWaitForDC(obj, channels, targets, timeout, expectedTime)
             % QDACWAITFORDC  Block until sweeps have finished (SWE:NCL? = 0) AND
             %   the outputs read back within settleTolerance of the targets
             %   (covers slew-limited transitions that outlast the sweep).
             %   Leaves the channels in FIXed mode (bumpless per cmd ref).
+            %   expectedTime [s]: remaining ramp time; the first poll is delayed
+            %   by this much so that a normal ramp needs only one poll (2 queries).
             arguments
                 obj
                 channels
                 targets
-                timeout (1,1) double {mustBePositive} = 60
+                timeout      (1,1) double {mustBePositive} = 60
+                expectedTime (1,1) double = 0
             end
             [ch, vT] = obj.checkChannelsVoltages(channels, targets);
             t0 = tic;
+            if expectedTime > 1e-3
+                pause(expectedTime);
+            end
+            pollInterval = min(0.02, max(1e-3, expectedTime / 20));
             while true
                 ncl = obj.queryNum('SOUR:SWE:NCL?', ch);
                 if all(ncl == 0)
@@ -380,10 +406,11 @@ classdef QDAC < handle
                     if all(abs(vNow - vT) <= obj.settleTolerance), break; end
                 end
                 if toc(t0) > timeout
+                    obj.checkErrors('QDACWaitForDC (timeout)');   % configuration error?
                     error('QDAC:waitTimeout', ...
                         'Channels %s did not settle within %.1f s.', mat2str(ch), timeout);
                 end
-                pause(0.02);
+                pause(pollInterval);
             end
             obj.scpiWrite(['SOUR:DC:MODE FIX,' QDAC.chanList(ch)]);
             obj.finish('QDACWaitForDC');
@@ -428,6 +455,8 @@ classdef QDAC < handle
                     mat2str(ch(clamped)), QDAC.DC_FILTER_MIN_SLEW);
             end
             obj.writeGrouped('SOUR:VOLT:SLEW', ch, rate);
+            obj.ensureSlewCache();          % never index into an empty cache
+            obj.channelSlew(ch) = rate;
             obj.finish('QDACSetSlewRate');
         end
 
@@ -459,7 +488,7 @@ classdef QDAC < handle
     % =====================================================================
     methods
         function querySTB = queryQDACSTB(obj)
-            % Returns status byte register
+            % Returns the status byte register
             querySTB = obj.scpiQuery('*STB?');
         end
 
@@ -562,7 +591,7 @@ classdef QDAC < handle
 
         function setQDACLowPass(obj, channels, type)
             % SETQDACLOWPASS  'DC' (~10 Hz, 25-bit, FIX only), 'MED' (~10 kHz),
-            %   'HIGH' (~230 kHz, default; needed for fast AWG signals).
+            %   'HIGH' (~300 kHz, default; needed for fast AWG signals).
             ch = obj.checkChannels(channels);
             t = QDAC.normalizeFilter(type);
             if ~any(strcmp(t, {'DC','MED','HIGH'}))
@@ -605,6 +634,8 @@ classdef QDAC < handle
         end
 
         function QDACSetSweepPoints(obj, channels, numSteps)
+            % Raw SOUR:SWE:POIN = number of LEVELS including the start value
+            % (low-level; QDACRampVoltage's numSteps is POINts - 1).
             ch = obj.checkChannels(channels);
             if numSteps < 1 || numSteps > QDAC.MAX_SWEEP_POINTS || mod(numSteps,1) ~= 0
                 error('QDAC:badPoints', 'Sweep points must be an integer 1 ... %d.', QDAC.MAX_SWEEP_POINTS);
@@ -744,7 +775,7 @@ classdef QDAC < handle
                 settle = 3 * aper + abs(dV) / min(slew, QDAC.MAX_SLEW) + 0.01;
             end
 
-            restore = onCleanup(@() QDACSetVoltage(obj, ch, v0));
+            restore = onCleanup(@() QDACSetVoltage(obj, ch, v0)); 
             pause(settle);
             I0 = QDACReadCurrent(obj, ch);
             dI = zeros(n);
@@ -825,7 +856,7 @@ classdef QDAC < handle
             % Long uploads: extend the timeout for the error query that follows.
             oldTimeout = obj.client.Timeout;
             obj.client.Timeout = max(oldTimeout, 10 + 4 * numel(y) / 1e6);
-            restoreTimeout = onCleanup(@() obj.setClientTimeout(oldTimeout));
+            restoreTimeout = onCleanup(@() obj.setClientTimeout(oldTimeout)); 
 
             obj.writeBinaryBlock(sprintf('TRAC:DATA "%s",', traceName), y);
             obj.checkErrors(sprintf('QDACUploadTrace "%s" (%d points)', traceName, numel(y)));
@@ -1093,7 +1124,7 @@ classdef QDAC < handle
             end
             ch   = obj.checkChannels(channels);
             prev = QDACQueryMonitor(obj);
-            restore = onCleanup(@() QDACSetMonitor(obj, prev));
+            restore = onCleanup(@() QDACSetMonitor(obj, prev)); 
 
             n = numel(ch);
             setV = obj.channelVoltages(ch).';
@@ -1162,6 +1193,7 @@ classdef QDAC < handle
             obj.channelRange  = Range.';
             obj.channelFilter = Filter.';
             obj.channelCurrentRange = CurrRange.';
+            obj.channelSlew = Slew_Vps.';
 
             if opts.Print
                 fprintf('\n=== QDAC diagnostics: %s ===\n', D.identifier);
@@ -1183,16 +1215,103 @@ classdef QDAC < handle
     % =====================================================================
     methods
         function scpiWrite(obj, cmd)
-            % SCPIWRITE  Send one SCPI command (no response expected).
+            % SCPIWRITE  Send one SCPI command (no response expected). Inside a
+            %   batch scope (obj.batch) the command is queued instead and sent
+            %   with the others in one TCP write.
             cmd = char(cmd);
             obj.logCommand(cmd);
             if obj.verbose, fprintf('>> %s\n', cmd); end
-            writeline(obj.client, cmd);
+            if obj.batchWrites && obj.batchDepth > 0
+                obj.pendingWrites{end+1} = cmd;
+            else
+                writeline(obj.client, cmd);
+            end
+        end
+
+        function flushWrites(obj)
+            % FLUSHWRITES  Send all queued commands as LF-separated lines in a
+            %   single TCP write (avoids one packet - and possibly one Nagle /
+            %   delayed-ACK stall - per command).
+            if isempty(obj.pendingWrites), return; end
+            payload = [strjoin(obj.pendingWrites, char(10)) char(10)];
+            obj.pendingWrites = {};
+            write(obj.client, uint8(payload), "uint8");
+        end
+
+        function c = batch(obj)
+            % BATCH  Start a write batch; returns an onCleanup object. Writes are
+            %   queued until the object is cleared, a query is made, or
+            %   flushWrites is called:
+            %       b = qdac.batch();  ...scpiWrite calls...;  clear b
+            obj.batchDepth = obj.batchDepth + 1;
+            c = onCleanup(@() obj.endBatch());
+        end
+
+        function stats = QDACMeasureLatency(obj, opts)
+            % QDACMEASURELATENCY  Communication timing, to locate overhead.
+            %   (a) one query round trip (*STB?)
+            %   (b) 12 separate writes followed by a query
+            %   (c) the same 12 writes sent as one batch, then a query
+            %   If (b) >> (a) + small, the link suffers per-packet stalls
+            %   (Nagle / delayed ACK) and batching is what helps.
+            %   The probe re-writes channel 1's present SWE:COUNt value: no
+            %   effect unless a sweep runs on channel 1 - do not run it then.
+            arguments
+                obj
+                opts.N    (1,1) double {mustBeInteger, mustBePositive} = 50
+                opts.Plot (1,1) logical = true
+            end
+            probe = sprintf('SOUR1:SWE:COUN %s', strtrim(obj.scpiQuery('SOUR1:SWE:COUN?')));
+            nW = 12;
+            tQ = zeros(opts.N, 1); tW = tQ; tB = tQ;
+            oldBatch = obj.batchWrites;
+            restore = onCleanup(@() obj.setBatchWrites(oldBatch)); 
+            for k = 1:opts.N
+                t = tic; obj.scpiQuery('*STB?'); tQ(k) = toc(t);
+            end
+            obj.batchWrites = false;
+            for k = 1:opts.N
+                t = tic;
+                for j = 1:nW, obj.scpiWrite(probe); end
+                obj.scpiQuery('*STB?');
+                tW(k) = toc(t);
+            end
+            obj.batchWrites = true;
+            for k = 1:opts.N
+                t = tic;
+                b = obj.batch();
+                for j = 1:nW, obj.scpiWrite(probe); end
+                clear b
+                obj.scpiQuery('*STB?');
+                tB(k) = toc(t);
+            end
+            obj.checkErrors('QDACMeasureLatency');
+            stats = struct('queryMs', 1e3 * median(tQ), ...
+                           'writes12PlusQueryMs', 1e3 * median(tW), ...
+                           'batch12PlusQueryMs', 1e3 * median(tB));
+            fprintf(['QDAC latency (median of %d): query %.2f ms | 12 writes + query %.2f ms ' ...
+                     '| batched 12 writes + query %.2f ms\n'], opts.N, stats.queryMs, ...
+                     stats.writes12PlusQueryMs, stats.batch12PlusQueryMs);
+            if opts.Plot
+                figure('Name', 'QDAC latency', 'Color', 'w'); hold on;
+                data   = 1e3 * [tQ tW tB];
+                labels = {'1 query', '12 writes + query', 'batched 12 + query'};
+                for g = 1:3
+                    x = g + 0.15 * (rand(opts.N, 1) - 0.5);       % jitter
+                    plot(x, data(:, g), '.', 'MarkerSize', 10);
+                    plot(g + [-0.25 0.25], median(data(:, g)) * [1 1], 'k-', 'LineWidth', 2);
+                end
+                set(gca, 'XTick', 1:3, 'XTickLabel', labels, 'YScale', 'log');
+                xlim([0.5 3.5]); ylabel('Time (ms)'); grid on;
+                title('SCPI timing (black bar = median)');
+            end
         end
 
         function resp = scpiQuery(obj, cmd)
             % SCPIQUERY  Send a query and return the response line (char).
+            %   Queued batch writes are sent first, preserving command order.
             cmd = char(cmd);
+            obj.flushWrites();
             flush(obj.client, "input");
             obj.logCommand(cmd);
             if obj.verbose, fprintf('>> %s\n', cmd); end
@@ -1223,6 +1342,25 @@ classdef QDAC < handle
     %  PRIVATE HELPERS
     % =====================================================================
     methods (Access = private)
+        function ensureSlewCache(obj)
+            % Fill channelSlew from the instrument if it is missing or the
+            % wrong size. Happens for objects created before the property
+            % existed: MATLAB adds new properties to live objects as [] when
+            % the class file changes.
+            if numel(obj.channelSlew) ~= obj.numChannels || any(isnan(obj.channelSlew))
+                obj.channelSlew = QDACGetSlewRate(obj, 1:obj.numChannels);
+            end
+        end
+
+        function setBatchWrites(obj, v)
+            obj.batchWrites = v;
+        end
+
+        function endBatch(obj)
+            obj.batchDepth = max(0, obj.batchDepth - 1);
+            if obj.batchDepth == 0, obj.flushWrites(); end
+        end
+
         function setClientTimeout(obj, t)
             if ~isempty(obj.client), obj.client.Timeout = t; end
         end
@@ -1284,6 +1422,7 @@ classdef QDAC < handle
             end
             lenStr = sprintf('%d', numel(payload));
             header = sprintf('#%d%s', numel(lenStr), lenStr);
+            obj.flushWrites();
             obj.logCommand(sprintf('%s%s<%d float32>', prefix, header, numel(values)));
             if obj.verbose, fprintf('>> %s%s<%d float32>\n', prefix, header, numel(values)); end
             write(obj.client, [uint8([prefix header]) payload uint8(10)], "uint8");
@@ -1297,23 +1436,30 @@ classdef QDAC < handle
             obj.scpiWrite(['SOUR:DC:INIT ' cl]);
         end
 
-        function softwareRamp(obj, ch, vT, numLevels, dwell)
-            % MATLAB-stepped linear ramp in FIXed mode (used for FILTer = DC).
-            v0 = QDACGetVoltage(obj, ch);
+        function softwareRamp(obj, ch, v0, vT, numSteps, dwell)
+            % MATLAB-stepped linear ramp in FIXed mode (used for FILTer = DC):
+            % numSteps equal increments from v0 to vT, one TCP write per step.
             obj.scpiWrite(['SOUR:DC:MODE FIX,' QDAC.chanList(ch)]);
-            for k = 1:numLevels-1
-                vk = v0 + (vT - v0) * k / (numLevels - 1);
+            for k = 1:numSteps
+                vk = v0 + (vT - v0) * k / numSteps;
+                b = obj.batch(); 
                 obj.writeGrouped('SOUR:VOLT', ch, vk);
+                clear b
                 pause(dwell);
             end
         end
 
-        function T = estimateRampTime(obj, ch, vT, programmedTime)
-            % Generous timeout: programmed time and slew-limited time, x2 + 2 s.
-            v0   = QDACGetVoltage(obj, ch);
-            slew = QDACGetSlewRate(obj, ch);
-            tSlew = max(abs(vT - v0) ./ min(slew, QDAC.MAX_SLEW));
-            T = 2 * (programmedTime + tSlew) + 2;
+        function [tExpected, tTimeout] = estimateRampTime(obj, ch, v0, vT, programmedTime)
+            % From cached slew rates - no instrument queries (except once, if
+            % the cache is missing, e.g. for an object created by an older
+            % version of this class).
+            % tExpected: when the outputs should be at target;
+            % tTimeout : generous limit, 2 x tExpected + 2 s.
+            obj.ensureSlewCache();
+            slew  = min(obj.channelSlew(ch), QDAC.MAX_SLEW);
+            tSlew = max(abs(vT - v0) ./ slew);
+            tExpected = max(programmedTime, tSlew);
+            tTimeout  = 2 * (programmedTime + tSlew) + 2;
         end
 
         function warnIfClipping(obj, ch, names, scale, offset)

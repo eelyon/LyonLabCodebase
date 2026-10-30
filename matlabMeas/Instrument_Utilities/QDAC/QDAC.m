@@ -488,6 +488,7 @@ classdef QDAC < handle
     % =====================================================================
     methods
         function querySTB = queryQDACSTB(obj)
+            % Returns the status byte register
             querySTB = obj.scpiQuery('*STB?');
         end
 

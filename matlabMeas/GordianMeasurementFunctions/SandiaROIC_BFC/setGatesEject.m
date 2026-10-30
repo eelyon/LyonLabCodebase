@@ -3,27 +3,22 @@ function setGatesEject(pinout, varargin)
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
 p.addParameter('numSteps', 5, isnonneg);
-% p.addParameter('numStepsRC', 5, isnonneg);
-% p.addParameter('waitTimeRC', 1.1, isnonneg);
 p.addParameter('vlow', -1, @(x) isnumeric(x) && isscalar(x) && (x < 0));
 p.parse(varargin{:});
 
 numSteps = p.Results.numSteps; % rampDACVolts
-% numStepsRC = p.Results.numStepsRC; % rampDACVolts
-% waitTimeRC = p.Results.waitTimeRC; % in microseconds
 vlow = p.Results.vlow; % closing voltage of ccd
 
 %% Set backing plate and top metal positive then sweep ST middle gate
-rampDACVolts(pinout.filament.device,pinout.filament.port,3,numSteps) % ramp filament backing plate
-delay(1)
-rampDACVolts(pinout.tm.device,pinout.tm.port,1,numSteps,pinout.tm.dwell) % make top metal positive
+rampDACVolts(pinout.filament.device,pinout.filament.port,3,numSteps,0.1) % ramp filament backing plate
+rampDACVolts(pinout.tm.device,pinout.tm.port,1,numSteps,pinout.tm.dwell*10) % make top metal positive
 delay(1)
 
 %% Set ST gates negative
-rampDACVolts(pinout.std.device,pinout.std.port,vlow,numSteps) % Sommer-Tanner drive
-rampDACVolts(pinout.sts.device,pinout.sts.port,vlow,numSteps) % Sommer-Tanner sense
+rampDACVolts(pinout.std.device,pinout.std.port,vlow,numSteps,10e-3) % Sommer-Tanner drive
+rampDACVolts(pinout.sts.device,pinout.sts.port,vlow,numSteps,10e-3) % Sommer-Tanner sense
 rampDACVolts(pinout.stm.device,pinout.stm.port,vlow,numSteps) % Sommer-Tanner middle gate
-rampDACVolts(pinout.bpg.device,pinout.bpg.port,vlow,numSteps) % bond pad guard
+rampDACVolts(pinout.bpg.device,pinout.bpg.port,vlow,numSteps,10e-3) % bond pad guard
 
 %% Set CCD gates negative
 rampDACVolts(pinout.d1_1.device,pinout.d1_1.port,vlow,numSteps)
@@ -44,7 +39,7 @@ rampDACVolts(pinout.twiddle1.device,pinout.twiddle1.port,vlow,numSteps,pinout.tw
 rampDACVolts(pinout.guard1_r.device,pinout.guard1_r.port,vlow,numSteps)
 rampDACVolts(pinout.sense1_r.device,pinout.sense1_r.port,vlow,numSteps)
 rampDACVolts(pinout.d6.device,pinout.d6.port,vlow,numSteps)
-rampDACVolts(pinout.shield.device,pinout.shield.port,vlow,numSteps,pinout.shield.dwell)
+rampDACVolts(pinout.shield.device,pinout.shield.port,vlow,numSteps,pinout.shield.dwell*10)
 
 %% Set 2nd twiddle-sense negative
 rampDACVolts(pinout.d7.device,pinout.d7.port,vlow,numSteps) % door for compensation of sense 1
@@ -72,6 +67,6 @@ rampDACVolts(pinout.trap3.device,pinout.trap3.port,vlow,numSteps)
 rampDACVolts(pinout.trap4.device,pinout.trap4.port,vlow,numSteps)
 delay(1)
 
-rampDACVolts(pinout.tm.device,pinout.tm.port,-1,numSteps,pinout.tm.dwell) % make top metal negative
+rampDACVolts(pinout.tm.device,pinout.tm.port,-1,numSteps,pinout.tm.dwell*10) % make top metal negative
 fprintf('Electrons are ejected.\n')
 end

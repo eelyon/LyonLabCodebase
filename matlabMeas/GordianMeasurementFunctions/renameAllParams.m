@@ -1,13 +1,13 @@
-close all;
-clear all;
-clc;
+% close all;
+% clear all;
+% clc;
 
 %% Parameters
 % The directory in which to replace files. Currently this code does not modify files in
 % sub-directories
-directory = 'C:\Users\Lyon-Lab-B417\Documents\GitHub\LyonLabCodebase\matlabMeas\GordianMeasurementFunctions\SandiaSingleElectronMeas';
-% oldString = sprintf('Vclose'); % The string that will be replaced
-% newString = sprintf('vlow'); % The replacement string
+directory = 'C:\Users\ee_lyonlab_j409\Documents\GitHub\LyonLabCodebase\matlabMeas\GordianMeasurementFunctions\SandiaROIC_BFC';
+% oldString = sprintf('d_v_1'); % The string that will be replaced
+% newString = sprintf('phi_v_1'); % The replacement string
 % The file name condition - what type of files will be examined
 % It must contain any of the English character set (letters, numbers or underscore
 % character i.e. a-zA-Z_0-9) and ends with a ".m" MATLAB extension (use \.txt for text files)

@@ -33,4 +33,5 @@ awgFilament = Agilent33220A(1234,'172.29.117.16',1)
 siglentFilament = SPD330('172.29.117.67',1)
 
 %% GUIs
-controlDACGUI = QDACGUI_controlTL;
+controlDACGUI = DACMonitorGUI(qDAC);
+supplyDACGUI = DACMonitorGUI(baselDAC);

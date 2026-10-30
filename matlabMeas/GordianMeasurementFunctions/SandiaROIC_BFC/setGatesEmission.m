@@ -2,27 +2,25 @@ function setGatesEmission(pinout, varargin)
 %SETEMISSIONGATES Set bias voltages for emitting electrons on device
 p = inputParser;
 isnonneg = @(x) isnumeric(x) && isscalar(x) && (x > 0);
-p.addParameter('numSteps', 2, isnonneg);
-% p.addParameter('numStepsRC', 2, isnonneg);
-% p.addParameter('waitTimeRC', 1.1, isnonneg);
+p.addParameter('numSteps', 5, isnonneg);
 p.addParameter('vlow', -3, @(x) isnumeric(x) && isscalar(x) && (x < 0));
+p.addParameter('vst', +2, @(x) isnumeric(x) && isscalar(x) && (x <= 0));
 p.addParameter('vbackmetal', 0, @(x) isnumeric(x) && isscalar(x) && (x <= 0));
 p.parse(varargin{:});
 
 numSteps = p.Results.numSteps; % rampDACVolts
-% numStepsRC = p.Results.numStepsRC; % rampDACVolts
-% waitTimeRC = p.Results.waitTimeRC; % in microseconds
 vlow = p.Results.vlow; % closing voltage of ccd
+vst = p.Results.vst; % Sommer-Tanner voltage
 vbackmetal = p.Results.vbackmetal;
 
 %% Set Sommer-Tanner
 rampDACVolts(pinout.tm.device,pinout.tm.port,vlow,numSteps) % ramp top metal
 rampDACVolts(pinout.m2s.device,pinout.m2s.port,-0.5,numSteps) % ramp M2 shield
-rampDACVolts(pinout.bpg.device,pinout.bpg.port,vlow,numSteps) % ramp bond pad guard
+rampDACVolts(pinout.bpg.device,pinout.bpg.port,vlow,numSteps,10e-3) % ramp bond pad guard
 
-rampDACVolts(pinout.std.device,pinout.std.port,+2,numSteps) % ramp ST-Drive
-rampDACVolts(pinout.sts.device,pinout.sts.port,+2,numSteps) % ramp ST-Sense
-rampDACVolts(pinout.stm.device,pinout.stm.port,+2,numSteps) % ramp ST-Middle
+rampDACVolts(pinout.std.device,pinout.std.port,vst,numSteps) % ramp ST-Drive
+rampDACVolts(pinout.sts.device,pinout.sts.port,vst,numSteps) % ramp ST-Sense
+rampDACVolts(pinout.stm.device,pinout.stm.port,vst,numSteps) % ramp ST-Middle
 
 %% Set 1st CCD
 rampDACVolts(pinout.d1_1.device,pinout.d1_1.port,vlow,numSteps)
