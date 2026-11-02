@@ -86,7 +86,7 @@ pinout.twiddle2.device = baselDAC;
 pinout.twiddle2.port = 16;
 pinout.twiddle2.dwell = 2.2e-3; % 5kOhm + 47nF
 pinout.guard2_r.device = baselDAC;
-pinout.guard2_r.port = 3;
+pinout.guard2_r.port = 14;
 pinout.sense2_r.device = qDAC;
 pinout.sense2_r.port = 22;
 pinout.d8.device = qDAC;
@@ -98,7 +98,7 @@ pinout.d9.port = 15;
 pinout.phi_h2_1.device = baselDAC;
 pinout.phi_h2_1.port = 2;
 pinout.phi_h2_2.device = baselDAC;
-pinout.phi_h2_2.port = 14;
+pinout.phi_h2_2.port = 3;
 pinout.phi_h2_3.device = baselDAC;
 pinout.phi_h2_3.port = 1;
 

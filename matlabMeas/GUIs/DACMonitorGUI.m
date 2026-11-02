@@ -192,7 +192,7 @@ classdef DACMonitorGUI < handle
                         app.setStatus('This DAC type has no read-back; showing the cache.');
                 end
                 app.refreshFromCache(1:app.numChannels);
-                app.setStatus(sprintf('Instrument read at %s', datestr(now, 'HH:MM:SS')));
+                app.setStatus(sprintf('Instrument read at %s', datestr(now, 'dd-mmm-yyyy HH:MM:SS')));
             catch ME
                 app.setStatus(['Read failed: ' ME.message]);
                 uialert(app.UIFigure, ME.message, 'Read instrument failed');
@@ -316,7 +316,7 @@ classdef DACMonitorGUI < handle
                     end
                 end
             end
-            app.setStatus(sprintf('Cache shown at %s%s', datestr(now, 'HH:MM:SS'), ...
+            app.setStatus(sprintf('Cache shown at %s%s', datestr(now, 'dd-mmm-yyyy HH:MM:SS'), ...
                 app.pinoutSuffix()));
         end
 
