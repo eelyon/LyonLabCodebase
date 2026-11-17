@@ -1,41 +1,69 @@
 %% Set single frequency sweep
-close all;
+% close all;
 
-power     = -20;      % in dBm - be careful!! Do not set too high!!
-startFreq = 2135;    % in MHz
-stopFreq  = 2155;    % in MHz 
+power     = -40;        % in dBm - be careful!! Do not set too high!!
 
-% decide whether to include metadata (1=include,0=don't)
-saveFig   = 1;       % for saving the figure
-plotHe    = 0;       % for Patm and numShots metaData
-plotIDC   = 0;       % for capacitance metaData
-tag = 'HeLevelMeter_topPCB';
+startFreq = 2.105e3;    % in MHz
+stopFreq  = 2.122e3;    % in MHz
+tag = 'HeLevelMeter_top';
 
-addedHe   = 30;         % in inHg from reading the gauge
-% deviceIDC = VmeasE;    % device for IDC measurement
+% startFreq = 2.13e3;
+% stopFreq = 2.155e3;
+% tag = 'HeLevelMeter_bottom';
+
+saveFig   = 1;          % for saving the figure
+plotHe    = 1;          % for Patm and numShots metaData
+plotIDC   = 0;          % for capacitance metaData
+addedHe   = 30;         % in inHgVac from reading the gauge
+addedShots = 0;
+% deviceIDC = VmeasE;   % device for IDC measurement
 
 E5071SetPower(ENA,power);           % in dBm
 E5071SetStartFreq(ENA,startFreq);   % in MHz
 E5071SetStopFreq(ENA,stopFreq);     % in MHz
 
+% *OPC? only answers once the sweep is finished. If the sweep lasts longer
+% than ENA.Timeout (visadev default: 10 s), the read times out.
+numPoints = str2double(query(ENA,':SENS1:SWE:POIN?'));   % number of points N
+sweepTime = str2double(query(ENA,':SENS1:SWE:TIME?'));   % single-sweep time [s]
+
+% With sweep averaging, one trigger runs AVER:COUN sweeps
+avgOn   = str2double(query(ENA,':SENS1:AVER?'));
+trigAvg = str2double(query(ENA,':TRIG:AVER?'));
+if avgOn == 1 && trigAvg == 1
+    sweepTime = sweepTime * str2double(query(ENA,':SENS1:AVER:COUN?'));
+end
+
+oldTimeout  = ENA.Timeout;                             % [s]
+ENA.Timeout = max(oldTimeout, 1.5*sweepTime + 10);     % margin: overhead + data transfer
+fprintf('Sweep: %d points, est. %.1f s -> timeout %.1f s\n', ...
+        numPoints, sweepTime, ENA.Timeout);
+
+%% Trigger single sweep and read data
 flush(ENA);
 pause(0.1)
 fprintf(ENA,':INIT1');         % Set trigger value - for continuous set: ':INIT:CONT ON'
 fprintf(ENA,':TRIG:SOUR BUS'); % Set trigger source to "Bus Trigger"
 fprintf(ENA,':TRIG:SING');     % Trigger ENA to start sweep cycle
-query(ENA,'*OPC?');            % Execute *OPC? command and wait until command return 1
+try
+    query(ENA,'*OPC?');                          % blocks until sweep complete
+    [fdata,mag,phase] = E5071GetData(ENA,tag);   % mag (log) and phase (deg)
+catch ME
+    flush(ENA);                 % discard a late '1' so it cannot corrupt the next read
+    ENA.Timeout = oldTimeout;
+    rethrow(ME);
+end
+ENA.Timeout = oldTimeout;       % restore default for short queries
 
-% Get mag (log) and phase (deg) data
-[fdata,mag,phase] = E5071GetData(ENA,tag);
 %loc = findpeaks(fdata,'MinPeakProminence',1); % finds approx resonance frequency
 %fres = fdata(loc);
 [~,min_idx] = min(mag);
 fres = fdata(min_idx);
+res = fit_notch_resonance(fdata, mag);
 
 %% Plot data
 measType = num2str(query(ENA,':CALC:PAR:DEF?')); % S21, S12, S22, or S11
 subPlotFigure = figure(getNextMATLABFigNum());
-
 subplot(1,2,1);
 freqvsmag = plotData(fdata,mag,'xLabel',"Frequency (GHz)",'yLabel',strcat(measType," (dB)"),'color',"b.",'subPlot',1,'type',"linear");
 subplot(1,2,2);
@@ -45,38 +73,42 @@ subplot(1,2,2);
 % resistance = queryHP34401A(Thermometer);
 % temperature = Therm.tempFromRes(resistance);
 % sgtitle(['f_{res}=', num2str(fres),'GHz, T=', num2str(temperature),'K']);
-% 
+%
 % metadata_struct.temperature = [num2str(temperature)];
-
 sgtitle(['f_{res}=', num2str(fres*1e3),'MHz']);
-
 if plotHe == 1
-    Patm     = Patm + inHgToAtm(addedHe);   % initialise in command line
-    numShots = numShots + ((30-addedHe)/30);                % initialise in command line
+    Patm     = Patm + inHgToAtm(addedHe);           % initialise in command line
+    numShots = numShots + addedShots;        % initialise in command line
     metadata_struct.Patm     = [num2str(Patm)];
     metadata_struct.numShots = [num2str(numShots)];
 end
 
-metadata_struct.power = [num2str(power)];
-metadata_struct.fres  = [num2str(fres)];
+metadata_struct.tag    = tag;
+metadata_struct.powerIndBm    = power;
+metadata_struct.startFreq_MHz = startFreq;
+metadata_struct.stopFreq_MHz  = stopFreq;
+metadata_struct.numPoints     = numPoints;
+metadata_struct.measType      = measType;
+metadata_struct.timestamp     = datetime('now');
+metadata_struct.instrumentID  = strtrim(query(ENA,'*IDN?'));
+metadata_struct.fres_GHz      = [num2str(fres)];
 
 if plotIDC == 1
     capIDC = cap(deviceIDC);
     metadata_struct.capIDC = [num2str(capIDC)];
 end
-
 myFig.UserData = metadata_struct;
 disp(metadata_struct);
 
 if saveFig == 1
     plotHandles = {freqvsmag,freqvsphase};
-    saveData(subPlotFigure,tag); % Save mag and phase data
+    saveData(subPlotFigure,tag);
 end
 
 function Patm = inHgToAtm(inHg)
-    % Function converting the reading on the small, silver gas
-    % manifold gauge to Patm
-    % param inHg: pressure reading in inches of mercury (pos. number)
+% Function converting the reading on the small, silver gas
+% manifold gauge to Patm
+% param inHg: pressure reading in inches of mercury (pos. number)
     Patm = (30-inHg)*0.0334211;
 end
 

@@ -2,6 +2,7 @@
 % port = 1234; % for the big glass dewar
 
 %% Keysight VNA E5071
+% ENA_Address = '172.29.117.72';
 % ENA = KeysightE5071(ENA_Address);
 % setKeysightE5071PresetConfig(ENA,'HeLevelRes')
 

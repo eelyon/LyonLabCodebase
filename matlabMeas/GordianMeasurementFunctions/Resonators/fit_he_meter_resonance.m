@@ -1,0 +1,1 @@
+res = fit_notch_resonance(fdata, mag);

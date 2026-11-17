@@ -1,4 +1,4 @@
-function [fres,subPlotFigure,tag,myFig] = E5071FreqSweep(ENA,powerIndBm,startFreq,stopFreq,Therm,Thermometer,tag,opt)
+function [fres,subPlotFigure,tag,myFig] = E5071FreqSweep_fres(ENA,powerIndBm,startFreq,stopFreq,tag,opt)
     % Function that sets VNA measurement and plots data
     E5071SetPower(ENA,powerIndBm);    % in dBm
     E5071SetStartFreq(ENA,startFreq); % in MHz
@@ -11,7 +11,7 @@ function [fres,subPlotFigure,tag,myFig] = E5071FreqSweep(ENA,powerIndBm,startFre
     
     % Get mag (log) and phase (deg) data
     [fdata,mag,phase] = E5071GetData(ENA,tag);
-    % fres = fdata(find(mag==min(mag))); % min point
+    fres = fdata(find(mag==min(mag))); % min point
     
     if ~exist('opt','var') % defaults to plotting data
         %% Plot data
