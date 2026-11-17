@@ -23,7 +23,7 @@ function setChannelBias(dac, nbsiMiddleLow, nbsiMiddleHigh, dotsVoltDiff, sideMi
     end
 
     % Calculate target voltages
-    dotsVoltage = nbsiMiddleHigh + dotsVoltDiff;
+    dotsVoltage = nbsiMiddleHigh*3/8+nbsiMiddleLow*5/8 + dotsVoltDiff;
     nbsiSideLow = nbsiMiddleLow + sideMiddleDiff;
     nbsiSideHigh = nbsiMiddleHigh + sideMiddleDiff;
     

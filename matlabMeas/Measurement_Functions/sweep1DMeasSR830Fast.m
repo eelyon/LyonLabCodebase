@@ -92,7 +92,7 @@ for value = paramVector
     yVectorRepeat = [];
 
     %% Query SR830 for Real/Imag data, calculate Magnitude and place in vector
-    [Real,Imag,Mag,time] = getSR830Data(Real,Imag,time,startTime,readSR830,repeat,sratRate);
+    [Real,Imag,Mag,time] = getSR830Data(Real,Imag,time,startTime,readSR830,repeat,sampleRate);
 
     %% Place data in repeat vectors that get averaged and error bars get calculated.
     for srIndex = 1:numSR830s
