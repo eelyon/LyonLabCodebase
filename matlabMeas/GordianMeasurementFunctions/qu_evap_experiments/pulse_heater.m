@@ -1,0 +1,5 @@
+% awg_50 = Agilent33220A(1234,'172.29.117.16',1)
+% set33220Output(awg_50,'ON')
+set33220NumBurstCycles(awg50,30)
+set33220VoltageHigh(awg50,100e-3)
+send33220Trigger(awg_50)
